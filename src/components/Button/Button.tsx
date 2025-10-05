@@ -80,7 +80,7 @@ export const Button: React.FC<ButtonProps> = ({
 
   const customStyle = {
     ...style,
-    ...(color && { '--btn-color': color } as React.CSSProperties),
+    ...(color && { '--taeri-btn-color': color } as React.CSSProperties),
   }
 
   return (

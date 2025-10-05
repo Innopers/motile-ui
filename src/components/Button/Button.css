@@ -50,7 +50,7 @@
 
 /* Secondary Variant */
 .taeri-btn--secondary {
-  background: transparent;
+  background: white;
   color: var(--btn-color,
     var(--taeri-ui-btn-secondary,
       var(--taeri-theme, #3b82f6)
@@ -82,7 +82,7 @@
 
 /* Default Variant */
 .taeri-btn--default {
-  background: transparent;
+  background: white;
   border: none;
   color: var(--btn-color,
     var(--taeri-ui-btn-default,

@@ -36,6 +36,12 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   hoverOnTouch?: boolean
 
   /**
+   * 로딩 상태 (로딩 중일 때 버튼 비활성화)
+   * @default false
+   */
+  loading?: boolean
+
+  /**
    * 버튼 내용
    */
   children: React.ReactNode
@@ -47,6 +53,7 @@ export const Button: React.FC<ButtonProps> = ({
   fullWidth = true,
   color,
   hoverOnTouch = false,
+  loading = false,
   children,
   className,
   disabled,
@@ -63,7 +70,8 @@ export const Button: React.FC<ButtonProps> = ({
     `${baseClass}--${variant}`,
     `${baseClass}--${size}`,
     shouldFullWidth && `${baseClass}--full-width`,
-    disabled && `${baseClass}--disabled`,
+    (disabled || loading) && `${baseClass}--disabled`,
+    loading && `${baseClass}--loading`,
     hoverOnTouch && `${baseClass}--hover-on-touch`,
     className,
   ]
@@ -78,11 +86,22 @@ export const Button: React.FC<ButtonProps> = ({
   return (
     <button
       className={classes}
-      disabled={disabled}
+      disabled={disabled || loading}
       style={customStyle}
       {...props}
     >
-      {children}
+      <span className={`${baseClass}__content`} style={{ visibility: loading ? 'hidden' : 'visible' }}>
+        {children}
+      </span>
+      {loading && (
+        <span className={`${baseClass}__loading`}>
+          <span className={`${baseClass}__dots`}>
+            <span className={`${baseClass}__dot`}></span>
+            <span className={`${baseClass}__dot`}></span>
+            <span className={`${baseClass}__dot`}></span>
+          </span>
+        </span>
+      )}
     </button>
   )
 }

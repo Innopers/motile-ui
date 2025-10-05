@@ -216,3 +216,87 @@
     user-select: none;
   }
 }
+
+/* Loading States */
+.taeri-btn__content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.taeri-btn__loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.taeri-btn__dots {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  height: 1em;
+}
+
+/* Size-specific dot sizing */
+.taeri-btn--large .taeri-btn__dot {
+  width: 8px;
+  height: 8px;
+}
+
+.taeri-btn--medium .taeri-btn__dot {
+  width: 6px;
+  height: 6px;
+}
+
+.taeri-btn--small .taeri-btn__dot {
+  width: 5px;
+  height: 5px;
+}
+
+.taeri-btn__dot {
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.7);
+  animation: taeri-btn-loading-bounce 1.4s ease-in-out infinite both;
+}
+
+.taeri-btn__dot:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.taeri-btn__dot:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+.taeri-btn__dot:nth-child(3) {
+  animation-delay: 0s;
+}
+
+/* Variant-specific dot colors */
+.taeri-btn--primary .taeri-btn__dot {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.taeri-btn--secondary .taeri-btn__dot {
+  background-color: var(--btn-color, var(--taeri-ui-btn-secondary, var(--taeri-theme, rgba(59, 130, 246, 0.7))));
+}
+
+.taeri-btn--default .taeri-btn__dot {
+  background-color: var(--btn-color, var(--taeri-ui-btn-default, var(--taeri-theme, rgba(59, 130, 246, 0.7))));
+}
+
+/* Loading bounce animation */
+@keyframes taeri-btn-loading-bounce {
+  0%, 80%, 100% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+  40% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}

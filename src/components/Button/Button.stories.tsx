@@ -31,6 +31,10 @@ const meta = {
       control: 'boolean',
       description: 'Disable button',
     },
+    loading: {
+      control: 'boolean',
+      description: 'Show loading state with animated dots',
+    },
   },
 } satisfies Meta<typeof Button>
 
@@ -94,5 +98,14 @@ export const Default: Story = {
     variant: 'default',
     size: 'large',
     children: 'Default Button',
+  },
+}
+
+export const Loading: Story = {
+  args: {
+    variant: 'primary',
+    size: 'large',
+    loading: true,
+    children: 'Loading Button',
   },
 }

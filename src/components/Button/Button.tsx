@@ -90,18 +90,20 @@ export const Button: React.FC<ButtonProps> = ({
       style={customStyle}
       {...props}
     >
-      <span className={`${baseClass}__content`} style={{ visibility: loading ? 'hidden' : 'visible' }}>
-        {children}
-      </span>
-      {loading && (
-        <span className={`${baseClass}__loading`}>
-          <span className={`${baseClass}__dots`}>
-            <span className={`${baseClass}__dot`}></span>
-            <span className={`${baseClass}__dot`}></span>
-            <span className={`${baseClass}__dot`}></span>
-          </span>
+      <span className={`${baseClass}__wrapper`}>
+        <span className={`${baseClass}__content`} style={{ opacity: loading ? 0 : 1 }}>
+          {children}
         </span>
-      )}
+        {loading && (
+          <span className={`${baseClass}__loading`}>
+            <span className={`${baseClass}__dots`}>
+              <span className={`${baseClass}__dot`}></span>
+              <span className={`${baseClass}__dot`}></span>
+              <span className={`${baseClass}__dot`}></span>
+            </span>
+          </span>
+        )}
+      </span>
     </button>
   )
 }

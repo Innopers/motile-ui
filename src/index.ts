@@ -1,3 +1,2 @@
-// Export your components here
-// Example:
-// export { MyComponent } from './components/MyComponent'
+export { Button } from './components/Button'
+export type { ButtonProps } from './components/Button'

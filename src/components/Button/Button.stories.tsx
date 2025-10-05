@@ -11,7 +11,7 @@ const meta = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['primary'],
+      options: ['primary', 'secondary'],
       description: 'Button variant style',
     },
     size: {
@@ -78,5 +78,13 @@ export const WithIcon: Story = {
         Add Item
       </>
     ),
+  },
+}
+
+export const Secondary: Story = {
+  args: {
+    variant: 'secondary',
+    size: 'large',
+    children: 'Secondary Button',
   },
 }

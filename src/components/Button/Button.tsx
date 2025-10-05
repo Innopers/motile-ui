@@ -1,7 +1,7 @@
 import React from 'react'
 import './Button.css'
 
-type ButtonVariant = 'primary'
+type ButtonVariant = 'primary' | 'secondary'
 type ButtonSize = 'large'
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

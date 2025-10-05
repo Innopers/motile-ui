@@ -48,6 +48,38 @@
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
+/* Secondary Variant */
+.taeri-btn--secondary {
+  background: transparent;
+  color: var(--btn-color,
+    var(--taeri-ui-btn-secondary,
+      var(--taeri-theme, #3b82f6)
+    )
+  );
+  border: 1px solid var(--btn-color,
+    var(--taeri-ui-btn-secondary,
+      var(--taeri-theme, #3b82f6)
+    )
+  );
+  box-shadow: none;
+}
+
+@media (hover: hover) {
+  .taeri-btn--secondary:hover:not(.taeri-btn--disabled) {
+    background: color-mix(in srgb, var(--btn-color, var(--taeri-ui-btn-secondary, var(--taeri-theme, #3b82f6))) 10%, transparent);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+}
+
+.taeri-btn--hover-on-touch.taeri-btn--secondary:hover:not(.taeri-btn--disabled) {
+  background: color-mix(in srgb, var(--btn-color, var(--taeri-ui-btn-secondary, var(--taeri-theme, #3b82f6))) 10%, transparent);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
 /* Large Size */
 .taeri-btn--large {
   padding: 0 24px;
@@ -58,12 +90,22 @@
 }
 
 /* States */
-.taeri-btn--disabled {
+.taeri-btn--primary.taeri-btn--disabled {
   opacity: 0.5;
+  filter: saturate(0.9);
   cursor: not-allowed !important;
   transform: none !important;
   box-shadow: none !important;
-  filter: saturate(0.9);
+  pointer-events: none;
+}
+
+.taeri-btn--secondary.taeri-btn--disabled {
+  background: #f3f4f6 !important;
+  color: #9ca3af !important;
+  border-color: #e5e7eb !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: none !important;
   pointer-events: none;
 }
 

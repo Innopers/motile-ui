@@ -282,11 +282,11 @@
 }
 
 .taeri-btn--secondary .taeri-btn__dot {
-  background-color: var(--btn-color, var(--taeri-ui-btn-secondary, var(--taeri-theme, rgba(59, 130, 246, 0.7))));
+  background-color: rgba(156, 163, 175, 0.7);
 }
 
 .taeri-btn--default .taeri-btn__dot {
-  background-color: var(--btn-color, var(--taeri-ui-btn-default, var(--taeri-theme, rgba(59, 130, 246, 0.7))));
+  background-color: rgba(156, 163, 175, 0.7);
 }
 
 /* Loading bounce animation */

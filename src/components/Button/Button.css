@@ -148,7 +148,7 @@
 .taeri-btn--secondary.taeri-btn--disabled {
   background: #f3f4f6 !important;
   color: #9ca3af !important;
-  border-color: #e5e7eb !important;
+  border: none !important;
   cursor: not-allowed !important;
   transform: none !important;
   box-shadow: none !important;

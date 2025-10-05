@@ -80,6 +80,34 @@
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
+/* Default Variant */
+.taeri-btn--default {
+  background: transparent;
+  border: none;
+  color: var(--btn-color,
+    var(--taeri-ui-btn-default,
+      var(--taeri-theme, #3b82f6)
+    )
+  );
+  box-shadow: none;
+}
+
+@media (hover: hover) {
+  .taeri-btn--default:hover:not(.taeri-btn--disabled) {
+    opacity: 0.7;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+}
+
+.taeri-btn--hover-on-touch.taeri-btn--default:hover:not(.taeri-btn--disabled) {
+  opacity: 0.7;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
 /* Large Size */
 .taeri-btn--large {
   padding: 0 24px;
@@ -103,6 +131,15 @@
   background: #f3f4f6 !important;
   color: #9ca3af !important;
   border-color: #e5e7eb !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: none !important;
+  pointer-events: none;
+}
+
+.taeri-btn--default.taeri-btn--disabled {
+  background: #f3f4f6 !important;
+  color: #9ca3af !important;
   cursor: not-allowed !important;
   transform: none !important;
   box-shadow: none !important;

@@ -117,6 +117,24 @@
   line-height: 1.4;
 }
 
+/* Medium Size */
+.taeri-btn--medium {
+  padding: 0 20px;
+  font-size: 15px;
+  height: 48px;
+  min-height: 48px;
+  line-height: 1.4;
+}
+
+/* Small Size */
+.taeri-btn--small {
+  padding: 0 16px;
+  font-size: 14px;
+  height: 40px;
+  min-height: 40px;
+  line-height: 1.4;
+}
+
 /* States */
 .taeri-btn--primary.taeri-btn--disabled {
   opacity: 0.5;

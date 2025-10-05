@@ -16,7 +16,7 @@ const meta = {
     },
     size: {
       control: 'select',
-      options: ['large'],
+      options: ['large', 'medium', 'small'],
       description: 'Button size',
     },
     fullWidth: {

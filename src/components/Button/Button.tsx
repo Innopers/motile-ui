@@ -2,7 +2,7 @@ import React from 'react'
 import './Button.css'
 
 type ButtonVariant = 'primary' | 'secondary' | 'default'
-type ButtonSize = 'large'
+type ButtonSize = 'large' | 'medium' | 'small'
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /**
@@ -54,11 +54,15 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const baseClass = 'taeri-btn'
+
+  // md, sm 사이즈는 항상 fit-content (fullWidth 무시)
+  const shouldFullWidth = size === 'large' && fullWidth
+
   const classes = [
     baseClass,
     `${baseClass}--${variant}`,
     `${baseClass}--${size}`,
-    fullWidth && `${baseClass}--full-width`,
+    shouldFullWidth && `${baseClass}--full-width`,
     disabled && `${baseClass}--disabled`,
     hoverOnTouch && `${baseClass}--hover-on-touch`,
     className,

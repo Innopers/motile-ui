@@ -1,0 +1,121 @@
+/* Button Base */
+.taeri-btn {
+  width: fit-content;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  min-height: fit-content;
+}
+
+.taeri-btn:active:not(.taeri-btn--disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Primary Variant */
+.taeri-btn--primary {
+  background: var(
+    --btn-color,
+    var(--taeri-ui-btn, var(--taeri-theme, #3b82f6))
+  );
+  color: white;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* Hover 기본: 터치 디바이스에서는 hover 비활성화 */
+@media (hover: hover) {
+  .taeri-btn--primary:hover:not(.taeri-btn--disabled) {
+    filter: brightness(0.9);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+}
+
+/* hoverOnTouch prop이 true일 때: 모든 디바이스에서 hover 활성화 */
+.taeri-btn--hover-on-touch.taeri-btn--primary:hover:not(.taeri-btn--disabled) {
+  filter: brightness(0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Large Size */
+.taeri-btn--large {
+  padding: 0 24px;
+  font-size: 16px;
+  height: 56px;
+  min-height: 56px;
+  line-height: 1.4;
+}
+
+/* States */
+.taeri-btn--disabled {
+  opacity: 0.5;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: none !important;
+  filter: saturate(0.9);
+  pointer-events: none;
+}
+
+.taeri-btn--full-width {
+  width: 100%;
+}
+
+/* Icon support */
+.taeri-btn svg {
+  flex-shrink: 0;
+  margin-right: 8px;
+}
+
+.taeri-btn svg:last-child {
+  margin-right: 0;
+  margin-left: 8px;
+}
+
+.taeri-btn svg:only-child {
+  margin: 0;
+}
+
+/* Tablet optimization (768px - 1024px) */
+@media (max-width: 1024px) {
+  .taeri-btn--large {
+    padding: 0 20px;
+    font-size: 15px;
+    height: 52px;
+    min-height: 52px;
+  }
+}
+
+/* Mobile optimization (< 768px) */
+@media (max-width: 768px) {
+  .taeri-btn--large {
+    padding: 0 18px;
+    font-size: 14px;
+    height: 48px;
+    min-height: 48px;
+  }
+
+  /* Touch feedback for mobile */
+  .taeri-btn:active:not(.taeri-btn--disabled) {
+    transform: scale(0.98);
+  }
+}
+
+/* iOS Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+  .taeri-btn {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+}

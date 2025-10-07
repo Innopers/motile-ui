@@ -42,13 +42,19 @@
   opacity: 0.5;
 }
 
-.taeri-input--error {
+.taeri-input--error:not(.taeri-input--underline) {
   border-color: #ef4444;
+  background: #fef5f5;
+}
+
+.taeri-input--underline.taeri-input--error {
+  border-bottom-color: #ef4444;
 }
 
 .taeri-input--error:not(.taeri-input--underline):focus {
   border: 2px solid #ef4444;
   padding: 11px 15px;
+  background: #fef5f5;
 }
 
 .taeri-input--shake {

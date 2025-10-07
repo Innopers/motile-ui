@@ -43,6 +43,10 @@ const meta = {
       control: "number",
       description: "Maximum character length (shows counter automatically)",
     },
+    errorMessage: {
+      control: "text",
+      description: "Error message (automatically sets isError to true)",
+    },
   },
 } satisfies Meta<typeof Input>;
 
@@ -96,12 +100,5 @@ export const Underline: Story = {
   args: {
     variant: "underline",
     placeholder: "Search...",
-  },
-};
-
-export const WithCharacterCounter: Story = {
-  args: {
-    placeholder: "Type something (max 100 chars)...",
-    maxLength: 100,
   },
 };

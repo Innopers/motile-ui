@@ -28,6 +28,11 @@ export interface InputProps
   isError?: boolean;
 
   /**
+   * 에러 메시지 (설정 시 자동으로 isError true로 처리)
+   */
+  errorMessage?: string;
+
+  /**
    * Clear 버튼 클릭 핸들러
    */
   onClear?: () => void;
@@ -61,6 +66,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       autoSelect = false,
       variant = "default",
       isError = false,
+      errorMessage,
       onClear,
       leftIcon,
       rightIcon,
@@ -75,6 +81,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
   ) => {
     const internalRef = useRef<HTMLInputElement>(null);
     const inputRef = (ref as React.RefObject<HTMLInputElement>) || internalRef;
+
+    // errorMessage가 있으면 자동으로 에러 상태
+    const hasError = isError || !!errorMessage;
 
     // autoFocus & autoSelect 처리
     useEffect(() => {
@@ -100,8 +109,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const inputClasses = [
       baseClass,
       variant !== "default" && `${baseClass}--${variant}`,
-      isError && `${baseClass}--error`,
-      isError && `${baseClass}--shake`,
+      hasError && `${baseClass}--error`,
+      hasError && `${baseClass}--shake`,
       hasLeftIcon && `${baseClass}--with-left-icon`,
       hasRightContent && `${baseClass}--with-right-content`,
       className,
@@ -118,47 +127,71 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const showCounter = maxLength !== undefined;
 
     return (
-      <div className={`${baseClass}-wrapper`}>
-        {leftIcon && (
-          <div className={`${baseClass}__left-icon`}>{leftIcon}</div>
-        )}
+      <>
+        <div className={`${baseClass}-wrapper`}>
+          {leftIcon && (
+            <div className={`${baseClass}__left-icon`}>{leftIcon}</div>
+          )}
 
-        <input
-          ref={inputRef}
-          className={inputClasses}
-          value={value}
-          maxLength={maxLength}
-          style={customStyle}
-          {...props}
-        />
+          <input
+            ref={inputRef}
+            className={inputClasses}
+            value={value}
+            maxLength={maxLength}
+            style={customStyle}
+            aria-describedby={errorMessage ? `${baseClass}-error` : undefined}
+            {...props}
+          />
 
-        {rightIcon && !showClearButton && (
-          <div className={`${baseClass}__right-icon`}>{rightIcon}</div>
-        )}
+          {rightIcon && !showClearButton && (
+            <div className={`${baseClass}__right-icon`}>{rightIcon}</div>
+          )}
 
-        {showClearButton && (
-          <button
-            type="button"
-            onClick={onClear}
-            className={`${baseClass}__clear-button`}
-            aria-label="지우기"
-          >
-            <svg
-              className={`${baseClass}__clear-icon`}
-              viewBox="0 0 20 20"
-              fill="currentColor"
+          {showClearButton && (
+            <button
+              type="button"
+              onClick={onClear}
+              className={`${baseClass}__clear-button`}
+              aria-label="지우기"
             >
-              <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
-            </svg>
-          </button>
-        )}
+              <svg
+                className={`${baseClass}__clear-icon`}
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+              </svg>
+            </button>
+          )}
+        </div>
 
-        {showCounter && (
-          <div className={`${baseClass}__counter`}>
-            {currentLength}/{maxLength}
+        {(errorMessage || showCounter) && (
+          <div
+            className={`${baseClass}__helper-text ${
+              errorMessage && showCounter
+                ? `${baseClass}__helper-text--both`
+                : errorMessage
+                  ? `${baseClass}__helper-text--error-only`
+                  : `${baseClass}__helper-text--counter-only`
+            }`}
+          >
+            {errorMessage && (
+              <span
+                id={`${baseClass}-error`}
+                className={`${baseClass}__error-message`}
+                role="alert"
+              >
+                {errorMessage}
+              </span>
+            )}
+            {showCounter && (
+              <span className={`${baseClass}__counter`}>
+                {currentLength}/{maxLength}
+              </span>
+            )}
           </div>
         )}
-      </div>
+      </>
     );
   }
 );

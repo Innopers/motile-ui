@@ -11,7 +11,7 @@ const meta = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['default'],
+      options: ['default', 'underline'],
       description: 'Input variant style',
     },
     placeholder: {
@@ -84,5 +84,12 @@ export const WithClear: Story = {
     value: 'Clear me',
     placeholder: 'Enter text...',
     onClear: () => alert('Clear clicked!'),
+  },
+}
+
+export const Underline: Story = {
+  args: {
+    variant: 'underline',
+    placeholder: 'Search...',
   },
 }

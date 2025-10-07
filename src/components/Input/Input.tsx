@@ -18,7 +18,7 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
    * Input 스타일 variant
    * @default 'default'
    */
-  variant?: 'default'
+  variant?: 'default' | 'underline'
 
   /**
    * 에러 상태
@@ -83,7 +83,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
         return () => clearTimeout(timer)
       }
-    }, [autoFocus, autoSelect, inputRef])
+    }, [autoFocus, autoSelect])
 
     const baseClass = 'taeri-input'
     const showClearButton = onClear && value
@@ -92,7 +92,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
     const inputClasses = [
       baseClass,
-      `${baseClass}--${variant}`,
+      variant !== 'default' && `${baseClass}--${variant}`,
       isError && `${baseClass}--error`,
       isError && `${baseClass}--shake`,
       hasLeftIcon && `${baseClass}--with-left-icon`,

@@ -1,51 +1,57 @@
-import React, { forwardRef, useEffect, useRef } from 'react'
-import './Input.css'
+import React, { forwardRef, useEffect, useRef } from "react";
+import "./Input.css";
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
   /**
    * 자동 포커스 여부
    * @default false
    */
-  autoFocus?: boolean
+  autoFocus?: boolean;
 
   /**
    * 자동 텍스트 선택 여부 (autoFocus와 함께 사용)
    * @default false
    */
-  autoSelect?: boolean
+  autoSelect?: boolean;
 
   /**
    * Input 스타일 variant
    * @default 'default'
    */
-  variant?: 'default' | 'underline'
+  variant?: "default" | "underline";
 
   /**
    * 에러 상태
    * @default false
    */
-  isError?: boolean
+  isError?: boolean;
 
   /**
    * Clear 버튼 클릭 핸들러
    */
-  onClear?: () => void
+  onClear?: () => void;
 
   /**
    * 왼쪽 아이콘
    */
-  leftIcon?: React.ReactNode
+  leftIcon?: React.ReactNode;
 
   /**
    * 오른쪽 아이콘
    */
-  rightIcon?: React.ReactNode
+  rightIcon?: React.ReactNode;
 
   /**
    * Input 테두리/포커스 색상 (우선순위 1)
    * @example '#10b981'
    */
-  color?: string
+  color?: string;
+
+  /**
+   * 최대 글자수 (설정 시 자동으로 글자수 카운터 표시)
+   */
+  maxLength?: number;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -53,7 +59,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     {
       autoFocus = false,
       autoSelect = false,
-      variant = 'default',
+      variant = "default",
       isError = false,
       onClear,
       leftIcon,
@@ -62,37 +68,38 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       value,
       color,
       style,
+      maxLength,
       ...props
     },
     ref
   ) => {
-    const internalRef = useRef<HTMLInputElement>(null)
-    const inputRef = (ref as React.RefObject<HTMLInputElement>) || internalRef
+    const internalRef = useRef<HTMLInputElement>(null);
+    const inputRef = (ref as React.RefObject<HTMLInputElement>) || internalRef;
 
     // autoFocus & autoSelect 처리
     useEffect(() => {
       if (autoFocus && inputRef.current) {
         const timer = setTimeout(() => {
           if (inputRef.current) {
-            inputRef.current.focus()
+            inputRef.current.focus();
             if (autoSelect) {
-              inputRef.current.select()
+              inputRef.current.select();
             }
           }
-        }, 50)
+        }, 50);
 
-        return () => clearTimeout(timer)
+        return () => clearTimeout(timer);
       }
-    }, [autoFocus, autoSelect])
+    }, [autoFocus, autoSelect]);
 
-    const baseClass = 'taeri-input'
-    const showClearButton = onClear && value
-    const hasLeftIcon = !!leftIcon
-    const hasRightContent = showClearButton || rightIcon
+    const baseClass = "taeri-input";
+    const showClearButton = onClear && value;
+    const hasLeftIcon = !!leftIcon;
+    const hasRightContent = showClearButton || rightIcon;
 
     const inputClasses = [
       baseClass,
-      variant !== 'default' && `${baseClass}--${variant}`,
+      variant !== "default" && `${baseClass}--${variant}`,
       isError && `${baseClass}--error`,
       isError && `${baseClass}--shake`,
       hasLeftIcon && `${baseClass}--with-left-icon`,
@@ -100,21 +107,27 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       className,
     ]
       .filter(Boolean)
-      .join(' ')
+      .join(" ");
 
     const customStyle = {
       ...style,
-      ...(color && { '--taeri-input-color': color } as React.CSSProperties),
-    }
+      ...(color && ({ "--taeri-input-color": color } as React.CSSProperties)),
+    };
+
+    const currentLength = value ? String(value).length : 0;
+    const showCounter = maxLength !== undefined;
 
     return (
       <div className={`${baseClass}-wrapper`}>
-        {leftIcon && <div className={`${baseClass}__left-icon`}>{leftIcon}</div>}
+        {leftIcon && (
+          <div className={`${baseClass}__left-icon`}>{leftIcon}</div>
+        )}
 
         <input
           ref={inputRef}
           className={inputClasses}
           value={value}
+          maxLength={maxLength}
           style={customStyle}
           {...props}
         />
@@ -139,9 +152,15 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             </svg>
           </button>
         )}
-      </div>
-    )
-  }
-)
 
-Input.displayName = 'Input'
+        {showCounter && (
+          <div className={`${baseClass}__counter`}>
+            {currentLength}/{maxLength}
+          </div>
+        )}
+      </div>
+    );
+  }
+);
+
+Input.displayName = "Input";

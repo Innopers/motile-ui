@@ -47,6 +47,11 @@ const meta = {
       control: "text",
       description: "Error message (automatically sets isError to true)",
     },
+    label: {
+      control: "text",
+      description:
+        "Floating label (animates from placeholder position to top on focus/value)",
+    },
   },
 } satisfies Meta<typeof Input>;
 

@@ -57,6 +57,11 @@ export interface InputProps
    * 최대 글자수 (설정 시 자동으로 글자수 카운터 표시)
    */
   maxLength?: number;
+
+  /**
+   * Floating label (focus 전에는 placeholder 위치, focus/값 있을 때 위로 이동)
+   */
+  label?: string;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -75,6 +80,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       color,
       style,
       maxLength,
+      label,
+      placeholder,
       ...props
     },
     ref
@@ -113,14 +120,32 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       hasError && `${baseClass}--shake`,
       hasLeftIcon && `${baseClass}--with-left-icon`,
       hasRightContent && `${baseClass}--with-right-content`,
+      label && `${baseClass}--with-label`,
       className,
     ]
       .filter(Boolean)
       .join(" ");
 
-    const customStyle = {
+    const wrapperClasses = [
+      `${baseClass}-wrapper`,
+      label && `${baseClass}-wrapper--with-label`,
+    ]
+      .filter(Boolean)
+      .join(" ");
+
+    const labelClasses = [
+      `${baseClass}__label`,
+      hasError && `${baseClass}__label--error`,
+    ]
+      .filter(Boolean)
+      .join(" ");
+
+    const wrapperStyle = color
+      ? ({ "--taeri-input-color": color } as React.CSSProperties)
+      : undefined;
+
+    const inputStyle = {
       ...style,
-      ...(color && ({ "--taeri-input-color": color } as React.CSSProperties)),
     };
 
     const currentLength = value ? String(value).length : 0;
@@ -128,7 +153,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <>
-        <div className={`${baseClass}-wrapper`}>
+        <div className={wrapperClasses} style={wrapperStyle}>
+          {label && <label className={labelClasses}>{label}</label>}
+
           {leftIcon && (
             <div className={`${baseClass}__left-icon`}>{leftIcon}</div>
           )}
@@ -138,7 +165,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             className={inputClasses}
             value={value}
             maxLength={maxLength}
-            style={customStyle}
+            style={inputStyle}
+            placeholder={label ? (placeholder || " ") : placeholder}
             aria-describedby={errorMessage ? `${baseClass}-error` : undefined}
             {...props}
           />

@@ -115,7 +115,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
     const inputClasses = [
       baseClass,
-      variant !== "default" && `${baseClass}--${variant}`,
+      `${baseClass}--${variant}`,
       hasError && `${baseClass}--error`,
       hasError && `${baseClass}--shake`,
       hasLeftIcon && `${baseClass}--with-left-icon`,

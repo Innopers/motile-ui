@@ -18,13 +18,16 @@
   border-color: #c9cdd2;
 }
 
-.taeri-input:not(.taeri-input--underline):focus {
-  border: 2px solid
-    var(--taeri-input-color, var(--taeri-ui-input, var(--taeri-theme, #3182f6)));
-  padding: 11px 15px;
+.taeri-input--default {
+  border: 2px solid #e5e8eb;
 }
 
-.taeri-input:not(.taeri-input--underline):disabled {
+.taeri-input--default:focus {
+  border: 2px solid
+    var(--taeri-input-color, var(--taeri-ui-input, var(--taeri-theme, #3182f6)));
+}
+
+.taeri-input--default:disabled {
   background: #f9fafb;
   color: #9ca3af;
   cursor: not-allowed;
@@ -39,8 +42,8 @@
   opacity: 0.5;
 }
 
-.taeri-input--error:not(.taeri-input--underline) {
-  border-color: #ef4444;
+.taeri-input--default.taeri-input--error {
+  border: 2px solid #ef4444;
   background: #fef5f5;
 }
 
@@ -48,9 +51,8 @@
   border-bottom-color: #ef4444;
 }
 
-.taeri-input--error:not(.taeri-input--underline):focus {
+.taeri-input--default.taeri-input--error:focus {
   border: 2px solid #ef4444;
-  padding: 11px 15px;
   background: #fef5f5;
 }
 
@@ -130,11 +132,11 @@
 }
 
 .taeri-input--with-left-icon {
-  padding-left: 44px;
+  padding-left: 40px;
 }
 
-.taeri-input--with-left-icon:focus {
-  padding-left: 43px;
+.taeri-input--default.taeri-input--with-left-icon:focus {
+  padding-left: 40px;
 }
 
 .taeri-input--underline.taeri-input--with-left-icon {
@@ -149,8 +151,8 @@
   padding-right: 40px;
 }
 
-.taeri-input--with-right-content:focus {
-  padding-right: 39px;
+.taeri-input--default.taeri-input--with-right-content:focus {
+  padding-right: 40px;
 }
 
 .taeri-input--underline.taeri-input--with-right-content {
@@ -250,8 +252,13 @@
     min-height: 44px;
   }
 
-  .taeri-input:not(.taeri-input--underline):focus {
-    padding: 11px;
+  .taeri-input--default {
+    border: 2px solid #e5e8eb;
+  }
+
+  .taeri-input--default:focus {
+    border: 2px solid
+      var(--taeri-input-color, var(--taeri-ui-input, var(--taeri-theme, #3182f6)));
   }
 
   .taeri-input--underline {
@@ -290,16 +297,16 @@
     padding-left: 40px;
   }
 
-  .taeri-input--with-left-icon:focus {
-    padding-left: 39px;
-  }
-
-  /* Mobile: Label + Left Icon + Focus 상태 padding 유지 */
-  .taeri-input--with-label.taeri-input--with-left-icon {
+  .taeri-input--default.taeri-input--with-left-icon:focus {
     padding-left: 40px;
   }
 
-  .taeri-input--with-label.taeri-input--with-left-icon:focus {
+  /* Mobile: Label + Left Icon + Focus 상태 padding 유지 - default variant만 */
+  .taeri-input--default.taeri-input--with-label.taeri-input--with-left-icon {
+    padding-left: 40px;
+  }
+
+  .taeri-input--default.taeri-input--with-label.taeri-input--with-left-icon:focus {
     padding-left: 40px;
   }
 
@@ -323,8 +330,8 @@
     padding-right: 36px;
   }
 
-  .taeri-input--with-right-content:focus {
-    padding-right: 35px;
+  .taeri-input--default.taeri-input--with-right-content:focus {
+    padding-right: 36px;
   }
 
   .taeri-input--underline.taeri-input--with-right-content {
@@ -436,18 +443,18 @@
 }
 
 /* Label이 있을 때 input padding 조정 (placeholder처럼 보이도록) - default variant만 */
-.taeri-input--with-label:not(.taeri-input--underline) {
+.taeri-input--default.taeri-input--with-label {
   padding-top: 12px;
   padding-bottom: 12px;
 }
 
-/* Label이 있을 때 left icon 조정 */
-.taeri-input--with-label.taeri-input--with-left-icon {
+/* Label이 있을 때 left icon 조정 - default variant만 */
+.taeri-input--default.taeri-input--with-label.taeri-input--with-left-icon {
   padding-left: 40px;
 }
 
-/* Label + Left Icon + Focus 상태: border 2px 되어도 padding 유지 */
-.taeri-input--with-label.taeri-input--with-left-icon:focus {
+/* Label + Left Icon + Focus 상태: border 2px 되어도 padding 유지 - default variant만 */
+.taeri-input--default.taeri-input--with-label.taeri-input--with-left-icon:focus {
   padding-left: 40px;
 }
 
@@ -470,10 +477,10 @@
   transform: translateY(-50%);
 }
 
-/* Active 상태 (focus 또는 값 있을 때) + left icon이 있을 때 label 위치 */
-.taeri-input-wrapper:has(.taeri-input--with-left-icon):has(.taeri-input:focus) .taeri-input__label,
-.taeri-input-wrapper:has(.taeri-input--with-left-icon):has(.taeri-input:not(:placeholder-shown)) .taeri-input__label {
-  left: 16px;
+/* Active 상태 (focus 또는 값 있을 때) + left icon이 있을 때 label 위치 - default variant만 */
+.taeri-input-wrapper:not(:has(.taeri-input--underline)):has(.taeri-input--with-left-icon):has(.taeri-input:focus) .taeri-input__label,
+.taeri-input-wrapper:not(:has(.taeri-input--underline)):has(.taeri-input--with-left-icon):has(.taeri-input:not(:placeholder-shown)) .taeri-input__label {
+  left: 40px;
 }
 
 .taeri-input-wrapper:has(.taeri-input--underline.taeri-input--with-left-icon):has(.taeri-input:focus) .taeri-input__label,
@@ -518,10 +525,10 @@
     transform: translateY(-50%);
   }
 
-  /* Mobile - Active 상태 + left icon */
-  .taeri-input-wrapper:has(.taeri-input--with-left-icon):has(.taeri-input:focus) .taeri-input__label,
-  .taeri-input-wrapper:has(.taeri-input--with-left-icon):has(.taeri-input:not(:placeholder-shown)) .taeri-input__label {
-    left: 12px;
+  /* Mobile - Active 상태 + left icon - default variant만 */
+  .taeri-input-wrapper:not(:has(.taeri-input--underline)):has(.taeri-input--with-left-icon):has(.taeri-input:focus) .taeri-input__label,
+  .taeri-input-wrapper:not(:has(.taeri-input--underline)):has(.taeri-input--with-left-icon):has(.taeri-input:not(:placeholder-shown)) .taeri-input__label {
+    left: 36px;
   }
 
   .taeri-input-wrapper:has(.taeri-input--underline.taeri-input--with-left-icon):has(.taeri-input:focus) .taeri-input__label,

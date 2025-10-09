@@ -1,5 +1,16 @@
-import React, { forwardRef, useEffect, useRef } from "react";
+import React, {
+  forwardRef,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import "./Textarea.css";
+
+export interface AutoSizeConfig {
+  minRows?: number;
+  maxRows?: number;
+}
 
 export interface TextareaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -43,16 +54,24 @@ export interface TextareaProps
   label?: string;
 
   /**
-   * 기본 행(줄) 수
+   * 기본 행(줄) 수 (autoSize 사용 시 minRows 기본값으로 사용)
    * @default 3
    */
   rows?: number;
 
   /**
-   * Resize 제어
+   * Resize 제어 (autoSize 활성화 시 무시됨)
    * @default 'none'
    */
   resize?: "none" | "vertical" | "horizontal" | "both";
+
+  /**
+   * 자동 높이 조절 (내용에 따라 높이가 자동으로 늘어남)
+   * - true: rows를 minRows로 사용
+   * - { minRows, maxRows }: 세밀한 제어
+   * @default false
+   */
+  autoSize?: boolean | AutoSizeConfig;
 }
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
@@ -71,6 +90,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       placeholder,
       rows = 3,
       resize = "none",
+      autoSize = false,
       ...props
     },
     ref
@@ -79,8 +99,26 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     const textareaRef =
       (ref as React.RefObject<HTMLTextAreaElement>) || internalRef;
 
+    const [sizeState, setSizeState] = useState<{
+      height?: number;
+      isMaxHeight: boolean;
+    }>({ height: undefined, isMaxHeight: false });
+
     // isError가 명시되지 않으면 errorMessage로 판단
     const hasError = isError ?? !!errorMessage;
+
+    // autoSize 설정 파싱
+    const autoSizeConfig =
+      typeof autoSize === "boolean"
+        ? autoSize
+          ? { minRows: rows, maxRows: undefined }
+          : undefined
+        : autoSize
+        ? {
+            minRows: autoSize.minRows ?? rows,
+            maxRows: autoSize.maxRows,
+          }
+        : undefined;
 
     // autoFocus & autoSelect 처리
     useEffect(() => {
@@ -97,6 +135,63 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         return () => clearTimeout(timer);
       }
     }, [autoFocus, autoSelect]);
+
+    // autoSize 높이 계산
+    useLayoutEffect(() => {
+      if (!autoSizeConfig || !textareaRef.current) return;
+
+      const textarea = textareaRef.current;
+
+      // 정확한 측정을 위해 높이 초기화
+      textarea.style.height = "auto";
+
+      // scrollHeight로 실제 필요한 높이 측정
+      const scrollHeight = textarea.scrollHeight;
+
+      // 스타일에서 line-height 가져오기
+      const computedStyle = window.getComputedStyle(textarea);
+      const lineHeight = parseInt(computedStyle.lineHeight, 10);
+      const paddingTop = parseInt(computedStyle.paddingTop, 10);
+      const paddingBottom = parseInt(computedStyle.paddingBottom, 10);
+      const borderTop = parseInt(computedStyle.borderTopWidth, 10);
+      const borderBottom = parseInt(computedStyle.borderBottomWidth, 10);
+
+      // minHeight, maxHeight 계산
+      const verticalPadding =
+        paddingTop + paddingBottom + borderTop + borderBottom;
+      const minHeight = autoSizeConfig.minRows
+        ? lineHeight * autoSizeConfig.minRows + verticalPadding
+        : undefined;
+      const maxHeight = autoSizeConfig.maxRows
+        ? lineHeight * autoSizeConfig.maxRows + verticalPadding
+        : undefined;
+
+      // 높이 결정
+      let newHeight = scrollHeight;
+      let reachedMaxHeight = false;
+
+      if (minHeight !== undefined && newHeight < minHeight) {
+        newHeight = minHeight;
+      }
+      if (maxHeight !== undefined && newHeight > maxHeight) {
+        newHeight = maxHeight;
+        reachedMaxHeight = true;
+      }
+
+      // 즉시 DOM에 높이 적용 (깜빡임 방지)
+      textarea.style.height = `${newHeight}px`;
+
+      // 상태 업데이트 (React의 상태 관리와 동기화)
+      setSizeState((prev) => {
+        if (
+          newHeight !== prev.height ||
+          reachedMaxHeight !== prev.isMaxHeight
+        ) {
+          return { height: newHeight, isMaxHeight: reachedMaxHeight };
+        }
+        return prev;
+      });
+    }, [value, autoSizeConfig]);
 
     const baseClass = "taeri-textarea";
 
@@ -128,21 +223,29 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       ? ({ "--taeri-textarea-color": color } as React.CSSProperties)
       : undefined;
 
-    const textareaStyle = {
+    const textareaStyle: React.CSSProperties = {
       ...style,
-      resize,
+      resize: autoSizeConfig ? "none" : resize,
+      ...(autoSizeConfig && sizeState.height !== undefined
+        ? {
+            height: sizeState.height,
+            minHeight: "auto",
+            overflowY: sizeState.isMaxHeight ? "auto" : "hidden",
+          }
+        : {}),
     };
 
     const currentLength = value ? String(value).length : 0;
     const showCounter = maxLength !== undefined;
 
     // aria-describedby 병합 (외부 값 + 내부 에러 ID)
-    const ariaDescribedBy = [
-      props["aria-describedby"],
-      errorMessage ? `${baseClass}-error` : undefined,
-    ]
-      .filter(Boolean)
-      .join(" ") || undefined;
+    const ariaDescribedBy =
+      [
+        props["aria-describedby"],
+        errorMessage ? `${baseClass}-error` : undefined,
+      ]
+        .filter(Boolean)
+        .join(" ") || undefined;
 
     return (
       <>
@@ -157,7 +260,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             maxLength={maxLength}
             rows={rows}
             style={textareaStyle}
-            placeholder={label ? (placeholder || " ") : placeholder}
+            placeholder={label ? placeholder || " " : placeholder}
           />
         </div>
 
@@ -167,8 +270,8 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
               errorMessage && showCounter
                 ? `${baseClass}__helper-text--both`
                 : errorMessage
-                  ? `${baseClass}__helper-text--error-only`
-                  : `${baseClass}__helper-text--counter-only`
+                ? `${baseClass}__helper-text--error-only`
+                : `${baseClass}__helper-text--counter-only`
             }`}
           >
             {errorMessage && (

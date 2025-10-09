@@ -54,7 +54,12 @@ const meta = {
     resize: {
       control: "select",
       options: ["none", "vertical", "horizontal", "both"],
-      description: "Resize control",
+      description: "Resize control (ignored when autoSize is enabled)",
+    },
+    autoSize: {
+      control: "boolean",
+      description:
+        "Auto-resize height based on content (use object for minRows/maxRows)",
     },
   },
 } satisfies Meta<typeof Textarea>;
@@ -98,5 +103,13 @@ export const WithMaxLength: Story = {
     placeholder: "Enter description...",
     maxLength: 500,
     value: "This combines label and character counter.",
+  },
+};
+
+export const AutoSize: Story = {
+  args: {
+    label: "Message",
+    placeholder: "Type to see auto-resize...",
+    autoSize: true,
   },
 };

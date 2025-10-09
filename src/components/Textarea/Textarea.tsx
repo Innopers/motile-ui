@@ -2,6 +2,7 @@ import React, {
   forwardRef,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -55,7 +56,7 @@ export interface TextareaProps
 
   /**
    * 기본 행(줄) 수 (autoSize 사용 시 minRows 기본값으로 사용)
-   * @default 3
+   * @default 4
    */
   rows?: number;
 
@@ -88,7 +89,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       maxLength,
       label,
       placeholder,
-      rows = 3,
+      rows = 4,
       resize = "none",
       autoSize = false,
       ...props
@@ -108,17 +109,17 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     const hasError = isError ?? !!errorMessage;
 
     // autoSize 설정 파싱
-    const autoSizeConfig =
-      typeof autoSize === "boolean"
-        ? autoSize
-          ? { minRows: rows, maxRows: undefined }
-          : undefined
-        : autoSize
+    const autoSizeConfig = useMemo(() => {
+      if (typeof autoSize === "boolean") {
+        return autoSize ? { minRows: rows, maxRows: undefined } : undefined;
+      }
+      return autoSize
         ? {
             minRows: autoSize.minRows ?? rows,
             maxRows: autoSize.maxRows,
           }
         : undefined;
+    }, [autoSize, rows]);
 
     // autoFocus & autoSelect 처리
     useEffect(() => {
@@ -226,9 +227,9 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     const textareaStyle: React.CSSProperties = {
       ...style,
       resize: autoSizeConfig ? "none" : resize,
-      ...(autoSizeConfig && sizeState.height !== undefined
+      ...(autoSizeConfig
         ? {
-            height: sizeState.height,
+            height: sizeState.height !== undefined ? sizeState.height : "auto",
             minHeight: "auto",
             overflowY: sizeState.isMaxHeight ? "auto" : "hidden",
           }

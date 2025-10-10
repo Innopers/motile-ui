@@ -12,3 +12,6 @@ export type { CheckboxProps } from './components/Checkbox'
 
 export { Switch } from './components/Switch'
 export type { SwitchProps } from './components/Switch'
+
+export { Accordion, AccordionHeader, AccordionContent } from './components/Accordion'
+export type { AccordionProps, AccordionHeaderProps, AccordionContentProps } from './components/Accordion'

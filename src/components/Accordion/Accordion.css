@@ -1,0 +1,134 @@
+/* Container */
+.taeri-accordion {
+  overflow: hidden;
+}
+
+/* Header */
+.taeri-accordion__header {
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  transition: background-color 0.2s ease;
+  text-align: left;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  user-select: none;
+  padding: 16px 20px;
+}
+
+.taeri-accordion__header:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: -2px;
+}
+
+/* Hover/Active */
+@media (hover: hover) and (pointer: fine) {
+  .taeri-accordion__header:not(:disabled):hover {
+    background-color: #f9fafb;
+  }
+}
+@media (hover: none) and (pointer: coarse) {
+  .taeri-accordion__header:not(:disabled):active {
+    background-color: #f3f4f6;
+  }
+}
+
+/* Title */
+.taeri-accordion__title {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  font-size: 16px;
+  font-weight: 400;
+  color: #111827;
+}
+
+/* Chevron Icon */
+.taeri-accordion__chevron {
+  flex-shrink: 0;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 20px;
+  height: 20px;
+  color: #9ca3af;
+}
+
+/* Expanded state */
+.taeri-accordion--expanded .taeri-accordion__chevron,
+.taeri-accordion[data-state="open"] .taeri-accordion__chevron {
+  transform: rotate(180deg);
+}
+
+/* Panel */
+.taeri-accordion__panel {
+  overflow: hidden;
+  height: 0;
+  transition: height 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Content */
+.taeri-accordion__content {
+  line-height: 1.6;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 14px 20px 20px 20px;
+  color: #374151;
+  font-size: 14px;
+}
+
+/* Expanded → content visible */
+.taeri-accordion--expanded .taeri-accordion__content,
+.taeri-accordion[data-state="open"] .taeri-accordion__content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Disabled */
+.taeri-accordion--disabled,
+.taeri-accordion[data-disabled] {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.taeri-accordion--disabled .taeri-accordion__header,
+.taeri-accordion[data-disabled] .taeri-accordion__header {
+  cursor: not-allowed;
+}
+
+/* ====== Outlined Variant ====== */
+.taeri-accordion--outlined {
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .taeri-accordion__header {
+    padding: 14px;
+  }
+  .taeri-accordion__content {
+    padding: 12px 14px 16px 14px;
+  }
+  .taeri-accordion__title {
+    font-size: 15px;
+  }
+  .taeri-accordion__chevron {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .taeri-accordion__panel,
+  .taeri-accordion__content,
+  .taeri-accordion__chevron {
+    transition: none !important;
+  }
+}

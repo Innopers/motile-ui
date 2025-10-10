@@ -9,9 +9,10 @@ const meta = {
   },
   tags: ["autodocs"],
   argTypes: {
-    label: {
-      control: "text",
-      description: "스위치 옆 라벨",
+    variant: {
+      control: "select",
+      options: ["default", "elastic"],
+      description: "스위치 모양",
     },
     color: {
       control: "color",
@@ -32,14 +33,19 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {
-    label: "알림 받기",
-  },
+  args: {},
 };
 
 export const Checked: Story = {
   args: {
-    label: "활성화됨",
+    checked: true,
+    onChange: () => {},
+  },
+};
+
+export const Elastic: Story = {
+  args: {
+    variant: "elastic",
     checked: true,
     onChange: () => {},
   },
@@ -47,7 +53,6 @@ export const Checked: Story = {
 
 export const CustomColor: Story = {
   args: {
-    label: "커스텀 색상",
     color: "#10b981",
     checked: true,
     onChange: () => {},
@@ -56,7 +61,6 @@ export const CustomColor: Story = {
 
 export const Disabled: Story = {
   args: {
-    label: "비활성화",
     disabled: true,
   },
 };

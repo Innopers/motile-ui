@@ -1,7 +1,7 @@
 import React, { forwardRef } from "react";
 import "./Switch.css";
 
-type SwitchVariant = "default";
+type SwitchVariant = "default" | "elastic";
 
 export interface SwitchProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {
@@ -20,14 +20,7 @@ export interface SwitchProps
 
 export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
   (
-    {
-      variant = "default",
-      color,
-      className,
-      disabled,
-      style,
-      ...props
-    },
+    { variant = "default", color, className, disabled, style, ...props },
     ref
   ) => {
     const baseClass = "taeri-switch";

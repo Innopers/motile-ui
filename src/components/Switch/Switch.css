@@ -1,0 +1,104 @@
+/* Switch Component Styles */
+
+.taeri-switch-container {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.taeri-switch-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+}
+
+.taeri-switch-container--disabled .taeri-switch-wrapper {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Hidden Input */
+.taeri-switch {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+  pointer-events: none;
+}
+
+.taeri-switch:focus {
+  outline: none;
+}
+
+/* Switch Track (배경) */
+.taeri-switch__track {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  background-color: #e5e7eb;
+  border-radius: 24px;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+/* Switch Thumb (토글 버튼) */
+.taeri-switch__thumb {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  left: 3px;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Checked State */
+.taeri-switch:checked + .taeri-switch__track {
+  background-color: var(
+    --taeri-switch-color,
+    var(--taeri-ui-switch, var(--taeri-theme, #3b82f6))
+  );
+}
+
+.taeri-switch:checked + .taeri-switch__track .taeri-switch__thumb {
+  transform: translateX(20px);
+}
+
+/* Hover State */
+.taeri-switch:not(:checked) + .taeri-switch__track:hover {
+  background-color: #d1d5db;
+}
+
+.taeri-switch:checked + .taeri-switch__track:hover {
+  background-color: color-mix(
+    in srgb,
+    var(
+        --taeri-switch-color,
+        var(--taeri-ui-switch, var(--taeri-theme, #3b82f6))
+      )
+      90%,
+    black
+  );
+}
+
+/* Disabled State */
+.taeri-switch:disabled + .taeri-switch__track {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+}
+
+.taeri-switch:disabled:checked + .taeri-switch__track {
+  background-color: #d1d5db;
+}
+
+.taeri-switch:disabled + .taeri-switch__track .taeri-switch__thumb {
+  box-shadow: none;
+}

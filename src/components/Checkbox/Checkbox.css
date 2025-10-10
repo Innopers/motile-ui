@@ -57,6 +57,11 @@
   border-radius: 50%;
 }
 
+/* Square Variant */
+.taeri-checkbox--square + .taeri-checkbox__mark {
+  border-radius: 0;
+}
+
 /* Check Icon */
 .taeri-checkbox__check-icon {
   width: 12px;

@@ -1,7 +1,7 @@
 import React, { forwardRef } from "react";
 import "./Checkbox.css";
 
-type CheckboxVariant = "default" | "rounded";
+type CheckboxVariant = "default" | "rounded" | "square";
 
 export interface CheckboxProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {

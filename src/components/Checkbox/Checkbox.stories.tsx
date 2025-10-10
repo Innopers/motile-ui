@@ -11,7 +11,7 @@ const meta = {
   argTypes: {
     variant: {
       control: "select",
-      options: ["default", "rounded"],
+      options: ["default", "rounded", "square"],
       description: "체크박스 스타일 variant",
     },
     label: {
@@ -61,6 +61,14 @@ export const Rounded: Story = {
   args: {
     variant: "rounded",
     label: "원형 체크박스",
+    checked: true,
+  },
+};
+
+export const Square: Story = {
+  args: {
+    variant: "square",
+    label: "직각 체크박스",
     checked: true,
   },
 };

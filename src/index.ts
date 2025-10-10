@@ -15,3 +15,6 @@ export type { SwitchProps } from './components/Switch'
 
 export { Accordion, AccordionHeader, AccordionContent } from './components/Accordion'
 export type { AccordionProps, AccordionHeaderProps, AccordionContentProps } from './components/Accordion'
+
+export { Skeleton } from './components/Skeleton'
+export type { SkeletonProps } from './components/Skeleton'

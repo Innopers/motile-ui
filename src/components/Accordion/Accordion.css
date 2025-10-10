@@ -1,0 +1,145 @@
+/* ====== 기본 구조 + 기본 디자인 (특이성 0로 제공) ====== */
+
+/* Container */
+:where(.taeri-accordion) {
+  overflow: hidden;
+}
+
+/* Variant: default (기본 스타일은 다른 선택자에 정의됨) */
+:where(.taeri-accordion--default) {
+  /* 향후 variant별 스타일 추가 가능 */
+}
+
+/* Header */
+:where(.taeri-accordion__header) {
+  /* 구조 */
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  transition: background-color 0.2s ease;
+  text-align: left;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  user-select: none;
+
+  /* 기본 디자인(언제든 덮어쓰기 가능) */
+  padding: 16px 20px;
+}
+
+:where(.taeri-accordion__header):focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: -2px;
+}
+
+/* Hover/Active (포인터 상황별) */
+@media (hover: hover) and (pointer: fine) {
+  :where(.taeri-accordion__header):not(:disabled):hover {
+    background-color: #f9fafb;
+  }
+}
+@media (hover: none) and (pointer: coarse) {
+  :where(.taeri-accordion__header):not(:disabled):active {
+    background-color: #f3f4f6;
+  }
+}
+
+/* Title */
+:where(.taeri-accordion__title) {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+
+  /* 기본 디자인 */
+  font-size: 16px;
+  font-weight: 400;
+  color: #111827;
+}
+
+/* Chevron Icon */
+:where(.taeri-accordion__chevron) {
+  flex-shrink: 0;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* 기본 디자인 */
+  width: 20px;
+  height: 20px;
+  color: #9ca3af;
+}
+
+/* Expanded state (class 또는 data-attr 둘 다 지원) */
+:where(.taeri-accordion--expanded) :where(.taeri-accordion__chevron),
+:where(.taeri-accordion[data-state="open"]) :where(.taeri-accordion__chevron) {
+  transform: rotate(180deg);
+}
+
+/* Panel (Height Animation Container) */
+:where(.taeri-accordion__panel) {
+  overflow: hidden;
+  height: 0;
+  transition: height 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Content */
+:where(.taeri-accordion__content) {
+  line-height: 1.6;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* 기본 디자인 */
+  padding: 0 20px 20px 20px;
+  color: #374151;
+  font-size: 14px;
+}
+
+/* Expanded → content visible */
+:where(.taeri-accordion--expanded) :where(.taeri-accordion__content),
+:where(.taeri-accordion[data-state="open"]) :where(.taeri-accordion__content) {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Disabled */
+:where(.taeri-accordion--disabled),
+:where(.taeri-accordion[data-disabled]) {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+:where(.taeri-accordion--disabled) :where(.taeri-accordion__header),
+:where(.taeri-accordion[data-disabled]) :where(.taeri-accordion__header) {
+  cursor: not-allowed;
+}
+
+/* Responsive (옵션) */
+@media (max-width: 768px) {
+  :where(.taeri-accordion__header) {
+    padding: 14px 16px;
+  }
+  :where(.taeri-accordion__content) {
+    padding: 0 16px 16px 16px;
+  }
+  :where(.taeri-accordion__title) {
+    font-size: 15px;
+  }
+  :where(.taeri-accordion__chevron) {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  :where(.taeri-accordion__panel),
+  :where(.taeri-accordion__content),
+  :where(.taeri-accordion__chevron) {
+    transition: none !important;
+    /* animation: none !important; // 애니메이션 쓴다면 같이 끄기 */
+  }
+}

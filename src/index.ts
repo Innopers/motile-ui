@@ -6,3 +6,6 @@ export type { InputProps } from './components/Input'
 
 export { Textarea } from './components/Textarea'
 export type { TextareaProps, AutoSizeConfig } from './components/Textarea'
+
+export { Checkbox } from './components/Checkbox'
+export type { CheckboxProps } from './components/Checkbox'

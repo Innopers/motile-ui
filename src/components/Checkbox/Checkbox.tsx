@@ -1,7 +1,7 @@
 import React, { forwardRef } from "react";
 import "./Checkbox.css";
 
-type CheckboxVariant = "default";
+type CheckboxVariant = "default" | "rounded";
 
 export interface CheckboxProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {
@@ -25,15 +25,7 @@ export interface CheckboxProps
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   (
-    {
-      variant = "default",
-      label,
-      color,
-      className,
-      disabled,
-      style,
-      ...props
-    },
+    { variant = "default", label, color, className, disabled, style, ...props },
     ref
   ) => {
     const baseClass = "taeri-checkbox";
@@ -46,11 +38,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       .filter(Boolean)
       .join(" ");
 
-    const checkboxClasses = [
-      baseClass,
-      `${baseClass}--${variant}`,
-      className,
-    ]
+    const checkboxClasses = [baseClass, `${baseClass}--${variant}`, className]
       .filter(Boolean)
       .join(" ");
 

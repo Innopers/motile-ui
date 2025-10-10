@@ -11,7 +11,7 @@ const meta = {
   argTypes: {
     variant: {
       control: "select",
-      options: ["default"],
+      options: ["default", "rounded"],
       description: "체크박스 스타일 variant",
     },
     label: {
@@ -53,6 +53,14 @@ export const CustomColor: Story = {
   args: {
     label: "커스텀 색상",
     color: "#10b981",
+    checked: true,
+  },
+};
+
+export const Rounded: Story = {
+  args: {
+    variant: "rounded",
+    label: "원형 체크박스",
     checked: true,
   },
 };

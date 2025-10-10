@@ -4,6 +4,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useId,
   useRef,
   useState,
 } from "react";
@@ -68,10 +69,9 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
     const isControlled = expanded !== undefined;
     const isOpen = isControlled ? expanded! : internalOpen;
 
+    const uid = useId();
+    const panelId = `accordion-panel-${uid}`;
     const panelRef = useRef<HTMLDivElement>(null);
-    const panelId = useRef(
-      `accordion-panel-${Math.random().toString(36).slice(2, 11)}`
-    ).current;
 
     const toggle = useCallback(() => {
       if (disabled) return;

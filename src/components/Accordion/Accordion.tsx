@@ -14,7 +14,7 @@ const BASE = "taeri-accordion";
 // ===========================
 // Types
 // ===========================
-export type AccordionVariant = "default";
+export type AccordionVariant = "default" | "outlined";
 
 // ===========================
 // Context
@@ -91,7 +91,9 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
       .join(" ");
 
     return (
-      <Context.Provider value={{ isOpen, toggle, disabled, variant, panelId, panelRef }}>
+      <Context.Provider
+        value={{ isOpen, toggle, disabled, variant, panelId, panelRef }}
+      >
         <div
           {...props}
           ref={ref}

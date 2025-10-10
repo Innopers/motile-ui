@@ -1,9 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import {
-  Accordion,
-  AccordionHeader,
-  AccordionContent,
-} from "./Accordion";
+import { Accordion, AccordionHeader, AccordionContent } from "./Accordion";
 
 const meta = {
   title: "Components/Accordion",
@@ -39,8 +35,8 @@ export const Default: Story = {
     <Accordion>
       <AccordionHeader>자주 묻는 질문</AccordionHeader>
       <AccordionContent>
-        여기에 아코디언 내용이 표시됩니다. 긴 텍스트나 다양한 컴포넌트를 넣을
-        수 있습니다.
+        여기에 아코디언 내용이 표시됩니다. 긴 텍스트나 다양한 컴포넌트를 넣을 수
+        있습니다.
       </AccordionContent>
     </Accordion>
   ),
@@ -55,6 +51,20 @@ export const Disabled: Story = {
       <AccordionHeader>비활성화 상태</AccordionHeader>
       <AccordionContent>
         비활성화된 아코디언은 클릭할 수 없습니다.
+      </AccordionContent>
+    </Accordion>
+  ),
+};
+
+/**
+ * outlined variant는 테두리가 있는 아코디언입니다.
+ */
+export const Outlined: Story = {
+  render: () => (
+    <Accordion variant="outlined">
+      <AccordionHeader>테두리 있는 아코디언</AccordionHeader>
+      <AccordionContent>
+        outlined variant가 적용된 아코디언입니다.
       </AccordionContent>
     </Accordion>
   ),

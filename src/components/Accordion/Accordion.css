@@ -126,3 +126,13 @@
     transition: none !important;
   }
 }
+
+/* ====== Outlined Variant ====== */
+.taeri-accordion--outlined {
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+}
+
+.taeri-accordion--outlined .taeri-accordion__header {
+  padding: 16px 20px;
+}

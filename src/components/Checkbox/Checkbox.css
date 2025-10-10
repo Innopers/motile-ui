@@ -1,0 +1,148 @@
+/* Checkbox Component Styles */
+
+.taeri-checkbox-container {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.taeri-checkbox-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+}
+
+.taeri-checkbox-container--disabled .taeri-checkbox-wrapper {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Hidden Input */
+.taeri-checkbox {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+  pointer-events: none;
+}
+
+.taeri-checkbox:focus {
+  outline: none;
+}
+
+/* Checkbox Mark (체크박스 박스) */
+.taeri-checkbox__mark {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #d1d5db;
+  border-radius: 4px;
+  background-color: #ffffff;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Check Icon */
+.taeri-checkbox__check-icon {
+  width: 12px;
+  height: 12px;
+  color: #ffffff;
+}
+
+.taeri-checkbox__check-icon path {
+  stroke-dasharray: 16;
+  stroke-dashoffset: 16;
+  transition: stroke-dashoffset 0.3s cubic-bezier(0.65, 0, 0.35, 1) 0.05s;
+}
+
+/* Checked State */
+.taeri-checkbox:checked + .taeri-checkbox__mark {
+  background-color: var(
+    --taeri-checkbox-color,
+    var(--taeri-ui-checkbox, var(--taeri-theme, #3b82f6))
+  );
+  border-color: var(
+    --taeri-checkbox-color,
+    var(--taeri-ui-checkbox, var(--taeri-theme, #3b82f6))
+  );
+  animation: checkboxBounce 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.taeri-checkbox:checked + .taeri-checkbox__mark .taeri-checkbox__check-icon path {
+  stroke-dashoffset: 0;
+}
+
+/* Bounce Animation */
+@keyframes checkboxBounce {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Hover State */
+.taeri-checkbox-wrapper:hover .taeri-checkbox__mark {
+  border-color: var(
+    --taeri-checkbox-color,
+    var(--taeri-ui-checkbox, var(--taeri-theme, #3b82f6))
+  );
+}
+
+.taeri-checkbox:checked + .taeri-checkbox__mark:hover {
+  background-color: color-mix(
+    in srgb,
+    var(--taeri-checkbox-color, var(--taeri-ui-checkbox, var(--taeri-theme, #3b82f6))) 90%,
+    black
+  );
+  border-color: color-mix(
+    in srgb,
+    var(--taeri-checkbox-color, var(--taeri-ui-checkbox, var(--taeri-theme, #3b82f6))) 90%,
+    black
+  );
+}
+
+/* Focus State - 포커스 링 제거 */
+.taeri-checkbox:focus + .taeri-checkbox__mark {
+  /* 포커스 효과 없음 */
+}
+
+.taeri-checkbox:focus-visible + .taeri-checkbox__mark {
+  /* 포커스 효과 없음 */
+}
+
+/* Disabled State */
+.taeri-checkbox:disabled + .taeri-checkbox__mark {
+  background-color: #f3f4f6;
+  border-color: #d1d5db;
+  cursor: not-allowed;
+}
+
+.taeri-checkbox:disabled:checked + .taeri-checkbox__mark {
+  background-color: #d1d5db;
+  border-color: #d1d5db;
+}
+
+/* Label */
+.taeri-checkbox__label {
+  font-size: 14px;
+  line-height: 20px;
+  color: #374151;
+  cursor: pointer;
+}
+
+.taeri-checkbox__label--disabled {
+  color: #9ca3af;
+  cursor: not-allowed;
+}

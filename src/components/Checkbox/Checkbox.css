@@ -62,6 +62,46 @@
   border-radius: 0;
 }
 
+/* Size Variants */
+/* Large */
+.taeri-checkbox--large + .taeri-checkbox__mark {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  min-height: 24px;
+}
+
+.taeri-checkbox--large + .taeri-checkbox__mark .taeri-checkbox__check-icon {
+  width: 14px;
+  height: 14px;
+}
+
+/* Medium (default) */
+.taeri-checkbox--medium + .taeri-checkbox__mark {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
+}
+
+.taeri-checkbox--medium + .taeri-checkbox__mark .taeri-checkbox__check-icon {
+  width: 12px;
+  height: 12px;
+}
+
+/* Small */
+.taeri-checkbox--small + .taeri-checkbox__mark {
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  min-height: 16px;
+}
+
+.taeri-checkbox--small + .taeri-checkbox__mark .taeri-checkbox__check-icon {
+  width: 10px;
+  height: 10px;
+}
+
 /* Check Icon */
 .taeri-checkbox__check-icon {
   width: 12px;
@@ -199,6 +239,19 @@
   cursor: pointer;
   margin: 0;
   padding: 0;
+}
+
+/* Label Size Variants */
+.taeri-checkbox-container--large .taeri-checkbox__label {
+  font-size: 16px;
+}
+
+.taeri-checkbox-container--medium .taeri-checkbox__label {
+  font-size: 14px;
+}
+
+.taeri-checkbox-container--small .taeri-checkbox__label {
+  font-size: 12px;
 }
 
 .taeri-checkbox__label--disabled {

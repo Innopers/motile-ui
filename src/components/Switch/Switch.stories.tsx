@@ -59,14 +59,6 @@ export const Bounce: Story = {
   },
 };
 
-export const CustomColor: Story = {
-  args: {
-    color: "#10b981",
-    checked: true,
-    onChange: () => {},
-  },
-};
-
 export const Disabled: Story = {
   args: {
     disabled: true,

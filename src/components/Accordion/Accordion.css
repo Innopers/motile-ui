@@ -110,10 +110,10 @@
 /* Responsive */
 @media (max-width: 768px) {
   .taeri-accordion__header {
-    padding: 14px 12px;
+    padding: 14px;
   }
   .taeri-accordion__content {
-    padding: 12px 12px 16px 12px;
+    padding: 12px 14px 16px 14px;
   }
   .taeri-accordion__title {
     font-size: 15px;

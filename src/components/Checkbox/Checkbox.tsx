@@ -21,11 +21,26 @@ export interface CheckboxProps
    * @example '#10b981'
    */
   color?: string;
+
+  /**
+   * 체크 아이콘을 항상 표시 (회색 배경 → 색상 배경)
+   * @default false
+   */
+  filled?: boolean;
 }
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   (
-    { variant = "default", label, color, className, disabled, style, ...props },
+    {
+      variant = "default",
+      label,
+      color,
+      filled = false,
+      className,
+      disabled,
+      style,
+      ...props
+    },
     ref
   ) => {
     const baseClass = "taeri-checkbox";
@@ -34,11 +49,17 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       `${baseClass}-container`,
       `${baseClass}-container--${variant}`,
       disabled && `${baseClass}-container--disabled`,
+      filled && `${baseClass}-container--filled`,
     ]
       .filter(Boolean)
       .join(" ");
 
-    const checkboxClasses = [baseClass, `${baseClass}--${variant}`, className]
+    const checkboxClasses = [
+      baseClass,
+      `${baseClass}--${variant}`,
+      filled && `${baseClass}--filled`,
+      className,
+    ]
       .filter(Boolean)
       .join(" ");
 

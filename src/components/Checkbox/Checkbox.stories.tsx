@@ -14,6 +14,10 @@ const meta = {
       options: ["default", "rounded", "square"],
       description: "체크박스 스타일 variant",
     },
+    filled: {
+      control: "boolean",
+      description: "체크 아이콘을 항상 표시",
+    },
     label: {
       control: "text",
       description: "체크박스 옆 라벨",
@@ -46,14 +50,7 @@ export const Checked: Story = {
   args: {
     label: "선택됨",
     checked: true,
-  },
-};
-
-export const CustomColor: Story = {
-  args: {
-    label: "커스텀 색상",
-    color: "#10b981",
-    checked: true,
+    onChange: () => {},
   },
 };
 
@@ -62,14 +59,16 @@ export const Rounded: Story = {
     variant: "rounded",
     label: "원형 체크박스",
     checked: true,
+    onChange: () => {},
   },
 };
 
-export const Square: Story = {
+export const Filled: Story = {
   args: {
-    variant: "square",
-    label: "직각 체크박스",
+    filled: true,
+    label: "Filled 체크박스",
     checked: true,
+    onChange: () => {},
   },
 };
 

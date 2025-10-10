@@ -11,7 +11,7 @@ const meta = {
   argTypes: {
     variant: {
       control: "select",
-      options: ["default", "elastic"],
+      options: ["default", "elastic", "bounce"],
       description: "스위치 모양",
     },
     color: {
@@ -46,6 +46,14 @@ export const Checked: Story = {
 export const Elastic: Story = {
   args: {
     variant: "elastic",
+    checked: true,
+    onChange: () => {},
+  },
+};
+
+export const Bounce: Story = {
+  args: {
+    variant: "bounce",
     checked: true,
     onChange: () => {},
   },

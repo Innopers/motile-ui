@@ -1,7 +1,7 @@
 import React, { forwardRef } from "react";
 import "./Switch.css";
 
-type SwitchVariant = "default" | "elastic";
+type SwitchVariant = "default" | "elastic" | "bounce";
 
 export interface SwitchProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {

@@ -176,3 +176,55 @@
     transform: translateX(0) scaleX(1);
   }
 }
+
+/* Bounce Variant */
+.taeri-switch--bounce + .taeri-switch__track .taeri-switch__thumb {
+  transition: none;
+  will-change: transform;
+}
+
+.taeri-switch--bounce:checked + .taeri-switch__track .taeri-switch__thumb {
+  animation: switch-bounce-on 0.65s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  transform: translateX(20px);
+}
+
+.taeri-switch--bounce:not(:checked) + .taeri-switch__track .taeri-switch__thumb {
+  animation: switch-bounce-off 0.65s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  transform: translateX(0);
+}
+
+@keyframes switch-bounce-on {
+  0% {
+    transform: translateX(0);
+  }
+  60% {
+    transform: translateX(23px);
+  }
+  80% {
+    transform: translateX(18px);
+  }
+  95% {
+    transform: translateX(20.5px);
+  }
+  100% {
+    transform: translateX(20px);
+  }
+}
+
+@keyframes switch-bounce-off {
+  0% {
+    transform: translateX(20px);
+  }
+  60% {
+    transform: translateX(-3px);
+  }
+  80% {
+    transform: translateX(2px);
+  }
+  95% {
+    transform: translateX(-0.5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}

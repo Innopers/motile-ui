@@ -18,6 +18,11 @@ export interface TooltipProps {
    * @example '#3b82f6'
    */
   color?: string;
+  /**
+   * 화살표 표시 여부
+   * @default false
+   */
+  showArrow?: boolean;
 }
 
 const OFFSET = 8;
@@ -29,6 +34,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   position = "top",
   variant = "default",
   color,
+  showArrow = false,
 }) => {
   const id = useId().replace(/:/g, "");
   const triggerRef = useRef<HTMLSpanElement>(null);
@@ -171,6 +177,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
             className={`taeri-tooltip-bubble taeri-tooltip-bubble--${variant}`}
             data-open={open || undefined}
             data-placement={placement}
+            data-show-arrow={showArrow || undefined}
             style={style}
             aria-hidden={!open}
           >

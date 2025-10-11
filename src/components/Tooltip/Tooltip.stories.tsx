@@ -19,6 +19,19 @@ const meta = {
       options: ['top', 'bottom', 'left', 'right'],
       description: 'Tooltip position',
     },
+    variant: {
+      control: 'select',
+      options: ['default', 'outlined'],
+      description: 'Tooltip style variant',
+    },
+    color: {
+      control: 'color',
+      description: 'Tooltip color',
+    },
+    showArrow: {
+      control: 'boolean',
+      description: 'Show arrow indicator',
+    },
   },
 } satisfies Meta<typeof Tooltip>
 
@@ -30,5 +43,34 @@ export const Default: Story = {
     content: 'This is a tooltip',
     position: 'top',
     children: <Button variant="primary" size="medium">Hover me</Button>,
+  },
+}
+
+export const Outlined: Story = {
+  args: {
+    content: 'Outlined tooltip',
+    position: 'top',
+    variant: 'outlined',
+    children: <Button variant="primary" size="medium">Outlined</Button>,
+  },
+}
+
+export const WithArrow: Story = {
+  args: {
+    content: 'Tooltip with arrow',
+    position: 'top',
+    showArrow: true,
+    children: <Button variant="primary" size="medium">With Arrow</Button>,
+  },
+}
+
+export const CustomColor: Story = {
+  args: {
+    content: 'Custom color',
+    position: 'top',
+    variant: 'outlined',
+    color: '#ef4444',
+    showArrow: true,
+    children: <Button variant="secondary" size="medium">Red</Button>,
   },
 }

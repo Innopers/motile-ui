@@ -77,25 +77,27 @@ export const Tooltip: React.FC<TooltipProps> = ({
       let top = 0;
 
       if (finalPlacement === "top" || finalPlacement === "bottom") {
-        // 가운데 정렬 시도
+        // 수평: 트리거 중앙 정렬
         left = trigger.left + trigger.width / 2 - bw / 2;
-        // 화면 밖으로 나가지 않게 조정
         left = Math.max(MARGIN, Math.min(left, vw - MARGIN - bw));
 
+        // 수직: 트리거 위/아래 배치
         top =
           finalPlacement === "top"
             ? trigger.top - OFFSET - bh
             : trigger.bottom + OFFSET;
+        top = Math.max(MARGIN, Math.min(top, vh - MARGIN - bh));
       } else {
-        // 세로 중앙 정렬 시도
+        // 수직: 트리거 중앙 정렬
         top = trigger.top + trigger.height / 2 - bh / 2;
-        // 화면 밖으로 나가지 않게 조정
         top = Math.max(MARGIN, Math.min(top, vh - MARGIN - bh));
 
+        // 수평: 트리거 좌/우 배치
         left =
           finalPlacement === "left"
             ? trigger.left - OFFSET - bw
             : trigger.right + OFFSET;
+        left = Math.max(MARGIN, Math.min(left, vw - MARGIN - bw));
       }
 
       // 상태 업데이트
@@ -111,7 +113,11 @@ export const Tooltip: React.FC<TooltipProps> = ({
     updatePosition();
 
     // 스크롤/리사이즈 시 위치 재계산
-    window.addEventListener("scroll", updatePosition, { passive: true });
+    // capture: true로 모든 스크롤 컨테이너 (모달, 내부 스크롤) 감지
+    window.addEventListener("scroll", updatePosition, {
+      passive: true,
+      capture: true,
+    });
     window.addEventListener("resize", updatePosition, { passive: true });
 
     // trigger 크기 변경 감지
@@ -119,7 +125,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
     ro.observe(triggerRef.current);
 
     return () => {
-      window.removeEventListener("scroll", updatePosition);
+      window.removeEventListener("scroll", updatePosition, { capture: true });
       window.removeEventListener("resize", updatePosition);
       ro.disconnect();
     };

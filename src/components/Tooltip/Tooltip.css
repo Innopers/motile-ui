@@ -31,6 +31,19 @@
   color: #fff;
 }
 
+/* Outlined Variant */
+.taeri-tooltip-bubble--outlined {
+  background: white;
+  color: var(
+    --taeri-tooltip-color,
+    var(--taeri-ui-tooltip, #3b82f6)
+  );
+  border: 1px solid var(
+    --taeri-tooltip-color,
+    var(--taeri-ui-tooltip, #3b82f6)
+  );
+}
+
 .taeri-tooltip-bubble[data-open="true"] {
   opacity: 1;
   transform: translateY(0);

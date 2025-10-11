@@ -123,10 +123,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
       window.removeEventListener("resize", updatePosition);
       ro.disconnect();
     };
-  }, [open, position]);
-
-  const isTouch =
-    typeof window !== "undefined" && matchMedia("(hover: none)").matches;
+  }, [open, position]); // position 변경 시에도 위치 재계산 필요
 
   return (
     <>
@@ -135,11 +132,11 @@ export const Tooltip: React.FC<TooltipProps> = ({
         className="taeri-tooltip-trigger"
         aria-describedby={open ? id : undefined}
         tabIndex={0}
-        onMouseEnter={isTouch ? undefined : () => setOpen(true)}
-        onMouseLeave={isTouch ? undefined : () => setOpen(false)}
+        onMouseEnter={() => setOpen(true)}
+        onMouseLeave={() => setOpen(false)}
         onFocus={() => setOpen(true)}
         onBlur={() => setOpen(false)}
-        onClick={isTouch ? () => setOpen((o) => !o) : undefined}
+        onClick={() => setOpen((o) => !o)}
       >
         {children}
       </span>

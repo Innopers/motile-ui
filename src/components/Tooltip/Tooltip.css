@@ -10,8 +10,6 @@
 .taeri-tooltip-bubble {
   position: fixed;
   z-index: 2147483647;
-  background: rgba(0, 0, 0, 0.9);
-  color: #fff;
   padding: 8px 12px;
   border-radius: 8px;
   font-size: 14px;
@@ -22,6 +20,15 @@
   transform: translateY(-2px);
   transition: opacity 0.15s ease, transform 0.15s ease;
   pointer-events: none;
+}
+
+/* Default Variant */
+.taeri-tooltip-bubble--default {
+  background: var(
+    --taeri-tooltip-color,
+    var(--taeri-ui-tooltip, rgba(0, 0, 0, 0.9))
+  );
+  color: #fff;
 }
 
 .taeri-tooltip-bubble[data-open="true"] {

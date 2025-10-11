@@ -2,10 +2,22 @@ import React, { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import "./Tooltip.css";
 
+type TooltipVariant = "default";
+
 export interface TooltipProps {
   children: React.ReactNode;
   content: React.ReactNode;
   position?: "top" | "bottom" | "left" | "right";
+  /**
+   * 툴팁 스타일 variant
+   * @default 'default'
+   */
+  variant?: TooltipVariant;
+  /**
+   * 툴팁 배경 색상 (우선순위 1)
+   * @example '#3b82f6'
+   */
+  color?: string;
 }
 
 const OFFSET = 8;
@@ -15,6 +27,8 @@ export const Tooltip: React.FC<TooltipProps> = ({
   children,
   content,
   position = "top",
+  variant = "default",
+  color,
 }) => {
   const id = useId().replace(/:/g, "");
   const triggerRef = useRef<HTMLSpanElement>(null);
@@ -107,6 +121,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
         top: Math.round(top),
         maxWidth: bw !== rect.width ? maxW : undefined,
         maxHeight: bh !== rect.height ? maxH : undefined,
+        ...(color && { "--taeri-tooltip-color": color } as React.CSSProperties),
       });
     };
 
@@ -153,7 +168,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
             ref={bubbleRef}
             id={id}
             role="tooltip"
-            className="taeri-tooltip-bubble"
+            className={`taeri-tooltip-bubble taeri-tooltip-bubble--${variant}`}
             data-open={open || undefined}
             data-placement={placement}
             style={style}

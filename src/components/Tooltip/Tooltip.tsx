@@ -23,6 +23,11 @@ export interface TooltipProps {
    * @default false
    */
   showArrow?: boolean;
+  /**
+   * 툴팁 내부 인터랙션 허용 여부 (버튼 클릭 등)
+   * @default false
+   */
+  interactive?: boolean;
 }
 
 const OFFSET = 8;
@@ -35,10 +40,12 @@ export const Tooltip: React.FC<TooltipProps> = ({
   variant = "default",
   color,
   showArrow = false,
+  interactive = false,
 }) => {
   const id = useId().replace(/:/g, "");
   const triggerRef = useRef<HTMLSpanElement>(null);
   const bubbleRef = useRef<HTMLDivElement>(null);
+  const closeTimeoutRef = useRef<number>();
 
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -127,7 +134,8 @@ export const Tooltip: React.FC<TooltipProps> = ({
         top: Math.round(top),
         maxWidth: bw !== rect.width ? maxW : undefined,
         maxHeight: bh !== rect.height ? maxH : undefined,
-        ...(color && { "--taeri-tooltip-color": color } as React.CSSProperties),
+        ...(color &&
+          ({ "--taeri-tooltip-color": color } as React.CSSProperties)),
       });
     };
 
@@ -152,6 +160,47 @@ export const Tooltip: React.FC<TooltipProps> = ({
     };
   }, [open, position]); // position 변경 시에도 위치 재계산 필요
 
+  // Interactive 모드 hover 핸들러
+  const handleTriggerEnter = () => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+    }
+    setOpen(true);
+  };
+
+  const handleTriggerLeave = () => {
+    if (interactive) {
+      // Interactive 모드: 100ms 딜레이 후 닫기 (tooltip으로 이동할 시간)
+      closeTimeoutRef.current = setTimeout(() => {
+        setOpen(false);
+      }, 100);
+    } else {
+      // Non-interactive: 즉시 닫기
+      setOpen(false);
+    }
+  };
+
+  const handleBubbleEnter = () => {
+    if (interactive && closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+    }
+  };
+
+  const handleBubbleLeave = () => {
+    if (interactive) {
+      setOpen(false);
+    }
+  };
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (closeTimeoutRef.current) {
+        clearTimeout(closeTimeoutRef.current);
+      }
+    };
+  }, []);
+
   return (
     <>
       <span
@@ -159,8 +208,8 @@ export const Tooltip: React.FC<TooltipProps> = ({
         className="taeri-tooltip-trigger"
         aria-describedby={open ? id : undefined}
         tabIndex={0}
-        onMouseEnter={() => setOpen(true)}
-        onMouseLeave={() => setOpen(false)}
+        onMouseEnter={handleTriggerEnter}
+        onMouseLeave={handleTriggerLeave}
         onFocus={() => setOpen(true)}
         onBlur={() => setOpen(false)}
         onClick={() => setOpen((o) => !o)}
@@ -178,8 +227,11 @@ export const Tooltip: React.FC<TooltipProps> = ({
             data-open={open || undefined}
             data-placement={placement}
             data-show-arrow={showArrow || undefined}
+            data-interactive={interactive || undefined}
             style={style}
             aria-hidden={!open}
+            onMouseEnter={handleBubbleEnter}
+            onMouseLeave={handleBubbleLeave}
           >
             {content}
           </div>,

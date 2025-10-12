@@ -32,6 +32,10 @@ const meta = {
       control: 'boolean',
       description: 'Show arrow indicator',
     },
+    interactive: {
+      control: 'boolean',
+      description: 'Allow interaction with tooltip content (e.g., clicking buttons)',
+    },
   },
 } satisfies Meta<typeof Tooltip>
 
@@ -72,5 +76,27 @@ export const CustomColor: Story = {
     color: '#ef4444',
     showArrow: true,
     children: <Button variant="secondary" size="medium">Red</Button>,
+  },
+}
+
+export const Interactive: Story = {
+  args: {
+    interactive: true,
+    variant: 'outlined',
+    showArrow: true,
+    position: 'top',
+    content: (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <p style={{ margin: 0, fontSize: '13px' }}>Click the button below</p>
+        <Button
+          variant="primary"
+          size="small"
+          onClick={() => alert('Button clicked!')}
+        >
+          Click me
+        </Button>
+      </div>
+    ),
+    children: <Button variant="primary" size="medium">Interactive</Button>,
   },
 }

@@ -174,6 +174,22 @@ export const Tooltip: React.FC<TooltipProps> = ({
     };
   }, [open, position]); // position 변경 시에도 위치 재계산 필요
 
+  // 스크롤 시 tooltip 자동 닫기
+  useEffect(() => {
+    if (!open) return;
+
+    const handleScroll = () => {
+      setOpen(false);
+    };
+
+    // capture: true로 모든 스크롤 감지
+    window.addEventListener("scroll", handleScroll, { capture: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll, { capture: true });
+    };
+  }, [open]);
+
   // Interactive 모드 hover 핸들러
   const handleTriggerEnter = () => {
     if (closeTimeoutRef.current) {

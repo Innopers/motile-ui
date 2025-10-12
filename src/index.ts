@@ -18,3 +18,6 @@ export type { AccordionProps, AccordionHeaderProps, AccordionContentProps } from
 
 export { Skeleton } from './components/Skeleton'
 export type { SkeletonProps } from './components/Skeleton'
+
+export { Tooltip } from './components/Tooltip'
+export type { TooltipProps } from './components/Tooltip'

@@ -127,6 +127,16 @@ export const Tooltip: React.FC<TooltipProps> = ({
         left = Math.max(MARGIN, Math.min(left, vw - MARGIN - bw));
       }
 
+      // 화살표 위치 계산 (children 중앙 기준)
+      const arrowLeft =
+        finalPlacement === "top" || finalPlacement === "bottom"
+          ? trigger.left + trigger.width / 2 - left
+          : undefined;
+      const arrowTop =
+        finalPlacement === "left" || finalPlacement === "right"
+          ? trigger.top + trigger.height / 2 - top
+          : undefined;
+
       // 상태 업데이트
       setPlacement(finalPlacement);
       setStyle({
@@ -136,6 +146,10 @@ export const Tooltip: React.FC<TooltipProps> = ({
         maxHeight: bh !== rect.height ? maxH : undefined,
         ...(color &&
           ({ "--taeri-tooltip-color": color } as React.CSSProperties)),
+        ...(arrowLeft !== undefined &&
+          ({ "--arrow-left": `${arrowLeft}px` } as React.CSSProperties)),
+        ...(arrowTop !== undefined &&
+          ({ "--arrow-top": `${arrowTop}px` } as React.CSSProperties)),
       });
     };
 
@@ -210,8 +224,6 @@ export const Tooltip: React.FC<TooltipProps> = ({
         tabIndex={0}
         onMouseEnter={handleTriggerEnter}
         onMouseLeave={handleTriggerLeave}
-        onFocus={() => setOpen(true)}
-        onBlur={() => setOpen(false)}
         onClick={() => setOpen((o) => !o)}
       >
         {children}

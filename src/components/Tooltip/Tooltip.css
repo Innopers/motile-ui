@@ -84,7 +84,7 @@
 /* Top placement: 화살표가 툴팁 아래에서 위로 */
 .taeri-tooltip-bubble[data-placement="top"][data-show-arrow]::before {
   bottom: -6px;
-  left: 50%;
+  left: var(--arrow-left, 50%);
   transform: translateX(-50%);
   border-bottom-width: 0;
   border-top-color: var(--arrow-color);
@@ -92,7 +92,7 @@
 
 .taeri-tooltip-bubble--outlined[data-placement="top"][data-show-arrow]::after {
   bottom: -5px;
-  left: 50%;
+  left: var(--arrow-left, 50%);
   transform: translateX(-50%);
   border-bottom-width: 0;
   border-top-color: white;
@@ -101,7 +101,7 @@
 /* Bottom placement: 화살표가 툴팁 위에서 아래로 */
 .taeri-tooltip-bubble[data-placement="bottom"][data-show-arrow]::before {
   top: -6px;
-  left: 50%;
+  left: var(--arrow-left, 50%);
   transform: translateX(-50%);
   border-top-width: 0;
   border-bottom-color: var(--arrow-color);
@@ -109,7 +109,7 @@
 
 .taeri-tooltip-bubble--outlined[data-placement="bottom"][data-show-arrow]::after {
   top: -5px;
-  left: 50%;
+  left: var(--arrow-left, 50%);
   transform: translateX(-50%);
   border-top-width: 0;
   border-bottom-color: white;
@@ -118,7 +118,7 @@
 /* Left placement: 화살표가 툴팁 오른쪽에서 왼쪽으로 */
 .taeri-tooltip-bubble[data-placement="left"][data-show-arrow]::before {
   right: -6px;
-  top: 50%;
+  top: var(--arrow-top, 50%);
   transform: translateY(-50%);
   border-right-width: 0;
   border-left-color: var(--arrow-color);
@@ -126,7 +126,7 @@
 
 .taeri-tooltip-bubble--outlined[data-placement="left"][data-show-arrow]::after {
   right: -5px;
-  top: 50%;
+  top: var(--arrow-top, 50%);
   transform: translateY(-50%);
   border-right-width: 0;
   border-left-color: white;
@@ -135,7 +135,7 @@
 /* Right placement: 화살표가 툴팁 왼쪽에서 오른쪽으로 */
 .taeri-tooltip-bubble[data-placement="right"][data-show-arrow]::before {
   left: -6px;
-  top: 50%;
+  top: var(--arrow-top, 50%);
   transform: translateY(-50%);
   border-left-width: 0;
   border-right-color: var(--arrow-color);
@@ -143,7 +143,7 @@
 
 .taeri-tooltip-bubble--outlined[data-placement="right"][data-show-arrow]::after {
   left: -5px;
-  top: 50%;
+  top: var(--arrow-top, 50%);
   transform: translateY(-50%);
   border-left-width: 0;
   border-right-color: white;

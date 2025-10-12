@@ -115,16 +115,27 @@ export const Tooltip: React.FC<TooltipProps> = ({
             : trigger.bottom + OFFSET;
         top = Math.max(MARGIN, Math.min(top, vh - MARGIN - bh));
       } else {
+        // left/right placement
         // 수직: 트리거 중앙 정렬
         top = trigger.top + trigger.height / 2 - bh / 2;
         top = Math.max(MARGIN, Math.min(top, vh - MARGIN - bh));
 
-        // 수평: 트리거 좌/우 배치
-        left =
-          finalPlacement === "left"
-            ? trigger.left - OFFSET - bw
-            : trigger.right + OFFSET;
-        left = Math.max(MARGIN, Math.min(left, vw - MARGIN - bw));
+        // 수평: 트리거 좌/우 배치 (width 조정으로 여백 확보)
+        if (finalPlacement === "left") {
+          left = trigger.left - OFFSET - bw;
+          // 왼쪽 여백 부족 시 width 줄이기
+          if (left < MARGIN) {
+            bw = trigger.left - OFFSET - MARGIN;
+            left = MARGIN;
+          }
+        } else {
+          // right
+          left = trigger.right + OFFSET;
+          // 오른쪽 여백 부족 시 width 줄이기
+          if (left + bw > vw - MARGIN) {
+            bw = vw - MARGIN - left;
+          }
+        }
       }
 
       // 화살표 위치 계산 (children 중앙 기준)
@@ -142,8 +153,8 @@ export const Tooltip: React.FC<TooltipProps> = ({
       setStyle({
         left: Math.round(left),
         top: Math.round(top),
-        maxWidth: bw !== rect.width ? maxW : undefined,
-        maxHeight: bh !== rect.height ? maxH : undefined,
+        ...(bw !== rect.width && { maxWidth: bw }),
+        ...(bh !== rect.height && { maxHeight: maxH }),
         ...(color &&
           ({ "--taeri-tooltip-color": color } as React.CSSProperties)),
         ...(arrowLeft !== undefined &&

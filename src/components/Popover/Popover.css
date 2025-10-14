@@ -1,0 +1,225 @@
+/* 래퍼: block + width:100% 이므로 트리거의 width:100%가 부모 기준으로 동작 */
+.taeri-popover-wrapper {
+}
+
+/* 컨텐츠 박스 */
+.taeri-popover-content {
+  position: absolute;
+  z-index: 1000;
+  padding: 16px;
+  padding-top: 12px;
+  padding-right: 36px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  pointer-events: auto;
+  width: max-content;
+  max-width: min(90vw, 420px);
+  box-sizing: border-box;
+}
+
+/* top */
+.taeri-popover-content[data-placement="top"][data-align="center"] {
+  transform: translateX(-50%) scale(0.95) translateY(4px);
+  animation: popover-fade-in-top 0.18s ease forwards;
+}
+.taeri-popover-content[data-placement="top"][data-align="start"] {
+  transform: scale(0.95) translateY(4px);
+  animation: popover-fade-in-top-start 0.18s ease forwards;
+}
+.taeri-popover-content[data-placement="top"][data-align="end"] {
+  transform: scale(0.95) translateY(4px);
+  animation: popover-fade-in-top-end 0.18s ease forwards;
+}
+
+@keyframes popover-fade-in-top {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.95) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) scale(1) translateY(0);
+  }
+}
+@keyframes popover-fade-in-top-start {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+@keyframes popover-fade-in-top-end {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* bottom */
+.taeri-popover-content[data-placement="bottom"][data-align="center"] {
+  transform: translateX(-50%) scale(0.95) translateY(-4px);
+  animation: popover-fade-in-bottom 0.18s ease forwards;
+}
+.taeri-popover-content[data-placement="bottom"][data-align="start"] {
+  transform: scale(0.95) translateY(-4px);
+  animation: popover-fade-in-bottom-start 0.18s ease forwards;
+}
+.taeri-popover-content[data-placement="bottom"][data-align="end"] {
+  transform: scale(0.95) translateY(-4px);
+  animation: popover-fade-in-bottom-end 0.18s ease forwards;
+}
+
+@keyframes popover-fade-in-bottom {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.95) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) scale(1) translateY(0);
+  }
+}
+@keyframes popover-fade-in-bottom-start {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+@keyframes popover-fade-in-bottom-end {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* left */
+.taeri-popover-content[data-placement="left"][data-align="center"] {
+  transform: translateY(-50%) scale(0.95) translateX(4px);
+  animation: popover-fade-in-left 0.18s ease forwards;
+}
+.taeri-popover-content[data-placement="left"][data-align="start"] {
+  transform: scale(0.95) translateX(4px);
+  animation: popover-fade-in-left-start 0.18s ease forwards;
+}
+.taeri-popover-content[data-placement="left"][data-align="end"] {
+  transform: scale(0.95) translateX(4px);
+  animation: popover-fade-in-left-end 0.18s ease forwards;
+}
+
+@keyframes popover-fade-in-left {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.95) translateX(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) scale(1) translateX(0);
+  }
+}
+@keyframes popover-fade-in-left-start {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateX(4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateX(0);
+  }
+}
+@keyframes popover-fade-in-left-end {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateX(4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateX(0);
+  }
+}
+
+/* right */
+.taeri-popover-content[data-placement="right"][data-align="center"] {
+  transform: translateY(-50%) scale(0.95) translateX(-4px);
+  animation: popover-fade-in-right 0.18s ease forwards;
+}
+.taeri-popover-content[data-placement="right"][data-align="start"] {
+  transform: scale(0.95) translateX(-4px);
+  animation: popover-fade-in-right-start 0.18s ease forwards;
+}
+.taeri-popover-content[data-placement="right"][data-align="end"] {
+  transform: scale(0.95) translateX(-4px);
+  animation: popover-fade-in-right-end 0.18s ease forwards;
+}
+
+@keyframes popover-fade-in-right {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.95) translateX(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) scale(1) translateX(0);
+  }
+}
+@keyframes popover-fade-in-right-start {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateX(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateX(0);
+  }
+}
+@keyframes popover-fade-in-right-end {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateX(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateX(0);
+  }
+}
+
+/* 닫기 버튼 */
+.taeri-popover-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background-color 0.15s ease;
+  color: #6b7280;
+}
+.taeri-popover-close:hover {
+  background-color: #f3f4f6;
+  color: #111827;
+}

@@ -3,6 +3,7 @@ import "./Popover.css";
 
 type Placement = "top" | "bottom" | "left" | "right";
 type Align = "start" | "center" | "end";
+type PopoverVariant = "default" | "outlined";
 
 export interface PopoverProps {
   children: React.ReactElement;
@@ -11,6 +12,16 @@ export interface PopoverProps {
   align?: Align;
   showArrow?: boolean;
   zIndex?: number;
+  /**
+   * Popover 스타일 variant
+   * @default 'outlined'
+   */
+  variant?: PopoverVariant;
+  /**
+   * Popover 색상
+   * @example '#10b981'
+   */
+  color?: string;
 }
 
 export const Popover: React.FC<PopoverProps> = ({
@@ -20,6 +31,8 @@ export const Popover: React.FC<PopoverProps> = ({
   align = "center",
   showArrow = false,
   zIndex = 10,
+  variant = "outlined",
+  color,
 }) => {
   const id = useId().replace(/:/g, "");
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -197,7 +210,7 @@ export const Popover: React.FC<PopoverProps> = ({
           id={id}
           role="dialog"
           aria-modal="false"
-          className="taeri-popover-content"
+          className={`taeri-popover-content taeri-popover-content--${variant}`}
           data-placement={position}
           data-align={align}
           data-show-arrow={showArrow}
@@ -205,10 +218,16 @@ export const Popover: React.FC<PopoverProps> = ({
           style={{
             ...popoverStyle,
             zIndex,
+            ...(color &&
+              ({ "--taeri-popover-color": color } as React.CSSProperties)),
           }}
         >
           {showArrow && (
-            <div className="taeri-popover-arrow" data-placement={position} data-align={align} />
+            <div
+              className="taeri-popover-arrow"
+              data-placement={position}
+              data-align={align}
+            />
           )}
           <button
             className="taeri-popover-close"

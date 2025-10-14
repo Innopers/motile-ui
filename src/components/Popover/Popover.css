@@ -12,8 +12,6 @@
   border-radius: 12px;
   font-size: 14px;
   line-height: 1.5;
-  background: #fff;
-  border: 1px solid #e5e7eb;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   pointer-events: auto;
   width: max-content;
@@ -21,6 +19,29 @@
   box-sizing: border-box;
   overflow: visible;
   opacity: 0;
+}
+
+/* Default Variant - 배경색 적용, 텍스트 흰색 */
+.taeri-popover-content--default {
+  background: var(
+    --taeri-popover-color,
+    var(--taeri-ui-popover, #3b82f6)
+  );
+  color: #fff;
+  border: 1px solid var(
+    --taeri-popover-color,
+    var(--taeri-ui-popover, #3b82f6)
+  );
+}
+
+/* Outlined Variant - 배경 흰색, 테두리에 색상 */
+.taeri-popover-content--outlined {
+  background: #fff;
+  color: #111827;
+  border: 1px solid var(
+    --taeri-popover-color,
+    var(--taeri-ui-popover, #e5e7eb)
+  );
 }
 
 /* 위치 계산 완료 후 표시 */
@@ -211,12 +232,25 @@
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-  transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+}
+
+/* Outlined Variant - 닫기 버튼 */
+.taeri-popover-content--outlined .taeri-popover-close {
   color: #6b7280;
 }
-.taeri-popover-close:hover {
+.taeri-popover-content--outlined .taeri-popover-close:hover {
   background-color: #f3f4f6;
   color: #111827;
+}
+
+/* Default Variant - 닫기 버튼 */
+.taeri-popover-content--default .taeri-popover-close {
+  color: rgba(255, 255, 255, 0.8);
+}
+.taeri-popover-content--default .taeri-popover-close:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
 }
 
 /* Arrow */
@@ -224,9 +258,28 @@
   position: absolute;
   width: 12px;
   height: 12px;
-  background: #fff;
-  border: 1px solid #e5e7eb;
   transform: rotate(45deg);
+}
+
+/* Default Variant - Arrow */
+.taeri-popover-content--default .taeri-popover-arrow {
+  background: var(
+    --taeri-popover-color,
+    var(--taeri-ui-popover, #3b82f6)
+  );
+  border: 1px solid var(
+    --taeri-popover-color,
+    var(--taeri-ui-popover, #3b82f6)
+  );
+}
+
+/* Outlined Variant - Arrow */
+.taeri-popover-content--outlined .taeri-popover-arrow {
+  background: #fff;
+  border: 1px solid var(
+    --taeri-popover-color,
+    var(--taeri-ui-popover, #e5e7eb)
+  );
 }
 
 /* Arrow position - Top */

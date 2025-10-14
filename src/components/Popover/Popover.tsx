@@ -10,6 +10,7 @@ export interface PopoverProps {
   position?: Placement;
   align?: Align;
   showArrow?: boolean;
+  zIndex?: number;
 }
 
 export const Popover: React.FC<PopoverProps> = ({
@@ -18,6 +19,7 @@ export const Popover: React.FC<PopoverProps> = ({
   position = "top",
   align = "center",
   showArrow = false,
+  zIndex = 10,
 }) => {
   const id = useId().replace(/:/g, "");
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -25,6 +27,7 @@ export const Popover: React.FC<PopoverProps> = ({
   const contentRef = useRef<HTMLDivElement>(null);
 
   const [open, setOpen] = useState(false);
+  const [isPositioned, setIsPositioned] = useState(false);
   const [popoverStyle, setPopoverStyle] = useState<React.CSSProperties>({});
 
   // 트리거에 ref/aria만 주입
@@ -45,7 +48,11 @@ export const Popover: React.FC<PopoverProps> = ({
 
   // ESC / 바깥 클릭으로 닫기
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      // Popover가 닫힐 때 상태 초기화
+      setIsPositioned(false);
+      return;
+    }
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
     };
@@ -160,6 +167,7 @@ export const Popover: React.FC<PopoverProps> = ({
             left: `${Math.round(left)}px`,
             top: `${Math.round(top)}px`,
           });
+          setIsPositioned(true);
         });
       });
     };
@@ -193,7 +201,11 @@ export const Popover: React.FC<PopoverProps> = ({
           data-placement={position}
           data-align={align}
           data-show-arrow={showArrow}
-          style={popoverStyle}
+          data-positioned={isPositioned}
+          style={{
+            ...popoverStyle,
+            zIndex,
+          }}
         >
           {showArrow && (
             <div className="taeri-popover-arrow" data-placement={position} data-align={align} />

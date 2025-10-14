@@ -15,6 +15,15 @@ const meta = {
       options: ["top", "bottom", "left", "right"],
       description: "Popover position",
     },
+    align: {
+      control: "select",
+      options: ["start", "center", "end"],
+      description: "Popover alignment",
+    },
+    showArrow: {
+      control: "boolean",
+      description: "Show arrow pointing to trigger",
+    },
   },
 } satisfies Meta<typeof Popover>;
 
@@ -79,5 +88,24 @@ export const RichContent: Story = {
       </div>
     ),
     children: <Button>Open Rich Content</Button>,
+  },
+};
+
+export const WithArrow: Story = {
+  args: {
+    showArrow: true,
+    position: "top",
+    align: "center",
+    content: (
+      <div style={{ width: "240px" }}>
+        <h3 style={{ margin: "0 0 8px 0", fontSize: "16px", fontWeight: 600 }}>
+          Popover with Arrow
+        </h3>
+        <p style={{ margin: 0, fontSize: "14px", color: "#666" }}>
+          This popover has an arrow pointing to the trigger button.
+        </p>
+      </div>
+    ),
+    children: <Button>Click me</Button>,
   },
 };

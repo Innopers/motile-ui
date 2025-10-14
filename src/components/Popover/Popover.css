@@ -19,6 +19,7 @@
   width: max-content;
   max-width: min(90vw, 420px);
   box-sizing: border-box;
+  overflow: visible;
 }
 
 /* top */
@@ -222,4 +223,82 @@
 .taeri-popover-close:hover {
   background-color: #f3f4f6;
   color: #111827;
+}
+
+/* Arrow */
+.taeri-popover-arrow {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  transform: rotate(45deg);
+}
+
+/* Arrow position - Top */
+.taeri-popover-arrow[data-placement="top"] {
+  bottom: -7px;
+  border-top: none;
+  border-left: none;
+}
+.taeri-popover-arrow[data-placement="top"][data-align="start"] {
+  left: 20px;
+}
+.taeri-popover-arrow[data-placement="top"][data-align="center"] {
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+}
+.taeri-popover-arrow[data-placement="top"][data-align="end"] {
+  right: 20px;
+}
+
+/* Arrow position - Bottom */
+.taeri-popover-arrow[data-placement="bottom"] {
+  top: -7px;
+  border-bottom: none;
+  border-right: none;
+}
+.taeri-popover-arrow[data-placement="bottom"][data-align="start"] {
+  left: 20px;
+}
+.taeri-popover-arrow[data-placement="bottom"][data-align="center"] {
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+}
+.taeri-popover-arrow[data-placement="bottom"][data-align="end"] {
+  right: 20px;
+}
+
+/* Arrow position - Left */
+.taeri-popover-arrow[data-placement="left"] {
+  right: -7px;
+  border-left: none;
+  border-bottom: none;
+}
+.taeri-popover-arrow[data-placement="left"][data-align="start"] {
+  top: 20px;
+}
+.taeri-popover-arrow[data-placement="left"][data-align="center"] {
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+}
+.taeri-popover-arrow[data-placement="left"][data-align="end"] {
+  bottom: 20px;
+}
+
+/* Arrow position - Right */
+.taeri-popover-arrow[data-placement="right"] {
+  left: -7px;
+  border-right: none;
+  border-top: none;
+}
+.taeri-popover-arrow[data-placement="right"][data-align="start"] {
+  top: 20px;
+}
+.taeri-popover-arrow[data-placement="right"][data-align="center"] {
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+}
+.taeri-popover-arrow[data-placement="right"][data-align="end"] {
+  bottom: 20px;
 }

@@ -9,6 +9,7 @@ export interface PopoverProps {
   content: React.ReactNode;
   position?: Placement;
   align?: Align;
+  showArrow?: boolean;
 }
 
 export const Popover: React.FC<PopoverProps> = ({
@@ -16,6 +17,7 @@ export const Popover: React.FC<PopoverProps> = ({
   content,
   position = "top",
   align = "center",
+  showArrow = false,
 }) => {
   const id = useId().replace(/:/g, "");
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -190,8 +192,12 @@ export const Popover: React.FC<PopoverProps> = ({
           className="taeri-popover-content"
           data-placement={position}
           data-align={align}
+          data-show-arrow={showArrow}
           style={popoverStyle}
         >
+          {showArrow && (
+            <div className="taeri-popover-arrow" data-placement={position} data-align={align} />
+          )}
           <button
             className="taeri-popover-close"
             onClick={() => setOpen(false)}

@@ -7,8 +7,6 @@
   position: absolute;
   z-index: 10;
   padding: 16px;
-  padding-top: 12px;
-  padding-right: 36px;
   border-radius: 12px;
   font-size: 14px;
   line-height: 1.5;
@@ -215,42 +213,6 @@
     opacity: 1;
     transform: scale(1) translateX(0);
   }
-}
-
-/* 닫기 버튼 */
-.taeri-popover-close {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 20px;
-  height: 20px;
-  padding: 0;
-  background: none;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px;
-  transition: background-color 0.15s ease, opacity 0.15s ease;
-}
-
-/* Outlined Variant - 닫기 버튼 */
-.taeri-popover-content--outlined .taeri-popover-close {
-  color: #6b7280;
-}
-.taeri-popover-content--outlined .taeri-popover-close:hover {
-  background-color: #f3f4f6;
-  color: #111827;
-}
-
-/* Default Variant - 닫기 버튼 */
-.taeri-popover-content--default .taeri-popover-close {
-  color: rgba(255, 255, 255, 0.8);
-}
-.taeri-popover-content--default .taeri-popover-close:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #fff;
 }
 
 /* Arrow */

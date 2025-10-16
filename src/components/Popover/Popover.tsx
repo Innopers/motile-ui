@@ -46,6 +46,11 @@ export interface PopoverProps {
    * e.preventDefault() 호출 시 닫기 취소
    */
   onDismiss?: (event: Event) => void;
+  /**
+   * ESC 키 또는 외부 클릭으로 Popover 자동으로 닫기
+   * @default true
+   */
+  autoClose?: boolean;
 }
 
 function useControllableState({
@@ -88,6 +93,7 @@ export const Popover: React.FC<PopoverProps> = ({
   onOpenChange,
   onClickOutside,
   onDismiss,
+  autoClose = true,
 }) => {
   const id = useId().replace(/:/g, "");
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -129,6 +135,8 @@ export const Popover: React.FC<PopoverProps> = ({
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
+        if (!autoClose) return;
+
         onDismiss?.(e);
         if (!e.defaultPrevented) {
           setOpen(false);
@@ -145,6 +153,8 @@ export const Popover: React.FC<PopoverProps> = ({
       }
 
       // 외부 클릭
+      if (!autoClose) return;
+
       onClickOutside?.(e);
       onDismiss?.(e);
 

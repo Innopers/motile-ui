@@ -22,6 +22,56 @@ export interface PopoverProps {
    * @example '#10b981'
    */
   color?: string;
+
+  /**
+   * Controlled: 외부에서 open 상태 제어
+   */
+  open?: boolean;
+  /**
+   * Uncontrolled: 초기 open 상태
+   * @default false
+   */
+  defaultOpen?: boolean;
+  /**
+   * open 상태 변경 시 호출되는 콜백
+   */
+  onOpenChange?: (open: boolean) => void;
+  /**
+   * Popover 외부를 클릭했을 때 호출
+   * e.preventDefault() 호출 시 닫기 취소
+   */
+  onClickOutside?: (event: PointerEvent) => void;
+  /**
+   * Popover가 닫힐 때 호출 (외부 클릭 + ESC 키)
+   * e.preventDefault() 호출 시 닫기 취소
+   */
+  onDismiss?: (event: Event) => void;
+}
+
+function useControllableState({
+  value,
+  defaultValue = false,
+  onChange,
+}: {
+  value?: boolean;
+  defaultValue?: boolean;
+  onChange?: (open: boolean) => void;
+}) {
+  const isControlled = value !== undefined;
+  const [internalState, setInternalState] = useState(defaultValue);
+  const state = isControlled ? value : internalState;
+
+  const setState = (nextValue: boolean | ((prev: boolean) => boolean)) => {
+    const resolvedValue =
+      typeof nextValue === "function" ? nextValue(state) : nextValue;
+
+    if (!isControlled) {
+      setInternalState(resolvedValue);
+    }
+    onChange?.(resolvedValue);
+  };
+
+  return [state, setState] as const;
 }
 
 export const Popover: React.FC<PopoverProps> = ({
@@ -33,13 +83,23 @@ export const Popover: React.FC<PopoverProps> = ({
   zIndex = 10,
   variant = "outlined",
   color,
+  open: controlledOpen,
+  defaultOpen = false,
+  onOpenChange,
+  onClickOutside,
+  onDismiss,
 }) => {
   const id = useId().replace(/:/g, "");
   const wrapperRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useControllableState({
+    value: controlledOpen,
+    defaultValue: defaultOpen,
+    onChange: onOpenChange,
+  });
+
   const [isPositioned, setIsPositioned] = useState(false);
   const [popoverStyle, setPopoverStyle] = useState<React.CSSProperties>({});
 
@@ -66,27 +126,42 @@ export const Popover: React.FC<PopoverProps> = ({
       setIsPositioned(false);
       return;
     }
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onDismiss?.(e);
+        if (!e.defaultPrevented) {
+          setOpen(false);
+        }
+      }
     };
-    const onDoc = (e: MouseEvent) => {
-      const t = e.target as Node;
-      if (
-        wrapperRef.current &&
-        !wrapperRef.current.contains(t) &&
-        contentRef.current &&
-        !contentRef.current.contains(t)
-      ) {
+
+    const onPointerDown = (e: PointerEvent) => {
+      const target = e.target as Node;
+
+      // wrapper 안에 있으면 내부 클릭 (trigger + content 포함)
+      if (wrapperRef.current?.contains(target)) {
+        return;
+      }
+
+      // 외부 클릭
+      onClickOutside?.(e);
+      onDismiss?.(e);
+
+      if (!e.defaultPrevented) {
         setOpen(false);
       }
     };
-    document.addEventListener("keydown", onKey);
-    document.addEventListener("mousedown", onDoc);
+
+    // 캡처 단계에서 등록 → Popover 핸들러가 버튼 onClick보다 먼저 실행
+    document.addEventListener("keydown", onKeyDown, true);
+    document.addEventListener("pointerdown", onPointerDown, true);
+
     return () => {
-      document.removeEventListener("keydown", onKey);
-      document.removeEventListener("mousedown", onDoc);
+      document.removeEventListener("keydown", onKeyDown, true);
+      document.removeEventListener("pointerdown", onPointerDown, true);
     };
-  }, [open]);
+  }, [open, onClickOutside, onDismiss]);
 
   // triggerRef 기준으로 Popover 위치 계산 (wrapper가 아닌 실제 children 기준)
   useEffect(() => {

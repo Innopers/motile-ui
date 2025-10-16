@@ -4,6 +4,7 @@ import React, {
   useContext,
   useEffect,
   useId,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -143,27 +144,47 @@ function PopoverRoot({
     onChange: onOpenChange,
   });
 
-  const contextValue: PopoverContextValue = {
-    open,
-    setOpen,
-    position,
-    align,
-    variant,
-    showArrow,
-    zIndex,
-    color,
-    autoClose,
-    onOpenChange,
-    onClickOutside,
-    onDismiss,
-    triggerId: `${id}-trigger`,
-    contentId: `${id}-content`,
-    triggerRef,
-    contentRef,
-    wrapperRef,
-    isPositioned: false,
-    popoverStyle: {},
-  };
+  const contextValue: PopoverContextValue = useMemo(
+    () => ({
+      open,
+      setOpen,
+      position,
+      align,
+      variant,
+      showArrow,
+      zIndex,
+      color,
+      autoClose,
+      onOpenChange,
+      onClickOutside,
+      onDismiss,
+      triggerId: `${id}-trigger`,
+      contentId: `${id}-content`,
+      triggerRef,
+      contentRef,
+      wrapperRef,
+      isPositioned: false,
+      popoverStyle: {},
+    }),
+    [
+      open,
+      setOpen,
+      position,
+      align,
+      variant,
+      showArrow,
+      zIndex,
+      color,
+      autoClose,
+      onOpenChange,
+      onClickOutside,
+      onDismiss,
+      id,
+      triggerRef,
+      contentRef,
+      wrapperRef,
+    ]
+  );
 
   return (
     <PopoverContext.Provider value={contextValue}>
@@ -280,6 +301,78 @@ function PopoverContent({
   const [isPositioned, setIsPositioned] = useState(false);
   const [popoverStyle, setPopoverStyle] = useState<React.CSSProperties>({});
 
+  // 위치 계산 함수
+  const updatePosition = useCallback(() => {
+    if (!triggerRef.current || !contentRef.current || !wrapperRef.current)
+      return;
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (!triggerRef.current || !contentRef.current || !wrapperRef.current)
+          return;
+
+        const popoverWidth = contentRef.current.offsetWidth;
+        const popoverHeight = contentRef.current.offsetHeight;
+        const triggerWidth = triggerRef.current.offsetWidth;
+        const triggerHeight = triggerRef.current.offsetHeight;
+
+        const trigger = triggerRef.current.getBoundingClientRect();
+        const wrapper = wrapperRef.current.getBoundingClientRect();
+
+        const relativeLeft = trigger.left - wrapper.left;
+        const relativeTop = trigger.top - wrapper.top;
+
+        let left = 0;
+        let top = 0;
+        const gap = 8;
+
+        if (position === "top" || position === "bottom") {
+          switch (align) {
+            case "start":
+              left = relativeLeft;
+              break;
+            case "center":
+              left = relativeLeft + triggerWidth / 2;
+              break;
+            case "end":
+              left = relativeLeft + triggerWidth - popoverWidth;
+              break;
+          }
+
+          if (position === "top") {
+            top = relativeTop - popoverHeight - gap;
+          } else {
+            top = relativeTop + triggerHeight + gap;
+          }
+        } else {
+          switch (align) {
+            case "start":
+              top = relativeTop;
+              break;
+            case "center":
+              top = relativeTop + triggerHeight / 2;
+              break;
+            case "end":
+              top = relativeTop + triggerHeight - popoverHeight;
+              break;
+          }
+
+          if (position === "left") {
+            left = relativeLeft - popoverWidth - gap;
+          } else {
+            left = relativeLeft + triggerWidth + gap;
+          }
+        }
+
+        setPopoverStyle({
+          left: `${Math.round(left)}px`,
+          top: `${Math.round(top)}px`,
+        });
+        setIsPositioned(true);
+      });
+    });
+  }, [position, align, triggerRef, contentRef, wrapperRef]);
+
   // ESC / 외부 클릭 처리
   useEffect(() => {
     if (!open) {
@@ -334,84 +427,13 @@ function PopoverContent({
     )
       return;
 
-    const updatePosition = () => {
-      if (!triggerRef.current || !contentRef.current || !wrapperRef.current)
-        return;
-
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          if (!triggerRef.current || !contentRef.current || !wrapperRef.current)
-            return;
-
-          const popoverWidth = contentRef.current.offsetWidth;
-          const popoverHeight = contentRef.current.offsetHeight;
-          const triggerWidth = triggerRef.current.offsetWidth;
-          const triggerHeight = triggerRef.current.offsetHeight;
-
-          const trigger = triggerRef.current.getBoundingClientRect();
-          const wrapper = wrapperRef.current.getBoundingClientRect();
-
-          const relativeLeft = trigger.left - wrapper.left;
-          const relativeTop = trigger.top - wrapper.top;
-
-          let left = 0;
-          let top = 0;
-          const gap = 8;
-
-          if (position === "top" || position === "bottom") {
-            switch (align) {
-              case "start":
-                left = relativeLeft;
-                break;
-              case "center":
-                left = relativeLeft + triggerWidth / 2;
-                break;
-              case "end":
-                left = relativeLeft + triggerWidth - popoverWidth;
-                break;
-            }
-
-            if (position === "top") {
-              top = relativeTop - popoverHeight - gap;
-            } else {
-              top = relativeTop + triggerHeight + gap;
-            }
-          } else {
-            switch (align) {
-              case "start":
-                top = relativeTop;
-                break;
-              case "center":
-                top = relativeTop + triggerHeight / 2;
-                break;
-              case "end":
-                top = relativeTop + triggerHeight - popoverHeight;
-                break;
-            }
-
-            if (position === "left") {
-              left = relativeLeft - popoverWidth - gap;
-            } else {
-              left = relativeLeft + triggerWidth + gap;
-            }
-          }
-
-          setPopoverStyle({
-            left: `${Math.round(left)}px`,
-            top: `${Math.round(top)}px`,
-          });
-          setIsPositioned(true);
-        });
-      });
-    };
-
     updatePosition();
 
     window.addEventListener("resize", updatePosition);
     return () => {
       window.removeEventListener("resize", updatePosition);
     };
-  }, [open, position, align, triggerRef, contentRef, wrapperRef]);
+  }, [open, updatePosition]);
 
   if (!open) return null;
 

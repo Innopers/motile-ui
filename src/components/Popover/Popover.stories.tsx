@@ -1,111 +1,133 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Popover } from "./Popover";
 import { Button } from "../Button";
+import type { PopoverRootProps } from "./Popover";
 
 const meta = {
   title: "Components/Popover",
-  component: Popover,
+  component: Popover.Root,
   parameters: {
-    layout: "centered",
+    layout: "padded",
   },
+  decorators: [
+    (Story) => (
+      <div style={{ minHeight: "400px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <Story />
+      </div>
+    ),
+  ],
   tags: ["autodocs"],
   argTypes: {
     position: {
       control: "select",
       options: ["top", "bottom", "left", "right"],
-      description: "Popover position",
+      description: "Popover 위치",
     },
     align: {
       control: "select",
       options: ["start", "center", "end"],
-      description: "Popover alignment",
+      description: "Popover 정렬",
+    },
+    variant: {
+      control: "select",
+      options: ["default", "outlined"],
+      description: "Popover 스타일 변형",
     },
     showArrow: {
       control: "boolean",
-      description: "Show arrow pointing to trigger",
+      description: "화살표 표시 여부",
+    },
+    autoClose: {
+      control: "boolean",
+      description: "ESC/외부 클릭 시 자동으로 닫기",
+    },
+    color: {
+      control: "color",
+      description: "커스텀 색상",
+    },
+    zIndex: {
+      control: "number",
+      description: "z-index 값",
     },
   },
-} satisfies Meta<typeof Popover>;
+} satisfies Meta<typeof Popover.Root>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<PopoverRootProps>;
 
-export const Basic: Story = {
+export const Default: Story = {
   args: {
     position: "bottom",
-    content: (
-      <div>
-        <h3 style={{ margin: "0 0 8px 0", fontSize: "16px", fontWeight: 600 }}>
-          Popover Title
-        </h3>
-        <p style={{ margin: 0, fontSize: "14px", color: "#666" }}>
-          This is a basic popover with some content.
-        </p>
-      </div>
-    ),
-    children: <Button>Click to open</Button>,
+    align: "center",
+    showArrow: false,
+    variant: "default",
+    autoClose: true,
   },
-};
-
-export const RichContent: Story = {
-  args: {
-    position: "bottom",
-    content: (
-      <div style={{ width: "300px" }}>
-        <h3 style={{ margin: "0 0 12px 0", fontSize: "16px", fontWeight: 600 }}>
-          Rich Content Popover
-        </h3>
-        <p style={{ margin: "0 0 12px 0", fontSize: "14px", color: "#666" }}>
-          This popover contains rich content with multiple elements.
-        </p>
-        <div style={{ display: "flex", gap: "8px" }}>
-          <button
-            style={{
-              flex: 1,
-              padding: "8px",
-              borderRadius: "6px",
-              border: "1px solid #ddd",
-              background: "white",
-              cursor: "pointer",
-            }}
-          >
-            Cancel
-          </button>
-          <button
-            style={{
-              flex: 1,
-              padding: "8px",
-              borderRadius: "6px",
-              border: "none",
-              background: "#007bff",
-              color: "white",
-              cursor: "pointer",
-            }}
-          >
-            Confirm
-          </button>
+  render: (args) => (
+    <Popover.Root {...args}>
+      <Popover.Trigger asChild>
+        <Button>Click to open</Button>
+      </Popover.Trigger>
+      <Popover.Content>
+        <div>
+          <h3 style={{ margin: "0 0 8px 0", fontSize: "16px", fontWeight: 600 }}>
+            Popover Title
+          </h3>
+          <p style={{ margin: 0, fontSize: "14px", color: "#666" }}>
+            Controls 패널에서 position, align, showArrow, variant 등을 조절해보세요!
+          </p>
         </div>
-      </div>
-    ),
-    children: <Button>Open Rich Content</Button>,
-  },
+      </Popover.Content>
+    </Popover.Root>
+  ),
 };
 
 export const WithArrow: Story = {
   args: {
-    showArrow: true,
     position: "top",
-    align: "center",
-    content: (
-      <div style={{ width: "240px" }}>
-        <h3 style={{ margin: "0 0 8px 0", fontSize: "16px", fontWeight: 600 }}>
-          Popover with Arrow
-        </h3>
-        <p style={{ margin: 0, fontSize: "14px", color: "#666" }}>
-          This popover has an arrow pointing to the trigger button.
-        </p>
-      </div>
-    ),
-    children: <Button>Click me</Button>,
+    align: "start",
+    showArrow: true,
+    variant: "outlined",
+    autoClose: true,
   },
+  render: (args) => (
+    <Popover.Root {...args}>
+      <Popover.Trigger asChild>
+        <Button>With Arrow</Button>
+      </Popover.Trigger>
+      <Popover.Content>
+        <div style={{ width: "240px" }}>
+          <h3 style={{ margin: "0 0 8px 0", fontSize: "16px", fontWeight: 600 }}>
+            Popover with Arrow
+          </h3>
+          <p style={{ margin: 0, fontSize: "14px", color: "#666" }}>
+            화살표가 트리거 버튼을 가리킵니다.
+          </p>
+        </div>
+      </Popover.Content>
+    </Popover.Root>
+  ),
+};
+
+export const CustomColor: Story = {
+  args: {
+    position: "bottom",
+    align: "center",
+    showArrow: true,
+    variant: "default",
+    autoClose: true,
+    color: "#10b981",
+  },
+  render: (args) => (
+    <Popover.Root {...args}>
+      <Popover.Trigger asChild>
+        <Button variant="secondary" color={args.color}>
+          Custom Color
+        </Button>
+      </Popover.Trigger>
+      <Popover.Content>
+        <div>Controls 패널에서 color를 변경해보세요!</div>
+      </Popover.Content>
+    </Popover.Root>
+  ),
 };

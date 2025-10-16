@@ -1,57 +1,66 @@
-import React, { useEffect, useId, useRef, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from "react";
 import "./Popover.css";
 
 type Placement = "top" | "bottom" | "left" | "right";
 type Align = "start" | "center" | "end";
 type PopoverVariant = "default" | "outlined";
 
-export interface PopoverProps {
-  children: React.ReactElement;
-  content: React.ReactNode;
-  position?: Placement;
-  align?: Align;
-  showArrow?: boolean;
-  zIndex?: number;
-  /**
-   * Popover 스타일 variant
-   * @default 'outlined'
-   */
-  variant?: PopoverVariant;
-  /**
-   * Popover 색상
-   * @example '#10b981'
-   */
-  color?: string;
+// ============================================================================
+// Context
+// ============================================================================
 
-  /**
-   * Controlled: 외부에서 open 상태 제어
-   */
-  open?: boolean;
-  /**
-   * Uncontrolled: 초기 open 상태
-   * @default false
-   */
-  defaultOpen?: boolean;
-  /**
-   * open 상태 변경 시 호출되는 콜백
-   */
+interface PopoverContextValue {
+  // State
+  open: boolean;
+  setOpen: (open: boolean) => void;
+
+  // Config
+  position: Placement;
+  align: Align;
+  variant: PopoverVariant;
+  showArrow: boolean;
+  zIndex: number;
+  color?: string;
+  autoClose: boolean;
+
+  // Callbacks
   onOpenChange?: (open: boolean) => void;
-  /**
-   * Popover 외부를 클릭했을 때 호출
-   * e.preventDefault() 호출 시 닫기 취소
-   */
   onClickOutside?: (event: PointerEvent) => void;
-  /**
-   * Popover가 닫힐 때 호출 (외부 클릭 + ESC 키)
-   * e.preventDefault() 호출 시 닫기 취소
-   */
   onDismiss?: (event: Event) => void;
-  /**
-   * ESC 키 또는 외부 클릭으로 Popover 자동으로 닫기
-   * @default true
-   */
-  autoClose?: boolean;
+
+  // Refs
+  triggerId: string;
+  contentId: string;
+  triggerRef: React.MutableRefObject<HTMLElement | null>;
+  contentRef: React.MutableRefObject<HTMLDivElement | null>;
+  wrapperRef: React.MutableRefObject<HTMLDivElement | null>;
+
+  // Position
+  isPositioned: boolean;
+  popoverStyle: React.CSSProperties;
 }
+
+const PopoverContext = createContext<PopoverContextValue | null>(null);
+
+function usePopoverContext() {
+  const context = useContext(PopoverContext);
+  if (!context) {
+    throw new Error("Popover components must be used within Popover.Root");
+  }
+  return context;
+}
+
+// ============================================================================
+// useControllableState Hook
+// ============================================================================
 
 function useControllableState({
   value,
@@ -66,27 +75,55 @@ function useControllableState({
   const [internalState, setInternalState] = useState(defaultValue);
   const state = isControlled ? value : internalState;
 
-  const setState = (nextValue: boolean | ((prev: boolean) => boolean)) => {
-    const resolvedValue =
-      typeof nextValue === "function" ? nextValue(state) : nextValue;
+  const setState = useCallback(
+    (nextValue: boolean | ((prev: boolean) => boolean)) => {
+      const resolvedValue =
+        typeof nextValue === "function" ? nextValue(state) : nextValue;
 
-    if (!isControlled) {
-      setInternalState(resolvedValue);
-    }
-    onChange?.(resolvedValue);
-  };
+      if (!isControlled) {
+        setInternalState(resolvedValue);
+      }
+      onChange?.(resolvedValue);
+    },
+    [isControlled, onChange, state]
+  );
 
   return [state, setState] as const;
 }
 
-export const Popover: React.FC<PopoverProps> = ({
+// ============================================================================
+// Root Component
+// ============================================================================
+
+interface PopoverRootProps {
+  children: React.ReactNode;
+
+  // Position & Style
+  position?: Placement;
+  align?: Align;
+  variant?: PopoverVariant;
+  showArrow?: boolean;
+  zIndex?: number;
+  color?: string;
+
+  // State Control
+  open?: boolean;
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+
+  // Event Handlers
+  onClickOutside?: (event: PointerEvent) => void;
+  onDismiss?: (event: Event) => void;
+  autoClose?: boolean;
+}
+
+function PopoverRoot({
   children,
-  content,
   position = "top",
   align = "center",
+  variant = "outlined",
   showArrow = false,
   zIndex = 10,
-  variant = "outlined",
   color,
   open: controlledOpen,
   defaultOpen = false,
@@ -94,11 +131,11 @@ export const Popover: React.FC<PopoverProps> = ({
   onClickOutside,
   onDismiss,
   autoClose = true,
-}) => {
+}: PopoverRootProps) {
   const id = useId().replace(/:/g, "");
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLElement | null>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
 
   const [open, setOpen] = useControllableState({
     value: controlledOpen,
@@ -106,29 +143,146 @@ export const Popover: React.FC<PopoverProps> = ({
     onChange: onOpenChange,
   });
 
+  const contextValue: PopoverContextValue = {
+    open,
+    setOpen,
+    position,
+    align,
+    variant,
+    showArrow,
+    zIndex,
+    color,
+    autoClose,
+    onOpenChange,
+    onClickOutside,
+    onDismiss,
+    triggerId: `${id}-trigger`,
+    contentId: `${id}-content`,
+    triggerRef,
+    contentRef,
+    wrapperRef,
+    isPositioned: false,
+    popoverStyle: {},
+  };
+
+  return (
+    <PopoverContext.Provider value={contextValue}>
+      <div ref={wrapperRef} className="taeri-popover-wrapper">
+        {children}
+      </div>
+    </PopoverContext.Provider>
+  );
+}
+
+// ============================================================================
+// Trigger Component
+// ============================================================================
+
+interface PopoverTriggerProps {
+  children: React.ReactElement;
+  asChild?: boolean;
+}
+
+function PopoverTrigger({ children, asChild = false }: PopoverTriggerProps) {
+  const {
+    open,
+    setOpen,
+    triggerId,
+    contentId,
+    triggerRef,
+  } = usePopoverContext();
+
+  const handleClick = useCallback(
+    (e: React.MouseEvent) => {
+      // 기존 onClick 실행
+      children.props?.onClick?.(e);
+      // Toggle open state
+      setOpen(!open);
+    },
+    [children.props, open, setOpen]
+  );
+
+  if (asChild) {
+    // asChild: children의 props에 병합
+    return React.cloneElement(children, {
+      ref: (node: HTMLElement | null) => {
+        triggerRef.current = node;
+
+        // children의 기존 ref 병합
+        const childRef = (
+          children as React.ReactElement & { ref?: React.Ref<HTMLElement> }
+        ).ref;
+
+        if (childRef) {
+          if (typeof childRef === "function") {
+            childRef(node);
+          } else if (typeof childRef === "object" && childRef !== null) {
+            (childRef as React.MutableRefObject<HTMLElement | null>).current =
+              node;
+          }
+        }
+      },
+      id: triggerId,
+      "aria-expanded": open,
+      "aria-controls": contentId,
+      onClick: handleClick,
+    });
+  }
+
+  // 기본: button으로 래핑
+  return (
+    <button
+      ref={triggerRef as React.RefObject<HTMLButtonElement>}
+      id={triggerId}
+      type="button"
+      aria-expanded={open}
+      aria-controls={contentId}
+      onClick={handleClick}
+    >
+      {children}
+    </button>
+  );
+}
+
+// ============================================================================
+// Content Component
+// ============================================================================
+
+interface PopoverContentProps {
+  children: React.ReactNode;
+  className?: string;
+  style?: React.CSSProperties;
+}
+
+function PopoverContent({
+  children,
+  className = "",
+  style,
+}: PopoverContentProps) {
+  const {
+    open,
+    setOpen,
+    position,
+    align,
+    variant,
+    showArrow,
+    zIndex,
+    color,
+    autoClose,
+    onClickOutside,
+    onDismiss,
+    contentId,
+    triggerRef,
+    contentRef,
+    wrapperRef,
+  } = usePopoverContext();
+
   const [isPositioned, setIsPositioned] = useState(false);
   const [popoverStyle, setPopoverStyle] = useState<React.CSSProperties>({});
 
-  // 트리거에 ref/aria만 주입
-  const triggerElement = React.cloneElement(children, {
-    ref: (node: HTMLElement) => {
-      const prevRef: any = (children as any).ref;
-      if (typeof prevRef === "function") prevRef(node);
-      else if (prevRef && typeof prevRef === "object") prevRef.current = node;
-      (triggerRef as any).current = node;
-    },
-    "aria-describedby": open ? id : undefined,
-    "aria-expanded": open,
-    onClick: (e: React.MouseEvent) => {
-      children.props?.onClick?.(e);
-      setOpen((v) => !v);
-    },
-  });
-
-  // ESC / 바깥 클릭으로 닫기
+  // ESC / 외부 클릭 처리
   useEffect(() => {
     if (!open) {
-      // Popover가 닫힐 때 상태 초기화
       setIsPositioned(false);
       return;
     }
@@ -147,12 +301,10 @@ export const Popover: React.FC<PopoverProps> = ({
     const onPointerDown = (e: PointerEvent) => {
       const target = e.target as Node;
 
-      // wrapper 안에 있으면 내부 클릭 (trigger + content 포함)
       if (wrapperRef.current?.contains(target)) {
         return;
       }
 
-      // 외부 클릭
       if (!autoClose) return;
 
       onClickOutside?.(e);
@@ -163,7 +315,6 @@ export const Popover: React.FC<PopoverProps> = ({
       }
     };
 
-    // 캡처 단계에서 등록 → Popover 핸들러가 버튼 onClick보다 먼저 실행
     document.addEventListener("keydown", onKeyDown, true);
     document.addEventListener("pointerdown", onPointerDown, true);
 
@@ -171,9 +322,9 @@ export const Popover: React.FC<PopoverProps> = ({
       document.removeEventListener("keydown", onKeyDown, true);
       document.removeEventListener("pointerdown", onPointerDown, true);
     };
-  }, [open, onClickOutside, onDismiss]);
+  }, [open, autoClose, onClickOutside, onDismiss, setOpen, wrapperRef]);
 
-  // triggerRef 기준으로 Popover 위치 계산 (wrapper가 아닌 실제 children 기준)
+  // 위치 계산
   useEffect(() => {
     if (
       !open ||
@@ -187,44 +338,32 @@ export const Popover: React.FC<PopoverProps> = ({
       if (!triggerRef.current || !contentRef.current || !wrapperRef.current)
         return;
 
-      // DOM이 완전히 렌더링된 후 측정하기 위해 이중 RAF 사용
-      // 첫 번째 RAF: 브라우저가 DOM을 렌더링하도록 함
-      // 두 번째 RAF: CSS max-content 계산이 완료된 후 측정
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           if (!triggerRef.current || !contentRef.current || !wrapperRef.current)
             return;
 
-          // transform 영향을 받지 않는 원본 크기 사용
-          // offsetWidth/Height는 CSS transform 무시하고 실제 렌더링된 크기 반환
           const popoverWidth = contentRef.current.offsetWidth;
           const popoverHeight = contentRef.current.offsetHeight;
-
-          // children 요소가 CSS transform(scale, translateY 등)을 사용할 경우를 대비하여
-          // offsetWidth/Height 사용 (transform 영향 제거)
           const triggerWidth = triggerRef.current.offsetWidth;
           const triggerHeight = triggerRef.current.offsetHeight;
 
           const trigger = triggerRef.current.getBoundingClientRect();
           const wrapper = wrapperRef.current.getBoundingClientRect();
 
-          // wrapper 기준 상대 위치 계산
           const relativeLeft = trigger.left - wrapper.left;
           const relativeTop = trigger.top - wrapper.top;
 
           let left = 0;
           let top = 0;
-          const gap = 8; // children과 Popover 사이 간격
+          const gap = 8;
 
-          // position에 따른 위치 설정
           if (position === "top" || position === "bottom") {
-            // 수평 정렬
             switch (align) {
               case "start":
                 left = relativeLeft;
                 break;
               case "center":
-                // CSS translateX(-50%)가 처리하므로 trigger 중앙만 맞춤
                 left = relativeLeft + triggerWidth / 2;
                 break;
               case "end":
@@ -232,20 +371,17 @@ export const Popover: React.FC<PopoverProps> = ({
                 break;
             }
 
-            // 수직 위치
             if (position === "top") {
               top = relativeTop - popoverHeight - gap;
             } else {
               top = relativeTop + triggerHeight + gap;
             }
           } else {
-            // 수직 정렬
             switch (align) {
               case "start":
                 top = relativeTop;
                 break;
               case "center":
-                // CSS translateY(-50%)가 처리하므로 trigger 중앙만 맞춤
                 top = relativeTop + triggerHeight / 2;
                 break;
               case "end":
@@ -253,7 +389,6 @@ export const Popover: React.FC<PopoverProps> = ({
                 break;
             }
 
-            // 수평 위치
             if (position === "left") {
               left = relativeLeft - popoverWidth - gap;
             } else {
@@ -276,47 +411,54 @@ export const Popover: React.FC<PopoverProps> = ({
     return () => {
       window.removeEventListener("resize", updatePosition);
     };
-  }, [open, position, align]);
+  }, [open, position, align, triggerRef, contentRef, wrapperRef]);
+
+  if (!open) return null;
 
   return (
     <div
-      ref={wrapperRef}
-      className="taeri-popover-wrapper"
+      ref={contentRef}
+      id={contentId}
+      role="dialog"
+      aria-modal="false"
+      className={`taeri-popover-content taeri-popover-content--${variant} ${className}`}
+      data-placement={position}
+      data-align={align}
+      data-positioned={isPositioned}
       style={{
-        position: "relative",
-        display: "block",
+        ...popoverStyle,
+        zIndex,
+        ...(color && ({ "--taeri-popover-color": color } as React.CSSProperties)),
+        ...style,
       }}
     >
-      {triggerElement}
-
-      {open && (
+      {showArrow && (
         <div
-          ref={contentRef}
-          id={id}
-          role="dialog"
-          aria-modal="false"
-          className={`taeri-popover-content taeri-popover-content--${variant}`}
+          className="taeri-popover-arrow"
           data-placement={position}
           data-align={align}
-          data-show-arrow={showArrow}
-          data-positioned={isPositioned}
-          style={{
-            ...popoverStyle,
-            zIndex,
-            ...(color &&
-              ({ "--taeri-popover-color": color } as React.CSSProperties)),
-          }}
-        >
-          {showArrow && (
-            <div
-              className="taeri-popover-arrow"
-              data-placement={position}
-              data-align={align}
-            />
-          )}
-          {content}
-        </div>
+        />
       )}
+      {children}
     </div>
   );
+}
+
+// ============================================================================
+// Export
+// ============================================================================
+
+export const Popover = {
+  Root: PopoverRoot,
+  Trigger: PopoverTrigger,
+  Content: PopoverContent,
+};
+
+export type {
+  PopoverRootProps,
+  PopoverTriggerProps,
+  PopoverContentProps,
+  Placement,
+  Align,
+  PopoverVariant,
 };

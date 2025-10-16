@@ -1,5 +1,6 @@
-/* 래퍼: block + width:100% 이므로 트리거의 width:100%가 부모 기준으로 동작 */
+/* 래퍼: position context 제공 (Content의 absolute positioning 기준) */
 .taeri-popover-wrapper {
+  position: relative;
 }
 
 /* 컨텐츠 박스 */

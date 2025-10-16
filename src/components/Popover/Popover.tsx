@@ -21,7 +21,7 @@ type PopoverVariant = "default" | "outlined";
 interface PopoverContextValue {
   // State
   open: boolean;
-  setOpen: (open: boolean) => void;
+  setOpen: (value: boolean | ((prev: boolean) => boolean)) => void;
 
   // Config
   position: Placement;
@@ -237,22 +237,17 @@ interface PopoverTriggerProps {
 }
 
 function PopoverTrigger({ children, asChild = false }: PopoverTriggerProps) {
-  const {
-    open,
-    setOpen,
-    triggerId,
-    contentId,
-    triggerRef,
-  } = usePopoverContext();
+  const { open, setOpen, triggerId, contentId, triggerRef } =
+    usePopoverContext();
 
   const handleClick = useCallback(
     (e: React.MouseEvent) => {
       // 기존 onClick 실행
       children.props?.onClick?.(e);
       // Toggle open state
-      setOpen(!open);
+      setOpen((prev) => !prev);
     },
-    [children.props, open, setOpen]
+    [setOpen]
   );
 
   if (asChild) {
@@ -405,8 +400,8 @@ function PopoverContent({
     });
   }, [position, align, triggerRef, contentRef, wrapperRef]);
 
-  // Throttled updatePosition for resize event (100ms)
-  const throttledUpdatePosition = useMemo(
+  // Throttled resize handler (100ms)
+  const handleResize = useMemo(
     () => throttle(updatePosition, 100),
     [updatePosition]
   );
@@ -467,11 +462,11 @@ function PopoverContent({
 
     updatePosition();
 
-    window.addEventListener("resize", throttledUpdatePosition);
+    window.addEventListener("resize", handleResize);
     return () => {
-      window.removeEventListener("resize", throttledUpdatePosition);
+      window.removeEventListener("resize", handleResize);
     };
-  }, [open, updatePosition, throttledUpdatePosition]);
+  }, [open, updatePosition, handleResize]);
 
   if (!open) return null;
 
@@ -488,7 +483,8 @@ function PopoverContent({
       style={{
         ...popoverStyle,
         zIndex,
-        ...(color && ({ "--taeri-popover-color": color } as React.CSSProperties)),
+        ...(color &&
+          ({ "--taeri-popover-color": color } as React.CSSProperties)),
         ...style,
       }}
     >

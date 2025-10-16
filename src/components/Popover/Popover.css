@@ -22,25 +22,16 @@
 
 /* Default Variant - 배경색 적용, 텍스트 흰색 */
 .taeri-popover-content--default {
-  background: var(
-    --taeri-popover-color,
-    var(--taeri-ui-popover, #3b82f6)
-  );
+  background: var(--taeri-popover-color, var(--taeri-ui-popover, #3b82f6));
   color: #fff;
-  border: 1px solid var(
-    --taeri-popover-color,
-    var(--taeri-ui-popover, #3b82f6)
-  );
+  border: 1px solid var(--taeri-popover-color, var(--taeri-ui-popover, #3b82f6));
 }
 
 /* Outlined Variant - 배경 흰색, 테두리에 색상 */
 .taeri-popover-content--outlined {
   background: #fff;
   color: #111827;
-  border: 1px solid var(
-    --taeri-popover-color,
-    var(--taeri-ui-popover, #e5e7eb)
-  );
+  border: 1px solid var(--taeri-popover-color, var(--taeri-ui-popover, #e5e7eb));
 }
 
 /* 위치 계산 완료 후 표시 */
@@ -226,23 +217,14 @@
 
 /* Default Variant - Arrow */
 .taeri-popover-content--default .taeri-popover-arrow {
-  background: var(
-    --taeri-popover-color,
-    var(--taeri-ui-popover, #3b82f6)
-  );
-  border: 1px solid var(
-    --taeri-popover-color,
-    var(--taeri-ui-popover, #3b82f6)
-  );
+  background: var(--taeri-popover-color, var(--taeri-ui-popover, #3b82f6));
+  border: 1px solid var(--taeri-popover-color, var(--taeri-ui-popover, #3b82f6));
 }
 
 /* Outlined Variant - Arrow */
 .taeri-popover-content--outlined .taeri-popover-arrow {
   background: #fff;
-  border: 1px solid var(
-    --taeri-popover-color,
-    var(--taeri-ui-popover, #e5e7eb)
-  );
+  border: 1px solid var(--taeri-popover-color, var(--taeri-ui-popover, #e5e7eb));
 }
 
 /* Arrow position - Top */

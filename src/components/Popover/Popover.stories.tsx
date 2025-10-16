@@ -11,7 +11,14 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div style={{ minHeight: "400px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div
+        style={{
+          minHeight: "400px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <Story />
       </div>
     ),
@@ -70,11 +77,14 @@ export const Default: Story = {
       </Popover.Trigger>
       <Popover.Content>
         <div>
-          <h3 style={{ margin: "0 0 8px 0", fontSize: "16px", fontWeight: 600 }}>
+          <h3
+            style={{ margin: "0 0 8px 0", fontSize: "16px", fontWeight: 600 }}
+          >
             Popover Title
           </h3>
           <p style={{ margin: 0, fontSize: "14px", color: "#666" }}>
-            Controls 패널에서 position, align, showArrow, variant 등을 조절해보세요!
+            Controls 패널에서 position, align, showArrow, variant 등을
+            조절해보세요!
           </p>
         </div>
       </Popover.Content>
@@ -97,7 +107,9 @@ export const WithArrow: Story = {
       </Popover.Trigger>
       <Popover.Content>
         <div style={{ width: "240px" }}>
-          <h3 style={{ margin: "0 0 8px 0", fontSize: "16px", fontWeight: 600 }}>
+          <h3
+            style={{ margin: "0 0 8px 0", fontSize: "16px", fontWeight: 600 }}
+          >
             Popover with Arrow
           </h3>
           <p style={{ margin: 0, fontSize: "14px", color: "#666" }}>

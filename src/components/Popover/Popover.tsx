@@ -60,6 +60,38 @@ function usePopoverContext() {
 }
 
 // ============================================================================
+// Utility: throttle
+// ============================================================================
+
+function throttle<T extends (...args: unknown[]) => void>(
+  func: T,
+  wait: number
+): T {
+  let timeout: ReturnType<typeof setTimeout> | null = null;
+  let lastTime = 0;
+
+  return function (this: unknown, ...args: Parameters<T>) {
+    const now = Date.now();
+    const remaining = wait - (now - lastTime);
+
+    if (remaining <= 0) {
+      if (timeout) {
+        clearTimeout(timeout);
+        timeout = null;
+      }
+      lastTime = now;
+      func.apply(this, args);
+    } else if (!timeout) {
+      timeout = setTimeout(() => {
+        lastTime = Date.now();
+        timeout = null;
+        func.apply(this, args);
+      }, remaining);
+    }
+  } as T;
+}
+
+// ============================================================================
 // useControllableState Hook
 // ============================================================================
 
@@ -373,6 +405,12 @@ function PopoverContent({
     });
   }, [position, align, triggerRef, contentRef, wrapperRef]);
 
+  // Throttled updatePosition for resize event (100ms)
+  const throttledUpdatePosition = useMemo(
+    () => throttle(updatePosition, 100),
+    [updatePosition]
+  );
+
   // ESC / 외부 클릭 처리
   useEffect(() => {
     if (!open) {
@@ -429,11 +467,11 @@ function PopoverContent({
 
     updatePosition();
 
-    window.addEventListener("resize", updatePosition);
+    window.addEventListener("resize", throttledUpdatePosition);
     return () => {
-      window.removeEventListener("resize", updatePosition);
+      window.removeEventListener("resize", throttledUpdatePosition);
     };
-  }, [open, updatePosition]);
+  }, [open, updatePosition, throttledUpdatePosition]);
 
   if (!open) return null;
 

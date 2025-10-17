@@ -1,0 +1,612 @@
+/* 래퍼: position context 제공 (Content의 absolute positioning 기준) */
+.taeri-popover-wrapper {
+  position: relative;
+}
+
+/* 컨텐츠 박스 */
+.taeri-popover-content {
+  position: absolute;
+  z-index: 10;
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  pointer-events: auto;
+  width: max-content;
+  max-width: min(90vw, 420px);
+  box-sizing: border-box;
+  overflow: visible;
+  opacity: 0;
+  visibility: hidden;
+  will-change: transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Default Variant - 배경색 적용, 텍스트 흰색 */
+.taeri-popover-content--default {
+  background: var(--taeri-popover-color, var(--taeri-ui-popover, #3b82f6));
+  color: #fff;
+  border: 1px solid var(--taeri-popover-color, var(--taeri-ui-popover, #3b82f6));
+}
+
+/* Outlined Variant - 배경 흰색, 테두리에 색상 */
+.taeri-popover-content--outlined {
+  background: #fff;
+  color: #111827;
+  border: 1px solid var(--taeri-popover-color, var(--taeri-ui-popover, #e5e7eb));
+}
+
+/* 위치 계산 완료 후 표시 */
+.taeri-popover-content[data-positioned="true"] {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Base transforms for center alignment - 애니메이션 종료 후에도 유지 */
+.taeri-popover-content[data-placement="top"][data-align="center"],
+.taeri-popover-content[data-placement="bottom"][data-align="center"] {
+  transform: translate3d(-50%, 0, 0);
+}
+
+.taeri-popover-content[data-placement="left"][data-align="center"],
+.taeri-popover-content[data-placement="right"][data-align="center"] {
+  transform: translate3d(0, -50%, 0);
+}
+
+/* top - fade 애니메이션 (bounce 없을 때) */
+.taeri-popover-content[data-placement="top"][data-align="center"][data-positioned="true"][data-bounce="false"] {
+  animation: popover-fade-in-top-center 0.2s ease-out;
+}
+.taeri-popover-content[data-placement="top"][data-align="start"][data-positioned="true"][data-bounce="false"] {
+  animation: popover-fade-in-top-start 0.2s ease-out;
+}
+.taeri-popover-content[data-placement="top"][data-align="end"][data-positioned="true"][data-bounce="false"] {
+  animation: popover-fade-in-top-end 0.2s ease-out;
+}
+
+@keyframes popover-fade-in-top-center {
+  from {
+    opacity: 0;
+    transform: translate3d(-50%, 8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+@keyframes popover-fade-in-top-start {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes popover-fade-in-top-end {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* top - bounce 애니메이션 */
+.taeri-popover-content[data-placement="top"][data-align="center"][data-positioned="true"][data-bounce="true"] {
+  animation: popover-bounce-top-center 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
+}
+.taeri-popover-content[data-placement="top"][data-align="start"][data-positioned="true"][data-bounce="true"] {
+  animation: popover-bounce-top-start 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
+}
+.taeri-popover-content[data-placement="top"][data-align="end"][data-positioned="true"][data-bounce="true"] {
+  animation: popover-bounce-top-end 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
+}
+
+@keyframes popover-bounce-top-center {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  30% {
+    transform: translate3d(-50%, -10px, 0);
+  }
+  50% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  65% {
+    transform: translate3d(-50%, -3px, 0);
+  }
+  80% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+@keyframes popover-bounce-top-start {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  30% {
+    transform: translate3d(0, -10px, 0);
+  }
+  50% {
+    transform: translate3d(0, 0, 0);
+  }
+  65% {
+    transform: translate3d(0, -3px, 0);
+  }
+  80% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes popover-bounce-top-end {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  30% {
+    transform: translate3d(0, -10px, 0);
+  }
+  50% {
+    transform: translate3d(0, 0, 0);
+  }
+  65% {
+    transform: translate3d(0, -3px, 0);
+  }
+  80% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* bottom - fade 애니메이션 (bounce 없을 때) */
+.taeri-popover-content[data-placement="bottom"][data-align="center"][data-positioned="true"][data-bounce="false"] {
+  animation: popover-fade-in-bottom-center 0.2s ease-out;
+}
+.taeri-popover-content[data-placement="bottom"][data-align="start"][data-positioned="true"][data-bounce="false"] {
+  animation: popover-fade-in-bottom-start 0.2s ease-out;
+}
+.taeri-popover-content[data-placement="bottom"][data-align="end"][data-positioned="true"][data-bounce="false"] {
+  animation: popover-fade-in-bottom-end 0.2s ease-out;
+}
+
+@keyframes popover-fade-in-bottom-center {
+  from {
+    opacity: 0;
+    transform: translate3d(-50%, -8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+@keyframes popover-fade-in-bottom-start {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes popover-fade-in-bottom-end {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* bottom - bounce 애니메이션 */
+.taeri-popover-content[data-placement="bottom"][data-align="center"][data-positioned="true"][data-bounce="true"] {
+  animation: popover-bounce-bottom-center 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
+}
+.taeri-popover-content[data-placement="bottom"][data-align="start"][data-positioned="true"][data-bounce="true"] {
+  animation: popover-bounce-bottom-start 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
+}
+.taeri-popover-content[data-placement="bottom"][data-align="end"][data-positioned="true"][data-bounce="true"] {
+  animation: popover-bounce-bottom-end 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
+}
+
+@keyframes popover-bounce-bottom-center {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  30% {
+    transform: translate3d(-50%, 10px, 0);
+  }
+  50% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  65% {
+    transform: translate3d(-50%, 3px, 0);
+  }
+  80% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+@keyframes popover-bounce-bottom-start {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  30% {
+    transform: translate3d(0, 10px, 0);
+  }
+  50% {
+    transform: translate3d(0, 0, 0);
+  }
+  65% {
+    transform: translate3d(0, 3px, 0);
+  }
+  80% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes popover-bounce-bottom-end {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  30% {
+    transform: translate3d(0, 10px, 0);
+  }
+  50% {
+    transform: translate3d(0, 0, 0);
+  }
+  65% {
+    transform: translate3d(0, 3px, 0);
+  }
+  80% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* left - fade 애니메이션 (bounce 없을 때) */
+.taeri-popover-content[data-placement="left"][data-align="center"][data-positioned="true"][data-bounce="false"] {
+  animation: popover-fade-in-left-center 0.2s ease-out;
+}
+.taeri-popover-content[data-placement="left"][data-align="start"][data-positioned="true"][data-bounce="false"] {
+  animation: popover-fade-in-left-start 0.2s ease-out;
+}
+.taeri-popover-content[data-placement="left"][data-align="end"][data-positioned="true"][data-bounce="false"] {
+  animation: popover-fade-in-left-end 0.2s ease-out;
+}
+
+@keyframes popover-fade-in-left-center {
+  from {
+    opacity: 0;
+    transform: translate3d(8px, -50%, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, -50%, 0);
+  }
+}
+@keyframes popover-fade-in-left-start {
+  from {
+    opacity: 0;
+    transform: translate3d(8px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes popover-fade-in-left-end {
+  from {
+    opacity: 0;
+    transform: translate3d(8px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* left - bounce 애니메이션 */
+.taeri-popover-content[data-placement="left"][data-align="center"][data-positioned="true"][data-bounce="true"] {
+  animation: popover-bounce-left-center 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
+}
+.taeri-popover-content[data-placement="left"][data-align="start"][data-positioned="true"][data-bounce="true"] {
+  animation: popover-bounce-left-start 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
+}
+.taeri-popover-content[data-placement="left"][data-align="end"][data-positioned="true"][data-bounce="true"] {
+  animation: popover-bounce-left-end 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
+}
+
+@keyframes popover-bounce-left-center {
+  0% {
+    transform: translate3d(0, -50%, 0);
+  }
+  30% {
+    transform: translate3d(-10px, -50%, 0);
+  }
+  50% {
+    transform: translate3d(0, -50%, 0);
+  }
+  65% {
+    transform: translate3d(-3px, -50%, 0);
+  }
+  80% {
+    transform: translate3d(0, -50%, 0);
+  }
+  100% {
+    transform: translate3d(0, -50%, 0);
+  }
+}
+@keyframes popover-bounce-left-start {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  30% {
+    transform: translate3d(-10px, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, 0, 0);
+  }
+  65% {
+    transform: translate3d(-3px, 0, 0);
+  }
+  80% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes popover-bounce-left-end {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  30% {
+    transform: translate3d(-10px, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, 0, 0);
+  }
+  65% {
+    transform: translate3d(-3px, 0, 0);
+  }
+  80% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* right - fade 애니메이션 (bounce 없을 때) */
+.taeri-popover-content[data-placement="right"][data-align="center"][data-positioned="true"][data-bounce="false"] {
+  animation: popover-fade-in-right-center 0.2s ease-out;
+}
+.taeri-popover-content[data-placement="right"][data-align="start"][data-positioned="true"][data-bounce="false"] {
+  animation: popover-fade-in-right-start 0.2s ease-out;
+}
+.taeri-popover-content[data-placement="right"][data-align="end"][data-positioned="true"][data-bounce="false"] {
+  animation: popover-fade-in-right-end 0.2s ease-out;
+}
+
+@keyframes popover-fade-in-right-center {
+  from {
+    opacity: 0;
+    transform: translate3d(-8px, -50%, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, -50%, 0);
+  }
+}
+@keyframes popover-fade-in-right-start {
+  from {
+    opacity: 0;
+    transform: translate3d(-8px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes popover-fade-in-right-end {
+  from {
+    opacity: 0;
+    transform: translate3d(-8px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* right - bounce 애니메이션 */
+.taeri-popover-content[data-placement="right"][data-align="center"][data-positioned="true"][data-bounce="true"] {
+  animation: popover-bounce-right-center 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
+}
+.taeri-popover-content[data-placement="right"][data-align="start"][data-positioned="true"][data-bounce="true"] {
+  animation: popover-bounce-right-start 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
+}
+.taeri-popover-content[data-placement="right"][data-align="end"][data-positioned="true"][data-bounce="true"] {
+  animation: popover-bounce-right-end 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
+}
+
+@keyframes popover-bounce-right-center {
+  0% {
+    transform: translate3d(0, -50%, 0);
+  }
+  30% {
+    transform: translate3d(10px, -50%, 0);
+  }
+  50% {
+    transform: translate3d(0, -50%, 0);
+  }
+  65% {
+    transform: translate3d(3px, -50%, 0);
+  }
+  80% {
+    transform: translate3d(0, -50%, 0);
+  }
+  100% {
+    transform: translate3d(0, -50%, 0);
+  }
+}
+@keyframes popover-bounce-right-start {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  30% {
+    transform: translate3d(10px, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, 0, 0);
+  }
+  65% {
+    transform: translate3d(3px, 0, 0);
+  }
+  80% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes popover-bounce-right-end {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  30% {
+    transform: translate3d(10px, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, 0, 0);
+  }
+  65% {
+    transform: translate3d(3px, 0, 0);
+  }
+  80% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Arrow */
+.taeri-popover-arrow {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  transform: rotate(45deg);
+}
+
+/* Default Variant - Arrow */
+.taeri-popover-content--default .taeri-popover-arrow {
+  background: var(--taeri-popover-color, var(--taeri-ui-popover, #3b82f6));
+  border: 1px solid var(--taeri-popover-color, var(--taeri-ui-popover, #3b82f6));
+}
+
+/* Outlined Variant - Arrow */
+.taeri-popover-content--outlined .taeri-popover-arrow {
+  background: #fff;
+  border: 1px solid var(--taeri-popover-color, var(--taeri-ui-popover, #e5e7eb));
+}
+
+/* Arrow position - Top */
+.taeri-popover-arrow[data-placement="top"] {
+  bottom: -7px;
+  border-top: none;
+  border-left: none;
+}
+.taeri-popover-arrow[data-placement="top"][data-align="start"] {
+  left: 20px;
+}
+.taeri-popover-arrow[data-placement="top"][data-align="center"] {
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+}
+.taeri-popover-arrow[data-placement="top"][data-align="end"] {
+  right: 20px;
+}
+
+/* Arrow position - Bottom */
+.taeri-popover-arrow[data-placement="bottom"] {
+  top: -7px;
+  border-bottom: none;
+  border-right: none;
+}
+.taeri-popover-arrow[data-placement="bottom"][data-align="start"] {
+  left: 20px;
+}
+.taeri-popover-arrow[data-placement="bottom"][data-align="center"] {
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+}
+.taeri-popover-arrow[data-placement="bottom"][data-align="end"] {
+  right: 20px;
+}
+
+/* Arrow position - Left */
+.taeri-popover-arrow[data-placement="left"] {
+  right: -7px;
+  border-left: none;
+  border-bottom: none;
+}
+.taeri-popover-arrow[data-placement="left"][data-align="start"] {
+  top: 20px;
+}
+.taeri-popover-arrow[data-placement="left"][data-align="center"] {
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+}
+.taeri-popover-arrow[data-placement="left"][data-align="end"] {
+  bottom: 20px;
+}
+
+/* Arrow position - Right */
+.taeri-popover-arrow[data-placement="right"] {
+  left: -7px;
+  border-right: none;
+  border-top: none;
+}
+.taeri-popover-arrow[data-placement="right"][data-align="start"] {
+  top: 20px;
+}
+.taeri-popover-arrow[data-placement="right"][data-align="center"] {
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+}
+.taeri-popover-arrow[data-placement="right"][data-align="end"] {
+  bottom: 20px;
+}

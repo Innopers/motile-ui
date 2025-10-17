@@ -18,6 +18,10 @@
   box-sizing: border-box;
   overflow: visible;
   opacity: 0;
+  visibility: hidden;
+  will-change: transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 /* Default Variant - 배경색 적용, 텍스트 흰색 */
@@ -37,173 +41,485 @@
 /* 위치 계산 완료 후 표시 */
 .taeri-popover-content[data-positioned="true"] {
   opacity: 1;
+  visibility: visible;
 }
 
-/* top */
-.taeri-popover-content[data-placement="top"][data-align="center"][data-positioned="true"] {
-  animation: popover-fade-in-top 0.18s ease forwards;
-}
-.taeri-popover-content[data-placement="top"][data-align="start"][data-positioned="true"] {
-  animation: popover-fade-in-top-start 0.18s ease forwards;
-}
-.taeri-popover-content[data-placement="top"][data-align="end"][data-positioned="true"] {
-  animation: popover-fade-in-top-end 0.18s ease forwards;
+/* Base transforms for center alignment - 애니메이션 종료 후에도 유지 */
+.taeri-popover-content[data-placement="top"][data-align="center"],
+.taeri-popover-content[data-placement="bottom"][data-align="center"] {
+  transform: translate3d(-50%, 0, 0);
 }
 
-@keyframes popover-fade-in-top {
+.taeri-popover-content[data-placement="left"][data-align="center"],
+.taeri-popover-content[data-placement="right"][data-align="center"] {
+  transform: translate3d(0, -50%, 0);
+}
+
+/* top - fade 애니메이션 (bounce 없을 때) */
+.taeri-popover-content[data-placement="top"][data-align="center"][data-positioned="true"][data-bounce="false"] {
+  animation: popover-fade-in-top-center 0.2s ease-out;
+}
+.taeri-popover-content[data-placement="top"][data-align="start"][data-positioned="true"][data-bounce="false"] {
+  animation: popover-fade-in-top-start 0.2s ease-out;
+}
+.taeri-popover-content[data-placement="top"][data-align="end"][data-positioned="true"][data-bounce="false"] {
+  animation: popover-fade-in-top-end 0.2s ease-out;
+}
+
+@keyframes popover-fade-in-top-center {
   from {
     opacity: 0;
-    transform: translateX(-50%) scale(0.95) translateY(4px);
+    transform: translate3d(-50%, 8px, 0);
   }
   to {
     opacity: 1;
-    transform: translateX(-50%) scale(1) translateY(0);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 @keyframes popover-fade-in-top-start {
   from {
     opacity: 0;
-    transform: scale(0.95) translateY(4px);
+    transform: translate3d(0, 8px, 0);
   }
   to {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 @keyframes popover-fade-in-top-end {
   from {
     opacity: 0;
-    transform: scale(0.95) translateY(4px);
+    transform: translate3d(0, 8px, 0);
   }
   to {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
-/* bottom */
-.taeri-popover-content[data-placement="bottom"][data-align="center"][data-positioned="true"] {
-  animation: popover-fade-in-bottom 0.18s ease forwards;
+/* top - bounce 애니메이션 */
+.taeri-popover-content[data-placement="top"][data-align="center"][data-positioned="true"][data-bounce="true"] {
+  animation: popover-bounce-top-center 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
 }
-.taeri-popover-content[data-placement="bottom"][data-align="start"][data-positioned="true"] {
-  animation: popover-fade-in-bottom-start 0.18s ease forwards;
+.taeri-popover-content[data-placement="top"][data-align="start"][data-positioned="true"][data-bounce="true"] {
+  animation: popover-bounce-top-start 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
 }
-.taeri-popover-content[data-placement="bottom"][data-align="end"][data-positioned="true"] {
-  animation: popover-fade-in-bottom-end 0.18s ease forwards;
+.taeri-popover-content[data-placement="top"][data-align="end"][data-positioned="true"][data-bounce="true"] {
+  animation: popover-bounce-top-end 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
 }
 
-@keyframes popover-fade-in-bottom {
+@keyframes popover-bounce-top-center {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  30% {
+    transform: translate3d(-50%, -10px, 0);
+  }
+  50% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  65% {
+    transform: translate3d(-50%, -3px, 0);
+  }
+  80% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+@keyframes popover-bounce-top-start {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  30% {
+    transform: translate3d(0, -10px, 0);
+  }
+  50% {
+    transform: translate3d(0, 0, 0);
+  }
+  65% {
+    transform: translate3d(0, -3px, 0);
+  }
+  80% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes popover-bounce-top-end {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  30% {
+    transform: translate3d(0, -10px, 0);
+  }
+  50% {
+    transform: translate3d(0, 0, 0);
+  }
+  65% {
+    transform: translate3d(0, -3px, 0);
+  }
+  80% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* bottom - fade 애니메이션 (bounce 없을 때) */
+.taeri-popover-content[data-placement="bottom"][data-align="center"][data-positioned="true"][data-bounce="false"] {
+  animation: popover-fade-in-bottom-center 0.2s ease-out;
+}
+.taeri-popover-content[data-placement="bottom"][data-align="start"][data-positioned="true"][data-bounce="false"] {
+  animation: popover-fade-in-bottom-start 0.2s ease-out;
+}
+.taeri-popover-content[data-placement="bottom"][data-align="end"][data-positioned="true"][data-bounce="false"] {
+  animation: popover-fade-in-bottom-end 0.2s ease-out;
+}
+
+@keyframes popover-fade-in-bottom-center {
   from {
     opacity: 0;
-    transform: translateX(-50%) scale(0.95) translateY(-4px);
+    transform: translate3d(-50%, -8px, 0);
   }
   to {
     opacity: 1;
-    transform: translateX(-50%) scale(1) translateY(0);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 @keyframes popover-fade-in-bottom-start {
   from {
     opacity: 0;
-    transform: scale(0.95) translateY(-4px);
+    transform: translate3d(0, -8px, 0);
   }
   to {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 @keyframes popover-fade-in-bottom-end {
   from {
     opacity: 0;
-    transform: scale(0.95) translateY(-4px);
+    transform: translate3d(0, -8px, 0);
   }
   to {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
-/* left */
-.taeri-popover-content[data-placement="left"][data-align="center"][data-positioned="true"] {
-  animation: popover-fade-in-left 0.18s ease forwards;
+/* bottom - bounce 애니메이션 */
+.taeri-popover-content[data-placement="bottom"][data-align="center"][data-positioned="true"][data-bounce="true"] {
+  animation: popover-bounce-bottom-center 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
 }
-.taeri-popover-content[data-placement="left"][data-align="start"][data-positioned="true"] {
-  animation: popover-fade-in-left-start 0.18s ease forwards;
+.taeri-popover-content[data-placement="bottom"][data-align="start"][data-positioned="true"][data-bounce="true"] {
+  animation: popover-bounce-bottom-start 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
 }
-.taeri-popover-content[data-placement="left"][data-align="end"][data-positioned="true"] {
-  animation: popover-fade-in-left-end 0.18s ease forwards;
+.taeri-popover-content[data-placement="bottom"][data-align="end"][data-positioned="true"][data-bounce="true"] {
+  animation: popover-bounce-bottom-end 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
 }
 
-@keyframes popover-fade-in-left {
+@keyframes popover-bounce-bottom-center {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  30% {
+    transform: translate3d(-50%, 10px, 0);
+  }
+  50% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  65% {
+    transform: translate3d(-50%, 3px, 0);
+  }
+  80% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+@keyframes popover-bounce-bottom-start {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  30% {
+    transform: translate3d(0, 10px, 0);
+  }
+  50% {
+    transform: translate3d(0, 0, 0);
+  }
+  65% {
+    transform: translate3d(0, 3px, 0);
+  }
+  80% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes popover-bounce-bottom-end {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  30% {
+    transform: translate3d(0, 10px, 0);
+  }
+  50% {
+    transform: translate3d(0, 0, 0);
+  }
+  65% {
+    transform: translate3d(0, 3px, 0);
+  }
+  80% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* left - fade 애니메이션 (bounce 없을 때) */
+.taeri-popover-content[data-placement="left"][data-align="center"][data-positioned="true"][data-bounce="false"] {
+  animation: popover-fade-in-left-center 0.2s ease-out;
+}
+.taeri-popover-content[data-placement="left"][data-align="start"][data-positioned="true"][data-bounce="false"] {
+  animation: popover-fade-in-left-start 0.2s ease-out;
+}
+.taeri-popover-content[data-placement="left"][data-align="end"][data-positioned="true"][data-bounce="false"] {
+  animation: popover-fade-in-left-end 0.2s ease-out;
+}
+
+@keyframes popover-fade-in-left-center {
   from {
     opacity: 0;
-    transform: translateY(-50%) scale(0.95) translateX(4px);
+    transform: translate3d(8px, -50%, 0);
   }
   to {
     opacity: 1;
-    transform: translateY(-50%) scale(1) translateX(0);
+    transform: translate3d(0, -50%, 0);
   }
 }
 @keyframes popover-fade-in-left-start {
   from {
     opacity: 0;
-    transform: scale(0.95) translateX(4px);
+    transform: translate3d(8px, 0, 0);
   }
   to {
     opacity: 1;
-    transform: scale(1) translateX(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 @keyframes popover-fade-in-left-end {
   from {
     opacity: 0;
-    transform: scale(0.95) translateX(4px);
+    transform: translate3d(8px, 0, 0);
   }
   to {
     opacity: 1;
-    transform: scale(1) translateX(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
-/* right */
-.taeri-popover-content[data-placement="right"][data-align="center"][data-positioned="true"] {
-  animation: popover-fade-in-right 0.18s ease forwards;
+/* left - bounce 애니메이션 */
+.taeri-popover-content[data-placement="left"][data-align="center"][data-positioned="true"][data-bounce="true"] {
+  animation: popover-bounce-left-center 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
 }
-.taeri-popover-content[data-placement="right"][data-align="start"][data-positioned="true"] {
-  animation: popover-fade-in-right-start 0.18s ease forwards;
+.taeri-popover-content[data-placement="left"][data-align="start"][data-positioned="true"][data-bounce="true"] {
+  animation: popover-bounce-left-start 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
 }
-.taeri-popover-content[data-placement="right"][data-align="end"][data-positioned="true"] {
-  animation: popover-fade-in-right-end 0.18s ease forwards;
+.taeri-popover-content[data-placement="left"][data-align="end"][data-positioned="true"][data-bounce="true"] {
+  animation: popover-bounce-left-end 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
 }
 
-@keyframes popover-fade-in-right {
+@keyframes popover-bounce-left-center {
+  0% {
+    transform: translate3d(0, -50%, 0);
+  }
+  30% {
+    transform: translate3d(-10px, -50%, 0);
+  }
+  50% {
+    transform: translate3d(0, -50%, 0);
+  }
+  65% {
+    transform: translate3d(-3px, -50%, 0);
+  }
+  80% {
+    transform: translate3d(0, -50%, 0);
+  }
+  100% {
+    transform: translate3d(0, -50%, 0);
+  }
+}
+@keyframes popover-bounce-left-start {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  30% {
+    transform: translate3d(-10px, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, 0, 0);
+  }
+  65% {
+    transform: translate3d(-3px, 0, 0);
+  }
+  80% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes popover-bounce-left-end {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  30% {
+    transform: translate3d(-10px, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, 0, 0);
+  }
+  65% {
+    transform: translate3d(-3px, 0, 0);
+  }
+  80% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* right - fade 애니메이션 (bounce 없을 때) */
+.taeri-popover-content[data-placement="right"][data-align="center"][data-positioned="true"][data-bounce="false"] {
+  animation: popover-fade-in-right-center 0.2s ease-out;
+}
+.taeri-popover-content[data-placement="right"][data-align="start"][data-positioned="true"][data-bounce="false"] {
+  animation: popover-fade-in-right-start 0.2s ease-out;
+}
+.taeri-popover-content[data-placement="right"][data-align="end"][data-positioned="true"][data-bounce="false"] {
+  animation: popover-fade-in-right-end 0.2s ease-out;
+}
+
+@keyframes popover-fade-in-right-center {
   from {
     opacity: 0;
-    transform: translateY(-50%) scale(0.95) translateX(-4px);
+    transform: translate3d(-8px, -50%, 0);
   }
   to {
     opacity: 1;
-    transform: translateY(-50%) scale(1) translateX(0);
+    transform: translate3d(0, -50%, 0);
   }
 }
 @keyframes popover-fade-in-right-start {
   from {
     opacity: 0;
-    transform: scale(0.95) translateX(-4px);
+    transform: translate3d(-8px, 0, 0);
   }
   to {
     opacity: 1;
-    transform: scale(1) translateX(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 @keyframes popover-fade-in-right-end {
   from {
     opacity: 0;
-    transform: scale(0.95) translateX(-4px);
+    transform: translate3d(-8px, 0, 0);
   }
   to {
     opacity: 1;
-    transform: scale(1) translateX(0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* right - bounce 애니메이션 */
+.taeri-popover-content[data-placement="right"][data-align="center"][data-positioned="true"][data-bounce="true"] {
+  animation: popover-bounce-right-center 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
+}
+.taeri-popover-content[data-placement="right"][data-align="start"][data-positioned="true"][data-bounce="true"] {
+  animation: popover-bounce-right-start 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
+}
+.taeri-popover-content[data-placement="right"][data-align="end"][data-positioned="true"][data-bounce="true"] {
+  animation: popover-bounce-right-end 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
+}
+
+@keyframes popover-bounce-right-center {
+  0% {
+    transform: translate3d(0, -50%, 0);
+  }
+  30% {
+    transform: translate3d(10px, -50%, 0);
+  }
+  50% {
+    transform: translate3d(0, -50%, 0);
+  }
+  65% {
+    transform: translate3d(3px, -50%, 0);
+  }
+  80% {
+    transform: translate3d(0, -50%, 0);
+  }
+  100% {
+    transform: translate3d(0, -50%, 0);
+  }
+}
+@keyframes popover-bounce-right-start {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  30% {
+    transform: translate3d(10px, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, 0, 0);
+  }
+  65% {
+    transform: translate3d(3px, 0, 0);
+  }
+  80% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes popover-bounce-right-end {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  30% {
+    transform: translate3d(10px, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, 0, 0);
+  }
+  65% {
+    transform: translate3d(3px, 0, 0);
+  }
+  80% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
   }
 }
 

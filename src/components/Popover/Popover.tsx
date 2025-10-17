@@ -31,6 +31,7 @@ interface PopoverContextValue {
   zIndex: number;
   color?: string;
   autoClose: boolean;
+  bounceCount: number | "infinite";
 
   // Callbacks
   onOpenChange?: (open: boolean) => void;
@@ -138,6 +139,7 @@ interface PopoverRootProps {
   showArrow?: boolean;
   zIndex?: number;
   color?: string;
+  bounceCount?: number | "infinite";
 
   // State Control
   open?: boolean;
@@ -158,6 +160,7 @@ function PopoverRoot({
   showArrow = false,
   zIndex = 10,
   color,
+  bounceCount = 0,
   open: controlledOpen,
   defaultOpen = false,
   onOpenChange,
@@ -187,6 +190,7 @@ function PopoverRoot({
       zIndex,
       color,
       autoClose,
+      bounceCount,
       onOpenChange,
       onClickOutside,
       onDismiss,
@@ -208,6 +212,7 @@ function PopoverRoot({
       zIndex,
       color,
       autoClose,
+      bounceCount,
       onOpenChange,
       onClickOutside,
       onDismiss,
@@ -317,6 +322,7 @@ function PopoverContent({
     zIndex,
     color,
     autoClose,
+    bounceCount,
     onClickOutside,
     onDismiss,
     contentId,
@@ -334,69 +340,67 @@ function PopoverContent({
       return;
 
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        if (!triggerRef.current || !contentRef.current || !wrapperRef.current)
-          return;
+      if (!triggerRef.current || !contentRef.current || !wrapperRef.current)
+        return;
 
-        const popoverWidth = contentRef.current.offsetWidth;
-        const popoverHeight = contentRef.current.offsetHeight;
-        const triggerWidth = triggerRef.current.offsetWidth;
-        const triggerHeight = triggerRef.current.offsetHeight;
+      const popoverWidth = contentRef.current.offsetWidth;
+      const popoverHeight = contentRef.current.offsetHeight;
+      const triggerWidth = triggerRef.current.offsetWidth;
+      const triggerHeight = triggerRef.current.offsetHeight;
 
-        const trigger = triggerRef.current.getBoundingClientRect();
-        const wrapper = wrapperRef.current.getBoundingClientRect();
+      const trigger = triggerRef.current.getBoundingClientRect();
+      const wrapper = wrapperRef.current.getBoundingClientRect();
 
-        const relativeLeft = trigger.left - wrapper.left;
-        const relativeTop = trigger.top - wrapper.top;
+      const relativeLeft = trigger.left - wrapper.left;
+      const relativeTop = trigger.top - wrapper.top;
 
-        let left = 0;
-        let top = 0;
-        const gap = 8;
+      let left = 0;
+      let top = 0;
+      const gap = 8;
 
-        if (position === "top" || position === "bottom") {
-          switch (align) {
-            case "start":
-              left = relativeLeft;
-              break;
-            case "center":
-              left = relativeLeft + triggerWidth / 2;
-              break;
-            case "end":
-              left = relativeLeft + triggerWidth - popoverWidth;
-              break;
-          }
-
-          if (position === "top") {
-            top = relativeTop - popoverHeight - gap;
-          } else {
-            top = relativeTop + triggerHeight + gap;
-          }
-        } else {
-          switch (align) {
-            case "start":
-              top = relativeTop;
-              break;
-            case "center":
-              top = relativeTop + triggerHeight / 2;
-              break;
-            case "end":
-              top = relativeTop + triggerHeight - popoverHeight;
-              break;
-          }
-
-          if (position === "left") {
-            left = relativeLeft - popoverWidth - gap;
-          } else {
-            left = relativeLeft + triggerWidth + gap;
-          }
+      if (position === "top" || position === "bottom") {
+        switch (align) {
+          case "start":
+            left = relativeLeft;
+            break;
+          case "center":
+            left = relativeLeft + triggerWidth / 2;
+            break;
+          case "end":
+            left = relativeLeft + triggerWidth - popoverWidth;
+            break;
         }
 
-        setPopoverStyle({
-          left: `${Math.round(left)}px`,
-          top: `${Math.round(top)}px`,
-        });
-        setIsPositioned(true);
+        if (position === "top") {
+          top = relativeTop - popoverHeight - gap;
+        } else {
+          top = relativeTop + triggerHeight + gap;
+        }
+      } else {
+        switch (align) {
+          case "start":
+            top = relativeTop;
+            break;
+          case "center":
+            top = relativeTop + triggerHeight / 2;
+            break;
+          case "end":
+            top = relativeTop + triggerHeight - popoverHeight;
+            break;
+        }
+
+        if (position === "left") {
+          left = relativeLeft - popoverWidth - gap;
+        } else {
+          left = relativeLeft + triggerWidth + gap;
+        }
+      }
+
+      setPopoverStyle({
+        left: `${Math.round(left)}px`,
+        top: `${Math.round(top)}px`,
       });
+      setIsPositioned(true);
     });
   }, [position, align, triggerRef, contentRef, wrapperRef]);
 
@@ -470,6 +474,8 @@ function PopoverContent({
 
   if (!open) return null;
 
+  const hasBounce = bounceCount !== 0;
+
   return (
     <div
       ref={contentRef}
@@ -480,13 +486,17 @@ function PopoverContent({
       data-placement={position}
       data-align={align}
       data-positioned={isPositioned}
-      style={{
-        ...popoverStyle,
-        zIndex,
-        ...(color &&
-          ({ "--taeri-popover-color": color } as React.CSSProperties)),
-        ...style,
-      }}
+      data-bounce={hasBounce ? "true" : "false"}
+      style={
+        {
+          ...popoverStyle,
+          zIndex,
+          ...(color &&
+            ({ "--taeri-popover-color": color } as React.CSSProperties)),
+          "--bounce-count": bounceCount,
+          ...style,
+        } as React.CSSProperties
+      }
     >
       {showArrow && (
         <div

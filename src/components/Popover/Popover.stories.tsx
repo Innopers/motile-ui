@@ -48,6 +48,10 @@ const meta = {
       control: "boolean",
       description: "ESC/외부 클릭 시 자동으로 닫기",
     },
+    bounceCount: {
+      control: "number",
+      description: "통통 튀는 횟수 (bounce animation)",
+    },
     color: {
       control: "color",
       description: "커스텀 색상",
@@ -69,6 +73,7 @@ export const Default: Story = {
     showArrow: false,
     variant: "default",
     autoClose: true,
+    bounceCount: 1,
   },
   render: (args) => (
     <Popover.Root {...args}>
@@ -129,6 +134,7 @@ export const CustomColor: Story = {
     variant: "default",
     autoClose: true,
     color: "#10b981",
+    bounceCount: 1,
   },
   render: (args) => (
     <Popover.Root {...args}>
@@ -139,6 +145,27 @@ export const CustomColor: Story = {
       </Popover.Trigger>
       <Popover.Content>
         <div>Controls 패널에서 color를 변경해보세요!</div>
+      </Popover.Content>
+    </Popover.Root>
+  ),
+};
+
+export const BounceAnimation: Story = {
+  args: {
+    position: "top",
+    align: "start",
+    showArrow: true,
+    variant: "outlined",
+    autoClose: true,
+    bounceCount: 1,
+  },
+  render: (args) => (
+    <Popover.Root {...args}>
+      <Popover.Trigger asChild>
+        <Button>Bounce Animation</Button>
+      </Popover.Trigger>
+      <Popover.Content>
+        <div>Controls에서 bounceCount를 조절해보세요!</div>
       </Popover.Content>
     </Popover.Root>
   ),

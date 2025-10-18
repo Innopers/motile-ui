@@ -4,6 +4,7 @@ import React, {
   useContext,
   useEffect,
   useId,
+  useLayoutEffect,
   useRef,
   useState,
 } from "react";
@@ -128,8 +129,8 @@ function TooltipRoot({
     }
   }, []);
 
-  // 위치 계산 및 업데이트
-  useEffect(() => {
+  // 위치 계산 및 업데이트 (paint 전에 실행하여 튐 방지)
+  useLayoutEffect(() => {
     if (!open || !triggerRef.current || !contentRef.current) return;
 
     const updatePosition = () => {
@@ -434,8 +435,21 @@ function TooltipContent({ children }: TooltipContentProps) {
   } = useTooltipContext();
 
   const [mounted, setMounted] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => setMounted(true), []);
+
+  // 애니메이션을 위해 DOM 렌더링 후 다음 프레임에 visible 상태 변경
+  useEffect(() => {
+    if (open) {
+      // DOM에 먼저 렌더링 (초기 상태)
+      requestAnimationFrame(() => {
+        setVisible(true); // 다음 프레임에 애니메이션 시작
+      });
+    } else {
+      setVisible(false);
+    }
+  }, [open]);
 
   const handleBubbleEnter = useCallback(() => {
     if (keepOpen) {
@@ -457,7 +471,7 @@ function TooltipContent({ children }: TooltipContentProps) {
       id={tooltipId}
       role="tooltip"
       className={`taeri-tooltip-bubble taeri-tooltip-bubble--${variant}`}
-      data-open={open || undefined}
+      data-open={visible || undefined}
       data-placement={placement}
       data-align={align}
       data-show-arrow={showArrow || undefined}

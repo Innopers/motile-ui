@@ -15,6 +15,12 @@ const meta: Meta<typeof Tooltip.Root> = {
       options: ["top", "bottom", "left", "right"],
       description: "Tooltip position",
     },
+    align: {
+      control: "select",
+      options: ["start", "center", "end"],
+      description:
+        "Tooltip alignment (start: left/top, center: middle, end: right/bottom)",
+    },
     variant: {
       control: "select",
       options: ["default", "outlined"],

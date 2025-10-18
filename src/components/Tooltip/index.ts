@@ -5,4 +5,5 @@ export type {
   TooltipContentProps,
   TooltipVariant,
   TooltipPosition,
+  TooltipAlign,
 } from "./Tooltip";

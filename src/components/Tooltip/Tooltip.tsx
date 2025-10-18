@@ -12,6 +12,7 @@ import "./Tooltip.css";
 
 type TooltipVariant = "default" | "outlined";
 type TooltipPosition = "top" | "bottom" | "left" | "right";
+type TooltipAlign = "start" | "center" | "end";
 
 // ============================================================================
 // Context
@@ -24,6 +25,7 @@ interface TooltipContextValue {
 
   // Config
   position: TooltipPosition;
+  align: TooltipAlign;
   variant: TooltipVariant;
   showArrow: boolean;
   color?: string;
@@ -57,6 +59,13 @@ interface TooltipRootProps {
   children: React.ReactNode;
   position?: TooltipPosition;
   /**
+   * 툴팁 정렬 방식
+   * - top/bottom일 때: start(왼쪽), center(중앙), end(오른쪽)
+   * - left/right일 때: start(위), center(중앙), end(아래)
+   * @default 'center'
+   */
+  align?: TooltipAlign;
+  /**
    * 툴팁 스타일 variant
    * @default 'default'
    */
@@ -84,6 +93,7 @@ const MARGIN = 8;
 function TooltipRoot({
   children,
   position = "top",
+  align = "center",
   variant = "default",
   color,
   showArrow = false,
@@ -165,8 +175,18 @@ function TooltipRoot({
       let top = 0;
 
       if (finalPlacement === "top" || finalPlacement === "bottom") {
-        // 수평: 트리거 중앙 정렬
-        left = trigger.left + trigger.width / 2 - bw / 2;
+        // 수평: align에 따른 정렬
+        switch (align) {
+          case "start":
+            left = trigger.left;
+            break;
+          case "center":
+            left = trigger.left + trigger.width / 2 - bw / 2;
+            break;
+          case "end":
+            left = trigger.right - bw;
+            break;
+        }
         left = Math.max(MARGIN, Math.min(left, vw - MARGIN - bw));
 
         // 수직: 트리거 위/아래 배치
@@ -177,8 +197,18 @@ function TooltipRoot({
         top = Math.max(MARGIN, Math.min(top, vh - MARGIN - bh));
       } else {
         // left/right placement
-        // 수직: 트리거 중앙 정렬
-        top = trigger.top + trigger.height / 2 - bh / 2;
+        // 수직: align에 따른 정렬
+        switch (align) {
+          case "start":
+            top = trigger.top;
+            break;
+          case "center":
+            top = trigger.top + trigger.height / 2 - bh / 2;
+            break;
+          case "end":
+            top = trigger.bottom - bh;
+            break;
+        }
         top = Math.max(MARGIN, Math.min(top, vh - MARGIN - bh));
 
         // 수평: 트리거 좌/우 배치 (width 조정으로 여백 확보)
@@ -244,7 +274,7 @@ function TooltipRoot({
       window.removeEventListener("resize", updatePosition);
       ro.disconnect();
     };
-  }, [open, position, color]); // position 변경 시에도 위치 재계산 필요
+  }, [open, position, align, color]); // position, align 변경 시에도 위치 재계산 필요
 
   // 스크롤 시 tooltip 자동 닫기
   useEffect(() => {
@@ -275,6 +305,7 @@ function TooltipRoot({
     open,
     setOpen,
     position,
+    align,
     variant,
     showArrow,
     color,
@@ -377,6 +408,7 @@ function TooltipContent({ children }: TooltipContentProps) {
     variant,
     showArrow,
     keepOpen,
+    align,
     style,
     placement,
   } = useTooltipContext();
@@ -407,6 +439,7 @@ function TooltipContent({ children }: TooltipContentProps) {
       className={`taeri-tooltip-bubble taeri-tooltip-bubble--${variant}`}
       data-open={open || undefined}
       data-placement={placement}
+      data-align={align}
       data-show-arrow={showArrow || undefined}
       data-keep-open={keepOpen || undefined}
       style={style}
@@ -436,4 +469,5 @@ export type {
   TooltipContentProps,
   TooltipVariant,
   TooltipPosition,
+  TooltipAlign,
 };

@@ -108,6 +108,9 @@ function TooltipRoot({
   const [placement, setPlacement] = useState(position);
   const [style, setStyle] = useState<React.CSSProperties>({});
 
+  // rAF 스로틀링을 위한 ref
+  const rafIdRef = useRef<number | null>(null);
+
   // setOpen with optional delay
   const setOpen = useCallback((value: boolean, delay: number = 0) => {
     if (closeTimeoutRef.current) {
@@ -255,23 +258,40 @@ function TooltipRoot({
       });
     };
 
+    // rAF 스로틀링: 한 프레임에 1회만 실행
+    const scheduleUpdate = () => {
+      if (rafIdRef.current !== null) return; // 이미 예약됨
+
+      rafIdRef.current = requestAnimationFrame(() => {
+        updatePosition();
+        rafIdRef.current = null; // 다시 예약 가능
+      });
+    };
+
+    // 초기 위치 계산
     updatePosition();
 
-    // 스크롤/리사이즈 시 위치 재계산
+    // 스크롤/리사이즈 시 위치 재계산 (스로틀링 적용)
     // capture: true로 모든 스크롤 컨테이너 (모달, 내부 스크롤) 감지
-    window.addEventListener("scroll", updatePosition, {
+    window.addEventListener("scroll", scheduleUpdate, {
       passive: true,
       capture: true,
     });
-    window.addEventListener("resize", updatePosition, { passive: true });
+    window.addEventListener("resize", scheduleUpdate, { passive: true });
 
-    // trigger 크기 변경 감지
-    const ro = new ResizeObserver(updatePosition);
+    // trigger 크기 변경 감지 (스로틀링 적용)
+    const ro = new ResizeObserver(scheduleUpdate);
     if (triggerRef.current) ro.observe(triggerRef.current);
 
     return () => {
-      window.removeEventListener("scroll", updatePosition, { capture: true });
-      window.removeEventListener("resize", updatePosition);
+      // cleanup: 예약된 rAF 취소
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current);
+        rafIdRef.current = null;
+      }
+
+      window.removeEventListener("scroll", scheduleUpdate, { capture: true });
+      window.removeEventListener("resize", scheduleUpdate);
       ro.disconnect();
     };
   }, [open, position, align, color]); // position, align 변경 시에도 위치 재계산 필요

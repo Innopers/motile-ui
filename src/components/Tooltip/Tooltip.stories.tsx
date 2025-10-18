@@ -28,10 +28,10 @@ const meta: Meta<typeof Tooltip.Root> = {
       control: "boolean",
       description: "Show arrow indicator",
     },
-    interactive: {
+    keepOpen: {
       control: "boolean",
       description:
-        "Allow interaction with tooltip content (e.g., clicking buttons)",
+        "Keep tooltip open when hovering content (allows interactions like clicking buttons)",
     },
   },
 };
@@ -135,7 +135,7 @@ export const Interactive: Story = {
     </Tooltip.Root>
   ),
   args: {
-    interactive: true,
+    keepOpen: true,
     variant: "outlined",
     showArrow: true,
     position: "top",

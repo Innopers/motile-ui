@@ -22,8 +22,8 @@
   pointer-events: none;
 }
 
-/* Interactive 모드: 툴팁 내부 클릭 가능 */
-.taeri-tooltip-bubble[data-interactive] {
+/* keepOpen 모드: 툴팁 내부 클릭 가능 */
+.taeri-tooltip-bubble[data-keep-open] {
   pointer-events: auto;
 }
 

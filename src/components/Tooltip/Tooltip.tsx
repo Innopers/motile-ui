@@ -27,7 +27,7 @@ interface TooltipContextValue {
   variant: TooltipVariant;
   showArrow: boolean;
   color?: string;
-  interactive: boolean;
+  keepOpen: boolean;
 
   // Refs
   tooltipId: string;
@@ -72,10 +72,10 @@ interface TooltipRootProps {
    */
   showArrow?: boolean;
   /**
-   * 툴팁 내부 인터랙션 허용 여부 (버튼 클릭 등)
+   * Content에 hover해도 툴팁이 닫히지 않도록 유지 (버튼 클릭 등 인터랙션 가능)
    * @default false
    */
-  interactive?: boolean;
+  keepOpen?: boolean;
 }
 
 const OFFSET = 8;
@@ -87,7 +87,7 @@ function TooltipRoot({
   variant = "default",
   color,
   showArrow = false,
-  interactive = false,
+  keepOpen = false,
 }: TooltipRootProps) {
   const id = useId().replace(/:/g, "");
   const triggerRef = useRef<HTMLElement | null>(null);
@@ -278,7 +278,7 @@ function TooltipRoot({
     variant,
     showArrow,
     color,
-    interactive,
+    keepOpen,
     tooltipId: `${id}-tooltip`,
     triggerRef,
     contentRef,
@@ -302,23 +302,23 @@ interface TooltipTriggerProps {
 }
 
 function TooltipTrigger({ children }: TooltipTriggerProps) {
-  const { open, setOpen, tooltipId, triggerRef, interactive } =
+  const { open, setOpen, tooltipId, triggerRef, keepOpen } =
     useTooltipContext();
 
-  // Interactive 모드 hover 핸들러
+  // keepOpen 모드 hover 핸들러
   const handleTriggerEnter = useCallback(() => {
     setOpen(true, 0);
   }, [setOpen]);
 
   const handleTriggerLeave = useCallback(() => {
-    if (interactive) {
-      // Interactive 모드: 100ms 딜레이 후 닫기 (tooltip으로 이동할 시간)
+    if (keepOpen) {
+      // keepOpen 모드: 100ms 딜레이 후 닫기 (tooltip으로 이동할 시간)
       setOpen(false, 100);
     } else {
-      // Non-interactive: 즉시 닫기
+      // 일반 모드: 즉시 닫기
       setOpen(false, 0);
     }
-  }, [setOpen, interactive]);
+  }, [setOpen, keepOpen]);
 
   const handleFocus = useCallback(() => {
     setOpen(true, 0);
@@ -376,7 +376,7 @@ function TooltipContent({ children }: TooltipContentProps) {
     contentRef,
     variant,
     showArrow,
-    interactive,
+    keepOpen,
     style,
     placement,
   } = useTooltipContext();
@@ -386,16 +386,16 @@ function TooltipContent({ children }: TooltipContentProps) {
   useEffect(() => setMounted(true), []);
 
   const handleBubbleEnter = useCallback(() => {
-    if (interactive) {
+    if (keepOpen) {
       setOpen(true, 0);
     }
-  }, [interactive, setOpen]);
+  }, [keepOpen, setOpen]);
 
   const handleBubbleLeave = useCallback(() => {
-    if (interactive) {
+    if (keepOpen) {
       setOpen(false, 0);
     }
-  }, [interactive, setOpen]);
+  }, [keepOpen, setOpen]);
 
   if (!mounted || !open) return null;
 
@@ -408,7 +408,7 @@ function TooltipContent({ children }: TooltipContentProps) {
       data-open={open || undefined}
       data-placement={placement}
       data-show-arrow={showArrow || undefined}
-      data-interactive={interactive || undefined}
+      data-keep-open={keepOpen || undefined}
       style={style}
       aria-hidden={!open}
       onMouseEnter={handleBubbleEnter}

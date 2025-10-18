@@ -1,13 +1,61 @@
-import React, { useEffect, useId, useRef, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from "react";
 import { createPortal } from "react-dom";
 import "./Tooltip.css";
 
 type TooltipVariant = "default" | "outlined";
+type TooltipPosition = "top" | "bottom" | "left" | "right";
 
-export interface TooltipProps {
+// ============================================================================
+// Context
+// ============================================================================
+
+interface TooltipContextValue {
+  // State
+  open: boolean;
+  setOpen: (value: boolean, delay?: number) => void;
+
+  // Config
+  position: TooltipPosition;
+  variant: TooltipVariant;
+  showArrow: boolean;
+  color?: string;
+  interactive: boolean;
+
+  // Refs
+  tooltipId: string;
+  triggerRef: React.MutableRefObject<HTMLElement | null>;
+  contentRef: React.MutableRefObject<HTMLDivElement | null>;
+
+  // Position
+  style: React.CSSProperties;
+  placement: TooltipPosition;
+}
+
+const TooltipContext = createContext<TooltipContextValue | null>(null);
+
+function useTooltipContext() {
+  const context = useContext(TooltipContext);
+  if (!context) {
+    throw new Error("Tooltip components must be used within Tooltip.Root");
+  }
+  return context;
+}
+
+// ============================================================================
+// Root Component
+// ============================================================================
+
+interface TooltipRootProps {
   children: React.ReactNode;
-  content: React.ReactNode;
-  position?: "top" | "bottom" | "left" | "right";
+  position?: TooltipPosition;
   /**
    * 툴팁 스타일 variant
    * @default 'default'
@@ -33,36 +81,49 @@ export interface TooltipProps {
 const OFFSET = 8;
 const MARGIN = 8;
 
-export const Tooltip: React.FC<TooltipProps> = ({
+function TooltipRoot({
   children,
-  content,
   position = "top",
   variant = "default",
   color,
   showArrow = false,
   interactive = false,
-}) => {
+}: TooltipRootProps) {
   const id = useId().replace(/:/g, "");
-  const triggerRef = useRef<HTMLSpanElement>(null);
-  const bubbleRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLElement | null>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
   const closeTimeoutRef = useRef<number>();
 
-  const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const [open, setOpenState] = useState(false);
   const [placement, setPlacement] = useState(position);
   const [style, setStyle] = useState<React.CSSProperties>({});
 
-  useEffect(() => setMounted(true), []);
+  // setOpen with optional delay
+  const setOpen = useCallback((value: boolean, delay: number = 0) => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = undefined;
+    }
+
+    if (!value && delay > 0) {
+      closeTimeoutRef.current = window.setTimeout(
+        () => setOpenState(false),
+        delay
+      );
+    } else {
+      setOpenState(value);
+    }
+  }, []);
 
   // 위치 계산 및 업데이트
   useEffect(() => {
-    if (!open || !triggerRef.current || !bubbleRef.current) return;
+    if (!open || !triggerRef.current || !contentRef.current) return;
 
     const updatePosition = () => {
-      if (!triggerRef.current || !bubbleRef.current) return;
+      if (!triggerRef.current || !contentRef.current) return;
 
       const trigger = triggerRef.current.getBoundingClientRect();
-      const bubble = bubbleRef.current;
+      const bubble = contentRef.current;
 
       // 임시로 보이지 않게 해서 자연스러운 크기 측정
       bubble.classList.add("measuring");
@@ -176,21 +237,21 @@ export const Tooltip: React.FC<TooltipProps> = ({
 
     // trigger 크기 변경 감지
     const ro = new ResizeObserver(updatePosition);
-    ro.observe(triggerRef.current);
+    if (triggerRef.current) ro.observe(triggerRef.current);
 
     return () => {
       window.removeEventListener("scroll", updatePosition, { capture: true });
       window.removeEventListener("resize", updatePosition);
       ro.disconnect();
     };
-  }, [open, position]); // position 변경 시에도 위치 재계산 필요
+  }, [open, position, color]); // position 변경 시에도 위치 재계산 필요
 
   // 스크롤 시 tooltip 자동 닫기
   useEffect(() => {
     if (!open) return;
 
     const handleScroll = () => {
-      setOpen(false);
+      setOpen(false, 0);
     };
 
     // capture: true로 모든 스크롤 감지
@@ -199,39 +260,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
     return () => {
       window.removeEventListener("scroll", handleScroll, { capture: true });
     };
-  }, [open]);
-
-  // Interactive 모드 hover 핸들러
-  const handleTriggerEnter = () => {
-    if (closeTimeoutRef.current) {
-      clearTimeout(closeTimeoutRef.current);
-    }
-    setOpen(true);
-  };
-
-  const handleTriggerLeave = () => {
-    if (interactive) {
-      // Interactive 모드: 100ms 딜레이 후 닫기 (tooltip으로 이동할 시간)
-      closeTimeoutRef.current = setTimeout(() => {
-        setOpen(false);
-      }, 100);
-    } else {
-      // Non-interactive: 즉시 닫기
-      setOpen(false);
-    }
-  };
-
-  const handleBubbleEnter = () => {
-    if (interactive && closeTimeoutRef.current) {
-      clearTimeout(closeTimeoutRef.current);
-    }
-  };
-
-  const handleBubbleLeave = () => {
-    if (interactive) {
-      setOpen(false);
-    }
-  };
+  }, [open, setOpen]);
 
   // Cleanup timeout on unmount
   useEffect(() => {
@@ -242,40 +271,169 @@ export const Tooltip: React.FC<TooltipProps> = ({
     };
   }, []);
 
-  return (
-    <>
-      <span
-        ref={triggerRef}
-        className="taeri-tooltip-trigger"
-        aria-describedby={open ? id : undefined}
-        tabIndex={0}
-        onMouseEnter={handleTriggerEnter}
-        onMouseLeave={handleTriggerLeave}
-        onClick={() => setOpen((o) => !o)}
-      >
-        {children}
-      </span>
+  const contextValue: TooltipContextValue = {
+    open,
+    setOpen,
+    position,
+    variant,
+    showArrow,
+    color,
+    interactive,
+    tooltipId: `${id}-tooltip`,
+    triggerRef,
+    contentRef,
+    style,
+    placement,
+  };
 
-      {mounted &&
-        createPortal(
-          <div
-            ref={bubbleRef}
-            id={id}
-            role="tooltip"
-            className={`taeri-tooltip-bubble taeri-tooltip-bubble--${variant}`}
-            data-open={open || undefined}
-            data-placement={placement}
-            data-show-arrow={showArrow || undefined}
-            data-interactive={interactive || undefined}
-            style={style}
-            aria-hidden={!open}
-            onMouseEnter={handleBubbleEnter}
-            onMouseLeave={handleBubbleLeave}
-          >
-            {content}
-          </div>,
-          document.body
-        )}
-    </>
+  return (
+    <TooltipContext.Provider value={contextValue}>
+      {children}
+    </TooltipContext.Provider>
   );
+}
+
+// ============================================================================
+// Trigger Component
+// ============================================================================
+
+interface TooltipTriggerProps {
+  children: React.ReactElement;
+}
+
+function TooltipTrigger({ children }: TooltipTriggerProps) {
+  const { open, setOpen, tooltipId, triggerRef, interactive } =
+    useTooltipContext();
+
+  // Interactive 모드 hover 핸들러
+  const handleTriggerEnter = useCallback(() => {
+    setOpen(true, 0);
+  }, [setOpen]);
+
+  const handleTriggerLeave = useCallback(() => {
+    if (interactive) {
+      // Interactive 모드: 100ms 딜레이 후 닫기 (tooltip으로 이동할 시간)
+      setOpen(false, 100);
+    } else {
+      // Non-interactive: 즉시 닫기
+      setOpen(false, 0);
+    }
+  }, [setOpen, interactive]);
+
+  const handleFocus = useCallback(() => {
+    setOpen(true, 0);
+  }, [setOpen]);
+
+  const handleBlur = useCallback(() => {
+    setOpen(false, 0);
+  }, [setOpen]);
+
+  const handleClick = useCallback(() => {
+    setOpen(!open, 0);
+  }, [setOpen, open]);
+
+  return React.cloneElement(children, {
+    ref: (node: HTMLElement | null) => {
+      triggerRef.current = node;
+
+      const childRef = (
+        children as React.ReactElement & { ref?: React.Ref<HTMLElement> }
+      ).ref;
+
+      if (childRef) {
+        if (typeof childRef === "function") {
+          childRef(node);
+        } else if (typeof childRef === "object" && childRef !== null) {
+          (childRef as React.MutableRefObject<HTMLElement | null>).current =
+            node;
+        }
+      }
+    },
+    className: `taeri-tooltip-trigger ${children.props.className || ""}`.trim(),
+    "aria-describedby": open ? tooltipId : undefined,
+    tabIndex: children.props.tabIndex ?? 0,
+    onMouseEnter: handleTriggerEnter,
+    onMouseLeave: handleTriggerLeave,
+    onFocus: handleFocus,
+    onBlur: handleBlur,
+    onClick: handleClick,
+  });
+}
+
+// ============================================================================
+// Content Component
+// ============================================================================
+
+interface TooltipContentProps {
+  children: React.ReactNode;
+}
+
+function TooltipContent({ children }: TooltipContentProps) {
+  const {
+    open,
+    setOpen,
+    tooltipId,
+    contentRef,
+    variant,
+    showArrow,
+    interactive,
+    style,
+    placement,
+  } = useTooltipContext();
+
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
+  const handleBubbleEnter = useCallback(() => {
+    if (interactive) {
+      setOpen(true, 0);
+    }
+  }, [interactive, setOpen]);
+
+  const handleBubbleLeave = useCallback(() => {
+    if (interactive) {
+      setOpen(false, 0);
+    }
+  }, [interactive, setOpen]);
+
+  if (!mounted || !open) return null;
+
+  return createPortal(
+    <div
+      ref={contentRef}
+      id={tooltipId}
+      role="tooltip"
+      className={`taeri-tooltip-bubble taeri-tooltip-bubble--${variant}`}
+      data-open={open || undefined}
+      data-placement={placement}
+      data-show-arrow={showArrow || undefined}
+      data-interactive={interactive || undefined}
+      style={style}
+      aria-hidden={!open}
+      onMouseEnter={handleBubbleEnter}
+      onMouseLeave={handleBubbleLeave}
+    >
+      {children}
+    </div>,
+    document.body
+  );
+}
+
+// ============================================================================
+// Export
+// ============================================================================
+
+export const Tooltip = {
+  Root: TooltipRoot,
+  Trigger: TooltipTrigger,
+  Content: TooltipContent,
+};
+
+export type {
+  TooltipRootProps,
+  TooltipTriggerProps,
+  TooltipContentProps,
+  TooltipVariant,
+  TooltipPosition,
 };

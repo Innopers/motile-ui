@@ -28,7 +28,13 @@ export { Skeleton } from "./components/Skeleton";
 export type { SkeletonProps } from "./components/Skeleton";
 
 export { Tooltip } from "./components/Tooltip";
-export type { TooltipProps } from "./components/Tooltip";
+export type {
+  TooltipRootProps,
+  TooltipTriggerProps,
+  TooltipContentProps,
+  TooltipPosition,
+  TooltipVariant,
+} from "./components/Tooltip";
 
 export { Popover } from "./components/Popover";
 export type {

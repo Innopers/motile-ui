@@ -33,6 +33,7 @@ export type {
   TooltipTriggerProps,
   TooltipContentProps,
   TooltipPosition,
+  TooltipAlign,
   TooltipVariant,
 } from "./components/Tooltip";
 

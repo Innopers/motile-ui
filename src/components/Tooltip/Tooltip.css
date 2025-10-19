@@ -17,13 +17,36 @@
   line-height: 1.4;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
   opacity: 0;
-  transform: translateY(-2px);
-  transition: opacity 0.15s ease, transform 0.15s ease;
   pointer-events: none;
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Interactive 모드: 툴팁 내부 클릭 가능 */
-.taeri-tooltip-bubble[data-interactive] {
+/* 초기 애니메이션 상태 - placement별 다른 방향 */
+.taeri-tooltip-bubble[data-placement="top"] {
+  transform: translateY(8px) scale(0.96);
+}
+
+.taeri-tooltip-bubble[data-placement="bottom"] {
+  transform: translateY(-8px) scale(0.96);
+}
+
+.taeri-tooltip-bubble[data-placement="left"] {
+  transform: translateX(8px) scale(0.96);
+}
+
+.taeri-tooltip-bubble[data-placement="right"] {
+  transform: translateX(-8px) scale(0.96);
+}
+
+/* 열린 상태: 부드럽게 제자리로 */
+.taeri-tooltip-bubble[data-open="true"] {
+  opacity: 1;
+  transform: translate(0, 0) scale(1);
+}
+
+/* keepOpen 모드: 툴팁 내부 클릭 가능 */
+.taeri-tooltip-bubble[data-keep-open] {
   pointer-events: auto;
 }
 
@@ -39,18 +62,10 @@
 
 /* Outlined Variant */
 .taeri-tooltip-bubble--outlined {
-  --arrow-color: var(
-    --taeri-tooltip-color,
-    var(--taeri-ui-tooltip, #3b82f6)
-  );
+  --arrow-color: var(--taeri-tooltip-color, var(--taeri-ui-tooltip, #3b82f6));
   background: white;
   color: var(--arrow-color);
   border: 1px solid var(--arrow-color);
-}
-
-.taeri-tooltip-bubble[data-open="true"] {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 /* 크기 측정용 임시 스타일 */

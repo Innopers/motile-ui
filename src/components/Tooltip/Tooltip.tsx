@@ -88,7 +88,7 @@ interface TooltipRootProps {
   keepOpen?: boolean;
 }
 
-const OFFSET = 8;
+const OFFSET = 6; // 화살표가 trigger에 딱 붙도록 arrow 크기와 동일하게 설정
 const MARGIN = 8;
 
 function TooltipRoot({
@@ -217,10 +217,12 @@ function TooltipRoot({
 
         // 수평: 트리거 좌/우 배치 (width 조정으로 여백 확보)
         if (finalPlacement === "left") {
-          left = trigger.left - OFFSET - bw;
+          // 화살표(6px) + 여백(6px) = 12px offset으로 화살표와 trigger 간 간격 유지
+          const leftOffset = 12;
+          left = trigger.left - leftOffset - bw;
           // 왼쪽 여백 부족 시 width 줄이기
           if (left < MARGIN) {
-            bw = trigger.left - OFFSET - MARGIN;
+            bw = trigger.left - leftOffset - MARGIN;
             left = MARGIN;
           }
         } else {

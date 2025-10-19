@@ -155,11 +155,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const currentLength = value ? String(value).length : 0;
     const showCounter = maxLength !== undefined;
 
-    // aria-describedby 병합 (외부 값 + 내부 에러 ID)
-    const ariaDescribedBy =
+    // aria-describedby 병합 (외부 값 + 에러 + 카운터)
+    const describedBy =
       [
         props["aria-describedby"],
-        errorMessage ? `${baseClass}-error` : undefined,
+        errorMessage ? `${id}-error` : undefined,
+        showCounter ? `${id}-counter` : undefined,
       ]
         .filter(Boolean)
         .join(" ") || undefined;
@@ -179,7 +180,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
           <input
             id={id}
-            {...{ ...props, "aria-describedby": ariaDescribedBy }}
+            {...{ ...props, "aria-describedby": describedBy }}
+            aria-invalid={hasError || undefined}
             ref={inputRef}
             className={inputClasses}
             value={value}
@@ -222,7 +224,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           >
             {errorMessage && (
               <span
-                id={`${baseClass}-error`}
+                id={`${id}-error`}
                 className={`${baseClass}__error-message`}
                 role="alert"
               >
@@ -230,7 +232,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               </span>
             )}
             {showCounter && (
-              <span className={`${baseClass}__counter`}>
+              <span id={`${id}-counter`} className={`${baseClass}__counter`}>
                 {currentLength}/{maxLength}
               </span>
             )}

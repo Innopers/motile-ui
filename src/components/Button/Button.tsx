@@ -94,6 +94,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         type="button"
         className={classes}
         disabled={disabled || isLoading}
+        aria-busy={isLoading || undefined}
         style={customStyle}
         {...props}
       >
@@ -105,7 +106,11 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             {children}
           </span>
           {isLoading && (
-            <span className={`${baseClass}__loading`}>
+            <span
+              className={`${baseClass}__loading`}
+              role="status"
+              aria-label="Loading"
+            >
               <span className={`${baseClass}__dots`}>
                 <span className={`${baseClass}__dot`}></span>
                 <span className={`${baseClass}__dot`}></span>

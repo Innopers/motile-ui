@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useRef } from "react";
+import React, { forwardRef, useEffect, useId, useRef } from "react";
 import "./Input.css";
 
 export interface InputProps
@@ -67,6 +67,7 @@ export interface InputProps
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {
+      id: idProp,
       autoFocus = false,
       autoSelect = false,
       variant = "default",
@@ -86,6 +87,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref
   ) => {
+    const generatedId = useId().replace(/:/g, "");
+    const id = idProp ?? `taeri-input-${generatedId}`;
+
     const internalRef = useRef<HTMLInputElement>(null);
     const inputRef = (ref as React.RefObject<HTMLInputElement>) || internalRef;
 
@@ -163,13 +167,18 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <>
         <div className={wrapperClasses} style={wrapperStyle}>
-          {label && <label className={labelClasses}>{label}</label>}
+          {label && (
+            <label className={labelClasses} htmlFor={id}>
+              {label}
+            </label>
+          )}
 
           {leftIcon && (
             <div className={`${baseClass}__left-icon`}>{leftIcon}</div>
           )}
 
           <input
+            id={id}
             {...{ ...props, "aria-describedby": ariaDescribedBy }}
             ref={inputRef}
             className={inputClasses}

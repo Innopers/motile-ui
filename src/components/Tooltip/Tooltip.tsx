@@ -86,9 +86,25 @@ interface TooltipRootProps {
    * @default false
    */
   keepOpen?: boolean;
+  /**
+   * 툴팁과 트리거 사이의 간격 (px)
+   * - number: 모든 방향 동일하게 적용
+   * - object: 방향별 개별 설정 가능
+   * @default top: 7, bottom: 6, left: 12, right: 6
+   * @example
+   * offset={8}
+   * offset={{ top: 7, bottom: 6, left: 12, right: 6 }}
+   */
+  offset?:
+    | number
+    | {
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
+      };
 }
 
-const OFFSET = 6; // 화살표가 trigger에 딱 붙도록 arrow 크기와 동일하게 설정
 const MARGIN = 8;
 
 function TooltipRoot({
@@ -99,7 +115,21 @@ function TooltipRoot({
   color,
   showArrow = false,
   keepOpen = false,
+  offset,
 }: TooltipRootProps) {
+  // offset 정규화 (number → object 변환)
+  const offsetValue =
+    offset === undefined
+      ? { top: 7, bottom: 6, left: 12, right: 6 } // 기본값: top은 7, left는 화살표(6px) + 여백(6px) = 12px
+      : typeof offset === "number"
+      ? { top: offset, bottom: offset, left: offset, right: offset }
+      : {
+          top: offset.top ?? 7,
+          bottom: offset.bottom ?? 6,
+          left: offset.left ?? 12,
+          right: offset.right ?? 6,
+        };
+
   const id = useId().replace(/:/g, "");
   const triggerRef = useRef<HTMLElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -158,18 +188,21 @@ function TooltipRoot({
 
       // 위치 자동 조정 (flip)
       let finalPlacement = position;
-      if (position === "top" && trigger.top - OFFSET - bh < MARGIN) {
+      if (position === "top" && trigger.top - offsetValue.top - bh < MARGIN) {
         finalPlacement = "bottom";
       } else if (
         position === "bottom" &&
-        trigger.bottom + OFFSET + bh > vh - MARGIN
+        trigger.bottom + offsetValue.bottom + bh > vh - MARGIN
       ) {
         finalPlacement = "top";
-      } else if (position === "left" && trigger.left - OFFSET - bw < MARGIN) {
+      } else if (
+        position === "left" &&
+        trigger.left - offsetValue.left - bw < MARGIN
+      ) {
         finalPlacement = "right";
       } else if (
         position === "right" &&
-        trigger.right + OFFSET + bw > vw - MARGIN
+        trigger.right + offsetValue.right + bw > vw - MARGIN
       ) {
         finalPlacement = "left";
       }
@@ -196,8 +229,8 @@ function TooltipRoot({
         // 수직: 트리거 위/아래 배치
         top =
           finalPlacement === "top"
-            ? trigger.top - OFFSET - bh
-            : trigger.bottom + OFFSET;
+            ? trigger.top - offsetValue.top - bh
+            : trigger.bottom + offsetValue.bottom;
         top = Math.max(MARGIN, Math.min(top, vh - MARGIN - bh));
       } else {
         // left/right placement
@@ -217,17 +250,15 @@ function TooltipRoot({
 
         // 수평: 트리거 좌/우 배치 (width 조정으로 여백 확보)
         if (finalPlacement === "left") {
-          // 화살표(6px) + 여백(6px) = 12px offset으로 화살표와 trigger 간 간격 유지
-          const leftOffset = 12;
-          left = trigger.left - leftOffset - bw;
+          left = trigger.left - offsetValue.left - bw;
           // 왼쪽 여백 부족 시 width 줄이기
           if (left < MARGIN) {
-            bw = trigger.left - leftOffset - MARGIN;
+            bw = trigger.left - offsetValue.left - MARGIN;
             left = MARGIN;
           }
         } else {
           // right
-          left = trigger.right + OFFSET;
+          left = trigger.right + offsetValue.right;
           // 오른쪽 여백 부족 시 width 줄이기
           if (left + bw > vw - MARGIN) {
             bw = vw - MARGIN - left;
@@ -297,7 +328,7 @@ function TooltipRoot({
       window.removeEventListener("resize", scheduleUpdate);
       ro.disconnect();
     };
-  }, [open, position, align, color]); // position, align 변경 시에도 위치 재계산 필요
+  }, [open, position, align, color, offset]); // position, align, offset 변경 시에도 위치 재계산 필요
 
   // 스크롤 시 tooltip 자동 닫기
   useEffect(() => {

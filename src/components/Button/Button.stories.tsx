@@ -1,79 +1,80 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { Button } from './Button'
+import type { Meta, StoryObj } from "@storybook/react";
+import { Button } from "./Button";
 
 const meta = {
-  title: 'Components/Button',
+  title: "Components/Button",
   component: Button,
   parameters: {
-    layout: 'padded',
+    layout: "padded",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     variant: {
-      control: 'select',
-      options: ['primary', 'secondary', 'default'],
-      description: 'Button variant style',
+      control: "select",
+      options: ["primary", "secondary", "default"],
+      description: "Button variant style",
     },
     size: {
-      control: 'select',
-      options: ['large', 'medium', 'small'],
-      description: 'Button size',
+      control: "select",
+      options: ["large", "medium", "small"],
+      description: "Button size",
     },
     fullWidth: {
-      control: 'boolean',
-      description: 'Make button full width (default: true)',
+      control: "boolean",
+      description: "Make button full width (default: true)",
     },
     color: {
-      control: 'color',
-      description: 'Button background color (priority 1: props > --taeri-ui-btn > --taeri-theme > default)',
+      control: "color",
+      description:
+        "Button background color (priority 1: props > --taeri-ui-btn > --taeri-theme > default)",
     },
     disabled: {
-      control: 'boolean',
-      description: 'Disable button',
+      control: "boolean",
+      description: "Disable button",
     },
-    loading: {
-      control: 'boolean',
-      description: 'Show loading state with animated dots',
+    isLoading: {
+      control: "boolean",
+      description: "Show loading state with animated dots",
     },
   },
-} satisfies Meta<typeof Button>
+} satisfies Meta<typeof Button>;
 
-export default meta
-type Story = StoryObj<typeof meta>
+export default meta;
+type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
-    variant: 'primary',
-    size: 'large',
-    children: 'Button',
+    variant: "primary",
+    size: "large",
+    children: "Button",
   },
-}
+};
 
 export const AutoWidth: Story = {
   args: {
-    variant: 'primary',
-    size: 'large',
+    variant: "primary",
+    size: "large",
     fullWidth: false,
-    children: 'Auto Width Button',
+    children: "Auto Width Button",
   },
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-}
+};
 
 export const Disabled: Story = {
   args: {
-    variant: 'primary',
-    size: 'large',
+    variant: "primary",
+    size: "large",
     disabled: true,
-    children: 'Button',
+    children: "Button",
   },
-}
+};
 
 export const WithIcon: Story = {
   args: {
-    variant: 'primary',
-    size: 'large',
+    variant: "primary",
+    size: "large",
     children: (
       <>
         <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
@@ -83,29 +84,29 @@ export const WithIcon: Story = {
       </>
     ),
   },
-}
+};
 
 export const Secondary: Story = {
   args: {
-    variant: 'secondary',
-    size: 'large',
-    children: 'Secondary Button',
+    variant: "secondary",
+    size: "large",
+    children: "Secondary Button",
   },
-}
+};
 
 export const Default: Story = {
   args: {
-    variant: 'default',
-    size: 'large',
-    children: 'Default Button',
+    variant: "default",
+    size: "large",
+    children: "Default Button",
   },
-}
+};
 
 export const Loading: Story = {
   args: {
-    variant: 'primary',
-    size: 'large',
-    loading: true,
-    children: 'Loading Button',
+    variant: "primary",
+    size: "large",
+    isLoading: true,
+    children: "Loading Button",
   },
-}
+};

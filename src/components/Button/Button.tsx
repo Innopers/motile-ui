@@ -20,7 +20,7 @@ export interface ButtonProps
 
   /**
    * 전체 너비 사용 여부
-   * @default true
+   * @default size === "large" ? true : false
    */
   fullWidth?: boolean;
 
@@ -53,7 +53,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     {
       variant = "primary",
       size = "large",
-      fullWidth = true,
+      fullWidth,
       color,
       hoverOnTouch = false,
       isLoading = false,
@@ -67,14 +67,14 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const baseClass = "taeri-btn";
 
-    // md, sm 사이즈는 항상 fit-content (fullWidth 무시)
-    const shouldFullWidth = size === "large" && fullWidth;
+    // fullWidth 기본값: large는 true, 나머지는 false
+    const actualFullWidth = fullWidth ?? size === "large";
 
     const classes = [
       baseClass,
       `${baseClass}--${variant}`,
       `${baseClass}--${size}`,
-      shouldFullWidth && `${baseClass}--full-width`,
+      actualFullWidth && `${baseClass}--full-width`,
       (disabled || isLoading) && `${baseClass}--disabled`,
       isLoading && `${baseClass}--loading`,
       hoverOnTouch && `${baseClass}--hover-on-touch`,

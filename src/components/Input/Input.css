@@ -258,7 +258,10 @@
 
   .taeri-input--default:focus {
     border: 2px solid
-      var(--taeri-input-color, var(--taeri-ui-input, var(--taeri-theme, #3182f6)));
+      var(
+        --taeri-input-color,
+        var(--taeri-ui-input, var(--taeri-theme, #3182f6))
+      );
   }
 
   .taeri-input--underline {
@@ -318,11 +321,13 @@
     padding-left: 32px;
   }
 
-  .taeri-input-wrapper:has(.taeri-input--underline) .taeri-input--with-label.taeri-input--with-left-icon {
+  .taeri-input-wrapper:has(.taeri-input--underline)
+    .taeri-input--with-label.taeri-input--with-left-icon {
     padding-left: 32px;
   }
 
-  .taeri-input-wrapper:has(.taeri-input--underline) .taeri-input--with-label.taeri-input--with-left-icon:focus {
+  .taeri-input-wrapper:has(.taeri-input--underline)
+    .taeri-input--with-label.taeri-input--with-left-icon:focus {
     padding-left: 32px;
   }
 
@@ -410,12 +415,19 @@
 }
 
 /* Default variant - label이 active일 때 (focus 또는 값 있을 때) */
-.taeri-input-wrapper:not(:has(.taeri-input--underline)):has(.taeri-input:focus) .taeri-input__label,
-.taeri-input-wrapper:not(:has(.taeri-input--underline)):has(.taeri-input:not(:placeholder-shown)) .taeri-input__label {
+.taeri-input-wrapper:not(:has(.taeri-input--underline)):has(.taeri-input:focus)
+  .taeri-input__label,
+.taeri-input-wrapper:not(:has(.taeri-input--underline)):has(
+    .taeri-input:not(:placeholder-shown)
+  )
+  .taeri-input__label {
   top: 0;
   transform: translateY(-50%);
   font-size: 12px;
-  color: var(--taeri-input-color, var(--taeri-ui-input, var(--taeri-theme, #3182f6)));
+  color: var(
+    --taeri-input-color,
+    var(--taeri-ui-input, var(--taeri-theme, #3182f6))
+  );
   background: white;
   padding: 0 4px;
 }
@@ -428,17 +440,25 @@
 }
 
 /* Underline variant - label이 active일 때 (focus 또는 값 있을 때) */
-.taeri-input-wrapper:has(.taeri-input--underline):has(.taeri-input:focus) .taeri-input__label,
-.taeri-input-wrapper:has(.taeri-input--underline):has(.taeri-input:not(:placeholder-shown)) .taeri-input__label {
+.taeri-input-wrapper:has(.taeri-input--underline):has(.taeri-input:focus)
+  .taeri-input__label,
+.taeri-input-wrapper:has(.taeri-input--underline):has(
+    .taeri-input:not(:placeholder-shown)
+  )
+  .taeri-input__label {
   top: 14px;
   transform: translateY(-100%);
   font-size: 12px;
-  color: var(--taeri-input-color, var(--taeri-ui-input, var(--taeri-theme, #3182f6)));
+  color: var(
+    --taeri-input-color,
+    var(--taeri-ui-input, var(--taeri-theme, #3182f6))
+  );
 }
 
 /* Error 상태의 label 색상 (focus 또는 값 있을 때) */
 .taeri-input-wrapper:has(.taeri-input:focus) .taeri-input__label--error,
-.taeri-input-wrapper:has(.taeri-input:not(:placeholder-shown)) .taeri-input__label--error {
+.taeri-input-wrapper:has(.taeri-input:not(:placeholder-shown))
+  .taeri-input__label--error {
   color: #ef4444;
 }
 
@@ -458,11 +478,13 @@
   padding-left: 40px;
 }
 
-.taeri-input-wrapper:has(.taeri-input--underline) .taeri-input--with-label.taeri-input--with-left-icon {
+.taeri-input-wrapper:has(.taeri-input--underline)
+  .taeri-input--with-label.taeri-input--with-left-icon {
   padding-left: 32px;
 }
 
-.taeri-input-wrapper:has(.taeri-input--underline) .taeri-input--with-label.taeri-input--with-left-icon:focus {
+.taeri-input-wrapper:has(.taeri-input--underline)
+  .taeri-input--with-label.taeri-input--with-left-icon:focus {
   padding-left: 32px;
 }
 
@@ -471,20 +493,33 @@
   left: 44px;
 }
 
-.taeri-input-wrapper:has(.taeri-input--underline.taeri-input--with-left-icon) .taeri-input__label {
+.taeri-input-wrapper:has(.taeri-input--underline.taeri-input--with-left-icon)
+  .taeri-input__label {
   left: 32px;
   top: calc(50% + 7px);
   transform: translateY(-50%);
 }
 
 /* Active 상태 (focus 또는 값 있을 때) + left icon이 있을 때 label 위치 - default variant만 */
-.taeri-input-wrapper:not(:has(.taeri-input--underline)):has(.taeri-input--with-left-icon):has(.taeri-input:focus) .taeri-input__label,
-.taeri-input-wrapper:not(:has(.taeri-input--underline)):has(.taeri-input--with-left-icon):has(.taeri-input:not(:placeholder-shown)) .taeri-input__label {
+.taeri-input-wrapper:not(:has(.taeri-input--underline)):has(
+    .taeri-input--with-left-icon
+  ):has(.taeri-input:focus)
+  .taeri-input__label,
+.taeri-input-wrapper:not(:has(.taeri-input--underline)):has(
+    .taeri-input--with-left-icon
+  ):has(.taeri-input:not(:placeholder-shown))
+  .taeri-input__label {
   left: 40px;
 }
 
-.taeri-input-wrapper:has(.taeri-input--underline.taeri-input--with-left-icon):has(.taeri-input:focus) .taeri-input__label,
-.taeri-input-wrapper:has(.taeri-input--underline.taeri-input--with-left-icon):has(.taeri-input:not(:placeholder-shown)) .taeri-input__label {
+.taeri-input-wrapper:has(
+    .taeri-input--underline.taeri-input--with-left-icon
+  ):has(.taeri-input:focus)
+  .taeri-input__label,
+.taeri-input-wrapper:has(
+    .taeri-input--underline.taeri-input--with-left-icon
+  ):has(.taeri-input:not(:placeholder-shown))
+  .taeri-input__label {
   left: 4px;
   top: 14px;
   transform: translateY(-100%);
@@ -497,8 +532,14 @@
   }
 
   /* Mobile - Active 상태 (focus 또는 값 있을 때) */
-  .taeri-input-wrapper:not(:has(.taeri-input--underline)):has(.taeri-input:focus) .taeri-input__label,
-  .taeri-input-wrapper:not(:has(.taeri-input--underline)):has(.taeri-input:not(:placeholder-shown)) .taeri-input__label {
+  .taeri-input-wrapper:not(:has(.taeri-input--underline)):has(
+      .taeri-input:focus
+    )
+    .taeri-input__label,
+  .taeri-input-wrapper:not(:has(.taeri-input--underline)):has(
+      .taeri-input:not(:placeholder-shown)
+    )
+    .taeri-input__label {
     font-size: 12px;
   }
 
@@ -508,8 +549,12 @@
     transform: translateY(-50%);
   }
 
-  .taeri-input-wrapper:has(.taeri-input--underline):has(.taeri-input:focus) .taeri-input__label,
-  .taeri-input-wrapper:has(.taeri-input--underline):has(.taeri-input:not(:placeholder-shown)) .taeri-input__label {
+  .taeri-input-wrapper:has(.taeri-input--underline):has(.taeri-input:focus)
+    .taeri-input__label,
+  .taeri-input-wrapper:has(.taeri-input--underline):has(
+      .taeri-input:not(:placeholder-shown)
+    )
+    .taeri-input__label {
     font-size: 12px;
     top: 14px;
     transform: translateY(-100%);
@@ -519,20 +564,33 @@
     left: 40px;
   }
 
-  .taeri-input-wrapper:has(.taeri-input--underline.taeri-input--with-left-icon) .taeri-input__label {
+  .taeri-input-wrapper:has(.taeri-input--underline.taeri-input--with-left-icon)
+    .taeri-input__label {
     left: 32px;
     top: calc(50% + 7px);
     transform: translateY(-50%);
   }
 
   /* Mobile - Active 상태 + left icon - default variant만 */
-  .taeri-input-wrapper:not(:has(.taeri-input--underline)):has(.taeri-input--with-left-icon):has(.taeri-input:focus) .taeri-input__label,
-  .taeri-input-wrapper:not(:has(.taeri-input--underline)):has(.taeri-input--with-left-icon):has(.taeri-input:not(:placeholder-shown)) .taeri-input__label {
+  .taeri-input-wrapper:not(:has(.taeri-input--underline)):has(
+      .taeri-input--with-left-icon
+    ):has(.taeri-input:focus)
+    .taeri-input__label,
+  .taeri-input-wrapper:not(:has(.taeri-input--underline)):has(
+      .taeri-input--with-left-icon
+    ):has(.taeri-input:not(:placeholder-shown))
+    .taeri-input__label {
     left: 36px;
   }
 
-  .taeri-input-wrapper:has(.taeri-input--underline.taeri-input--with-left-icon):has(.taeri-input:focus) .taeri-input__label,
-  .taeri-input-wrapper:has(.taeri-input--underline.taeri-input--with-left-icon):has(.taeri-input:not(:placeholder-shown)) .taeri-input__label {
+  .taeri-input-wrapper:has(
+      .taeri-input--underline.taeri-input--with-left-icon
+    ):has(.taeri-input:focus)
+    .taeri-input__label,
+  .taeri-input-wrapper:has(
+      .taeri-input--underline.taeri-input--with-left-icon
+    ):has(.taeri-input:not(:placeholder-shown))
+    .taeri-input__label {
     left: 4px;
     top: 14px;
     transform: translateY(-100%);

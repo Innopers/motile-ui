@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useRef } from "react";
+import React, { forwardRef, useEffect, useId, useRef } from "react";
 import "./Input.css";
 
 export interface InputProps
@@ -28,7 +28,7 @@ export interface InputProps
   isError?: boolean;
 
   /**
-   * 에러 메시지 (설정 시 자동으로 isError true로 처리)
+   * 에러 메시지 (isError가 명시되지 않으면 에러 상태로 표시)
    */
   errorMessage?: string;
 
@@ -67,10 +67,11 @@ export interface InputProps
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {
+      id: idProp,
       autoFocus = false,
       autoSelect = false,
       variant = "default",
-      isError = false,
+      isError,
       errorMessage,
       onClear,
       leftIcon,
@@ -86,11 +87,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref
   ) => {
+    const generatedId = useId().replace(/:/g, "");
+    const id = idProp ?? `taeri-input-${generatedId}`;
+
     const internalRef = useRef<HTMLInputElement>(null);
     const inputRef = (ref as React.RefObject<HTMLInputElement>) || internalRef;
 
-    // errorMessage가 있으면 자동으로 에러 상태
-    const hasError = isError || !!errorMessage;
+    // isError가 명시되지 않으면 errorMessage로 판단
+    const hasError = isError ?? !!errorMessage;
 
     // autoFocus & autoSelect 처리
     useEffect(() => {
@@ -151,24 +155,39 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const currentLength = value ? String(value).length : 0;
     const showCounter = maxLength !== undefined;
 
+    // aria-describedby 병합 (외부 값 + 에러 + 카운터)
+    const describedBy =
+      [
+        props["aria-describedby"],
+        errorMessage ? `${id}-error` : undefined,
+        showCounter ? `${id}-counter` : undefined,
+      ]
+        .filter(Boolean)
+        .join(" ") || undefined;
+
     return (
       <>
         <div className={wrapperClasses} style={wrapperStyle}>
-          {label && <label className={labelClasses}>{label}</label>}
+          {label && (
+            <label className={labelClasses} htmlFor={id}>
+              {label}
+            </label>
+          )}
 
           {leftIcon && (
             <div className={`${baseClass}__left-icon`}>{leftIcon}</div>
           )}
 
           <input
+            id={id}
+            {...{ ...props, "aria-describedby": describedBy }}
+            aria-invalid={hasError || undefined}
             ref={inputRef}
             className={inputClasses}
             value={value}
             maxLength={maxLength}
             style={inputStyle}
-            placeholder={label ? (placeholder || " ") : placeholder}
-            aria-describedby={errorMessage ? `${baseClass}-error` : undefined}
-            {...props}
+            placeholder={label ? placeholder || " " : placeholder}
           />
 
           {rightIcon && !showClearButton && (
@@ -199,13 +218,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               errorMessage && showCounter
                 ? `${baseClass}__helper-text--both`
                 : errorMessage
-                  ? `${baseClass}__helper-text--error-only`
-                  : `${baseClass}__helper-text--counter-only`
+                ? `${baseClass}__helper-text--error-only`
+                : `${baseClass}__helper-text--counter-only`
             }`}
           >
             {errorMessage && (
               <span
-                id={`${baseClass}-error`}
+                id={`${id}-error`}
                 className={`${baseClass}__error-message`}
                 role="alert"
               >
@@ -213,7 +232,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               </span>
             )}
             {showCounter && (
-              <span className={`${baseClass}__counter`}>
+              <span id={`${id}-counter`} className={`${baseClass}__counter`}>
                 {currentLength}/{maxLength}
               </span>
             )}

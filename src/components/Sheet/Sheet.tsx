@@ -10,6 +10,7 @@ import { createPortal } from "react-dom";
 import { useScrollLock } from "../../hooks/useScrollLock";
 import { useClickOutside } from "../../hooks/useClickOutside";
 import { useEscapeKey } from "../../hooks/useEscapeKey";
+import { useHistoryClose } from "../../hooks/useHistoryClose";
 import "./Sheet.css";
 
 /**
@@ -79,6 +80,17 @@ export interface SheetProps {
   closeOnBackdrop?: CloseOnBackdropOptions;
 
   /**
+   * 브라우저 히스토리 뒤로가기로 닫기 제어
+   *
+   * 모바일에서 스와이프 제스처, 데스크톱에서 뒤로가기 버튼/단축키로 Sheet를 닫을 수 있습니다.
+   * - 모바일: 오른쪽 스와이프 제스처
+   * - 데스크톱: 브라우저 뒤로가기 버튼, 마우스 뒤로가기, Alt+Left (Win), Cmd+[ (Mac)
+   *
+   * @default true
+   */
+  closeOnHistoryBack?: boolean;
+
+  /**
    * Sheet 최대 너비 (데스크톱 전용)
    *
    * @default "600px"
@@ -142,6 +154,7 @@ export const Sheet = forwardRef<SheetHandle, SheetProps>(
       children,
       position = "right",
       closeOnBackdrop = true,
+      closeOnHistoryBack = true,
       maxWidth = "600px",
       zIndex = 1000,
       showHeader = true,
@@ -167,6 +180,9 @@ export const Sheet = forwardRef<SheetHandle, SheetProps>(
 
     // 배경 스크롤 방지
     useScrollLock({ enabled: isOpen });
+
+    // 히스토리 기반 뒤로가기 제스처로 닫기 (모바일 웹뷰)
+    useHistoryClose({ isOpen: isOpen && closeOnHistoryBack, onClose });
 
     // 외부 클릭으로 닫기
     useClickOutside({

@@ -50,6 +50,14 @@ const meta = {
         defaultValue: { summary: "true" },
       },
     },
+    closeOnHistoryBack: {
+      control: "boolean",
+      description:
+        "브라우저 히스토리 뒤로가기로 닫기 제어 (모바일 스와이프, 데스크톱 뒤로가기 버튼)",
+      table: {
+        defaultValue: { summary: "true" },
+      },
+    },
     zIndex: {
       control: "number",
       description: "z-index 값",
@@ -110,6 +118,7 @@ export const Default: Story = {
     showHeader: true,
     maxWidth: "600px",
     closeOnBackdrop: true,
+    closeOnHistoryBack: true,
     zIndex: 1000,
   },
 };

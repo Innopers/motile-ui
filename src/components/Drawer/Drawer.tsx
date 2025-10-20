@@ -94,6 +94,25 @@ export interface DrawerProps {
   width?: string;
 
   /**
+   * Drawer 최대 컨테이너 너비 (데스크톱 전용)
+   *
+   * 앱의 레이아웃 max-width와 Drawer를 일치시킬 때 사용합니다.
+   * 모바일에서는 무시되고 항상 100% 너비입니다.
+   *
+   * @default undefined (viewport 전체 너비)
+   *
+   * @example
+   * // 1024px 컨테이너 레이아웃에 맞추기
+   * <Drawer width="480px" maxWidth="1024px" />
+   *
+   * // 좌우 회색 배경이 있는 레이아웃
+   * <div style={{ maxWidth: '1024px', margin: '0 auto' }}>
+   *   <Drawer maxWidth="1024px" />
+   * </div>
+   */
+  maxWidth?: string;
+
+  /**
    * z-index 값
    * @default 9999
    */
@@ -122,6 +141,7 @@ export const Drawer = forwardRef<DrawerHandle, DrawerProps>(
       closeOnDrag = true,
       maxHeight = "70dvh",
       width = "480px",
+      maxWidth,
       zIndex = 9999,
       className = "",
       style,
@@ -329,6 +349,8 @@ export const Drawer = forwardRef<DrawerHandle, DrawerProps>(
         ({ "--drawer-max-height": maxHeight } as React.CSSProperties)),
       ...(width !== "480px" &&
         ({ "--drawer-width": width } as React.CSSProperties)),
+      ...(maxWidth &&
+        ({ "--drawer-max-width": maxWidth } as React.CSSProperties)),
       zIndex: zIndex + 1,
       ...style,
     };

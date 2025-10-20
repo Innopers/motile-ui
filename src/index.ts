@@ -43,3 +43,17 @@ export type {
   PopoverTriggerProps,
   PopoverContentProps,
 } from "./components/Popover";
+
+export { Drawer } from "./components/Drawer";
+export type {
+  DrawerProps,
+  DrawerHandle,
+  CloseOnBackdropOptions,
+} from "./components/Drawer";
+
+// Hooks
+export { useScrollLock } from "./hooks/useScrollLock";
+export { useClickOutside } from "./hooks/useClickOutside";
+export type { UseClickOutsideOptions } from "./hooks/useClickOutside";
+export { useEscapeKey } from "./hooks/useEscapeKey";
+export type { UseEscapeKeyOptions } from "./hooks/useEscapeKey";

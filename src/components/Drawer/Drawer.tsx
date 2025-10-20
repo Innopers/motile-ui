@@ -7,7 +7,29 @@ import React, {
 } from "react";
 import { createPortal } from "react-dom";
 import { useScrollLock } from "../../hooks/useScrollLock";
+import { useClickOutside } from "../../hooks/useClickOutside";
+import { useEscapeKey } from "../../hooks/useEscapeKey";
 import "./Drawer.css";
+
+/**
+ * 백드롭 인터랙션으로 닫기 옵션
+ * - boolean: ESC 키와 외부 클릭 모두 제어
+ * - object: 각각 독립적으로 제어
+ */
+export type CloseOnBackdropOptions =
+  | boolean
+  | {
+      /**
+       * ESC 키로 닫기 허용
+       * @default false (object 사용 시)
+       */
+      escapeKey?: boolean;
+      /**
+       * 외부 클릭으로 닫기 허용
+       * @default false (object 사용 시)
+       */
+      clickOutside?: boolean;
+    };
 
 export interface DrawerHandle {
   close: () => void;
@@ -41,10 +63,17 @@ export interface DrawerProps {
   children: React.ReactNode;
 
   /**
-   * 백드롭 인터랙션으로 닫기 허용 (오버레이 클릭, ESC 키)
+   * 백드롭 인터랙션으로 닫기 허용
+   *
+   * - `true`: 외부 클릭과 ESC 키 모두 허용
+   * - `false`: 외부 클릭과 ESC 키 모두 비활성화
+   * - `{ escapeKey: true }`: ESC 키만 허용
+   * - `{ clickOutside: true }`: 외부 클릭만 허용
+   * - `{ escapeKey: true, clickOutside: true }`: 모두 허용 (명시적)
+   *
    * @default true
    */
-  closeOnBackdrop?: boolean;
+  closeOnBackdrop?: CloseOnBackdropOptions;
 
   /**
    * 드래그로 닫기 허용
@@ -111,6 +140,15 @@ export const Drawer = forwardRef<DrawerHandle, DrawerProps>(
     // Animation state
     const [isVisible, setIsVisible] = useState(false);
     const [shouldRender, setShouldRender] = useState(false);
+
+    // closeOnBackdrop 옵션 처리
+    const backdropOptions =
+      typeof closeOnBackdrop === "boolean"
+        ? { escapeKey: closeOnBackdrop, clickOutside: closeOnBackdrop }
+        : {
+            escapeKey: closeOnBackdrop?.escapeKey ?? false,
+            clickOutside: closeOnBackdrop?.clickOutside ?? false,
+          };
 
     // 배경 스크롤 차단
     useScrollLock({
@@ -184,19 +222,18 @@ export const Drawer = forwardRef<DrawerHandle, DrawerProps>(
       });
     }, [shouldRender]);
 
-    // ESC 키 처리
-    useEffect(() => {
-      if (!isOpen || !closeOnBackdrop) return;
+    // 외부 클릭으로 닫기
+    useClickOutside({
+      refs: [drawerRef],
+      handler: handleClose,
+      enabled: isOpen && backdropOptions.clickOutside,
+    });
 
-      const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key === "Escape") {
-          handleClose();
-        }
-      };
-
-      document.addEventListener("keydown", handleKeyDown);
-      return () => document.removeEventListener("keydown", handleKeyDown);
-    }, [isOpen, closeOnBackdrop]);
+    // ESC 키로 닫기
+    useEscapeKey({
+      handler: handleClose,
+      enabled: isOpen && backdropOptions.escapeKey,
+    });
 
     // Drag handlers
     const handleDragStart = (clientY: number) => {
@@ -275,17 +312,6 @@ export const Drawer = forwardRef<DrawerHandle, DrawerProps>(
       window.addEventListener("mouseup", handleMouseUp);
     };
 
-    // 오버레이 클릭 핸들러
-    const handleOverlayClick = (e: React.MouseEvent) => {
-      if (
-        closeOnBackdrop &&
-        overlayRef.current &&
-        e.target === overlayRef.current
-      ) {
-        handleClose();
-      }
-    };
-
     if (!shouldRender) return null;
 
     const baseClass = "taeri-drawer";
@@ -314,7 +340,6 @@ export const Drawer = forwardRef<DrawerHandle, DrawerProps>(
           isVisible ? `${baseClass}__overlay--visible` : ""
         }`}
         style={{ zIndex }}
-        onClick={handleOverlayClick}
         role="presentation"
       >
         <div

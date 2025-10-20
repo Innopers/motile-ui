@@ -178,8 +178,11 @@ export const Sheet = forwardRef<SheetHandle, SheetProps>(
             clickOutside: closeOnBackdrop.clickOutside ?? false,
           };
 
-    // 배경 스크롤 방지
-    useScrollLock({ enabled: isOpen });
+    // 배경 스크롤 방지 (Sheet 내부만 스크롤 허용)
+    useScrollLock({
+      enabled: isOpen,
+      allowedSelectors: [".taeri-sheet__body"],
+    });
 
     // 히스토리 기반 뒤로가기 제스처로 닫기 (모바일 웹뷰)
     useHistoryClose({ isOpen: isOpen && closeOnHistoryBack, onClose });

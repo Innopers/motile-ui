@@ -149,6 +149,54 @@
   height: 8px;
 }
 
+.taeri-badge--shimmer {
+  /* 배경: primary와 동일한 우선순위 색상 */
+  background-color: var(
+    --taeri-badge-color,
+    var(--taeri-ui-badge, var(--taeri-theme, #3b82f6))
+  );
+  color: #ffffff;
+  /* shimmer 효과를 위한 설정 */
+  position: relative;
+  overflow: hidden;
+}
+
+/* shimmer 애니메이션 레이어 */
+.taeri-badge--shimmer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  /* 반투명 흰색 gradient */
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+  /* 애니메이션 적용 */
+  animation: shimmer 2s infinite;
+}
+
+/* shimmer 애니메이션 정의 */
+@keyframes shimmer {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+/* 애니메이션 비활성화 설정 준수 */
+@media (prefers-reduced-motion: reduce) {
+  .taeri-badge--shimmer::before {
+    animation: none;
+  }
+}
+
 /* Mobile optimization - Touch feedback only */
 @media (max-width: 768px) {
   /*

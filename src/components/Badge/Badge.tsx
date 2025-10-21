@@ -1,7 +1,7 @@
 import React from "react";
 import "./Badge.css";
 
-type BadgeVariant = "primary" | "secondary" | "outlined" | "dot";
+type BadgeVariant = "primary" | "secondary" | "outlined" | "dot" | "shimmer";
 type BadgeSize = "large" | "medium" | "small";
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {

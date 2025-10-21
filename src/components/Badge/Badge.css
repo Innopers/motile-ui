@@ -1,0 +1,220 @@
+.taeri-badge {
+  /* 기본 스타일 */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  line-height: 1.2;
+  border-radius: 9999px;
+  white-space: nowrap;
+  vertical-align: middle;
+  /* 색상 우선순위: props > --taeri-ui-badge > --taeri-theme > 기본색 */
+  background-color: var(
+    --taeri-badge-color,
+    var(--taeri-ui-badge, var(--taeri-theme, #3b82f6))
+  );
+  color: #ffffff;
+}
+
+/* Size variants */
+.taeri-badge--large {
+  padding: 6px 16px;
+  font-size: 1rem; /* 16px */
+  min-height: 32px;
+}
+
+.taeri-badge--medium {
+  padding: 5px 12px;
+  font-size: 0.875rem; /* 14px */
+  min-height: 26px;
+}
+
+.taeri-badge--small {
+  padding: 4px 8px;
+  font-size: 0.75rem; /* 12px */
+  min-height: 24px;
+}
+
+/* Color variants */
+.taeri-badge--primary {
+  background-color: var(
+    --taeri-badge-color,
+    var(--taeri-ui-badge, var(--taeri-theme, #3b82f6))
+  );
+  color: #ffffff;
+}
+
+.taeri-badge--secondary {
+  /* 배경: 우선순위 색상을 연하게 (10% 투명도) */
+  background: color-mix(
+    in srgb,
+    var(--taeri-badge-color, var(--taeri-ui-badge, var(--taeri-theme, #3b82f6)))
+      10%,
+    transparent
+  );
+  /* 글자색: 우선순위 색상 그대로 */
+  color: var(
+    --taeri-badge-color,
+    var(--taeri-ui-badge, var(--taeri-theme, #3b82f6))
+  );
+  /* border: 우선순위 색상 그대로 */
+  border: 1px solid
+    var(--taeri-badge-color, var(--taeri-ui-badge, var(--taeri-theme, #3b82f6)));
+}
+
+/* secondary는 border 1px 때문에 padding 조정 필요 */
+.taeri-badge--secondary.taeri-badge--large {
+  padding: 5px 15px;
+  min-height: 30px;
+}
+
+.taeri-badge--secondary.taeri-badge--medium {
+  padding: 4px 11px;
+  min-height: 24px;
+}
+
+.taeri-badge--secondary.taeri-badge--small {
+  padding: 3px 7px;
+  min-height: 22px;
+}
+
+.taeri-badge--outlined {
+  /* 배경: 흰색 */
+  background-color: #ffffff;
+  /* 글자색: 우선순위 색상 그대로 */
+  color: var(
+    --taeri-badge-color,
+    var(--taeri-ui-badge, var(--taeri-theme, #3b82f6))
+  );
+  /* border: 우선순위 색상 그대로 */
+  border: 1px solid
+    var(--taeri-badge-color, var(--taeri-ui-badge, var(--taeri-theme, #3b82f6)));
+}
+
+/* outlined도 border 1px 때문에 padding 조정 필요 */
+.taeri-badge--outlined.taeri-badge--large {
+  padding: 5px 15px;
+  min-height: 30px;
+}
+
+.taeri-badge--outlined.taeri-badge--medium {
+  padding: 4px 11px;
+  min-height: 24px;
+}
+
+.taeri-badge--outlined.taeri-badge--small {
+  padding: 3px 7px;
+  min-height: 22px;
+}
+
+.taeri-badge--dot {
+  /* 배경: 투명 */
+  background-color: transparent;
+  /* padding: 최소화 */
+  padding: 0;
+  /* gap: dot와 텍스트 사이 간격 */
+  gap: 6px;
+  /* 텍스트 색상: 기본 색상 */
+  color: inherit;
+}
+
+/* dot 내부 구조 */
+.taeri-badge__dot {
+  display: inline-block;
+  border-radius: 50%;
+  /* dot 크기: 우선순위 색상 적용 */
+  background-color: var(
+    --taeri-badge-color,
+    var(--taeri-ui-badge, var(--taeri-theme, #3b82f6))
+  );
+}
+
+.taeri-badge__text {
+  line-height: 1.2;
+}
+
+/* dot 크기 variants */
+.taeri-badge--dot.taeri-badge--large .taeri-badge__dot {
+  width: 12px;
+  height: 12px;
+}
+
+.taeri-badge--dot.taeri-badge--medium .taeri-badge__dot {
+  width: 10px;
+  height: 10px;
+}
+
+.taeri-badge--dot.taeri-badge--small .taeri-badge__dot {
+  width: 8px;
+  height: 8px;
+}
+
+.taeri-badge--shimmer {
+  /* 배경: primary와 동일한 우선순위 색상 */
+  background-color: var(
+    --taeri-badge-color,
+    var(--taeri-ui-badge, var(--taeri-theme, #3b82f6))
+  );
+  color: #ffffff;
+  /* shimmer 효과를 위한 설정 */
+  position: relative;
+  overflow: hidden;
+}
+
+/* shimmer 애니메이션 레이어 */
+.taeri-badge--shimmer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  /* 반투명 흰색 gradient */
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+  /* 애니메이션 적용 */
+  animation: shimmer 2s infinite;
+}
+
+/* shimmer 애니메이션 정의 */
+@keyframes shimmer {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+/* 애니메이션 비활성화 설정 준수 */
+@media (prefers-reduced-motion: reduce) {
+  .taeri-badge--shimmer::before {
+    animation: none;
+  }
+}
+
+/* Mobile optimization - Touch feedback only */
+@media (max-width: 768px) {
+  /*
+   * 업계 표준 (Material UI, Chakra UI):
+   * Badge 크기는 모든 화면에서 동일하게 유지
+   * 가독성과 일관성이 최우선
+   * 모바일에서는 터치 최적화만 추가
+   */
+  .taeri-badge:active {
+    filter: brightness(0.92);
+  }
+}
+
+/* iOS Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+  .taeri-badge {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+}

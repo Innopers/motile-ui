@@ -27,6 +27,9 @@ export type {
 export { Skeleton } from "./components/Skeleton";
 export type { SkeletonProps } from "./components/Skeleton";
 
+export { Badge } from "./components/Badge";
+export type { BadgeProps } from "./components/Badge";
+
 export { Tooltip } from "./components/Tooltip";
 export type {
   TooltipRootProps,

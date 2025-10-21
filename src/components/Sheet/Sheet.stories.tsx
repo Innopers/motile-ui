@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 import { Sheet } from "./Sheet";
+import { Button } from "../Button/Button";
 import "./Sheet.css";
 
 const meta = {
@@ -50,14 +51,6 @@ const meta = {
         defaultValue: { summary: "true" },
       },
     },
-    closeOnHistoryBack: {
-      control: "boolean",
-      description:
-        "브라우저 히스토리 뒤로가기로 닫기 제어 (모바일 스와이프, 데스크톱 뒤로가기 버튼)",
-      table: {
-        defaultValue: { summary: "true" },
-      },
-    },
     zIndex: {
       control: "number",
       description: "z-index 값",
@@ -78,20 +71,7 @@ export const Default: Story = {
 
     return (
       <div>
-        <button
-          onClick={() => setIsOpen(true)}
-          style={{
-            padding: "12px 24px",
-            backgroundColor: "#3b82f6",
-            color: "white",
-            border: "none",
-            borderRadius: "8px",
-            cursor: "pointer",
-            fontSize: "16px",
-          }}
-        >
-          Sheet 열기
-        </button>
+        <Button onClick={() => setIsOpen(true)}>Sheet 열기</Button>
 
         <Sheet {...args} isOpen={isOpen} onClose={() => setIsOpen(false)}>
           <div style={{ padding: "0 4px" }}>
@@ -118,7 +98,6 @@ export const Default: Story = {
     showHeader: true,
     maxWidth: "600px",
     closeOnBackdrop: true,
-    closeOnHistoryBack: true,
     zIndex: 1000,
   },
 };
@@ -130,20 +109,9 @@ export const Left: Story = {
 
     return (
       <div>
-        <button
-          onClick={() => setIsOpen(true)}
-          style={{
-            padding: "12px 24px",
-            backgroundColor: "#ec4899",
-            color: "white",
-            border: "none",
-            borderRadius: "8px",
-            cursor: "pointer",
-            fontSize: "16px",
-          }}
-        >
+        <Button onClick={() => setIsOpen(true)} variant="secondary">
           왼쪽 Sheet 열기
-        </button>
+        </Button>
 
         <Sheet {...args} isOpen={isOpen} onClose={() => setIsOpen(false)}>
           <div style={{ padding: "0 4px" }}>

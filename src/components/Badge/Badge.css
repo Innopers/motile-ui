@@ -78,6 +78,35 @@
   min-height: 22px;
 }
 
+.taeri-badge--outlined {
+  /* 배경: 흰색 */
+  background-color: #ffffff;
+  /* 글자색: 우선순위 색상 그대로 */
+  color: var(
+    --taeri-badge-color,
+    var(--taeri-ui-badge, var(--taeri-theme, #3b82f6))
+  );
+  /* border: 우선순위 색상 그대로 */
+  border: 1px solid
+    var(--taeri-badge-color, var(--taeri-ui-badge, var(--taeri-theme, #3b82f6)));
+}
+
+/* outlined도 border 1px 때문에 padding 조정 필요 */
+.taeri-badge--outlined.taeri-badge--large {
+  padding: 5px 15px;
+  min-height: 30px;
+}
+
+.taeri-badge--outlined.taeri-badge--medium {
+  padding: 4px 11px;
+  min-height: 24px;
+}
+
+.taeri-badge--outlined.taeri-badge--small {
+  padding: 3px 7px;
+  min-height: 22px;
+}
+
 /* Mobile optimization - Touch feedback only */
 @media (max-width: 768px) {
   /*

@@ -1,0 +1,67 @@
+.taeri-badge {
+  /* 기본 스타일 */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  line-height: 1.2;
+  border-radius: 9999px;
+  white-space: nowrap;
+  vertical-align: middle;
+  /* 색상 우선순위: props > --taeri-ui-badge > --taeri-theme > 기본색 */
+  background-color: var(
+    --taeri-badge-color,
+    var(--taeri-ui-badge, var(--taeri-theme, #3b82f6))
+  );
+  color: #ffffff;
+}
+
+/* Size variants */
+.taeri-badge--large {
+  padding: 6px 16px;
+  font-size: 1rem; /* 16px */
+  min-height: 32px;
+}
+
+.taeri-badge--medium {
+  padding: 5px 12px;
+  font-size: 0.875rem; /* 14px */
+  min-height: 26px;
+}
+
+.taeri-badge--small {
+  padding: 4px 8px;
+  font-size: 0.75rem; /* 12px */
+  min-height: 24px;
+}
+
+/* Color variants */
+.taeri-badge--primary {
+  background-color: var(
+    --taeri-badge-color,
+    var(--taeri-ui-badge-primary, var(--taeri-theme, #3b82f6))
+  );
+  color: #ffffff;
+}
+
+/* Mobile optimization - Touch feedback only */
+@media (max-width: 768px) {
+  /*
+   * 업계 표준 (Material UI, Chakra UI):
+   * Badge 크기는 모든 화면에서 동일하게 유지
+   * 가독성과 일관성이 최우선
+   * 모바일에서는 터치 최적화만 추가
+   */
+  .taeri-badge:active {
+    filter: brightness(0.92);
+  }
+}
+
+/* iOS Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+  .taeri-badge {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+}

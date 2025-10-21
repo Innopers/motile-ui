@@ -39,7 +39,7 @@
 .taeri-badge--primary {
   background-color: var(
     --taeri-badge-color,
-    var(--taeri-ui-badge-primary, var(--taeri-theme, #3b82f6))
+    var(--taeri-ui-badge, var(--taeri-theme, #3b82f6))
   );
   color: #ffffff;
 }

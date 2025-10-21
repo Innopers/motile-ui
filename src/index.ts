@@ -51,6 +51,13 @@ export type {
   CloseOnBackdropOptions,
 } from "./components/Drawer";
 
+export { Sheet } from "./components/Sheet";
+export type {
+  SheetProps,
+  SheetHandle,
+  SheetPosition,
+} from "./components/Sheet";
+
 // Hooks
 export { useScrollLock } from "./hooks/useScrollLock";
 export { useClickOutside } from "./hooks/useClickOutside";

@@ -11,7 +11,7 @@ const meta = {
   argTypes: {
     variant: {
       control: "select",
-      options: ["primary", "secondary", "outlined"],
+      options: ["primary", "secondary", "outlined", "dot"],
       description: "Badge 스타일 variant",
     },
     size: {
@@ -51,5 +51,12 @@ export const Outlined: Story = {
   args: {
     variant: "outlined",
     children: "Outlined",
+  },
+};
+
+export const Dot: Story = {
+  args: {
+    variant: "dot",
+    children: "Dot Badge",
   },
 };

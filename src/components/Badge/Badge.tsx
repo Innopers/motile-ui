@@ -1,7 +1,7 @@
 import React from "react";
 import "./Badge.css";
 
-type BadgeVariant = "primary" | "secondary" | "outlined";
+type BadgeVariant = "primary" | "secondary" | "outlined" | "dot";
 type BadgeSize = "large" | "medium" | "small";
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
@@ -48,6 +48,16 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
       ...style,
       ...(color && ({ "--taeri-badge-color": color } as React.CSSProperties)),
     };
+
+    // dot variant일 때는 구조가 다름
+    if (variant === "dot") {
+      return (
+        <span ref={ref} className={classes} style={customStyle} {...props}>
+          <span className={`${baseClass}__dot`} />
+          <span className={`${baseClass}__text`}>{children}</span>
+        </span>
+      );
+    }
 
     return (
       <span ref={ref} className={classes} style={customStyle} {...props}>

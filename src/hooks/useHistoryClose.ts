@@ -12,12 +12,17 @@ import { useEffect, useRef, useState } from "react";
  * **동작 원리**
  * 1. 모달이 열릴 때 `window.history.pushState()`로 더미 히스토리 항목 추가
  * 2. 브라우저 뒤로가기 시 `popstate` 이벤트가 발생하면 모달 닫기
- * 3. 다른 방법(버튼 클릭, ESC 등)으로 닫을 때는 히스토리 조작하지 않음
+ * 3. 다른 방법(버튼 클릭, ESC, 외부 클릭 등)으로 닫을 때는 `history.back()`으로 더미 히스토리 제거
  *
  * **상태 관리**
  * - `useState`를 사용하여 히스토리 기반 닫기 여부를 추적
  * - 컴포넌트가 re-render되어 closing animation을 즉시 스킵 가능
  * - 빠른 스와이프 제스처에서도 깜빡임 없이 닫힘
+ *
+ * **히스토리 정리**
+ * - 뒤로가기로 닫을 때: 브라우저가 자동으로 히스토리 pop (history.back() 불필요)
+ * - ESC/외부 클릭으로 닫을 때: `history.back()` 호출하여 더미 히스토리 제거
+ * - 더미 히스토리가 남지 않아 사용자 경험 개선
  *
  * @limitation
  * - 모달 열린 상태에서 새로고침 시 히스토리에 더미 state가 남음
@@ -85,12 +90,17 @@ export function useHistoryClose({
       };
     }
 
-    // 모달이 닫힐 때: 상태 초기화
-    if (!isOpen) {
+    // 모달이 닫힐 때: 히스토리 정리 및 상태 초기화
+    if (!isOpen && hasPushedRef.current) {
+      // 히스토리 기반 닫기가 아닌 경우 (ESC, 외부 클릭, 닫기 버튼)에만 더미 히스토리 제거
+      if (!isClosingFromHistory) {
+        window.history.back();
+      }
+
       hasPushedRef.current = false;
       setIsClosingFromHistory(false);
     }
-  }, [isOpen]);
+  }, [isOpen, isClosingFromHistory]);
 
   return isClosingFromHistory;
 }

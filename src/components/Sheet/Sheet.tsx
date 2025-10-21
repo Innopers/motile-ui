@@ -185,7 +185,11 @@ export const Sheet = forwardRef<SheetHandle, SheetProps>(
     });
 
     // 히스토리 기반 뒤로가기 제스처로 닫기 (모바일 웹뷰)
-    useHistoryClose({ isOpen: isOpen && closeOnHistoryBack, onClose });
+    const isClosingFromHistory = useHistoryClose({
+      isOpen,
+      onClose,
+      enabled: closeOnHistoryBack,
+    });
 
     // 외부 클릭으로 닫기
     useClickOutside({
@@ -222,24 +226,29 @@ export const Sheet = forwardRef<SheetHandle, SheetProps>(
         if (onOpen) onOpen();
       } else if (shouldRender) {
         setIsVisible(false);
+        // history back으로 닫을 때는 애니메이션 스킵 (0ms), 일반 닫기는 300ms
+        const closingDuration = isClosingFromHistory ? 0 : 300;
         const timer = setTimeout(() => {
           setShouldRender(false);
-        }, 300); // CSS transition duration과 일치
+        }, closingDuration);
         return () => clearTimeout(timer);
       }
-    }, [isOpen, onOpen, shouldRender]);
+    }, [isOpen, onOpen, shouldRender, isClosingFromHistory]);
 
     // Opening animation - CSS transition을 활용하기 위해 visible 상태를 지연 적용
     useEffect(() => {
-      if (!shouldRender) return;
+      if (!shouldRender || !isOpen || isClosingFromHistory) return;
 
       // 브라우저가 초기 상태를 렌더링한 후 visible 클래스 추가
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
+      const rafId1 = requestAnimationFrame(() => {
+        const rafId2 = requestAnimationFrame(() => {
           setIsVisible(true);
         });
+        return () => cancelAnimationFrame(rafId2);
       });
-    }, [shouldRender]);
+
+      return () => cancelAnimationFrame(rafId1);
+    }, [shouldRender, isOpen, isClosingFromHistory]);
 
     // Overlay 클릭 핸들러
     const handleOverlayClick = useCallback(

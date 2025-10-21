@@ -11,7 +11,7 @@ const meta = {
   argTypes: {
     variant: {
       control: "select",
-      options: ["primary"],
+      options: ["primary", "secondary"],
       description: "Badge 스타일 variant",
     },
     size: {
@@ -37,5 +37,12 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     children: "Badge",
+  },
+};
+
+export const Secondary: Story = {
+  args: {
+    variant: "secondary",
+    children: "Secondary",
   },
 };

@@ -44,6 +44,40 @@
   color: #ffffff;
 }
 
+.taeri-badge--secondary {
+  /* 배경: 우선순위 색상을 연하게 (10% 투명도) */
+  background: color-mix(
+    in srgb,
+    var(--taeri-badge-color, var(--taeri-ui-badge, var(--taeri-theme, #3b82f6)))
+      10%,
+    transparent
+  );
+  /* 글자색: 우선순위 색상 그대로 */
+  color: var(
+    --taeri-badge-color,
+    var(--taeri-ui-badge, var(--taeri-theme, #3b82f6))
+  );
+  /* border: 우선순위 색상 그대로 */
+  border: 1px solid
+    var(--taeri-badge-color, var(--taeri-ui-badge, var(--taeri-theme, #3b82f6)));
+}
+
+/* secondary는 border 1px 때문에 padding 조정 필요 */
+.taeri-badge--secondary.taeri-badge--large {
+  padding: 5px 15px;
+  min-height: 30px;
+}
+
+.taeri-badge--secondary.taeri-badge--medium {
+  padding: 4px 11px;
+  min-height: 24px;
+}
+
+.taeri-badge--secondary.taeri-badge--small {
+  padding: 3px 7px;
+  min-height: 22px;
+}
+
 /* Mobile optimization - Touch feedback only */
 @media (max-width: 768px) {
   /*

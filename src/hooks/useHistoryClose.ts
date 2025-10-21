@@ -28,7 +28,6 @@ import { useEffect, useRef, useState } from "react";
  * const isClosingFromHistory = useHistoryClose({
  *   isOpen,
  *   onClose,
- *   enabled: true
  * });
  *
  * // 히스토리 기반 닫기인 경우 애니메이션 스킵
@@ -45,18 +44,11 @@ export interface UseHistoryCloseProps {
    * 모달/Sheet 닫기 핸들러
    */
   onClose: () => void;
-
-  /**
-   * 히스토리 뒤로가기 기능 활성화 여부
-   * @default true
-   */
-  enabled?: boolean;
 }
 
 export function useHistoryClose({
   onClose,
   isOpen,
-  enabled = true,
 }: UseHistoryCloseProps) {
   // onClose를 ref로 저장하여 popstate 이벤트 핸들러에서 최신 함수 참조
   const onCloseRef = useRef(onClose);
@@ -74,8 +66,6 @@ export function useHistoryClose({
 
   // 모달 열림/닫힘 상태에 따른 히스토리 관리
   useEffect(() => {
-    if (!enabled) return;
-
     // 모달이 열릴 때: 더미 히스토리 항목 추가 및 이벤트 리스너 등록
     if (isOpen && !hasPushedRef.current) {
       const handlePopState = (_e: PopStateEvent) => {
@@ -100,7 +90,7 @@ export function useHistoryClose({
       hasPushedRef.current = false;
       setIsClosingFromHistory(false);
     }
-  }, [enabled, isOpen]);
+  }, [isOpen]);
 
   return isClosingFromHistory;
 }

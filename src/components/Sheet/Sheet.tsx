@@ -80,17 +80,6 @@ export interface SheetProps {
   closeOnBackdrop?: CloseOnBackdropOptions;
 
   /**
-   * 브라우저 히스토리 뒤로가기로 닫기 제어
-   *
-   * 모바일에서 스와이프 제스처, 데스크톱에서 뒤로가기 버튼/단축키로 Sheet를 닫을 수 있습니다.
-   * - 모바일: 오른쪽 스와이프 제스처
-   * - 데스크톱: 브라우저 뒤로가기 버튼, 마우스 뒤로가기, Alt+Left (Win), Cmd+[ (Mac)
-   *
-   * @default true
-   */
-  closeOnHistoryBack?: boolean;
-
-  /**
    * Sheet 최대 너비 (데스크톱 전용)
    *
    * @default "600px"
@@ -154,7 +143,6 @@ export const Sheet = forwardRef<SheetHandle, SheetProps>(
       children,
       position = "right",
       closeOnBackdrop = true,
-      closeOnHistoryBack = true,
       maxWidth = "600px",
       zIndex = 1000,
       showHeader = true,
@@ -188,7 +176,6 @@ export const Sheet = forwardRef<SheetHandle, SheetProps>(
     const isClosingFromHistory = useHistoryClose({
       isOpen,
       onClose,
-      enabled: closeOnHistoryBack,
     });
 
     // 외부 클릭으로 닫기

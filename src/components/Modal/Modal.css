@@ -17,9 +17,14 @@
   overscroll-behavior: contain;
 }
 
-/* Backdrop Variant - Scale */
+/* Backdrop Variants */
 .taeri-modal__backdrop[data-variant="scale"] {
   animation: taeri-modal-fade-in 0.2s ease-out;
+}
+
+.taeri-modal__backdrop[data-variant="slideDown"],
+.taeri-modal__backdrop[data-variant="slideUp"] {
+  animation: taeri-modal-fade-in 0.3s ease-out;
 }
 
 /* 데스크톱: 더 넉넉한 여백 */
@@ -39,7 +44,17 @@
 
 /* Modal Variant - Scale */
 .taeri-modal[data-variant="scale"] {
-  animation: taeri-modal-scale-in 0.2s ease-out;
+  animation: taeri-modal-scale-in 0.25s ease-out;
+}
+
+/* Modal Variant - SlideDown (위에서 떨어지는) */
+.taeri-modal[data-variant="slideDown"] {
+  animation: taeri-modal-slide-down 0.55s cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+
+/* Modal Variant - SlideUp (아래에서 올라오는) */
+.taeri-modal[data-variant="slideUp"] {
+  animation: taeri-modal-slide-up 0.5s cubic-bezier(0.34, 1.3, 0.64, 1);
 }
 
 /* Modal Content */
@@ -173,14 +188,42 @@
   }
 }
 
+@keyframes taeri-modal-slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-100vh);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes taeri-modal-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(100vh);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* 애니메이션 비활성화 설정 준수 */
 @media (prefers-reduced-motion: reduce) {
-  .taeri-modal__backdrop[data-variant="scale"] {
+  .taeri-modal__backdrop[data-variant="scale"],
+  .taeri-modal__backdrop[data-variant="slideDown"],
+  .taeri-modal__backdrop[data-variant="slideUp"] {
     animation: none;
   }
 
-  .taeri-modal[data-variant="scale"] {
+  .taeri-modal[data-variant="scale"],
+  .taeri-modal[data-variant="slideDown"],
+  .taeri-modal[data-variant="slideUp"] {
     animation: none;
+    opacity: 1;
+    transform: none;
   }
 
   .taeri-modal__close:active {

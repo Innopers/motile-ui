@@ -203,3 +203,81 @@ export const Simple: Story = {
     );
   },
 };
+
+export const SlideDown: Story = {
+  render: () => {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <div>
+        <button
+          onClick={() => setOpen(true)}
+          style={{
+            padding: "12px 24px",
+            backgroundColor: "#8b5cf6",
+            color: "white",
+            border: "none",
+            borderRadius: "8px",
+            cursor: "pointer",
+            fontSize: "16px",
+          }}
+        >
+          Open Slide Down Modal
+        </button>
+        <Modal.Root open={open} onOpenChange={setOpen}>
+          <Modal.Overlay variant="slideDown">
+            <Modal.Content style={{ padding: "0" }}>
+              <Modal.Header>
+                <Modal.Title>Slide Down Animation</Modal.Title>
+                <Modal.Close />
+              </Modal.Header>
+              <Modal.Description>
+                <p>This modal slides down from the top of the screen.</p>
+                <p>The animation creates a smooth drop effect from above.</p>
+              </Modal.Description>
+            </Modal.Content>
+          </Modal.Overlay>
+        </Modal.Root>
+      </div>
+    );
+  },
+};
+
+export const SlideUp: Story = {
+  render: () => {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <div>
+        <button
+          onClick={() => setOpen(true)}
+          style={{
+            padding: "12px 24px",
+            backgroundColor: "#ec4899",
+            color: "white",
+            border: "none",
+            borderRadius: "8px",
+            cursor: "pointer",
+            fontSize: "16px",
+          }}
+        >
+          Open Slide Up Modal
+        </button>
+        <Modal.Root open={open} onOpenChange={setOpen}>
+          <Modal.Overlay variant="slideUp">
+            <Modal.Content style={{ padding: "0" }}>
+              <Modal.Header>
+                <Modal.Title>Slide Up Animation</Modal.Title>
+                <Modal.Close />
+              </Modal.Header>
+              <Modal.Description>
+                <p>This modal slides up from the bottom of the screen.</p>
+                <p>The animation creates a smooth rise effect from below.</p>
+              </Modal.Description>
+            </Modal.Content>
+          </Modal.Overlay>
+        </Modal.Root>
+      </div>
+    );
+  },
+};

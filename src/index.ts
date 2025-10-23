@@ -61,6 +61,19 @@ export type {
   SheetPosition,
 } from "./components/Sheet";
 
+export { Modal } from "./components/Modal";
+export type {
+  ModalVariant,
+  ModalRootProps,
+  ModalOverlayProps,
+  ModalContentProps,
+  ModalCloseProps,
+  ModalTitleProps,
+  ModalDescriptionProps,
+  ModalHeaderProps,
+  ModalFooterProps,
+} from "./components/Modal";
+
 // Hooks
 export { useScrollLock } from "./hooks/useScrollLock";
 export { useClickOutside } from "./hooks/useClickOutside";

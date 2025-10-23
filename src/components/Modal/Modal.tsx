@@ -1,10 +1,4 @@
-import React, {
-  useEffect,
-  useRef,
-  useId,
-  createContext,
-  useContext,
-} from "react";
+import React, { useRef, useId, createContext, useContext } from "react";
 import { createPortal } from "react-dom";
 import { useClickOutside } from "../../hooks/useClickOutside";
 import { useEscapeKey } from "../../hooks/useEscapeKey";
@@ -333,35 +327,12 @@ ModalOverlay.displayName = "Modal.Overlay";
 export const ModalContent = React.forwardRef<HTMLDivElement, ModalContentProps>(
   ({ className, forceMount, ...props }, ref) => {
     const { open, titleId, descriptionId } = useModalContext();
-    const contentRef = useRef<HTMLDivElement>(null);
-
-    // 포커스 트랩 (Modal이 열릴 때 첫 번째 포커스 가능한 요소에 포커스)
-    useEffect(() => {
-      if (open && contentRef.current) {
-        const focusableElements = contentRef.current.querySelectorAll(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        );
-
-        if (focusableElements.length > 0) {
-          (focusableElements[0] as HTMLElement).focus();
-        }
-      }
-    }, [open]);
 
     if (!open && !forceMount) return null;
 
     return (
       <div
-        ref={(node) => {
-          if (ref) {
-            if (typeof ref === "function") ref(node);
-            else ref.current = node;
-          }
-          if (node) {
-            (contentRef as React.MutableRefObject<HTMLDivElement>).current =
-              node;
-          }
-        }}
+        ref={ref}
         className={`taeri-modal__content ${className || ""}`}
         role="dialog"
         aria-modal="true"

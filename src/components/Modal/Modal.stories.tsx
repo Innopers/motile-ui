@@ -281,3 +281,117 @@ export const SlideUp: Story = {
     );
   },
 };
+
+export const BottomSheet: Story = {
+  render: () => {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <div>
+        <button
+          onClick={() => setOpen(true)}
+          style={{
+            padding: "12px 24px",
+            backgroundColor: "#06b6d4",
+            color: "white",
+            border: "none",
+            borderRadius: "8px",
+            cursor: "pointer",
+            fontSize: "16px",
+          }}
+        >
+          Open Notification Sheet
+        </button>
+        <Modal.Root open={open} onOpenChange={setOpen}>
+          <Modal.Overlay variant="bottomSheet">
+            <Modal.Content style={{ padding: "0" }}>
+              <div style={{ padding: "24px" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "16px",
+                    marginBottom: "16px",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: "48px",
+                      height: "48px",
+                      backgroundColor: "#dbeafe",
+                      borderRadius: "50%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "24px",
+                    }}
+                  >
+                    🎉
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <h3
+                      style={{
+                        fontSize: "18px",
+                        fontWeight: "600",
+                        marginBottom: "4px",
+                        color: "#111827",
+                      }}
+                    >
+                      할인 쿠폰 도착!
+                    </h3>
+                    <p
+                      style={{
+                        fontSize: "14px",
+                        color: "#6b7280",
+                        margin: 0,
+                      }}
+                    >
+                      10% 할인 쿠폰이 지급되었습니다
+                    </p>
+                  </div>
+                </div>
+                <div
+                  style={{
+                    padding: "16px",
+                    backgroundColor: "#f0f9ff",
+                    borderRadius: "8px",
+                    marginBottom: "16px",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "14px",
+                      color: "#1e40af",
+                      marginBottom: "8px",
+                    }}
+                  >
+                    <strong>쿠폰 코드:</strong> SAVE10
+                  </div>
+                  <div style={{ fontSize: "12px", color: "#6b7280" }}>
+                    2024년 12월 31일까지 사용 가능
+                  </div>
+                </div>
+                <button
+                  onClick={() => setOpen(false)}
+                  style={{
+                    width: "100%",
+                    padding: "12px",
+                    backgroundColor: "#06b6d4",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "8px",
+                    cursor: "pointer",
+                    fontSize: "16px",
+                    fontWeight: "500",
+                  }}
+                >
+                  확인
+                </button>
+              </div>
+            </Modal.Content>
+          </Modal.Overlay>
+        </Modal.Root>
+      </div>
+    );
+  },
+};

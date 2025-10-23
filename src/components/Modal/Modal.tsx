@@ -20,8 +20,9 @@ import "./Modal.css";
  * - `scale`: 중앙에서 확대되며 나타남 (기본값)
  * - `slideDown`: 화면 위에서 중앙으로 떨어지며 나타남
  * - `slideUp`: 화면 아래에서 중앙으로 올라오며 나타남
+ * - `bottomSheet`: 화면 하단에서 올라오는 drawer 스타일
  */
-type ModalVariant = "scale" | "slideDown" | "slideUp";
+type ModalVariant = "scale" | "slideDown" | "slideUp" | "bottomSheet";
 
 /**
  * 백드롭 인터랙션으로 닫기 옵션
@@ -78,6 +79,7 @@ interface ModalOverlayProps extends React.HTMLAttributes<HTMLDivElement> {
    * - `scale`: 중앙에서 확대되면서 나타남 (기본값)
    * - `slideDown`: 화면 위에서 중앙으로 떨어지며 나타남
    * - `slideUp`: 화면 아래에서 중앙으로 올라오며 나타남
+   * - `bottomSheet`: 화면 하단에서 올라오는 drawer 스타일 (모바일 친화적)
    *
    * @default "scale"
    */

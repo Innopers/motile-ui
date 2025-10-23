@@ -46,7 +46,8 @@
   position: relative;
   z-index: 1001;
   /* width: 100% 제거 - 중앙 정렬을 위해 content 크기에 맞춤 */
-  max-width: 100%;
+  width: var(--modal-width);
+  max-width: var(--modal-max-width, 100%);
 }
 
 /* Modal Variant - Scale */
@@ -67,8 +68,24 @@
 /* Modal Variant - BottomSheet (하단 drawer 스타일) */
 .taeri-modal[data-variant="bottomSheet"] {
   animation: taeri-modal-bottom-sheet 0.35s cubic-bezier(0.32, 0.72, 0, 1);
-  width: 100%;
-  max-width: 100%;
+  width: var(--modal-width, 100%);
+  max-width: var(--modal-max-width, 100%);
+}
+
+/* 데스크톱: bottomSheet에 max-width 적용 */
+@media (min-width: 769px) {
+  .taeri-modal[data-variant="bottomSheet"] {
+    width: var(--modal-width, 100%);
+    max-width: var(--modal-max-width, var(--modal-width, 480px));
+  }
+}
+
+/* 모바일: bottomSheet는 항상 100% */
+@media (max-width: 768px) {
+  .taeri-modal[data-variant="bottomSheet"] {
+    width: 100%;
+    max-width: none;
+  }
 }
 
 /* Modal Content */
@@ -77,7 +94,7 @@
   border-radius: 12px;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  /* No max-width constraint - users control sizing via className or style */
+  /* Content 크기는 내부 요소에 따라 자동 결정 */
   max-height: 90vh;
   max-height: calc(
     90vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)

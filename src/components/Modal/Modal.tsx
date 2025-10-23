@@ -103,6 +103,47 @@ interface ModalOverlayProps extends React.HTMLAttributes<HTMLDivElement> {
    * @default false
    */
   disableScrollLock?: boolean;
+
+  /**
+   * Modal 너비
+   * - scale, slideDown, slideUp: content 크기에 맞춤 (기본값)
+   * - bottomSheet: 데스크톱에서 적용 (모바일은 항상 100%)
+   *
+   * @default undefined (content 크기에 맞춤)
+   *
+   * @example
+   * // 고정 너비
+   * <Modal.Overlay width="500px" />
+   *
+   * // 퍼센트 너비
+   * <Modal.Overlay width="80%" />
+   */
+  width?: string;
+
+  /**
+   * Modal 최대 너비
+   *
+   * @default undefined
+   *
+   * @example
+   * // 최대 너비 제한
+   * <Modal.Overlay maxWidth="600px" />
+   *
+   * // 레이아웃에 맞추기
+   * <Modal.Overlay maxWidth="1024px" />
+   */
+  maxWidth?: string;
+
+  /**
+   * z-index 값
+   *
+   * @default 1000
+   *
+   * @example
+   * // 다른 오버레이보다 위에 표시
+   * <Modal.Overlay zIndex={2000} />
+   */
+  zIndex?: number;
 }
 
 interface ModalContentProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -182,8 +223,12 @@ export const ModalOverlay = React.forwardRef<HTMLDivElement, ModalOverlayProps>(
       variant = "scale",
       closeOnBackdrop = true,
       disableScrollLock = false,
+      width,
+      maxWidth,
+      zIndex = 1000,
       className,
       onClick,
+      style,
       ...props
     },
     ref
@@ -239,6 +284,20 @@ export const ModalOverlay = React.forwardRef<HTMLDivElement, ModalOverlayProps>(
 
     if (!open) return null;
 
+    // Backdrop style (z-index)
+    const backdropStyle: React.CSSProperties = {
+      zIndex,
+      ...style,
+    };
+
+    // Modal width/maxWidth 스타일 (CSS Variables)
+    const modalStyle: React.CSSProperties = {
+      ...(width && ({ "--modal-width": width } as React.CSSProperties)),
+      ...(maxWidth &&
+        ({ "--modal-max-width": maxWidth } as React.CSSProperties)),
+      zIndex: zIndex + 1,
+    };
+
     const overlayContent = (
       <div
         ref={ref}
@@ -246,9 +305,15 @@ export const ModalOverlay = React.forwardRef<HTMLDivElement, ModalOverlayProps>(
         data-state={open ? "open" : "closed"}
         data-variant={variant}
         onClick={handleClick}
+        style={backdropStyle}
         {...props}
       >
-        <div ref={overlayRef} className="taeri-modal" data-variant={variant}>
+        <div
+          ref={overlayRef}
+          className="taeri-modal"
+          data-variant={variant}
+          style={modalStyle}
+        >
           {props.children}
         </div>
       </div>

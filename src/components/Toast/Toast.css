@@ -41,8 +41,8 @@
   display: inline-flex;
   align-items: flex-start;
 
-  /* Size */
-  max-width: 320px;
+  /* Size - Mobile: wider, Desktop: content-fit */
+  width: calc(100vw - 32px);
   min-width: 200px;
   padding: 12px 16px;
 
@@ -71,6 +71,8 @@
 /* Desktop: Slide In from Right */
 @media (min-width: 768px) {
   .taeri-toast {
+    width: auto; /* Desktop: content-fit */
+    max-width: 320px;
     animation: slideInRight 0.3s ease-out;
   }
 }

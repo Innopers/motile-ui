@@ -42,6 +42,19 @@ function SuccessToastDemo() {
   );
 }
 
+function ErrorToastDemo() {
+  const toast = useToast();
+
+  return (
+    <Button
+      variant="primary"
+      onClick={() => toast.error("오류가 발생했습니다")}
+    >
+      Error Toast
+    </Button>
+  );
+}
+
 export const Default: Story = {
   render: () => (
     <ToastProvider>
@@ -54,6 +67,14 @@ export const Success: Story = {
   render: () => (
     <ToastProvider>
       <SuccessToastDemo />
+    </ToastProvider>
+  ),
+};
+
+export const Error: Story = {
+  render: () => (
+    <ToastProvider>
+      <ErrorToastDemo />
     </ToastProvider>
   ),
 };

@@ -10,6 +10,10 @@ export interface UseToastReturn {
    * Show a success toast notification
    */
   success: (message: string) => string;
+  /**
+   * Show an error toast notification
+   */
+  error: (message: string) => string;
 }
 
 /**
@@ -33,8 +37,16 @@ export function useToast(): UseToastReturn {
     [addToast]
   );
 
+  const error = useCallback(
+    (message: string) => {
+      return addToast(message, "error");
+    },
+    [addToast]
+  );
+
   return {
     show,
     success,
+    error,
   };
 }

@@ -39,11 +39,11 @@
 .taeri-toast {
   pointer-events: auto;
   display: inline-flex;
-  align-items: center;
+  align-items: flex-start;
 
   /* Size */
   max-width: 320px;
-  width: 100%;
+  min-width: 200px;
   padding: 12px 16px;
 
   /* Style */
@@ -92,6 +92,7 @@
   justify-content: center;
   color: #ffffff;
   margin-right: 8px;
+  margin-top: 1px;
 }
 
 .taeri-toast--success .taeri-toast__icon {
@@ -107,11 +108,15 @@
    ============================================================================ */
 
 .taeri-toast__message {
+  flex: 1;
+  min-width: 0;
   font-size: 14px;
   font-weight: 500;
   line-height: 1.4;
   color: #ffffff;
   word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 /* ============================================================================

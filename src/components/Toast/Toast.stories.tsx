@@ -55,6 +55,19 @@ function ErrorToastDemo() {
   );
 }
 
+function WarningToastDemo() {
+  const toast = useToast();
+
+  return (
+    <Button
+      variant="primary"
+      onClick={() => toast.warning("경고 메시지입니다")}
+    >
+      Warning Toast
+    </Button>
+  );
+}
+
 export const Default: Story = {
   render: () => (
     <ToastProvider>
@@ -75,6 +88,14 @@ export const Error: Story = {
   render: () => (
     <ToastProvider>
       <ErrorToastDemo />
+    </ToastProvider>
+  ),
+};
+
+export const Warning: Story = {
+  render: () => (
+    <ToastProvider>
+      <WarningToastDemo />
     </ToastProvider>
   ),
 };

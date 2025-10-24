@@ -14,6 +14,10 @@ export interface UseToastReturn {
    * Show an error toast notification
    */
   error: (message: string) => string;
+  /**
+   * Show a warning toast notification
+   */
+  warning: (message: string) => string;
 }
 
 /**
@@ -44,9 +48,17 @@ export function useToast(): UseToastReturn {
     [addToast]
   );
 
+  const warning = useCallback(
+    (message: string) => {
+      return addToast(message, "warning");
+    },
+    [addToast]
+  );
+
   return {
     show,
     success,
     error,
+    warning,
   };
 }

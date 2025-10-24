@@ -13,7 +13,7 @@ import "./Toast.css";
 // Types
 // ============================================================================
 
-export type ToastVariant = "default" | "success" | "error";
+export type ToastVariant = "default" | "success" | "error" | "warning";
 
 export interface Toast {
   id: string;
@@ -102,6 +102,25 @@ function ToastItem({ toast, onRemove }: ToastItemProps) {
           <circle cx="10" cy="10" r="9" fill="currentColor" opacity="0.2" />
           <path
             d="M7 7L13 13M13 7L7 13"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+        </svg>
+      );
+    }
+    if (toast.variant === "warning") {
+      return (
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M10 2L2 17H18L10 2Z" fill="currentColor" opacity="0.2" />
+          <path
+            d="M10 7V11M10 14V14.5"
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"

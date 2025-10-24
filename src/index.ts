@@ -74,6 +74,15 @@ export type {
   ModalFooterProps,
 } from "./components/Modal";
 
+export { ToastProvider, useToast } from "./components/Toast";
+export type {
+  ToastVariant,
+  Toast,
+  ToastOptions,
+  ToastProviderProps,
+  UseToastReturn,
+} from "./components/Toast";
+
 // Hooks
 export { useScrollLock } from "./hooks/useScrollLock";
 export { useClickOutside } from "./hooks/useClickOutside";

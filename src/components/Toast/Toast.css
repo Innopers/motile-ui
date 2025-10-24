@@ -1,0 +1,213 @@
+/* ============================================================================
+   Toast - Responsive Mobile & Desktop
+   ============================================================================ */
+
+.taeri-toast-container {
+  position: fixed;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Mobile: Top Center */
+.taeri-toast-container {
+  top: 0;
+  left: 0;
+  right: 0;
+  align-items: center;
+  padding: calc(env(safe-area-inset-top, 0px) + 16px) 16px 16px 16px;
+}
+
+/* Desktop: Top Right */
+@media (min-width: 768px) {
+  .taeri-toast-container {
+    top: 0;
+    left: auto;
+    right: 0;
+    align-items: flex-end;
+    padding: 16px;
+    max-width: 400px;
+  }
+}
+
+/* ============================================================================
+   Toast Item
+   ============================================================================ */
+
+.taeri-toast {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: flex-start;
+
+  /* Size - Mobile: wider, Desktop: content-fit */
+  width: calc(100vw - 32px);
+  min-width: 200px;
+  padding: 12px 16px;
+
+  /* Style */
+  background: rgba(0, 0, 0, 0.85);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  /* Shadow */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+  /* Typography */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+
+  /* Performance */
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  will-change: transform, opacity;
+
+  /* Mobile: Slide Down Animation */
+  animation: slideDown 0.3s ease-out;
+}
+
+/* Desktop: Slide In from Right */
+@media (min-width: 768px) {
+  .taeri-toast {
+    width: auto; /* Desktop: content-fit */
+    max-width: 320px;
+    animation: slideInRight 0.3s ease-out;
+  }
+}
+
+.taeri-toast--exiting {
+  animation: fadeOut 0.15s ease-out forwards;
+}
+
+/* ============================================================================
+   Icon
+   ============================================================================ */
+
+.taeri-toast__icon {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  margin-right: 8px;
+  margin-top: 1px;
+}
+
+.taeri-toast--success .taeri-toast__icon {
+  color: #4ade80;
+}
+
+.taeri-toast--error .taeri-toast__icon {
+  color: #f87171;
+}
+
+.taeri-toast--warning .taeri-toast__icon {
+  color: #fbbf24;
+}
+
+.taeri-toast--info .taeri-toast__icon {
+  color: #60a5fa;
+}
+
+/* ============================================================================
+   Message
+   ============================================================================ */
+
+.taeri-toast__message {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: #ffffff;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* ============================================================================
+   Animations
+   ============================================================================ */
+
+/* Mobile: Slide Down from Top */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Desktop: Slide In from Right */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+/* ============================================================================
+   Dark Mode
+   ============================================================================ */
+
+@media (prefers-color-scheme: dark) {
+  .taeri-toast {
+    background: rgba(255, 255, 255, 0.95);
+  }
+
+  .taeri-toast__message {
+    color: #18181b;
+  }
+
+  .taeri-toast__icon {
+    color: #18181b;
+  }
+
+  .taeri-toast--success .taeri-toast__icon {
+    color: #22c55e;
+  }
+
+  .taeri-toast--error .taeri-toast__icon {
+    color: #ef4444;
+  }
+
+  .taeri-toast--warning .taeri-toast__icon {
+    color: #f59e0b;
+  }
+
+  .taeri-toast--info .taeri-toast__icon {
+    color: #3b82f6;
+  }
+}
+
+/* ============================================================================
+   Accessibility
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .taeri-toast {
+    animation: none !important;
+  }
+}
+
+.taeri-toast * {
+  user-select: none;
+  -webkit-user-select: none;
+}

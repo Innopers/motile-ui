@@ -107,6 +107,10 @@
   color: #fbbf24;
 }
 
+.taeri-toast--info .taeri-toast__icon {
+  color: #60a5fa;
+}
+
 /* ============================================================================
    Message
    ============================================================================ */
@@ -185,6 +189,10 @@
 
   .taeri-toast--warning .taeri-toast__icon {
     color: #f59e0b;
+  }
+
+  .taeri-toast--info .taeri-toast__icon {
+    color: #3b82f6;
   }
 }
 

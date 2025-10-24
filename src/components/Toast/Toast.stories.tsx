@@ -68,6 +68,16 @@ function WarningToastDemo() {
   );
 }
 
+function InfoToastDemo() {
+  const toast = useToast();
+
+  return (
+    <Button variant="primary" onClick={() => toast.info("정보 메시지입니다")}>
+      Info Toast
+    </Button>
+  );
+}
+
 export const Default: Story = {
   render: () => (
     <ToastProvider>
@@ -96,6 +106,14 @@ export const Warning: Story = {
   render: () => (
     <ToastProvider>
       <WarningToastDemo />
+    </ToastProvider>
+  ),
+};
+
+export const Info: Story = {
+  render: () => (
+    <ToastProvider>
+      <InfoToastDemo />
     </ToastProvider>
   ),
 };

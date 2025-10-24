@@ -4,7 +4,6 @@
 
 .taeri-toast-container {
   position: fixed;
-  z-index: 9999;
   pointer-events: none;
   display: flex;
   flex-direction: column;

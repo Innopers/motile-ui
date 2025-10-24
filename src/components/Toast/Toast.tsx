@@ -15,10 +15,17 @@ import "./Toast.css";
 
 export type ToastVariant = "default" | "success" | "error" | "warning" | "info";
 
+export interface ToastOptions {
+  duration?: number;
+  zIndex?: number;
+}
+
 export interface Toast {
   id: string;
   message: string;
   variant: ToastVariant;
+  duration: number;
+  zIndex?: number;
   createdAt: number;
 }
 
@@ -28,7 +35,11 @@ export interface Toast {
 
 interface ToastContextValue {
   toasts: Toast[];
-  addToast: (message: string, variant?: ToastVariant) => string;
+  addToast: (
+    message: string,
+    variant?: ToastVariant,
+    options?: ToastOptions
+  ) => string;
 }
 
 const ToastContext = createContext<ToastContextValue | null>(null);
@@ -60,14 +71,14 @@ function ToastItem({ toast, onRemove }: ToastItemProps) {
     }, 250); // Match exit animation duration
   }, [toast.id, onRemove]);
 
-  // Auto dismiss after 4 seconds
+  // Auto dismiss
   useEffect(() => {
-    const timer = setTimeout(handleDismiss, 4000);
+    const timer = setTimeout(handleDismiss, toast.duration);
 
     return () => {
       clearTimeout(timer);
     };
-  }, [handleDismiss]);
+  }, [handleDismiss, toast.duration]);
 
   const icon = useMemo(() => {
     if (toast.variant === "success") {
@@ -179,19 +190,26 @@ function ToastItem({ toast, onRemove }: ToastItemProps) {
 
 export interface ToastProviderProps {
   children: React.ReactNode;
+  zIndex?: number;
 }
 
-export function ToastProvider({ children }: ToastProviderProps) {
+export function ToastProvider({ children, zIndex = 9999 }: ToastProviderProps) {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   const addToast = useCallback(
-    (message: string, variant: ToastVariant = "default") => {
+    (
+      message: string,
+      variant: ToastVariant = "default",
+      options?: ToastOptions
+    ) => {
       const id = `toast-${Date.now()}-${Math.random()}`;
 
       const newToast: Toast = {
         id,
         message,
         variant,
+        duration: options?.duration ?? 4000,
+        zIndex: options?.zIndex,
         createdAt: Date.now(),
       };
 
@@ -214,6 +232,15 @@ export function ToastProvider({ children }: ToastProviderProps) {
     [toasts, addToast]
   );
 
+  // 개별 Toast 중 가장 높은 zIndex를 찾아서 container에 적용
+  const customZIndexToasts = toasts.filter(
+    (toast) => toast.zIndex !== undefined
+  );
+  const containerZIndex =
+    customZIndexToasts.length > 0
+      ? Math.max(...customZIndexToasts.map((toast) => toast.zIndex!))
+      : zIndex;
+
   return (
     <ToastContext.Provider value={contextValue}>
       {children}
@@ -223,6 +250,7 @@ export function ToastProvider({ children }: ToastProviderProps) {
             className="taeri-toast-container"
             aria-live="polite"
             aria-label="Notifications"
+            style={{ zIndex: containerZIndex }}
           >
             {toasts.map((toast) => (
               <ToastItem key={toast.id} toast={toast} onRemove={removeToast} />

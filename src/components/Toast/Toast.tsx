@@ -13,7 +13,7 @@ import "./Toast.css";
 // Types
 // ============================================================================
 
-export type ToastVariant = "default";
+export type ToastVariant = "default" | "success";
 
 export interface Toast {
   id: string;
@@ -28,7 +28,7 @@ export interface Toast {
 
 interface ToastContextValue {
   toasts: Toast[];
-  addToast: (message: string) => string;
+  addToast: (message: string, variant?: ToastVariant) => string;
 }
 
 const ToastContext = createContext<ToastContextValue | null>(null);
@@ -69,8 +69,36 @@ function ToastItem({ toast, onRemove }: ToastItemProps) {
     };
   }, [handleDismiss]);
 
+  const icon = useMemo(() => {
+    if (toast.variant === "success") {
+      return (
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle cx="10" cy="10" r="9" fill="currentColor" opacity="0.2" />
+          <path
+            d="M6 10L8.5 12.5L14 7"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      );
+    }
+    return null;
+  }, [toast.variant]);
+
   const baseClass = "taeri-toast";
-  const classes = [baseClass, isExiting && `${baseClass}--exiting`]
+  const classes = [
+    baseClass,
+    `${baseClass}--${toast.variant}`,
+    isExiting && `${baseClass}--exiting`,
+  ]
     .filter(Boolean)
     .join(" ");
 
@@ -82,6 +110,7 @@ function ToastItem({ toast, onRemove }: ToastItemProps) {
       aria-atomic="true"
       data-toast-id={toast.id}
     >
+      {icon && <div className={`${baseClass}__icon`}>{icon}</div>}
       <div className={`${baseClass}__message`}>{toast.message}</div>
     </div>
   );
@@ -98,20 +127,23 @@ export interface ToastProviderProps {
 export function ToastProvider({ children }: ToastProviderProps) {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
-  const addToast = useCallback((message: string) => {
-    const id = `toast-${Date.now()}-${Math.random()}`;
+  const addToast = useCallback(
+    (message: string, variant: ToastVariant = "default") => {
+      const id = `toast-${Date.now()}-${Math.random()}`;
 
-    const newToast: Toast = {
-      id,
-      message,
-      variant: "default",
-      createdAt: Date.now(),
-    };
+      const newToast: Toast = {
+        id,
+        message,
+        variant,
+        createdAt: Date.now(),
+      };
 
-    setToasts((prev) => [newToast, ...prev]);
+      setToasts((prev) => [newToast, ...prev]);
 
-    return id;
-  }, []);
+      return id;
+    },
+    []
+  );
 
   const removeToast = useCallback((id: string) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));

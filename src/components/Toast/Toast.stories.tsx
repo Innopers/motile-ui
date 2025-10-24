@@ -29,10 +29,31 @@ function ToastDemo() {
   );
 }
 
+function SuccessToastDemo() {
+  const toast = useToast();
+
+  return (
+    <Button
+      variant="primary"
+      onClick={() => toast.success("성공적으로 완료되었습니다")}
+    >
+      Success Toast
+    </Button>
+  );
+}
+
 export const Default: Story = {
   render: () => (
     <ToastProvider>
       <ToastDemo />
+    </ToastProvider>
+  ),
+};
+
+export const Success: Story = {
+  render: () => (
+    <ToastProvider>
+      <SuccessToastDemo />
     </ToastProvider>
   ),
 };

@@ -21,9 +21,9 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
-      name: "TaeriUI",
+      name: "MotileUI",
       formats: ["es", "umd"],
-      fileName: (format) => `taeri-ui.${format}.js`,
+      fileName: (format) => `motile-ui.${format}.js`,
     },
     rollupOptions: {
       external: ["react", "react-dom", "react/jsx-runtime"],

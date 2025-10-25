@@ -169,7 +169,7 @@ export const Sheet = forwardRef<SheetHandle, SheetProps>(
     // 배경 스크롤 방지 (Sheet 내부만 스크롤 허용)
     useScrollLock({
       enabled: isOpen,
-      allowedSelectors: [".taeri-sheet__body"],
+      allowedSelectors: [".motile-sheet__body"],
     });
 
     // 히스토리 기반 뒤로가기 제스처로 닫기 (모바일 웹뷰)
@@ -266,17 +266,17 @@ export const Sheet = forwardRef<SheetHandle, SheetProps>(
     return createPortal(
       <div
         ref={overlayRef}
-        className={`taeri-sheet__overlay ${
-          isVisible ? "taeri-sheet__overlay--visible" : ""
-        } taeri-sheet__overlay--${position}`}
+        className={`motile-sheet__overlay ${
+          isVisible ? "motile-sheet__overlay--visible" : ""
+        } motile-sheet__overlay--${position}`}
         style={overlayStyle}
         onClick={handleOverlayClick}
         role="presentation"
       >
         <div
           ref={sheetRef}
-          className={`taeri-sheet__content taeri-sheet__content--${position} ${
-            isVisible ? "taeri-sheet__content--visible" : ""
+          className={`motile-sheet__content motile-sheet__content--${position} ${
+            isVisible ? "motile-sheet__content--visible" : ""
           } ${className || ""}`}
           style={sheetStyle}
           role="dialog"
@@ -285,15 +285,15 @@ export const Sheet = forwardRef<SheetHandle, SheetProps>(
         >
           {/* Header */}
           {showHeader && (
-            <div className="taeri-sheet__header">
+            <div className="motile-sheet__header">
               <button
                 onClick={onClose}
-                className="taeri-sheet__back-button"
+                className="motile-sheet__back-button"
                 aria-label="닫기"
                 type="button"
               >
                 <svg
-                  className="taeri-sheet__chevron"
+                  className="motile-sheet__chevron"
                   width="24"
                   height="24"
                   viewBox="0 0 24 24"
@@ -306,7 +306,7 @@ export const Sheet = forwardRef<SheetHandle, SheetProps>(
                   <polyline points="15 18 9 12 15 6" />
                 </svg>
                 {title && (
-                  <h2 id="sheet-title" className="taeri-sheet__title">
+                  <h2 id="sheet-title" className="motile-sheet__title">
                     {title}
                   </h2>
                 )}
@@ -315,7 +315,7 @@ export const Sheet = forwardRef<SheetHandle, SheetProps>(
           )}
 
           {/* Content */}
-          <div className="taeri-sheet__body">{children}</div>
+          <div className="motile-sheet__body">{children}</div>
         </div>
       </div>,
       document.body

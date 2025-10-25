@@ -194,7 +194,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       });
     }, [value, autoSizeConfig]);
 
-    const baseClass = "taeri-textarea";
+    const baseClass = "motile-textarea";
 
     const textareaClasses = [
       baseClass,
@@ -221,7 +221,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       .join(" ");
 
     const wrapperStyle = color
-      ? ({ "--taeri-textarea-color": color } as React.CSSProperties)
+      ? ({ "--motile-textarea-color": color } as React.CSSProperties)
       : undefined;
 
     const textareaStyle: React.CSSProperties = {

@@ -1,12 +1,12 @@
 /* Skeleton Base */
-.taeri-skeleton {
+.motile-skeleton {
   display: inline-block;
   position: relative;
   overflow: hidden;
   background-color: #e5e7eb;
 }
 
-.taeri-skeleton::after {
+.motile-skeleton::after {
   content: '';
   position: absolute;
   top: 0;
@@ -20,11 +20,11 @@
     rgba(255, 255, 255, 0) 100%
   );
   transform: translateX(-100%);
-  animation: taeri-skeleton-shimmer 1.5s ease-in-out infinite;
+  animation: motile-skeleton-shimmer 1.5s ease-in-out infinite;
 }
 
 /* Shimmer Animation */
-@keyframes taeri-skeleton-shimmer {
+@keyframes motile-skeleton-shimmer {
   0% {
     transform: translateX(-100%);
   }
@@ -35,7 +35,7 @@
 
 /* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
-  .taeri-skeleton::after {
+  .motile-skeleton::after {
     animation: none;
     display: none;
   }
@@ -43,11 +43,11 @@
 
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
-  .taeri-skeleton {
+  .motile-skeleton {
     background-color: #374151;
   }
 
-  .taeri-skeleton::after {
+  .motile-skeleton::after {
     background: linear-gradient(
       90deg,
       rgba(255, 255, 255, 0) 0%,

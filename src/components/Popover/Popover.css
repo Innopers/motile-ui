@@ -1,10 +1,10 @@
 /* 래퍼: position context 제공 (Content의 absolute positioning 기준) */
-.taeri-popover-wrapper {
+.motile-popover-wrapper {
   position: relative;
 }
 
 /* 컨텐츠 박스 */
-.taeri-popover-content {
+.motile-popover-content {
   position: absolute;
   z-index: 10;
   padding: 16px;
@@ -25,44 +25,44 @@
 }
 
 /* Default Variant - 배경색 적용, 텍스트 흰색 */
-.taeri-popover-content--default {
-  background: var(--taeri-popover-color, var(--taeri-ui-popover, #3b82f6));
+.motile-popover-content--default {
+  background: var(--motile-popover-color, var(--motile-ui-popover, #3b82f6));
   color: #fff;
-  border: 1px solid var(--taeri-popover-color, var(--taeri-ui-popover, #3b82f6));
+  border: 1px solid var(--motile-popover-color, var(--motile-ui-popover, #3b82f6));
 }
 
 /* Outlined Variant - 배경 흰색, 테두리에 색상 */
-.taeri-popover-content--outlined {
+.motile-popover-content--outlined {
   background: #fff;
   color: #111827;
-  border: 1px solid var(--taeri-popover-color, var(--taeri-ui-popover, #e5e7eb));
+  border: 1px solid var(--motile-popover-color, var(--motile-ui-popover, #e5e7eb));
 }
 
 /* 위치 계산 완료 후 표시 */
-.taeri-popover-content[data-positioned="true"] {
+.motile-popover-content[data-positioned="true"] {
   opacity: 1;
   visibility: visible;
 }
 
 /* Base transforms for center alignment - 애니메이션 종료 후에도 유지 */
-.taeri-popover-content[data-placement="top"][data-align="center"],
-.taeri-popover-content[data-placement="bottom"][data-align="center"] {
+.motile-popover-content[data-placement="top"][data-align="center"],
+.motile-popover-content[data-placement="bottom"][data-align="center"] {
   transform: translate3d(-50%, 0, 0);
 }
 
-.taeri-popover-content[data-placement="left"][data-align="center"],
-.taeri-popover-content[data-placement="right"][data-align="center"] {
+.motile-popover-content[data-placement="left"][data-align="center"],
+.motile-popover-content[data-placement="right"][data-align="center"] {
   transform: translate3d(0, -50%, 0);
 }
 
 /* top - fade 애니메이션 (bounce 없을 때) */
-.taeri-popover-content[data-placement="top"][data-align="center"][data-positioned="true"][data-bounce="false"] {
+.motile-popover-content[data-placement="top"][data-align="center"][data-positioned="true"][data-bounce="false"] {
   animation: popover-fade-in-top-center 0.2s ease-out;
 }
-.taeri-popover-content[data-placement="top"][data-align="start"][data-positioned="true"][data-bounce="false"] {
+.motile-popover-content[data-placement="top"][data-align="start"][data-positioned="true"][data-bounce="false"] {
   animation: popover-fade-in-top-start 0.2s ease-out;
 }
-.taeri-popover-content[data-placement="top"][data-align="end"][data-positioned="true"][data-bounce="false"] {
+.motile-popover-content[data-placement="top"][data-align="end"][data-positioned="true"][data-bounce="false"] {
   animation: popover-fade-in-top-end 0.2s ease-out;
 }
 
@@ -98,15 +98,15 @@
 }
 
 /* top - bounce 애니메이션 */
-.taeri-popover-content[data-placement="top"][data-align="center"][data-positioned="true"][data-bounce="true"] {
+.motile-popover-content[data-placement="top"][data-align="center"][data-positioned="true"][data-bounce="true"] {
   animation: popover-bounce-top-center 0.7s ease-out;
   animation-iteration-count: var(--bounce-count, 1);
 }
-.taeri-popover-content[data-placement="top"][data-align="start"][data-positioned="true"][data-bounce="true"] {
+.motile-popover-content[data-placement="top"][data-align="start"][data-positioned="true"][data-bounce="true"] {
   animation: popover-bounce-top-start 0.7s ease-out;
   animation-iteration-count: var(--bounce-count, 1);
 }
-.taeri-popover-content[data-placement="top"][data-align="end"][data-positioned="true"][data-bounce="true"] {
+.motile-popover-content[data-placement="top"][data-align="end"][data-positioned="true"][data-bounce="true"] {
   animation: popover-bounce-top-end 0.7s ease-out;
   animation-iteration-count: var(--bounce-count, 1);
 }
@@ -173,13 +173,13 @@
 }
 
 /* bottom - fade 애니메이션 (bounce 없을 때) */
-.taeri-popover-content[data-placement="bottom"][data-align="center"][data-positioned="true"][data-bounce="false"] {
+.motile-popover-content[data-placement="bottom"][data-align="center"][data-positioned="true"][data-bounce="false"] {
   animation: popover-fade-in-bottom-center 0.2s ease-out;
 }
-.taeri-popover-content[data-placement="bottom"][data-align="start"][data-positioned="true"][data-bounce="false"] {
+.motile-popover-content[data-placement="bottom"][data-align="start"][data-positioned="true"][data-bounce="false"] {
   animation: popover-fade-in-bottom-start 0.2s ease-out;
 }
-.taeri-popover-content[data-placement="bottom"][data-align="end"][data-positioned="true"][data-bounce="false"] {
+.motile-popover-content[data-placement="bottom"][data-align="end"][data-positioned="true"][data-bounce="false"] {
   animation: popover-fade-in-bottom-end 0.2s ease-out;
 }
 
@@ -215,15 +215,15 @@
 }
 
 /* bottom - bounce 애니메이션 */
-.taeri-popover-content[data-placement="bottom"][data-align="center"][data-positioned="true"][data-bounce="true"] {
+.motile-popover-content[data-placement="bottom"][data-align="center"][data-positioned="true"][data-bounce="true"] {
   animation: popover-bounce-bottom-center 0.7s ease-out;
   animation-iteration-count: var(--bounce-count, 1);
 }
-.taeri-popover-content[data-placement="bottom"][data-align="start"][data-positioned="true"][data-bounce="true"] {
+.motile-popover-content[data-placement="bottom"][data-align="start"][data-positioned="true"][data-bounce="true"] {
   animation: popover-bounce-bottom-start 0.7s ease-out;
   animation-iteration-count: var(--bounce-count, 1);
 }
-.taeri-popover-content[data-placement="bottom"][data-align="end"][data-positioned="true"][data-bounce="true"] {
+.motile-popover-content[data-placement="bottom"][data-align="end"][data-positioned="true"][data-bounce="true"] {
   animation: popover-bounce-bottom-end 0.7s ease-out;
   animation-iteration-count: var(--bounce-count, 1);
 }
@@ -290,13 +290,13 @@
 }
 
 /* left - fade 애니메이션 (bounce 없을 때) */
-.taeri-popover-content[data-placement="left"][data-align="center"][data-positioned="true"][data-bounce="false"] {
+.motile-popover-content[data-placement="left"][data-align="center"][data-positioned="true"][data-bounce="false"] {
   animation: popover-fade-in-left-center 0.2s ease-out;
 }
-.taeri-popover-content[data-placement="left"][data-align="start"][data-positioned="true"][data-bounce="false"] {
+.motile-popover-content[data-placement="left"][data-align="start"][data-positioned="true"][data-bounce="false"] {
   animation: popover-fade-in-left-start 0.2s ease-out;
 }
-.taeri-popover-content[data-placement="left"][data-align="end"][data-positioned="true"][data-bounce="false"] {
+.motile-popover-content[data-placement="left"][data-align="end"][data-positioned="true"][data-bounce="false"] {
   animation: popover-fade-in-left-end 0.2s ease-out;
 }
 
@@ -332,15 +332,15 @@
 }
 
 /* left - bounce 애니메이션 */
-.taeri-popover-content[data-placement="left"][data-align="center"][data-positioned="true"][data-bounce="true"] {
+.motile-popover-content[data-placement="left"][data-align="center"][data-positioned="true"][data-bounce="true"] {
   animation: popover-bounce-left-center 0.7s ease-out;
   animation-iteration-count: var(--bounce-count, 1);
 }
-.taeri-popover-content[data-placement="left"][data-align="start"][data-positioned="true"][data-bounce="true"] {
+.motile-popover-content[data-placement="left"][data-align="start"][data-positioned="true"][data-bounce="true"] {
   animation: popover-bounce-left-start 0.7s ease-out;
   animation-iteration-count: var(--bounce-count, 1);
 }
-.taeri-popover-content[data-placement="left"][data-align="end"][data-positioned="true"][data-bounce="true"] {
+.motile-popover-content[data-placement="left"][data-align="end"][data-positioned="true"][data-bounce="true"] {
   animation: popover-bounce-left-end 0.7s ease-out;
   animation-iteration-count: var(--bounce-count, 1);
 }
@@ -407,13 +407,13 @@
 }
 
 /* right - fade 애니메이션 (bounce 없을 때) */
-.taeri-popover-content[data-placement="right"][data-align="center"][data-positioned="true"][data-bounce="false"] {
+.motile-popover-content[data-placement="right"][data-align="center"][data-positioned="true"][data-bounce="false"] {
   animation: popover-fade-in-right-center 0.2s ease-out;
 }
-.taeri-popover-content[data-placement="right"][data-align="start"][data-positioned="true"][data-bounce="false"] {
+.motile-popover-content[data-placement="right"][data-align="start"][data-positioned="true"][data-bounce="false"] {
   animation: popover-fade-in-right-start 0.2s ease-out;
 }
-.taeri-popover-content[data-placement="right"][data-align="end"][data-positioned="true"][data-bounce="false"] {
+.motile-popover-content[data-placement="right"][data-align="end"][data-positioned="true"][data-bounce="false"] {
   animation: popover-fade-in-right-end 0.2s ease-out;
 }
 
@@ -449,15 +449,15 @@
 }
 
 /* right - bounce 애니메이션 */
-.taeri-popover-content[data-placement="right"][data-align="center"][data-positioned="true"][data-bounce="true"] {
+.motile-popover-content[data-placement="right"][data-align="center"][data-positioned="true"][data-bounce="true"] {
   animation: popover-bounce-right-center 0.7s ease-out;
   animation-iteration-count: var(--bounce-count, 1);
 }
-.taeri-popover-content[data-placement="right"][data-align="start"][data-positioned="true"][data-bounce="true"] {
+.motile-popover-content[data-placement="right"][data-align="start"][data-positioned="true"][data-bounce="true"] {
   animation: popover-bounce-right-start 0.7s ease-out;
   animation-iteration-count: var(--bounce-count, 1);
 }
-.taeri-popover-content[data-placement="right"][data-align="end"][data-positioned="true"][data-bounce="true"] {
+.motile-popover-content[data-placement="right"][data-align="end"][data-positioned="true"][data-bounce="true"] {
   animation: popover-bounce-right-end 0.7s ease-out;
   animation-iteration-count: var(--bounce-count, 1);
 }
@@ -524,7 +524,7 @@
 }
 
 /* Arrow */
-.taeri-popover-arrow {
+.motile-popover-arrow {
   position: absolute;
   width: 12px;
   height: 12px;
@@ -532,81 +532,81 @@
 }
 
 /* Default Variant - Arrow */
-.taeri-popover-content--default .taeri-popover-arrow {
-  background: var(--taeri-popover-color, var(--taeri-ui-popover, #3b82f6));
-  border: 1px solid var(--taeri-popover-color, var(--taeri-ui-popover, #3b82f6));
+.motile-popover-content--default .motile-popover-arrow {
+  background: var(--motile-popover-color, var(--motile-ui-popover, #3b82f6));
+  border: 1px solid var(--motile-popover-color, var(--motile-ui-popover, #3b82f6));
 }
 
 /* Outlined Variant - Arrow */
-.taeri-popover-content--outlined .taeri-popover-arrow {
+.motile-popover-content--outlined .motile-popover-arrow {
   background: #fff;
-  border: 1px solid var(--taeri-popover-color, var(--taeri-ui-popover, #e5e7eb));
+  border: 1px solid var(--motile-popover-color, var(--motile-ui-popover, #e5e7eb));
 }
 
 /* Arrow position - Top */
-.taeri-popover-arrow[data-placement="top"] {
+.motile-popover-arrow[data-placement="top"] {
   bottom: -7px;
   border-top: none;
   border-left: none;
 }
-.taeri-popover-arrow[data-placement="top"][data-align="start"] {
+.motile-popover-arrow[data-placement="top"][data-align="start"] {
   left: 20px;
 }
-.taeri-popover-arrow[data-placement="top"][data-align="center"] {
+.motile-popover-arrow[data-placement="top"][data-align="center"] {
   left: 50%;
   transform: translateX(-50%) rotate(45deg);
 }
-.taeri-popover-arrow[data-placement="top"][data-align="end"] {
+.motile-popover-arrow[data-placement="top"][data-align="end"] {
   right: 20px;
 }
 
 /* Arrow position - Bottom */
-.taeri-popover-arrow[data-placement="bottom"] {
+.motile-popover-arrow[data-placement="bottom"] {
   top: -7px;
   border-bottom: none;
   border-right: none;
 }
-.taeri-popover-arrow[data-placement="bottom"][data-align="start"] {
+.motile-popover-arrow[data-placement="bottom"][data-align="start"] {
   left: 20px;
 }
-.taeri-popover-arrow[data-placement="bottom"][data-align="center"] {
+.motile-popover-arrow[data-placement="bottom"][data-align="center"] {
   left: 50%;
   transform: translateX(-50%) rotate(45deg);
 }
-.taeri-popover-arrow[data-placement="bottom"][data-align="end"] {
+.motile-popover-arrow[data-placement="bottom"][data-align="end"] {
   right: 20px;
 }
 
 /* Arrow position - Left */
-.taeri-popover-arrow[data-placement="left"] {
+.motile-popover-arrow[data-placement="left"] {
   right: -7px;
   border-left: none;
   border-bottom: none;
 }
-.taeri-popover-arrow[data-placement="left"][data-align="start"] {
+.motile-popover-arrow[data-placement="left"][data-align="start"] {
   top: 20px;
 }
-.taeri-popover-arrow[data-placement="left"][data-align="center"] {
+.motile-popover-arrow[data-placement="left"][data-align="center"] {
   top: 50%;
   transform: translateY(-50%) rotate(45deg);
 }
-.taeri-popover-arrow[data-placement="left"][data-align="end"] {
+.motile-popover-arrow[data-placement="left"][data-align="end"] {
   bottom: 20px;
 }
 
 /* Arrow position - Right */
-.taeri-popover-arrow[data-placement="right"] {
+.motile-popover-arrow[data-placement="right"] {
   left: -7px;
   border-right: none;
   border-top: none;
 }
-.taeri-popover-arrow[data-placement="right"][data-align="start"] {
+.motile-popover-arrow[data-placement="right"][data-align="start"] {
   top: 20px;
 }
-.taeri-popover-arrow[data-placement="right"][data-align="center"] {
+.motile-popover-arrow[data-placement="right"][data-align="center"] {
   top: 50%;
   transform: translateY(-50%) rotate(45deg);
 }
-.taeri-popover-arrow[data-placement="right"][data-align="end"] {
+.motile-popover-arrow[data-placement="right"][data-align="end"] {
   bottom: 20px;
 }

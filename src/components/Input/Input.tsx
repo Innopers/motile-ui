@@ -88,7 +88,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     ref
   ) => {
     const generatedId = useId().replace(/:/g, "");
-    const id = idProp ?? `taeri-input-${generatedId}`;
+    const id = idProp ?? `motile-input-${generatedId}`;
 
     const internalRef = useRef<HTMLInputElement>(null);
     const inputRef = (ref as React.RefObject<HTMLInputElement>) || internalRef;
@@ -112,7 +112,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       }
     }, [autoFocus, autoSelect]);
 
-    const baseClass = "taeri-input";
+    const baseClass = "motile-input";
     const showClearButton = onClear && value;
     const hasLeftIcon = !!leftIcon;
     const hasRightContent = showClearButton || rightIcon;
@@ -145,7 +145,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       .join(" ");
 
     const wrapperStyle = color
-      ? ({ "--taeri-input-color": color } as React.CSSProperties)
+      ? ({ "--motile-input-color": color } as React.CSSProperties)
       : undefined;
 
     const inputStyle = {

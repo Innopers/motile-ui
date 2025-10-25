@@ -2,7 +2,7 @@
    Toast - Responsive Mobile & Desktop
    ============================================================================ */
 
-.taeri-toast-container {
+.motile-toast-container {
   position: fixed;
   pointer-events: none;
   display: flex;
@@ -11,7 +11,7 @@
 }
 
 /* Mobile: Top Center */
-.taeri-toast-container {
+.motile-toast-container {
   top: 0;
   left: 0;
   right: 0;
@@ -21,7 +21,7 @@
 
 /* Desktop: Top Right */
 @media (min-width: 768px) {
-  .taeri-toast-container {
+  .motile-toast-container {
     top: 0;
     left: auto;
     right: 0;
@@ -35,7 +35,7 @@
    Toast Item
    ============================================================================ */
 
-.taeri-toast {
+.motile-toast {
   pointer-events: auto;
   display: inline-flex;
   align-items: flex-start;
@@ -69,14 +69,14 @@
 
 /* Desktop: Slide In from Right */
 @media (min-width: 768px) {
-  .taeri-toast {
+  .motile-toast {
     width: auto; /* Desktop: content-fit */
     max-width: 320px;
     animation: slideInRight 0.3s ease-out;
   }
 }
 
-.taeri-toast--exiting {
+.motile-toast--exiting {
   animation: fadeOut 0.15s ease-out forwards;
 }
 
@@ -84,7 +84,7 @@
    Icon
    ============================================================================ */
 
-.taeri-toast__icon {
+.motile-toast__icon {
   flex-shrink: 0;
   width: 18px;
   height: 18px;
@@ -96,19 +96,19 @@
   margin-top: 1px;
 }
 
-.taeri-toast--success .taeri-toast__icon {
+.motile-toast--success .motile-toast__icon {
   color: #4ade80;
 }
 
-.taeri-toast--error .taeri-toast__icon {
+.motile-toast--error .motile-toast__icon {
   color: #f87171;
 }
 
-.taeri-toast--warning .taeri-toast__icon {
+.motile-toast--warning .motile-toast__icon {
   color: #fbbf24;
 }
 
-.taeri-toast--info .taeri-toast__icon {
+.motile-toast--info .motile-toast__icon {
   color: #60a5fa;
 }
 
@@ -116,7 +116,7 @@
    Message
    ============================================================================ */
 
-.taeri-toast__message {
+.motile-toast__message {
   flex: 1;
   min-width: 0;
   font-size: 14px;
@@ -168,31 +168,31 @@
    ============================================================================ */
 
 @media (prefers-color-scheme: dark) {
-  .taeri-toast {
+  .motile-toast {
     background: rgba(255, 255, 255, 0.95);
   }
 
-  .taeri-toast__message {
+  .motile-toast__message {
     color: #18181b;
   }
 
-  .taeri-toast__icon {
+  .motile-toast__icon {
     color: #18181b;
   }
 
-  .taeri-toast--success .taeri-toast__icon {
+  .motile-toast--success .motile-toast__icon {
     color: #22c55e;
   }
 
-  .taeri-toast--error .taeri-toast__icon {
+  .motile-toast--error .motile-toast__icon {
     color: #ef4444;
   }
 
-  .taeri-toast--warning .taeri-toast__icon {
+  .motile-toast--warning .motile-toast__icon {
     color: #f59e0b;
   }
 
-  .taeri-toast--info .taeri-toast__icon {
+  .motile-toast--info .motile-toast__icon {
     color: #3b82f6;
   }
 }
@@ -202,12 +202,12 @@
    ============================================================================ */
 
 @media (prefers-reduced-motion: reduce) {
-  .taeri-toast {
+  .motile-toast {
     animation: none !important;
   }
 }
 
-.taeri-toast * {
+.motile-toast * {
   user-select: none;
   -webkit-user-select: none;
 }

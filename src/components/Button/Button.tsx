@@ -65,7 +65,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
-    const baseClass = "taeri-btn";
+    const baseClass = "motile-btn";
 
     // fullWidth 기본값: large는 true, 나머지는 false
     const actualFullWidth = fullWidth ?? size === "large";
@@ -85,7 +85,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     const customStyle = {
       ...style,
-      ...(color && ({ "--taeri-btn-color": color } as React.CSSProperties)),
+      ...(color && ({ "--motile-btn-color": color } as React.CSSProperties)),
     };
 
     return (

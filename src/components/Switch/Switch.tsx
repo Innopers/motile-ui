@@ -23,7 +23,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
     { variant = "default", color, className, disabled, style, ...props },
     ref
   ) => {
-    const baseClass = "taeri-switch";
+    const baseClass = "motile-switch";
 
     const containerClasses = [
       `${baseClass}-container`,
@@ -39,7 +39,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
 
     // CSS 변수로 색상 전달
     const containerStyle = color
-      ? ({ "--taeri-switch-color": color } as React.CSSProperties)
+      ? ({ "--motile-switch-color": color } as React.CSSProperties)
       : undefined;
 
     return (

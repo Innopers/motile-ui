@@ -175,8 +175,8 @@ export const Drawer = forwardRef<DrawerHandle, DrawerProps>(
       enabled: isOpen,
       allowedSelectors: [
         "[data-scroll-allowed]",
-        ".taeri-drawer__body",
-        ".taeri-drawer-body",
+        ".motile-drawer__body",
+        ".motile-drawer-body",
       ],
     });
 
@@ -334,7 +334,7 @@ export const Drawer = forwardRef<DrawerHandle, DrawerProps>(
 
     if (!shouldRender) return null;
 
-    const baseClass = "taeri-drawer";
+    const baseClass = "motile-drawer";
 
     const drawerClasses = [
       `${baseClass}__content`,

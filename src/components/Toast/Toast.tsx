@@ -161,7 +161,7 @@ function ToastItem({ toast, onRemove }: ToastItemProps) {
     return null;
   }, [toast.variant]);
 
-  const baseClass = "taeri-toast";
+  const baseClass = "motile-toast";
   const classes = [
     baseClass,
     `${baseClass}--${toast.variant}`,
@@ -247,7 +247,7 @@ export function ToastProvider({ children, zIndex = 9999 }: ToastProviderProps) {
       {typeof window !== "undefined" &&
         createPortal(
           <div
-            className="taeri-toast-container"
+            className="motile-toast-container"
             aria-live="polite"
             aria-label="Notifications"
             style={{ zIndex: containerZIndex }}

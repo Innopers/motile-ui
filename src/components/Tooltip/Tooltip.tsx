@@ -284,7 +284,7 @@ function TooltipRoot({
         ...(bw !== rect.width && { maxWidth: bw }),
         ...(bh !== rect.height && { maxHeight: maxH }),
         ...(color &&
-          ({ "--taeri-tooltip-color": color } as React.CSSProperties)),
+          ({ "--motile-tooltip-color": color } as React.CSSProperties)),
         ...(arrowLeft !== undefined &&
           ({ "--arrow-left": `${arrowLeft}px` } as React.CSSProperties)),
         ...(arrowTop !== undefined &&
@@ -434,7 +434,7 @@ function TooltipTrigger({ children }: TooltipTriggerProps) {
         }
       }
     },
-    className: `taeri-tooltip-trigger ${children.props.className || ""}`.trim(),
+    className: `motile-tooltip-trigger ${children.props.className || ""}`.trim(),
     "aria-describedby": open ? tooltipId : undefined,
     tabIndex: children.props.tabIndex ?? 0,
     onMouseEnter: handleTriggerEnter,
@@ -503,7 +503,7 @@ function TooltipContent({ children }: TooltipContentProps) {
       ref={contentRef}
       id={tooltipId}
       role="tooltip"
-      className={`taeri-tooltip-bubble taeri-tooltip-bubble--${variant}`}
+      className={`motile-tooltip-bubble motile-tooltip-bubble--${variant}`}
       data-open={visible || undefined}
       data-placement={placement}
       data-align={align}

@@ -141,7 +141,7 @@ export const DockRoot = forwardRef<HTMLDivElement, DockRootProps>(
             (dockRef as React.MutableRefObject<HTMLDivElement | null>).current =
               node;
           }}
-          className={`taeri-dock ${className || ""}`}
+          className={`motile-dock ${className || ""}`}
           data-position={position}
           style={{ ...style, zIndex }}
           onMouseMove={handleMouseMove}
@@ -243,7 +243,7 @@ export const DockItem = forwardRef<HTMLButtonElement, DockItemProps>(
             itemRef as React.MutableRefObject<HTMLButtonElement | null>
           ).current = node as HTMLButtonElement;
         },
-        className: `taeri-dock__item ${className || ""}`,
+        className: `motile-dock__item ${className || ""}`,
         style,
         "aria-label": label,
       });
@@ -276,7 +276,7 @@ export const DockItem = forwardRef<HTMLButtonElement, DockItemProps>(
           ).current = node;
         }}
         type="button"
-        className={`taeri-dock__item ${className || ""}`}
+        className={`motile-dock__item ${className || ""}`}
         style={style}
         aria-label={label}
         {...props}
@@ -315,7 +315,7 @@ export const DockSeparator = forwardRef<HTMLDivElement, DockSeparatorProps>(
     return (
       <div
         ref={ref}
-        className={`taeri-dock__separator ${className || ""}`}
+        className={`motile-dock__separator ${className || ""}`}
         data-position={position}
         aria-hidden="true"
         {...props}

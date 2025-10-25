@@ -26,7 +26,7 @@ const meta = {
     color: {
       control: "color",
       description:
-        "Button background color (priority 1: props > --taeri-ui-btn > --taeri-theme > default)",
+        "Button background color (priority 1: props > --motile-ui-btn > --motile-theme > default)",
     },
     disabled: {
       control: "boolean",

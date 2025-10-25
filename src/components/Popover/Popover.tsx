@@ -225,7 +225,7 @@ function PopoverRoot({
 
   return (
     <PopoverContext.Provider value={contextValue}>
-      <div ref={wrapperRef} className="taeri-popover-wrapper">
+      <div ref={wrapperRef} className="motile-popover-wrapper">
         {children}
       </div>
     </PopoverContext.Provider>
@@ -482,7 +482,7 @@ function PopoverContent({
       id={contentId}
       role="dialog"
       aria-modal="false"
-      className={`taeri-popover-content taeri-popover-content--${variant} ${className}`}
+      className={`motile-popover-content motile-popover-content--${variant} ${className}`}
       data-placement={position}
       data-align={align}
       data-positioned={isPositioned}
@@ -492,7 +492,7 @@ function PopoverContent({
           ...popoverStyle,
           zIndex,
           ...(color &&
-            ({ "--taeri-popover-color": color } as React.CSSProperties)),
+            ({ "--motile-popover-color": color } as React.CSSProperties)),
           "--bounce-count": bounceCount,
           ...style,
         } as React.CSSProperties
@@ -500,7 +500,7 @@ function PopoverContent({
     >
       {showArrow && (
         <div
-          className="taeri-popover-arrow"
+          className="motile-popover-arrow"
           data-placement={position}
           data-align={align}
         />

@@ -22,7 +22,7 @@ const meta = {
     color: {
       control: "color",
       description:
-        "Badge 배경 색상 (priority: props > --taeri-ui-badge > --taeri-theme > default)",
+        "Badge 배경 색상 (priority: props > --motile-ui-badge > --motile-theme > default)",
     },
     children: {
       control: "text",

@@ -10,7 +10,7 @@ import React, {
 } from "react";
 import "./Accordion.css";
 
-const BASE = "taeri-accordion";
+const BASE = "motile-accordion";
 
 // ===========================
 // Types

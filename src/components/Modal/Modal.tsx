@@ -244,7 +244,7 @@ export const ModalOverlay = React.forwardRef<HTMLDivElement, ModalOverlayProps>(
     // 배경 스크롤 잠금
     useScrollLock({
       enabled: open && !disableScrollLock,
-      allowedSelectors: [".taeri-modal__content"],
+      allowedSelectors: [".motile-modal__content"],
     });
 
     // Backdrop 클릭 시 닫기
@@ -295,7 +295,7 @@ export const ModalOverlay = React.forwardRef<HTMLDivElement, ModalOverlayProps>(
     const overlayContent = (
       <div
         ref={ref}
-        className={`taeri-modal__backdrop ${className || ""}`}
+        className={`motile-modal__backdrop ${className || ""}`}
         data-state={open ? "open" : "closed"}
         data-variant={variant}
         onClick={handleClick}
@@ -304,7 +304,7 @@ export const ModalOverlay = React.forwardRef<HTMLDivElement, ModalOverlayProps>(
       >
         <div
           ref={overlayRef}
-          className="taeri-modal"
+          className="motile-modal"
           data-variant={variant}
           style={modalStyle}
         >
@@ -333,7 +333,7 @@ export const ModalContent = React.forwardRef<HTMLDivElement, ModalContentProps>(
     return (
       <div
         ref={ref}
-        className={`taeri-modal__content ${className || ""}`}
+        className={`motile-modal__content ${className || ""}`}
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
@@ -359,7 +359,7 @@ export const ModalTitle = React.forwardRef<HTMLHeadingElement, ModalTitleProps>(
       <h2
         ref={ref}
         id={titleId}
-        className={`taeri-modal__title ${className || ""}`}
+        className={`motile-modal__title ${className || ""}`}
         {...props}
       />
     );
@@ -382,7 +382,7 @@ export const ModalDescription = React.forwardRef<
     <div
       ref={ref}
       id={descriptionId}
-      className={`taeri-modal__body ${className || ""}`}
+      className={`motile-modal__body ${className || ""}`}
       {...props}
     />
   );
@@ -413,7 +413,7 @@ export const ModalClose = React.forwardRef<HTMLButtonElement, ModalCloseProps>(
       <button
         ref={ref}
         type="button"
-        className={`taeri-modal__close ${className || ""}`}
+        className={`motile-modal__close ${className || ""}`}
         onClick={handleClick}
         aria-label="닫기"
         {...props}
@@ -449,7 +449,7 @@ export const ModalFooter = React.forwardRef<HTMLDivElement, ModalFooterProps>(
     return (
       <div
         ref={ref}
-        className={`taeri-modal__footer ${className || ""}`}
+        className={`motile-modal__footer ${className || ""}`}
         {...props}
       />
     );
@@ -467,7 +467,7 @@ export const ModalHeader = React.forwardRef<HTMLDivElement, ModalHeaderProps>(
     return (
       <div
         ref={ref}
-        className={`taeri-modal__header ${className || ""}`}
+        className={`motile-modal__header ${className || ""}`}
         {...props}
       />
     );

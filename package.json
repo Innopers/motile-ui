@@ -1,16 +1,16 @@
 {
-  "name": "taeri-ui",
+  "name": "motile-ui",
   "version": "0.0.1",
   "type": "module",
   "description": "React component library for webview applications",
-  "main": "./dist/taeri-ui.umd.js",
-  "module": "./dist/taeri-ui.es.js",
+  "main": "./dist/motile-ui.umd.js",
+  "module": "./dist/motile-ui.es.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/taeri-ui.es.js",
-      "require": "./dist/taeri-ui.umd.js"
+      "import": "./dist/motile-ui.es.js",
+      "require": "./dist/motile-ui.umd.js"
     },
     "./dist/style.css": "./dist/style.css"
   },

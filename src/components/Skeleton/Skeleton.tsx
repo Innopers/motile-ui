@@ -32,7 +32,7 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   style,
   ...props
 }) => {
-  const baseClass = 'taeri-skeleton'
+  const baseClass = 'motile-skeleton'
 
   const classes = [baseClass, className].filter(Boolean).join(' ')
 

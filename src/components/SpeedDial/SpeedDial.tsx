@@ -163,7 +163,7 @@ export const SpeedDialRoot: React.FC<SpeedDialRootProps> = ({
 
   return (
     <SpeedDialContext.Provider value={contextValue}>
-      <div ref={containerRef} className="taeri-speed-dial">
+      <div ref={containerRef} className="motile-speed-dial">
         {children}
       </div>
     </SpeedDialContext.Provider>
@@ -194,8 +194,8 @@ export const SpeedDialTrigger = forwardRef<
       id={triggerId}
       className={
         className
-          ? `taeri-speed-dial__trigger ${className}`
-          : "taeri-speed-dial__trigger"
+          ? `motile-speed-dial__trigger ${className}`
+          : "motile-speed-dial__trigger"
       }
       aria-expanded={open}
       aria-haspopup="menu"
@@ -241,8 +241,8 @@ export const SpeedDialActions = forwardRef<
       aria-labelledby={triggerId}
       className={
         className
-          ? `taeri-speed-dial__actions ${className}`
-          : "taeri-speed-dial__actions"
+          ? `motile-speed-dial__actions ${className}`
+          : "motile-speed-dial__actions"
       }
       data-direction={direction}
       {...props}
@@ -273,8 +273,8 @@ export const SpeedDialAction = forwardRef<
       role="menuitem"
       className={
         className
-          ? `taeri-speed-dial__action ${className}`
-          : "taeri-speed-dial__action"
+          ? `motile-speed-dial__action ${className}`
+          : "motile-speed-dial__action"
       }
       onClick={handleClick}
       {...props}

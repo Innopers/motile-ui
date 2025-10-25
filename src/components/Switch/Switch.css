@@ -1,12 +1,12 @@
 /* Switch Component Styles */
 
-.taeri-switch-container {
+.motile-switch-container {
   display: inline-flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.taeri-switch-wrapper {
+.motile-switch-wrapper {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -15,13 +15,13 @@
   user-select: none;
 }
 
-.taeri-switch-container--disabled .taeri-switch-wrapper {
+.motile-switch-container--disabled .motile-switch-wrapper {
   cursor: not-allowed;
   opacity: 0.6;
 }
 
 /* Hidden Input */
-.taeri-switch {
+.motile-switch {
   position: absolute;
   opacity: 0;
   width: 0;
@@ -30,12 +30,12 @@
   pointer-events: none;
 }
 
-.taeri-switch:focus {
+.motile-switch:focus {
   outline: none;
 }
 
 /* Switch Track (배경) */
-.taeri-switch__track {
+.motile-switch__track {
   position: relative;
   width: 44px;
   height: 24px;
@@ -49,7 +49,7 @@
 }
 
 /* Switch Thumb (토글 버튼) */
-.taeri-switch__thumb {
+.motile-switch__thumb {
   position: absolute;
   width: 18px;
   height: 18px;
@@ -61,28 +61,28 @@
 }
 
 /* Checked State */
-.taeri-switch:checked + .taeri-switch__track {
+.motile-switch:checked + .motile-switch__track {
   background-color: var(
-    --taeri-switch-color,
-    var(--taeri-ui-switch, var(--taeri-theme, #3b82f6))
+    --motile-switch-color,
+    var(--motile-ui-switch, var(--motile-theme, #3b82f6))
   );
 }
 
-.taeri-switch:checked + .taeri-switch__track .taeri-switch__thumb {
+.motile-switch:checked + .motile-switch__track .motile-switch__thumb {
   transform: translateX(20px);
 }
 
 /* Hover State */
-.taeri-switch:not(:checked) + .taeri-switch__track:hover {
+.motile-switch:not(:checked) + .motile-switch__track:hover {
   background-color: #d1d5db;
 }
 
-.taeri-switch:checked + .taeri-switch__track:hover {
+.motile-switch:checked + .motile-switch__track:hover {
   background-color: color-mix(
     in srgb,
     var(
-        --taeri-switch-color,
-        var(--taeri-ui-switch, var(--taeri-theme, #3b82f6))
+        --motile-switch-color,
+        var(--motile-ui-switch, var(--motile-theme, #3b82f6))
       )
       90%,
     black
@@ -90,34 +90,34 @@
 }
 
 /* Disabled State */
-.taeri-switch:disabled + .taeri-switch__track {
+.motile-switch:disabled + .motile-switch__track {
   background-color: #f3f4f6;
   cursor: not-allowed;
 }
 
-.taeri-switch:disabled:checked + .taeri-switch__track {
+.motile-switch:disabled:checked + .motile-switch__track {
   background-color: #d1d5db;
 }
 
-.taeri-switch:disabled + .taeri-switch__track .taeri-switch__thumb {
+.motile-switch:disabled + .motile-switch__track .motile-switch__thumb {
   box-shadow: none;
 }
 
 /* Elastic Variant */
-.taeri-switch--elastic + .taeri-switch__track .taeri-switch__thumb {
+.motile-switch--elastic + .motile-switch__track .motile-switch__thumb {
   transition: none;
   will-change: transform;
 }
 
-.taeri-switch--elastic:checked + .taeri-switch__track .taeri-switch__thumb {
+.motile-switch--elastic:checked + .motile-switch__track .motile-switch__thumb {
   animation: switch-slide-on 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
   transform: translateX(20px);
   transform-origin: left center;
 }
 
-.taeri-switch--elastic:not(:checked)
-  + .taeri-switch__track
-  .taeri-switch__thumb {
+.motile-switch--elastic:not(:checked)
+  + .motile-switch__track
+  .motile-switch__thumb {
   animation: switch-slide-off 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
   transform: translateX(0);
   transform-origin: right center;
@@ -178,17 +178,17 @@
 }
 
 /* Bounce Variant */
-.taeri-switch--bounce + .taeri-switch__track .taeri-switch__thumb {
+.motile-switch--bounce + .motile-switch__track .motile-switch__thumb {
   transition: none;
   will-change: transform;
 }
 
-.taeri-switch--bounce:checked + .taeri-switch__track .taeri-switch__thumb {
+.motile-switch--bounce:checked + .motile-switch__track .motile-switch__thumb {
   animation: switch-bounce-on 0.65s cubic-bezier(0.68, -0.55, 0.27, 1.55);
   transform: translateX(20px);
 }
 
-.taeri-switch--bounce:not(:checked) + .taeri-switch__track .taeri-switch__thumb {
+.motile-switch--bounce:not(:checked) + .motile-switch__track .motile-switch__thumb {
   animation: switch-bounce-off 0.65s cubic-bezier(0.68, -0.55, 0.27, 1.55);
   transform: translateX(0);
 }

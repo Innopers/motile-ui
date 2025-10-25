@@ -1,4 +1,4 @@
-.taeri-badge {
+.motile-badge {
   /* 기본 스타일 */
   display: inline-flex;
   align-items: center;
@@ -8,106 +8,106 @@
   border-radius: 9999px;
   white-space: nowrap;
   vertical-align: middle;
-  /* 색상 우선순위: props > --taeri-ui-badge > --taeri-theme > 기본색 */
+  /* 색상 우선순위: props > --motile-ui-badge > --motile-theme > 기본색 */
   background-color: var(
-    --taeri-badge-color,
-    var(--taeri-ui-badge, var(--taeri-theme, #3b82f6))
+    --motile-badge-color,
+    var(--motile-ui-badge, var(--motile-theme, #3b82f6))
   );
   color: #ffffff;
 }
 
 /* Size variants */
-.taeri-badge--large {
+.motile-badge--large {
   padding: 6px 16px;
   font-size: 1rem; /* 16px */
   min-height: 32px;
 }
 
-.taeri-badge--medium {
+.motile-badge--medium {
   padding: 5px 12px;
   font-size: 0.875rem; /* 14px */
   min-height: 26px;
 }
 
-.taeri-badge--small {
+.motile-badge--small {
   padding: 4px 8px;
   font-size: 0.75rem; /* 12px */
   min-height: 24px;
 }
 
 /* Color variants */
-.taeri-badge--primary {
+.motile-badge--primary {
   background-color: var(
-    --taeri-badge-color,
-    var(--taeri-ui-badge, var(--taeri-theme, #3b82f6))
+    --motile-badge-color,
+    var(--motile-ui-badge, var(--motile-theme, #3b82f6))
   );
   color: #ffffff;
 }
 
-.taeri-badge--secondary {
+.motile-badge--secondary {
   /* 배경: 우선순위 색상을 연하게 (10% 투명도) */
   background: color-mix(
     in srgb,
-    var(--taeri-badge-color, var(--taeri-ui-badge, var(--taeri-theme, #3b82f6)))
+    var(--motile-badge-color, var(--motile-ui-badge, var(--motile-theme, #3b82f6)))
       10%,
     transparent
   );
   /* 글자색: 우선순위 색상 그대로 */
   color: var(
-    --taeri-badge-color,
-    var(--taeri-ui-badge, var(--taeri-theme, #3b82f6))
+    --motile-badge-color,
+    var(--motile-ui-badge, var(--motile-theme, #3b82f6))
   );
   /* border: 우선순위 색상 그대로 */
   border: 1px solid
-    var(--taeri-badge-color, var(--taeri-ui-badge, var(--taeri-theme, #3b82f6)));
+    var(--motile-badge-color, var(--motile-ui-badge, var(--motile-theme, #3b82f6)));
 }
 
 /* secondary는 border 1px 때문에 padding 조정 필요 */
-.taeri-badge--secondary.taeri-badge--large {
+.motile-badge--secondary.motile-badge--large {
   padding: 5px 15px;
   min-height: 30px;
 }
 
-.taeri-badge--secondary.taeri-badge--medium {
+.motile-badge--secondary.motile-badge--medium {
   padding: 4px 11px;
   min-height: 24px;
 }
 
-.taeri-badge--secondary.taeri-badge--small {
+.motile-badge--secondary.motile-badge--small {
   padding: 3px 7px;
   min-height: 22px;
 }
 
-.taeri-badge--outlined {
+.motile-badge--outlined {
   /* 배경: 흰색 */
   background-color: #ffffff;
   /* 글자색: 우선순위 색상 그대로 */
   color: var(
-    --taeri-badge-color,
-    var(--taeri-ui-badge, var(--taeri-theme, #3b82f6))
+    --motile-badge-color,
+    var(--motile-ui-badge, var(--motile-theme, #3b82f6))
   );
   /* border: 우선순위 색상 그대로 */
   border: 1px solid
-    var(--taeri-badge-color, var(--taeri-ui-badge, var(--taeri-theme, #3b82f6)));
+    var(--motile-badge-color, var(--motile-ui-badge, var(--motile-theme, #3b82f6)));
 }
 
 /* outlined도 border 1px 때문에 padding 조정 필요 */
-.taeri-badge--outlined.taeri-badge--large {
+.motile-badge--outlined.motile-badge--large {
   padding: 5px 15px;
   min-height: 30px;
 }
 
-.taeri-badge--outlined.taeri-badge--medium {
+.motile-badge--outlined.motile-badge--medium {
   padding: 4px 11px;
   min-height: 24px;
 }
 
-.taeri-badge--outlined.taeri-badge--small {
+.motile-badge--outlined.motile-badge--small {
   padding: 3px 7px;
   min-height: 22px;
 }
 
-.taeri-badge--dot {
+.motile-badge--dot {
   /* 배경: 투명 */
   background-color: transparent;
   /* padding: 최소화 */
@@ -119,41 +119,41 @@
 }
 
 /* dot 내부 구조 */
-.taeri-badge__dot {
+.motile-badge__dot {
   display: inline-block;
   border-radius: 50%;
   /* dot 크기: 우선순위 색상 적용 */
   background-color: var(
-    --taeri-badge-color,
-    var(--taeri-ui-badge, var(--taeri-theme, #3b82f6))
+    --motile-badge-color,
+    var(--motile-ui-badge, var(--motile-theme, #3b82f6))
   );
 }
 
-.taeri-badge__text {
+.motile-badge__text {
   line-height: 1.2;
 }
 
 /* dot 크기 variants */
-.taeri-badge--dot.taeri-badge--large .taeri-badge__dot {
+.motile-badge--dot.motile-badge--large .motile-badge__dot {
   width: 12px;
   height: 12px;
 }
 
-.taeri-badge--dot.taeri-badge--medium .taeri-badge__dot {
+.motile-badge--dot.motile-badge--medium .motile-badge__dot {
   width: 10px;
   height: 10px;
 }
 
-.taeri-badge--dot.taeri-badge--small .taeri-badge__dot {
+.motile-badge--dot.motile-badge--small .motile-badge__dot {
   width: 8px;
   height: 8px;
 }
 
-.taeri-badge--shimmer {
+.motile-badge--shimmer {
   /* 배경: primary와 동일한 우선순위 색상 */
   background-color: var(
-    --taeri-badge-color,
-    var(--taeri-ui-badge, var(--taeri-theme, #3b82f6))
+    --motile-badge-color,
+    var(--motile-ui-badge, var(--motile-theme, #3b82f6))
   );
   color: #ffffff;
   /* shimmer 효과를 위한 설정 */
@@ -162,7 +162,7 @@
 }
 
 /* shimmer 애니메이션 레이어 */
-.taeri-badge--shimmer::before {
+.motile-badge--shimmer::before {
   content: "";
   position: absolute;
   top: 0;
@@ -192,7 +192,7 @@
 
 /* 애니메이션 비활성화 설정 준수 */
 @media (prefers-reduced-motion: reduce) {
-  .taeri-badge--shimmer::before {
+  .motile-badge--shimmer::before {
     animation: none;
   }
 }
@@ -205,14 +205,14 @@
    * 가독성과 일관성이 최우선
    * 모바일에서는 터치 최적화만 추가
    */
-  .taeri-badge:active {
+  .motile-badge:active {
     filter: brightness(0.92);
   }
 }
 
 /* iOS Safari specific fixes */
 @supports (-webkit-touch-callout: none) {
-  .taeri-badge {
+  .motile-badge {
     -webkit-tap-highlight-color: transparent;
     -webkit-user-select: none;
     user-select: none;

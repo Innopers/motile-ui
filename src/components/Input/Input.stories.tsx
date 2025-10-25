@@ -37,7 +37,7 @@ const meta = {
     color: {
       control: "color",
       description:
-        "Border and focus color (priority 1: props > --taeri-ui-input > --taeri-theme > default)",
+        "Border and focus color (priority 1: props > --motile-ui-input > --motile-theme > default)",
     },
     maxLength: {
       control: "number",

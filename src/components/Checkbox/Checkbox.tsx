@@ -51,7 +51,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     },
     ref
   ) => {
-    const baseClass = "taeri-checkbox";
+    const baseClass = "motile-checkbox";
 
     const containerClasses = [
       `${baseClass}-container`,
@@ -82,7 +82,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 
     // CSS 변수로 색상 전달
     const containerStyle = color
-      ? ({ "--taeri-checkbox-color": color } as React.CSSProperties)
+      ? ({ "--motile-checkbox-color": color } as React.CSSProperties)
       : undefined;
 
     return (

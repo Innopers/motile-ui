@@ -33,7 +33,7 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
     { variant, size = "medium", color, className, children, style, ...props },
     ref
   ) => {
-    const baseClass = "taeri-badge";
+    const baseClass = "motile-badge";
 
     const classes = [
       baseClass,
@@ -46,7 +46,7 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
 
     const customStyle = {
       ...style,
-      ...(color && ({ "--taeri-badge-color": color } as React.CSSProperties)),
+      ...(color && ({ "--motile-badge-color": color } as React.CSSProperties)),
     };
 
     // dot variant일 때는 구조가 다름

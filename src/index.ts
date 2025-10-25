@@ -91,6 +91,15 @@ export type {
   DockPosition,
 } from "./components/Dock";
 
+export { SpeedDial } from "./components/SpeedDial";
+export type {
+  SpeedDialDirection,
+  SpeedDialRootProps,
+  SpeedDialTriggerProps,
+  SpeedDialActionsProps,
+  SpeedDialActionProps,
+} from "./components/SpeedDial";
+
 // Hooks
 export { useScrollLock } from "./hooks/useScrollLock";
 export { useClickOutside } from "./hooks/useClickOutside";

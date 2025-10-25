@@ -1,0 +1,189 @@
+/* Dock Container */
+.taeri-dock {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  /* Glass morphism effect */
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.05),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+  position: relative;
+  user-select: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dock Item */
+.taeri-dock__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: #374151;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  transform-origin: center bottom;
+  outline: none;
+  /* GPU 가속 활성화 */
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Hover State */
+.taeri-dock__item:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.taeri-dock__item:active {
+  background: rgba(255, 255, 255, 0.6);
+  filter: brightness(0.9);
+}
+
+.taeri-dock__item:focus-visible {
+  outline: 2px solid rgba(100, 116, 139, 0.6);
+  outline-offset: 2px;
+}
+
+/* Dock Item Icon Container */
+.taeri-dock__item > * {
+  pointer-events: none;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  .taeri-dock {
+    background: rgba(30, 30, 30, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.2),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  }
+
+  .taeri-dock__item {
+    color: #e5e7eb;
+  }
+
+  .taeri-dock__item:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .taeri-dock__item:active {
+    background: rgba(255, 255, 255, 0.2);
+    filter: brightness(0.9);
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .taeri-dock {
+    border: 2px solid currentColor;
+    background: rgba(255, 255, 255, 0.95);
+  }
+
+  .taeri-dock__item {
+    border: 1px solid currentColor;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .taeri-dock,
+  .taeri-dock__item {
+    transition: none;
+  }
+}
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+  .taeri-dock {
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 40px;
+  }
+
+  .taeri-dock__item {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+  }
+}
+
+/* Touch Device - Larger Touch Targets */
+@media (hover: none) and (pointer: coarse) {
+  .taeri-dock__item {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+/* Extra Styling for Better Visual Appeal */
+.taeri-dock::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50px;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.4),
+    rgba(255, 255, 255, 0.1)
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .taeri-dock::before {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.2),
+      rgba(255, 255, 255, 0.05)
+    );
+  }
+}
+
+/* Glow effect on hover for items */
+.taeri-dock__item::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 14px;
+  background: radial-gradient(
+    circle at center,
+    rgba(59, 130, 246, 0.3),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.taeri-dock__item:hover::before {
+  opacity: 1;
+}
+
+/* Disable glow in high contrast mode */
+@media (prefers-contrast: high) {
+  .taeri-dock__item::before {
+    display: none;
+  }
+
+  .taeri-dock::before {
+    display: none;
+  }
+}

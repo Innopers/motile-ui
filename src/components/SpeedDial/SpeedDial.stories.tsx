@@ -3,7 +3,7 @@ import { useState } from "react";
 import { SpeedDial } from "./SpeedDial";
 
 interface SpeedDialStoryArgs {
-  direction?: "up";
+  direction?: "up" | "down" | "left" | "right";
   closeOnClickOutside?: boolean;
   closeOnEscapeKey?: boolean;
 }
@@ -17,11 +17,11 @@ const meta = {
   argTypes: {
     direction: {
       control: "select",
-      options: ["up"],
+      options: ["up", "down", "left", "right"],
       description: "Actions가 나타나는 방향",
       table: {
         defaultValue: { summary: '"up"' },
-        type: { summary: '"up"' },
+        type: { summary: '"up" | "down" | "left" | "right"' },
       },
     },
     closeOnClickOutside: {
@@ -141,6 +141,399 @@ export const Default: Story = {
               height: "56px",
               borderRadius: "50%",
               backgroundColor: "#3b82f6",
+              color: "white",
+              border: "none",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              boxShadow:
+                "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+              transition: "all 0.2s",
+            }}
+          >
+            <ShareIcon />
+          </SpeedDial.Trigger>
+          <SpeedDial.Actions>
+            <SpeedDial.Action
+              aria-label="Copy Link"
+              onClick={() => alert("Copy Link")}
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                backgroundColor: "white",
+                color: "#374151",
+                border: "1px solid #e5e7eb",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow:
+                  "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+                transition: "all 0.2s",
+              }}
+            >
+              <CopyIcon />
+            </SpeedDial.Action>
+            <SpeedDial.Action
+              aria-label="Share on Twitter"
+              onClick={() => alert("Share on Twitter")}
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                backgroundColor: "white",
+                color: "#1da1f2",
+                border: "1px solid #e5e7eb",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow:
+                  "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+                transition: "all 0.2s",
+              }}
+            >
+              <TwitterIcon />
+            </SpeedDial.Action>
+            <SpeedDial.Action
+              aria-label="Share on Facebook"
+              onClick={() => alert("Share on Facebook")}
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                backgroundColor: "white",
+                color: "#1877f2",
+                border: "1px solid #e5e7eb",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow:
+                  "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+                transition: "all 0.2s",
+              }}
+            >
+              <FacebookIcon />
+            </SpeedDial.Action>
+            <SpeedDial.Action
+              aria-label="Get Link"
+              onClick={() => alert("Get Link")}
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                backgroundColor: "white",
+                color: "#374151",
+                border: "1px solid #e5e7eb",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow:
+                  "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+                transition: "all 0.2s",
+              }}
+            >
+              <LinkIcon />
+            </SpeedDial.Action>
+          </SpeedDial.Actions>
+        </SpeedDial.Root>
+      </div>
+    );
+  },
+};
+
+export const DirectionDown: Story = {
+  args: {
+    direction: "down",
+    closeOnClickOutside: true,
+    closeOnEscapeKey: true,
+  },
+  render: ({ direction, closeOnClickOutside, closeOnEscapeKey }) => {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "300px",
+        }}
+      >
+        <SpeedDial.Root
+          open={open}
+          onOpenChange={setOpen}
+          direction={direction}
+          closeOnClickOutside={closeOnClickOutside}
+          closeOnEscapeKey={closeOnEscapeKey}
+        >
+          <SpeedDial.Trigger
+            style={{
+              width: "56px",
+              height: "56px",
+              borderRadius: "50%",
+              backgroundColor: "#ec4899",
+              color: "white",
+              border: "none",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              boxShadow:
+                "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+              transition: "all 0.2s",
+            }}
+          >
+            <ShareIcon />
+          </SpeedDial.Trigger>
+          <SpeedDial.Actions>
+            <SpeedDial.Action
+              aria-label="Copy Link"
+              onClick={() => alert("Copy Link")}
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                backgroundColor: "white",
+                color: "#374151",
+                border: "1px solid #e5e7eb",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow:
+                  "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+                transition: "all 0.2s",
+              }}
+            >
+              <CopyIcon />
+            </SpeedDial.Action>
+            <SpeedDial.Action
+              aria-label="Share on Twitter"
+              onClick={() => alert("Share on Twitter")}
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                backgroundColor: "white",
+                color: "#1da1f2",
+                border: "1px solid #e5e7eb",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow:
+                  "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+                transition: "all 0.2s",
+              }}
+            >
+              <TwitterIcon />
+            </SpeedDial.Action>
+            <SpeedDial.Action
+              aria-label="Share on Facebook"
+              onClick={() => alert("Share on Facebook")}
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                backgroundColor: "white",
+                color: "#1877f2",
+                border: "1px solid #e5e7eb",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow:
+                  "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+                transition: "all 0.2s",
+              }}
+            >
+              <FacebookIcon />
+            </SpeedDial.Action>
+            <SpeedDial.Action
+              aria-label="Get Link"
+              onClick={() => alert("Get Link")}
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                backgroundColor: "white",
+                color: "#374151",
+                border: "1px solid #e5e7eb",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow:
+                  "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+                transition: "all 0.2s",
+              }}
+            >
+              <LinkIcon />
+            </SpeedDial.Action>
+          </SpeedDial.Actions>
+        </SpeedDial.Root>
+      </div>
+    );
+  },
+};
+
+export const DirectionLeft: Story = {
+  args: {
+    direction: "left",
+    closeOnClickOutside: true,
+    closeOnEscapeKey: true,
+  },
+  render: ({ direction, closeOnClickOutside, closeOnEscapeKey }) => {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "300px",
+        }}
+      >
+        <SpeedDial.Root
+          open={open}
+          onOpenChange={setOpen}
+          direction={direction}
+          closeOnClickOutside={closeOnClickOutside}
+          closeOnEscapeKey={closeOnEscapeKey}
+        >
+          <SpeedDial.Trigger
+            style={{
+              width: "56px",
+              height: "56px",
+              borderRadius: "50%",
+              backgroundColor: "#8b5cf6",
+              color: "white",
+              border: "none",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              boxShadow:
+                "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+              transition: "all 0.2s",
+            }}
+          >
+            <ShareIcon />
+          </SpeedDial.Trigger>
+          <SpeedDial.Actions>
+            <SpeedDial.Action
+              aria-label="Copy Link"
+              onClick={() => alert("Copy Link")}
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                backgroundColor: "white",
+                color: "#374151",
+                border: "1px solid #e5e7eb",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow:
+                  "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+                transition: "all 0.2s",
+              }}
+            >
+              <CopyIcon />
+            </SpeedDial.Action>
+            <SpeedDial.Action
+              aria-label="Share on Twitter"
+              onClick={() => alert("Share on Twitter")}
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                backgroundColor: "white",
+                color: "#1da1f2",
+                border: "1px solid #e5e7eb",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow:
+                  "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+                transition: "all 0.2s",
+              }}
+            >
+              <TwitterIcon />
+            </SpeedDial.Action>
+            <SpeedDial.Action
+              aria-label="Share on Facebook"
+              onClick={() => alert("Share on Facebook")}
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                backgroundColor: "white",
+                color: "#1877f2",
+                border: "1px solid #e5e7eb",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow:
+                  "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+                transition: "all 0.2s",
+              }}
+            >
+              <FacebookIcon />
+            </SpeedDial.Action>
+            <SpeedDial.Action
+              aria-label="Get Link"
+              onClick={() => alert("Get Link")}
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                backgroundColor: "white",
+                color: "#374151",
+                border: "1px solid #e5e7eb",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow:
+                  "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+                transition: "all 0.2s",
+              }}
+            >
+              <LinkIcon />
+            </SpeedDial.Action>
+          </SpeedDial.Actions>
+        </SpeedDial.Root>
+      </div>
+    );
+  },
+};
+
+export const DirectionRight: Story = {
+  args: {
+    direction: "right",
+    closeOnClickOutside: true,
+    closeOnEscapeKey: true,
+  },
+  render: ({ direction, closeOnClickOutside, closeOnEscapeKey }) => {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "300px",
+        }}
+      >
+        <SpeedDial.Root
+          open={open}
+          onOpenChange={setOpen}
+          direction={direction}
+          closeOnClickOutside={closeOnClickOutside}
+          closeOnEscapeKey={closeOnEscapeKey}
+        >
+          <SpeedDial.Trigger
+            style={{
+              width: "56px",
+              height: "56px",
+              borderRadius: "50%",
+              backgroundColor: "#10b981",
               color: "white",
               border: "none",
               display: "flex",

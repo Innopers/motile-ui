@@ -16,7 +16,7 @@ import "./SpeedDial.css";
 /**
  * SpeedDial 방향
  */
-export type SpeedDialDirection = "up";
+export type SpeedDialDirection = "up" | "down" | "left" | "right";
 
 /**
  * SpeedDial Context 값

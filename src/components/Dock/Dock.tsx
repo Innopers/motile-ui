@@ -14,12 +14,18 @@ import "./Dock.css";
 // ============================================================================
 
 /**
+ * Dock Position
+ */
+export type DockPosition = "top" | "bottom" | "left" | "right";
+
+/**
  * Dock Context 값
  */
 interface DockContextValue {
   magnification: number;
   mouseX: number | null;
   mouseY: number | null;
+  position: DockPosition;
 }
 
 /**
@@ -30,6 +36,12 @@ export interface DockRootProps extends React.HTMLAttributes<HTMLDivElement> {
    * 자식 요소
    */
   children: React.ReactNode;
+
+  /**
+   * Dock 위치
+   * @default "bottom"
+   */
+  position?: DockPosition;
 }
 
 /**
@@ -72,7 +84,7 @@ const useDockContext = () => {
 // ============================================================================
 
 export const DockRoot = forwardRef<HTMLDivElement, DockRootProps>(
-  ({ className, children, ...props }, ref) => {
+  ({ position = "bottom", className, children, ...props }, ref) => {
     const [mouseX, setMouseX] = useState<number | null>(null);
     const [mouseY, setMouseY] = useState<number | null>(null);
     const dockRef = useRef<HTMLDivElement>(null);
@@ -95,8 +107,9 @@ export const DockRoot = forwardRef<HTMLDivElement, DockRootProps>(
         magnification,
         mouseX,
         mouseY,
+        position,
       }),
-      [magnification, mouseX, mouseY]
+      [magnification, mouseX, mouseY, position]
     );
 
     return (
@@ -113,6 +126,7 @@ export const DockRoot = forwardRef<HTMLDivElement, DockRootProps>(
               node;
           }}
           className={`taeri-dock ${className || ""}`}
+          data-position={position}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           {...props}
@@ -132,7 +146,7 @@ DockRoot.displayName = "Dock.Root";
 
 export const DockItem = forwardRef<HTMLButtonElement, DockItemProps>(
   ({ icon, label, asChild, className, children, style, ...props }, ref) => {
-    const { magnification, mouseX, mouseY } = useDockContext();
+    const { magnification, mouseX, mouseY, position } = useDockContext();
     const itemRef = useRef<HTMLButtonElement>(null);
     const rafRef = useRef<number>();
 
@@ -144,8 +158,18 @@ export const DockItem = forwardRef<HTMLButtonElement, DockItemProps>(
 
         if (mouseX !== null && mouseY !== null) {
           const rect = itemRef.current.getBoundingClientRect();
-          const itemCenterX = rect.left + rect.width / 2;
-          const distance = Math.abs(mouseX - itemCenterX);
+
+          // position에 따라 거리 계산 방향 변경
+          let distance: number;
+          if (position === "top" || position === "bottom") {
+            // top, bottom: X축 거리 (가로 배치)
+            const itemCenterX = rect.left + rect.width / 2;
+            distance = Math.abs(mouseX - itemCenterX);
+          } else {
+            // left, right: Y축 거리 (세로 배치)
+            const itemCenterY = rect.top + rect.height / 2;
+            distance = Math.abs(mouseY - itemCenterY);
+          }
 
           // 거리에 따른 scale 계산 (exponential falloff)
           const maxDistance = 100; // 영향 범위 축소
@@ -170,7 +194,17 @@ export const DockItem = forwardRef<HTMLButtonElement, DockItemProps>(
           cancelAnimationFrame(rafRef.current);
         }
       };
-    }, [mouseX, mouseY, magnification]);
+    }, [mouseX, mouseY, magnification, position]);
+
+    // position에 따라 tooltip 방향 결정
+    const tooltipPosition =
+      position === "top"
+        ? "bottom"
+        : position === "bottom"
+        ? "top"
+        : position === "left"
+        ? "right"
+        : "left";
 
     // asChild 패턴 처리
     if (asChild && React.isValidElement(children)) {
@@ -194,7 +228,7 @@ export const DockItem = forwardRef<HTMLButtonElement, DockItemProps>(
       // label이 있으면 Tooltip으로 감싸기
       if (label) {
         return (
-          <Tooltip.Root position="top" showArrow={true}>
+          <Tooltip.Root position={tooltipPosition} showArrow={true}>
             <Tooltip.Trigger>{element}</Tooltip.Trigger>
             <Tooltip.Content>{label}</Tooltip.Content>
           </Tooltip.Root>
@@ -231,7 +265,7 @@ export const DockItem = forwardRef<HTMLButtonElement, DockItemProps>(
     // label이 있으면 Tooltip으로 감싸기
     if (label) {
       return (
-        <Tooltip.Root position="top" showArrow={true}>
+        <Tooltip.Root position={tooltipPosition} showArrow={true}>
           <Tooltip.Trigger>{button}</Tooltip.Trigger>
           <Tooltip.Content>{label}</Tooltip.Content>
         </Tooltip.Root>

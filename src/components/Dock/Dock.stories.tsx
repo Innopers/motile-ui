@@ -74,8 +74,8 @@ const SettingsIcon = () => (
     strokeLinecap="round"
     strokeLinejoin="round"
   >
+    <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" />
     <circle cx="12" cy="12" r="3" />
-    <path d="M12 1v6m0 6v6m9-9h-6m-6 0H3m15.364 6.364l-4.243-4.243m-6.364 0L3.636 17.657M17.657 6.343L13.414 10.586m-6.364 0L3.343 6.343" />
   </svg>
 );
 
@@ -290,44 +290,117 @@ export const WithManyItems: Story = {
   ),
 };
 
-export const WithEmojis: Story = {
+export const AllPositions: Story = {
   render: () => (
     <div
       style={{
         display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "200px",
-        background: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
+        flexDirection: "column",
+        gap: "32px",
+        minHeight: "600px",
+        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
         borderRadius: "12px",
+        padding: "32px",
       }}
     >
-      <Dock.Root>
-        <Dock.Item label="Finder" style={{ fontSize: "32px" }}>
-          😀
-        </Dock.Item>
-        <Dock.Item label="Safari" style={{ fontSize: "32px" }}>
-          🧭
-        </Dock.Item>
-        <Dock.Item label="Messages" style={{ fontSize: "32px" }}>
-          💬
-        </Dock.Item>
-        <Dock.Item label="Mail" style={{ fontSize: "32px" }}>
-          ✉️
-        </Dock.Item>
-        <Dock.Item label="Calendar" style={{ fontSize: "32px" }}>
-          📅
-        </Dock.Item>
-        <Dock.Item label="Photos" style={{ fontSize: "32px" }}>
-          📷
-        </Dock.Item>
-        <Dock.Item label="Music" style={{ fontSize: "32px" }}>
-          🎵
-        </Dock.Item>
-        <Dock.Item label="Settings" style={{ fontSize: "32px" }}>
-          ⚙️
-        </Dock.Item>
-      </Dock.Root>
+      {/* Top Dock */}
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <Dock.Root position="top">
+          <Dock.Item label="Home">
+            <HomeIcon />
+          </Dock.Item>
+          <Dock.Item label="Folder">
+            <FolderIcon />
+          </Dock.Item>
+          <Dock.Item label="Documents">
+            <DocumentIcon />
+          </Dock.Item>
+          <Dock.Item label="Search">
+            <SearchIcon />
+          </Dock.Item>
+          <Dock.Item label="Settings">
+            <SettingsIcon />
+          </Dock.Item>
+        </Dock.Root>
+      </div>
+
+      {/* Middle Row with Left, Center, Right */}
+      <div style={{ display: "flex", gap: "32px", flex: 1 }}>
+        {/* Left Dock */}
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Dock.Root position="left">
+            <Dock.Item label="Home">
+              <HomeIcon />
+            </Dock.Item>
+            <Dock.Item label="Folder">
+              <FolderIcon />
+            </Dock.Item>
+            <Dock.Item label="Documents">
+              <DocumentIcon />
+            </Dock.Item>
+            <Dock.Item label="Search">
+              <SearchIcon />
+            </Dock.Item>
+            <Dock.Item label="Settings">
+              <SettingsIcon />
+            </Dock.Item>
+          </Dock.Root>
+        </div>
+
+        {/* Center Content */}
+        <div style={{ flex: 1 }} />
+
+        {/* Right Dock */}
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Dock.Root position="right">
+            <Dock.Item label="Home">
+              <HomeIcon />
+            </Dock.Item>
+            <Dock.Item label="Folder">
+              <FolderIcon />
+            </Dock.Item>
+            <Dock.Item label="Documents">
+              <DocumentIcon />
+            </Dock.Item>
+            <Dock.Item label="Search">
+              <SearchIcon />
+            </Dock.Item>
+            <Dock.Item label="Settings">
+              <SettingsIcon />
+            </Dock.Item>
+          </Dock.Root>
+        </div>
+      </div>
+
+      {/* Bottom Dock */}
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <Dock.Root position="bottom">
+          <Dock.Item label="Home">
+            <HomeIcon />
+          </Dock.Item>
+          <Dock.Item label="Folder">
+            <FolderIcon />
+          </Dock.Item>
+          <Dock.Item label="Documents">
+            <DocumentIcon />
+          </Dock.Item>
+          <Dock.Item label="Mail">
+            <MailIcon />
+          </Dock.Item>
+          <Dock.Item label="Calendar">
+            <CalendarIcon />
+          </Dock.Item>
+          <Dock.Item label="Search">
+            <SearchIcon />
+          </Dock.Item>
+          <Dock.Item label="Favorites">
+            <StarIcon />
+          </Dock.Item>
+          <Dock.Item label="Settings">
+            <SettingsIcon />
+          </Dock.Item>
+        </Dock.Root>
+      </div>
     </div>
   ),
 };

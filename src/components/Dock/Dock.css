@@ -1,7 +1,6 @@
 /* Dock Container */
 .taeri-dock {
   display: inline-flex;
-  flex-direction: row;
   align-items: center;
   gap: 12px;
   padding: 8px 16px;
@@ -16,6 +15,26 @@
   position: relative;
   user-select: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Position: Top - 가로 배치 */
+.taeri-dock[data-position="top"] {
+  flex-direction: row;
+}
+
+/* Position: Bottom (default) - 가로 배치 */
+.taeri-dock[data-position="bottom"] {
+  flex-direction: row;
+}
+
+/* Position: Left - 세로 배치 */
+.taeri-dock[data-position="left"] {
+  flex-direction: column;
+}
+
+/* Position: Right - 세로 배치 */
+.taeri-dock[data-position="right"] {
+  flex-direction: column;
 }
 
 /* Dock Item */
@@ -34,11 +53,27 @@
   color: #374151;
   cursor: pointer;
   transition: background 0.2s ease;
-  transform-origin: center bottom;
   outline: none;
   /* GPU 가속 활성화 */
   will-change: transform;
   transform: translateZ(0);
+}
+
+/* Position별 transform-origin */
+.taeri-dock[data-position="top"] .taeri-dock__item {
+  transform-origin: center top;
+}
+
+.taeri-dock[data-position="bottom"] .taeri-dock__item {
+  transform-origin: center bottom;
+}
+
+.taeri-dock[data-position="left"] .taeri-dock__item {
+  transform-origin: left center;
+}
+
+.taeri-dock[data-position="right"] .taeri-dock__item {
+  transform-origin: right center;
 }
 
 /* Hover State */

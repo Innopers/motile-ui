@@ -83,6 +83,14 @@ export type {
   UseToastReturn,
 } from "./components/Toast";
 
+export { Dock } from "./components/Dock";
+export type {
+  DockRootProps,
+  DockItemProps,
+  DockSeparatorProps,
+  DockPosition,
+} from "./components/Dock";
+
 // Hooks
 export { useScrollLock } from "./hooks/useScrollLock";
 export { useClickOutside } from "./hooks/useClickOutside";

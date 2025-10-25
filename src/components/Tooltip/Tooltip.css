@@ -98,7 +98,7 @@
 
 /* Top placement: 화살표가 툴팁 아래에서 위로 */
 .taeri-tooltip-bubble[data-placement="top"][data-show-arrow]::before {
-  bottom: -6px;
+  bottom: -5px;
   left: var(--arrow-left, 50%);
   transform: translateX(-50%);
   border-bottom-width: 0;
@@ -106,7 +106,7 @@
 }
 
 .taeri-tooltip-bubble--outlined[data-placement="top"][data-show-arrow]::after {
-  bottom: -5px;
+  bottom: -4px;
   left: var(--arrow-left, 50%);
   transform: translateX(-50%);
   border-bottom-width: 0;
@@ -115,7 +115,7 @@
 
 /* Bottom placement: 화살표가 툴팁 위에서 아래로 */
 .taeri-tooltip-bubble[data-placement="bottom"][data-show-arrow]::before {
-  top: -6px;
+  top: -5px;
   left: var(--arrow-left, 50%);
   transform: translateX(-50%);
   border-top-width: 0;
@@ -123,7 +123,7 @@
 }
 
 .taeri-tooltip-bubble--outlined[data-placement="bottom"][data-show-arrow]::after {
-  top: -5px;
+  top: -4px;
   left: var(--arrow-left, 50%);
   transform: translateX(-50%);
   border-top-width: 0;
@@ -132,7 +132,7 @@
 
 /* Left placement: 화살표가 툴팁 오른쪽에서 왼쪽으로 */
 .taeri-tooltip-bubble[data-placement="left"][data-show-arrow]::before {
-  right: -6px;
+  right: -5px;
   top: var(--arrow-top, 50%);
   transform: translateY(-50%);
   border-right-width: 0;
@@ -140,7 +140,7 @@
 }
 
 .taeri-tooltip-bubble--outlined[data-placement="left"][data-show-arrow]::after {
-  right: -5px;
+  right: -4px;
   top: var(--arrow-top, 50%);
   transform: translateY(-50%);
   border-right-width: 0;
@@ -149,7 +149,7 @@
 
 /* Right placement: 화살표가 툴팁 왼쪽에서 오른쪽으로 */
 .taeri-tooltip-bubble[data-placement="right"][data-show-arrow]::before {
-  left: -6px;
+  left: -5px;
   top: var(--arrow-top, 50%);
   transform: translateY(-50%);
   border-left-width: 0;
@@ -157,7 +157,7 @@
 }
 
 .taeri-tooltip-bubble--outlined[data-placement="right"][data-show-arrow]::after {
-  left: -5px;
+  left: -4px;
   top: var(--arrow-top, 50%);
   transform: translateY(-50%);
   border-left-width: 0;

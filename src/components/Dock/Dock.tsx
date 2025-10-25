@@ -42,6 +42,12 @@ export interface DockRootProps extends React.HTMLAttributes<HTMLDivElement> {
    * @default "bottom"
    */
   position?: DockPosition;
+
+  /**
+   * z-index 값
+   * @default 1000
+   */
+  zIndex?: number;
 }
 
 /**
@@ -84,7 +90,17 @@ const useDockContext = () => {
 // ============================================================================
 
 export const DockRoot = forwardRef<HTMLDivElement, DockRootProps>(
-  ({ position = "bottom", className, children, ...props }, ref) => {
+  (
+    {
+      position = "bottom",
+      zIndex = 1000,
+      className,
+      children,
+      style,
+      ...props
+    },
+    ref
+  ) => {
     const [mouseX, setMouseX] = useState<number | null>(null);
     const [mouseY, setMouseY] = useState<number | null>(null);
     const dockRef = useRef<HTMLDivElement>(null);
@@ -127,6 +143,7 @@ export const DockRoot = forwardRef<HTMLDivElement, DockRootProps>(
           }}
           className={`taeri-dock ${className || ""}`}
           data-position={position}
+          style={{ ...style, zIndex }}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           {...props}

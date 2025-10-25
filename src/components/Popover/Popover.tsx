@@ -9,6 +9,8 @@ import React, {
   useState,
 } from "react";
 import "./Popover.css";
+import { useClickOutside } from "@/hooks/useClickOutside";
+import { useEscapeKey } from "@/hooks/useEscapeKey";
 
 type Placement = "top" | "bottom" | "left" | "right";
 type Align = "start" | "center" | "end";
@@ -410,49 +412,44 @@ function PopoverContent({
     [updatePosition]
   );
 
-  // ESC / 외부 클릭 처리
+  // Position state 초기화
   useEffect(() => {
     if (!open) {
       setIsPositioned(false);
-      return;
     }
+  }, [open]);
 
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
+  // ESC 키로 닫기
+  useEscapeKey({
+    handler: useCallback(
+      (e: KeyboardEvent) => {
         if (!autoClose) return;
-
         onDismiss?.(e);
         if (!e.defaultPrevented) {
           setOpen(false);
         }
-      }
-    };
+      },
+      [autoClose, onDismiss, setOpen]
+    ),
+    enabled: open,
+  });
 
-    const onPointerDown = (e: PointerEvent) => {
-      const target = e.target as Node;
-
-      if (wrapperRef.current?.contains(target)) {
-        return;
-      }
-
-      if (!autoClose) return;
-
-      onClickOutside?.(e);
-      onDismiss?.(e);
-
-      if (!e.defaultPrevented) {
-        setOpen(false);
-      }
-    };
-
-    document.addEventListener("keydown", onKeyDown, true);
-    document.addEventListener("pointerdown", onPointerDown, true);
-
-    return () => {
-      document.removeEventListener("keydown", onKeyDown, true);
-      document.removeEventListener("pointerdown", onPointerDown, true);
-    };
-  }, [open, autoClose, onClickOutside, onDismiss, setOpen, wrapperRef]);
+  // 외부 클릭으로 닫기
+  useClickOutside({
+    refs: [wrapperRef],
+    handler: useCallback(
+      (e: MouseEvent | TouchEvent) => {
+        if (!autoClose) return;
+        onClickOutside?.(e as PointerEvent);
+        onDismiss?.(e);
+        if (!e.defaultPrevented) {
+          setOpen(false);
+        }
+      },
+      [autoClose, onClickOutside, onDismiss, setOpen]
+    ),
+    enabled: open,
+  });
 
   // 위치 계산
   useEffect(() => {

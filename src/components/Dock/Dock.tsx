@@ -296,10 +296,36 @@ export const DockItem = forwardRef<HTMLButtonElement, DockItemProps>(
 DockItem.displayName = "Dock.Item";
 
 // ============================================================================
+// Dock.Separator - Divider between items
+// ============================================================================
+
+export interface DockSeparatorProps
+  extends React.HTMLAttributes<HTMLDivElement> {}
+
+export const DockSeparator = forwardRef<HTMLDivElement, DockSeparatorProps>(
+  ({ className, ...props }, ref) => {
+    const { position } = useDockContext();
+
+    return (
+      <div
+        ref={ref}
+        className={`taeri-dock__separator ${className || ""}`}
+        data-position={position}
+        aria-hidden="true"
+        {...props}
+      />
+    );
+  }
+);
+
+DockSeparator.displayName = "Dock.Separator";
+
+// ============================================================================
 // Compound Component Export
 // ============================================================================
 
 export const Dock = {
   Root: DockRoot,
   Item: DockItem,
+  Separator: DockSeparator,
 };

@@ -231,6 +231,7 @@ export const Default: Story = {
         <Dock.Item label="Documents" onClick={() => alert("Documents clicked")}>
           <DocumentIcon />
         </Dock.Item>
+        <Dock.Separator />
         <Dock.Item label="Search" onClick={() => alert("Search clicked")}>
           <SearchIcon />
         </Dock.Item>
@@ -264,6 +265,7 @@ export const WithManyItems: Story = {
         <Dock.Item label="Documents">
           <DocumentIcon />
         </Dock.Item>
+        <Dock.Separator />
         <Dock.Item label="Mail">
           <MailIcon />
         </Dock.Item>
@@ -276,12 +278,14 @@ export const WithManyItems: Story = {
         <Dock.Item label="Music">
           <MusicIcon />
         </Dock.Item>
+        <Dock.Separator />
         <Dock.Item label="Search">
           <SearchIcon />
         </Dock.Item>
         <Dock.Item label="Favorites">
           <StarIcon />
         </Dock.Item>
+        <Dock.Separator />
         <Dock.Item label="Settings">
           <SettingsIcon />
         </Dock.Item>
@@ -315,6 +319,7 @@ export const AllPositions: Story = {
           <Dock.Item label="Documents">
             <DocumentIcon />
           </Dock.Item>
+          <Dock.Separator />
           <Dock.Item label="Search">
             <SearchIcon />
           </Dock.Item>
@@ -335,12 +340,14 @@ export const AllPositions: Story = {
             <Dock.Item label="Folder">
               <FolderIcon />
             </Dock.Item>
+            <Dock.Separator />
             <Dock.Item label="Documents">
               <DocumentIcon />
             </Dock.Item>
             <Dock.Item label="Search">
               <SearchIcon />
             </Dock.Item>
+            <Dock.Separator />
             <Dock.Item label="Settings">
               <SettingsIcon />
             </Dock.Item>
@@ -359,12 +366,14 @@ export const AllPositions: Story = {
             <Dock.Item label="Folder">
               <FolderIcon />
             </Dock.Item>
+            <Dock.Separator />
             <Dock.Item label="Documents">
               <DocumentIcon />
             </Dock.Item>
             <Dock.Item label="Search">
               <SearchIcon />
             </Dock.Item>
+            <Dock.Separator />
             <Dock.Item label="Settings">
               <SettingsIcon />
             </Dock.Item>
@@ -384,18 +393,21 @@ export const AllPositions: Story = {
           <Dock.Item label="Documents">
             <DocumentIcon />
           </Dock.Item>
+          <Dock.Separator />
           <Dock.Item label="Mail">
             <MailIcon />
           </Dock.Item>
           <Dock.Item label="Calendar">
             <CalendarIcon />
           </Dock.Item>
+          <Dock.Separator />
           <Dock.Item label="Search">
             <SearchIcon />
           </Dock.Item>
           <Dock.Item label="Favorites">
             <StarIcon />
           </Dock.Item>
+          <Dock.Separator />
           <Dock.Item label="Settings">
             <SettingsIcon />
           </Dock.Item>

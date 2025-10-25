@@ -2,19 +2,60 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 import { Modal } from "./Modal";
 
+// Props that can be controlled via Storybook
+interface ModalStoryArgs {
+  variant?: "scale" | "slideDown" | "slideUp" | "bottomSheet";
+  closeOnBackdrop?: boolean;
+  disableScrollLock?: boolean;
+}
+
 const meta = {
   title: "Components/Modal",
   parameters: {
     layout: "centered",
   },
   tags: ["autodocs"],
-} satisfies Meta;
+  argTypes: {
+    variant: {
+      control: "select",
+      options: ["scale", "slideDown", "slideUp", "bottomSheet"],
+      description: "Modal 애니메이션 variant",
+      table: {
+        defaultValue: { summary: '"scale"' },
+        type: {
+          summary: '"scale" | "slideDown" | "slideUp" | "bottomSheet"',
+        },
+      },
+    },
+    closeOnBackdrop: {
+      control: "boolean",
+      description: "백드롭 클릭 및 ESC 키로 닫기",
+      table: {
+        defaultValue: { summary: "true" },
+        type: { summary: "boolean" },
+      },
+    },
+    disableScrollLock: {
+      control: "boolean",
+      description: "배경 스크롤 잠금 비활성화",
+      table: {
+        defaultValue: { summary: "false" },
+        type: { summary: "boolean" },
+      },
+    },
+  },
+} satisfies Meta<ModalStoryArgs>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ModalStoryArgs>;
 
 export const Default: Story = {
-  render: () => {
+  args: {
+    variant: "scale",
+    closeOnBackdrop: true,
+    disableScrollLock: false,
+  },
+  render: ({ variant, closeOnBackdrop, disableScrollLock }) => {
     const [open, setOpen] = useState(false);
 
     return (
@@ -34,7 +75,11 @@ export const Default: Story = {
           Open Modal
         </button>
         <Modal.Root open={open} onOpenChange={setOpen}>
-          <Modal.Overlay>
+          <Modal.Overlay
+            variant={variant}
+            closeOnBackdrop={closeOnBackdrop}
+            disableScrollLock={disableScrollLock}
+          >
             <Modal.Content style={{ padding: "0" }}>
               <Modal.Header>
                 <Modal.Title>Modal Title</Modal.Title>
@@ -55,7 +100,12 @@ export const Default: Story = {
 };
 
 export const WithFooter: Story = {
-  render: () => {
+  args: {
+    variant: "scale",
+    closeOnBackdrop: true,
+    disableScrollLock: false,
+  },
+  render: ({ variant, closeOnBackdrop, disableScrollLock }) => {
     const [open, setOpen] = useState(false);
 
     return (
@@ -75,7 +125,11 @@ export const WithFooter: Story = {
           Open Modal with Footer
         </button>
         <Modal.Root open={open} onOpenChange={setOpen}>
-          <Modal.Overlay>
+          <Modal.Overlay
+            variant={variant}
+            closeOnBackdrop={closeOnBackdrop}
+            disableScrollLock={disableScrollLock}
+          >
             <Modal.Content style={{ padding: "0" }}>
               <Modal.Header>
                 <Modal.Title>Modal with Footer</Modal.Title>
@@ -123,7 +177,12 @@ export const WithFooter: Story = {
 };
 
 export const Simple: Story = {
-  render: () => {
+  args: {
+    variant: "scale",
+    closeOnBackdrop: true,
+    disableScrollLock: false,
+  },
+  render: ({ variant, closeOnBackdrop, disableScrollLock }) => {
     const [open, setOpen] = useState(false);
 
     return (
@@ -143,7 +202,11 @@ export const Simple: Story = {
           Open Simple Modal
         </button>
         <Modal.Root open={open} onOpenChange={setOpen}>
-          <Modal.Overlay>
+          <Modal.Overlay
+            variant={variant}
+            closeOnBackdrop={closeOnBackdrop}
+            disableScrollLock={disableScrollLock}
+          >
             <Modal.Content
               style={{
                 padding: "32px",
@@ -205,7 +268,12 @@ export const Simple: Story = {
 };
 
 export const SlideDown: Story = {
-  render: () => {
+  args: {
+    variant: "slideDown",
+    closeOnBackdrop: true,
+    disableScrollLock: false,
+  },
+  render: ({ variant, closeOnBackdrop, disableScrollLock }) => {
     const [open, setOpen] = useState(false);
 
     return (
@@ -225,7 +293,11 @@ export const SlideDown: Story = {
           Open Slide Down Modal
         </button>
         <Modal.Root open={open} onOpenChange={setOpen}>
-          <Modal.Overlay variant="slideDown">
+          <Modal.Overlay
+            variant={variant}
+            closeOnBackdrop={closeOnBackdrop}
+            disableScrollLock={disableScrollLock}
+          >
             <Modal.Content style={{ padding: "0" }}>
               <Modal.Header>
                 <Modal.Title>Slide Down Animation</Modal.Title>
@@ -244,7 +316,12 @@ export const SlideDown: Story = {
 };
 
 export const SlideUp: Story = {
-  render: () => {
+  args: {
+    variant: "slideUp",
+    closeOnBackdrop: true,
+    disableScrollLock: false,
+  },
+  render: ({ variant, closeOnBackdrop, disableScrollLock }) => {
     const [open, setOpen] = useState(false);
 
     return (
@@ -264,7 +341,11 @@ export const SlideUp: Story = {
           Open Slide Up Modal
         </button>
         <Modal.Root open={open} onOpenChange={setOpen}>
-          <Modal.Overlay variant="slideUp">
+          <Modal.Overlay
+            variant={variant}
+            closeOnBackdrop={closeOnBackdrop}
+            disableScrollLock={disableScrollLock}
+          >
             <Modal.Content style={{ padding: "0" }}>
               <Modal.Header>
                 <Modal.Title>Slide Up Animation</Modal.Title>
@@ -283,7 +364,12 @@ export const SlideUp: Story = {
 };
 
 export const BottomSheet: Story = {
-  render: () => {
+  args: {
+    variant: "bottomSheet",
+    closeOnBackdrop: true,
+    disableScrollLock: false,
+  },
+  render: ({ variant, closeOnBackdrop, disableScrollLock }) => {
     const [open, setOpen] = useState(false);
 
     return (
@@ -303,7 +389,11 @@ export const BottomSheet: Story = {
           Open Notification Sheet
         </button>
         <Modal.Root open={open} onOpenChange={setOpen}>
-          <Modal.Overlay variant="bottomSheet">
+          <Modal.Overlay
+            variant={variant}
+            closeOnBackdrop={closeOnBackdrop}
+            disableScrollLock={disableScrollLock}
+          >
             <Modal.Content style={{ padding: "0" }}>
               <div style={{ padding: "24px" }}>
                 <div

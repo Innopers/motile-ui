@@ -170,6 +170,12 @@ export const DockItem = forwardRef<HTMLButtonElement, DockItemProps>(
     useEffect(() => {
       if (!itemRef.current) return;
 
+      // 터치 기기에서는 magnification 비활성화
+      const isTouchDevice = window.matchMedia(
+        "(hover: none) and (pointer: coarse)"
+      ).matches;
+      if (isTouchDevice) return;
+
       const updateScale = () => {
         if (!itemRef.current) return;
 

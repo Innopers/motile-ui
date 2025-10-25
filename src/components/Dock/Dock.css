@@ -219,6 +219,8 @@
   .taeri-dock__item {
     min-width: 44px;
     min-height: 44px;
+    /* 터치 기기에서는 magnification 비활성화 */
+    transform: scale(1) !important;
   }
 }
 

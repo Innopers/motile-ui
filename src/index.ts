@@ -45,9 +45,16 @@ export type {
 
 export { Drawer } from "./components/Drawer";
 export type {
-  DrawerProps,
-  DrawerHandle,
   CloseOnBackdropOptions,
+  DrawerRootProps,
+  DrawerTriggerProps,
+  DrawerPortalProps,
+  DrawerOverlayProps,
+  DrawerContentProps,
+  DrawerHandleProps,
+  DrawerTitleProps,
+  DrawerBodyProps,
+  DrawerCloseProps,
 } from "./components/Drawer";
 
 export { Sheet } from "./components/Sheet";

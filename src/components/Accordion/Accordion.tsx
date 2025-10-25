@@ -8,6 +8,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { Slot } from "@/utils/Slot";
 import "./Accordion.css";
 
 const BASE = "motile-accordion";
@@ -39,7 +40,7 @@ const useAccordion = () => {
 };
 
 // ===========================
-// Accordion (Container)
+// Accordion Root (Container)
 // ===========================
 export interface AccordionProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
@@ -49,9 +50,14 @@ export interface AccordionProps
   onChange?: (expanded: boolean) => void;
   disabled?: boolean;
   children: React.ReactNode;
+  /**
+   * children을 wrapper 없이 직접 렌더링
+   * @default false
+   */
+  asChild?: boolean;
 }
 
-export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
+const AccordionRoot = forwardRef<HTMLDivElement, AccordionProps>(
   (
     {
       variant = "default",
@@ -61,6 +67,7 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
       disabled = false,
       className,
       children,
+      asChild = false,
       ...props
     },
     ref
@@ -80,6 +87,13 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
       onChange?.(next);
     }, [disabled, isOpen, isControlled, onChange]);
 
+    const accordionProps = {
+      ...props,
+      "data-state": isOpen ? "open" : "closed",
+      "data-disabled": disabled ? "" : undefined,
+      "data-variant": variant,
+    };
+
     const classes = [
       BASE,
       `${BASE}--${variant}`,
@@ -94,141 +108,169 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
       <Context.Provider
         value={{ isOpen, toggle, disabled, variant, panelId, panelRef }}
       >
-        <div
-          {...props}
-          ref={ref}
-          className={classes}
-          data-state={isOpen ? "open" : "closed"}
-          data-disabled={disabled ? "" : undefined}
-        >
-          {children}
-        </div>
+        {asChild ? (
+          <Slot ref={ref} {...accordionProps} className={className}>
+            {children}
+          </Slot>
+        ) : (
+          <div {...accordionProps} ref={ref} className={classes}>
+            {children}
+          </div>
+        )}
       </Context.Provider>
     );
   }
 );
-Accordion.displayName = "Accordion";
+AccordionRoot.displayName = "Accordion";
 
 // ===========================
-// AccordionHeader
+// Accordion Header
 // ===========================
 export interface AccordionHeaderProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
+  /**
+   * children을 wrapper 없이 직접 렌더링
+   * true일 경우, children이 직접 button 역할을 함
+   * @default false
+   */
+  asChild?: boolean;
 }
 
-export const AccordionHeader = forwardRef<
-  HTMLButtonElement,
-  AccordionHeaderProps
->(({ className, children, ...props }, ref) => {
-  const { isOpen, toggle, disabled, panelId } = useAccordion();
+const AccordionHeader = forwardRef<HTMLButtonElement, AccordionHeaderProps>(
+  ({ className, children, asChild = false, ...props }, ref) => {
+    const { isOpen, toggle, disabled, panelId } = useAccordion();
 
-  const classes = [`${BASE}__header`, className].filter(Boolean).join(" ");
+    const sharedProps = {
+      ...props,
+      onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
+        props.onClick?.(e);
+        toggle();
+      },
+      "aria-expanded": isOpen,
+      "aria-controls": panelId,
+      "aria-disabled": disabled,
+      type: "button" as const,
+      disabled,
+      "data-state": isOpen ? "open" : "closed",
+      "data-disabled": disabled ? "" : undefined,
+    };
 
-  return (
-    <button
-      {...props}
-      ref={ref}
-      className={classes}
-      onClick={toggle}
-      aria-expanded={isOpen}
-      aria-controls={panelId}
-      aria-disabled={disabled}
-      type="button"
-      disabled={disabled}
-      data-state={isOpen ? "open" : "closed"}
-      data-disabled={disabled ? "" : undefined}
-    >
-      <div className={`${BASE}__title`}>{children}</div>
-      <svg
-        className={`${BASE}__chevron`}
-        viewBox="0 0 20 20"
-        fill="currentColor"
-        aria-hidden="true"
-      >
-        <path
-          fillRule="evenodd"
-          d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-          clipRule="evenodd"
-        />
-      </svg>
-    </button>
-  );
-});
-AccordionHeader.displayName = "AccordionHeader";
+    if (asChild) {
+      return (
+        <Slot ref={ref} {...sharedProps} className={className}>
+          {children}
+        </Slot>
+      );
+    }
+
+    const classes = [`${BASE}__header`, className].filter(Boolean).join(" ");
+
+    return (
+      <button {...sharedProps} ref={ref} className={classes}>
+        {children}
+      </button>
+    );
+  }
+);
+AccordionHeader.displayName = "Accordion.Header";
 
 // ===========================
-// AccordionContent
+// Accordion Content
 // ===========================
 export interface AccordionContentProps
   extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
+  /**
+   * children을 wrapper 없이 직접 렌더링
+   * @default false
+   */
+  asChild?: boolean;
 }
 
-export const AccordionContent = forwardRef<
-  HTMLDivElement,
-  AccordionContentProps
->(({ className, children, ...props }, ref) => {
-  const { isOpen, panelId, panelRef } = useAccordion();
+const AccordionContent = forwardRef<HTMLDivElement, AccordionContentProps>(
+  ({ className, children, asChild = false, ...props }, ref) => {
+    const { isOpen, panelId, panelRef } = useAccordion();
 
-  const animate = useCallback(() => {
-    const el = panelRef.current;
-    if (!el) return;
+    const animate = useCallback(() => {
+      const el = panelRef.current;
+      if (!el) return;
 
-    const prefersReduced =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const prefersReduced =
+        typeof window !== "undefined" &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    if (prefersReduced) {
-      el.style.height = isOpen ? "auto" : "0px";
-      return;
-    }
+      if (prefersReduced) {
+        el.style.height = isOpen ? "auto" : "0px";
+        return;
+      }
 
-    if (isOpen) {
-      if (el.style.height === "" || el.style.height === "auto") {
+      if (isOpen) {
+        if (el.style.height === "" || el.style.height === "auto") {
+          el.style.height = "0px";
+        }
+        el.getBoundingClientRect(); // reflow
+        el.style.height = `${el.scrollHeight}px`;
+
+        const onEnd = () => {
+          if (isOpen) el.style.height = "auto";
+          el.removeEventListener("transitionend", onEnd);
+        };
+        el.addEventListener("transitionend", onEnd);
+      } else {
+        if (el.style.height === "" || el.style.height === "auto") {
+          el.style.height = `${el.scrollHeight}px`;
+        }
+        el.getBoundingClientRect(); // reflow
         el.style.height = "0px";
       }
-      el.getBoundingClientRect(); // reflow
-      el.style.height = `${el.scrollHeight}px`;
+    }, [isOpen, panelRef]);
 
-      const onEnd = () => {
-        if (isOpen) el.style.height = "auto";
-        el.removeEventListener("transitionend", onEnd);
+    useEffect(() => {
+      const el = panelRef.current;
+      if (!el) return;
+      el.style.willChange = "height";
+      animate();
+      return () => {
+        el.style.willChange = "";
       };
-      el.addEventListener("transitionend", onEnd);
-    } else {
-      if (el.style.height === "" || el.style.height === "auto") {
-        el.style.height = `${el.scrollHeight}px`;
-      }
-      el.getBoundingClientRect(); // reflow
-      el.style.height = "0px";
-    }
-  }, [isOpen, panelRef]);
+    }, [animate, panelRef]);
 
-  useEffect(() => {
-    const el = panelRef.current;
-    if (!el) return;
-    el.style.willChange = "height";
-    animate();
-    return () => {
-      el.style.willChange = "";
+    const contentProps = {
+      ...props,
+      "aria-hidden": !isOpen,
+      "data-state": isOpen ? "open" : "closed",
     };
-  }, [animate, panelRef]);
 
-  const classes = [`${BASE}__content`, className].filter(Boolean).join(" ");
+    const classes = [`${BASE}__content`, className].filter(Boolean).join(" ");
 
-  return (
-    <div
-      id={panelId}
-      ref={panelRef}
-      className={`${BASE}__panel`}
-      aria-hidden={!isOpen}
-      data-state={isOpen ? "open" : "closed"}
-    >
-      <div {...props} ref={ref} className={classes}>
-        {children}
+    return (
+      <div
+        id={panelId}
+        ref={panelRef}
+        className={`${BASE}__panel`}
+        aria-hidden={!isOpen}
+        data-state={isOpen ? "open" : "closed"}
+      >
+        {asChild ? (
+          <Slot ref={ref} {...contentProps} className={className}>
+            {children}
+          </Slot>
+        ) : (
+          <div {...contentProps} ref={ref} className={classes}>
+            {children}
+          </div>
+        )}
       </div>
-    </div>
-  );
+    );
+  }
+);
+AccordionContent.displayName = "Accordion.Content";
+
+// ===========================
+// Namespace Export
+// ===========================
+export const Accordion = Object.assign(AccordionRoot, {
+  Header: AccordionHeader,
+  Content: AccordionContent,
 });
-AccordionContent.displayName = "AccordionContent";

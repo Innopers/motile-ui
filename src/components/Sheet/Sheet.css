@@ -87,6 +87,11 @@
   -webkit-user-select: none;
 }
 
+/* Header 내부 버튼 기본 스타일  */
+.motile-sheet__header button {
+  color: inherit;
+}
+
 /* 데스크톱: 더 넉넉한 padding */
 @media (min-width: 769px) {
   .motile-sheet__header {

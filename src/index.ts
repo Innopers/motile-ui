@@ -59,9 +59,16 @@ export type {
 
 export { Sheet } from "./components/Sheet";
 export type {
-  SheetProps,
-  SheetHandle,
   SheetPosition,
+  SheetRootProps,
+  SheetTriggerProps,
+  SheetPortalProps,
+  SheetOverlayProps,
+  SheetContentProps,
+  SheetHeaderProps,
+  SheetTitleProps,
+  SheetBodyProps,
+  SheetCloseProps,
 } from "./components/Sheet";
 
 export { Modal } from "./components/Modal";

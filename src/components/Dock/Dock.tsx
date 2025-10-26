@@ -26,6 +26,7 @@ interface DockContextValue {
   mouseX: number | null;
   mouseY: number | null;
   position: DockPosition;
+  color?: string;
 }
 
 /**
@@ -48,6 +49,13 @@ export interface DockRootProps extends React.HTMLAttributes<HTMLDivElement> {
    * @default 1000
    */
   zIndex?: number;
+
+  /**
+   * Glow effect 기본 색상 (모든 Item에 적용)
+   * 우선순위: Item.color > Root.color > --motile-ui-dock > --motile-theme > #3b82f6
+   * @example '#3b82f6'
+   */
+  color?: string;
 }
 
 /**
@@ -69,6 +77,13 @@ export interface DockItemProps
    * 커스텀 자식 요소 사용
    */
   asChild?: boolean;
+
+  /**
+   * Glow effect 개별 색상 (Root.color를 override)
+   * 우선순위: Item.color > Root.color > --motile-ui-dock > --motile-theme > #3b82f6
+   * @example '#3b82f6'
+   */
+  color?: string;
 }
 
 // ============================================================================
@@ -94,6 +109,7 @@ export const DockRoot = forwardRef<HTMLDivElement, DockRootProps>(
     {
       position = "bottom",
       zIndex = 1000,
+      color,
       className,
       children,
       style,
@@ -124,8 +140,9 @@ export const DockRoot = forwardRef<HTMLDivElement, DockRootProps>(
         mouseX,
         mouseY,
         position,
+        color,
       }),
-      [magnification, mouseX, mouseY, position]
+      [magnification, mouseX, mouseY, position, color]
     );
 
     return (
@@ -162,10 +179,22 @@ DockRoot.displayName = "Dock.Root";
 // ============================================================================
 
 export const DockItem = forwardRef<HTMLButtonElement, DockItemProps>(
-  ({ icon, label, asChild, className, children, style, ...props }, ref) => {
-    const { magnification, mouseX, mouseY, position } = useDockContext();
+  (
+    { icon, label, asChild, color, className, children, style, ...props },
+    ref
+  ) => {
+    const {
+      magnification,
+      mouseX,
+      mouseY,
+      position,
+      color: rootColor,
+    } = useDockContext();
     const itemRef = useRef<HTMLButtonElement>(null);
     const rafRef = useRef<number>();
+
+    // 우선순위: Item color > Root color
+    const finalColor = color || rootColor;
 
     useEffect(() => {
       if (!itemRef.current) return;
@@ -229,6 +258,13 @@ export const DockItem = forwardRef<HTMLButtonElement, DockItemProps>(
         ? "right"
         : "left";
 
+    // CSS 변수로 색상 전달
+    const customStyle = {
+      ...style,
+      ...(finalColor &&
+        ({ "--motile-dock-color": finalColor } as React.CSSProperties)),
+    };
+
     // asChild 패턴 처리
     if (asChild && React.isValidElement(children)) {
       const element = React.cloneElement(children as React.ReactElement, {
@@ -244,7 +280,7 @@ export const DockItem = forwardRef<HTMLButtonElement, DockItemProps>(
           ).current = node as HTMLButtonElement;
         },
         className: `motile-dock__item ${className || ""}`,
-        style,
+        style: customStyle,
         "aria-label": label,
       });
 
@@ -277,7 +313,7 @@ export const DockItem = forwardRef<HTMLButtonElement, DockItemProps>(
         }}
         type="button"
         className={`motile-dock__item ${className || ""}`}
-        style={style}
+        style={customStyle}
         aria-label={label}
         {...props}
       >

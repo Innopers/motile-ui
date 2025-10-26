@@ -7,10 +7,10 @@ import React, {
   forwardRef,
 } from "react";
 import { createPortal } from "react-dom";
-import { Slot } from "../../utils/Slot";
-import { useScrollLock } from "../../hooks/useScrollLock";
-import { useClickOutside } from "../../hooks/useClickOutside";
-import { useEscapeKey } from "../../hooks/useEscapeKey";
+import { Slot } from "@/utils/Slot";
+import { useScrollLock } from "@/hooks/useScrollLock";
+import { useClickOutside } from "@/hooks/useClickOutside";
+import { useEscapeKey } from "@/hooks/useEscapeKey";
 import "./Drawer.css";
 
 // ============================================================================

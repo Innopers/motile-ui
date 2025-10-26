@@ -50,6 +50,12 @@ export interface SpeedDialRootProps {
   direction?: SpeedDialDirection;
 
   /**
+   * Trigger 버튼 배경 색상 (우선순위 1)
+   * @example '#10b981'
+   */
+  color?: string;
+
+  /**
    * 외부 클릭 시 자동으로 닫기
    * @default true
    */
@@ -136,6 +142,7 @@ export const SpeedDialRoot: React.FC<SpeedDialRootProps> = ({
   open,
   onOpenChange,
   direction = "up",
+  color,
   closeOnClickOutside = true,
   closeOnEscapeKey = true,
   children,
@@ -174,9 +181,18 @@ export const SpeedDialRoot: React.FC<SpeedDialRootProps> = ({
     [open, onOpenChange, direction, triggerId]
   );
 
+  // CSS 변수로 색상 전달
+  const containerStyle = color
+    ? ({ "--motile-speeddial-color": color } as React.CSSProperties)
+    : undefined;
+
   return (
     <SpeedDialContext.Provider value={contextValue}>
-      <div ref={containerRef} className="motile-speed-dial">
+      <div
+        ref={containerRef}
+        className="motile-speed-dial"
+        style={containerStyle}
+      >
         {children}
       </div>
     </SpeedDialContext.Provider>

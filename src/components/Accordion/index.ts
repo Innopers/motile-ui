@@ -1,4 +1,4 @@
-export { Accordion, AccordionHeader, AccordionContent } from "./Accordion";
+export { Accordion } from "./Accordion";
 export type {
   AccordionProps,
   AccordionHeaderProps,

@@ -9,6 +9,7 @@ import React, {
   useState,
 } from "react";
 import "./Popover.css";
+import { Slot } from "@/utils/Slot";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { useEscapeKey } from "@/hooks/useEscapeKey";
 
@@ -247,41 +248,24 @@ function PopoverTrigger({ children, asChild = false }: PopoverTriggerProps) {
   const { open, setOpen, triggerId, contentId, triggerRef } =
     usePopoverContext();
 
-  const handleClick = useCallback(
-    (e: React.MouseEvent) => {
-      // 기존 onClick 실행
-      children.props?.onClick?.(e);
-      // Toggle open state
-      setOpen((prev) => !prev);
-    },
-    [setOpen]
-  );
+  const handleClick = useCallback(() => {
+    setOpen((prev) => !prev);
+  }, [setOpen]);
 
   if (asChild) {
-    // asChild: children의 props에 병합
-    return React.cloneElement(children, {
-      ref: (node: HTMLElement | null) => {
-        triggerRef.current = node;
-
-        // children의 기존 ref 병합
-        const childRef = (
-          children as React.ReactElement & { ref?: React.Ref<HTMLElement> }
-        ).ref;
-
-        if (childRef) {
-          if (typeof childRef === "function") {
-            childRef(node);
-          } else if (typeof childRef === "object" && childRef !== null) {
-            (childRef as React.MutableRefObject<HTMLElement | null>).current =
-              node;
-          }
-        }
-      },
-      id: triggerId,
-      "aria-expanded": open,
-      "aria-controls": contentId,
-      onClick: handleClick,
-    });
+    return (
+      <Slot
+        ref={(node: HTMLElement | null) => {
+          triggerRef.current = node;
+        }}
+        id={triggerId}
+        aria-expanded={open}
+        aria-controls={contentId}
+        onClick={handleClick}
+      >
+        {children}
+      </Slot>
+    );
   }
 
   // 기본: button으로 래핑

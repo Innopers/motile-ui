@@ -1,76 +1,92 @@
 import React, {
-  forwardRef,
+  createContext,
+  useContext,
   useEffect,
-  useImperativeHandle,
   useRef,
   useState,
+  forwardRef,
 } from "react";
 import { createPortal } from "react-dom";
-import { useScrollLock } from "../../hooks/useScrollLock";
-import { useClickOutside } from "../../hooks/useClickOutside";
-import { useEscapeKey } from "../../hooks/useEscapeKey";
+import { Slot } from "@/utils/Slot";
+import { useScrollLock } from "@/hooks/useScrollLock";
+import { useClickOutside } from "@/hooks/useClickOutside";
+import { useEscapeKey } from "@/hooks/useEscapeKey";
 import "./Drawer.css";
+
+// ============================================================================
+// Types
+// ============================================================================
 
 /**
  * 백드롭 인터랙션으로 닫기 옵션
- * - boolean: ESC 키와 외부 클릭 모두 제어
- * - object: 각각 독립적으로 제어
  */
 export type CloseOnBackdropOptions =
   | boolean
   | {
-      /**
-       * ESC 키로 닫기 허용
-       * @default false (object 사용 시)
-       */
       escapeKey?: boolean;
-      /**
-       * 외부 클릭으로 닫기 허용
-       * @default false (object 사용 시)
-       */
       clickOutside?: boolean;
     };
 
-export interface DrawerHandle {
-  close: () => void;
-  open: () => void;
+/**
+ * Drawer Context 값
+ */
+interface DrawerContextValue {
+  open: boolean;
+  setOpen: (value: boolean) => void;
+  closeOnBackdrop: CloseOnBackdropOptions;
+  closeOnDrag: boolean;
+  maxHeight: string;
+  width: string;
+  maxWidth?: string;
+  zIndex: number;
+  drawerRef: React.RefObject<HTMLDivElement>;
+  bodyRef: React.RefObject<HTMLDivElement>;
+  isVisible: boolean;
+  handleClose: () => void;
+  handleDragStart: (clientY: number) => void;
+  handleDragMove: (clientY: number) => void;
+  handleDragEnd: () => void;
 }
 
-export interface DrawerProps {
-  /**
-   * Drawer 열림/닫힘 상태
-   */
-  isOpen?: boolean;
+// ============================================================================
+// Context
+// ============================================================================
 
-  /**
-   * Drawer가 닫힐 때 호출되는 콜백
-   */
-  onClose?: () => void;
+const DrawerContext = createContext<DrawerContextValue | null>(null);
 
-  /**
-   * Drawer가 열릴 때 호출되는 콜백
-   */
-  onOpen?: () => void;
+const useDrawerContext = () => {
+  const context = useContext(DrawerContext);
+  if (!context) {
+    throw new Error("Drawer components must be used within Drawer.Root");
+  }
+  return context;
+};
 
-  /**
-   * Drawer 제목
-   */
-  title?: string;
+// ============================================================================
+// Drawer.Root - Context Provider
+// ============================================================================
 
-  /**
-   * Drawer 내용
-   */
+export interface DrawerRootProps {
   children: React.ReactNode;
 
   /**
+   * Drawer 열림/닫힘 상태 (controlled)
+   */
+  open?: boolean;
+
+  /**
+   * Drawer 기본 열림 상태 (uncontrolled)
+   * @default false
+   */
+  defaultOpen?: boolean;
+
+  /**
+   * 상태 변경 시 호출되는 콜백
+   */
+  onOpenChange?: (open: boolean) => void;
+
+  /**
    * 백드롭 인터랙션으로 닫기 허용
-   *
-   * - `true`: 외부 클릭과 ESC 키 모두 허용
-   * - `false`: 외부 클릭과 ESC 키 모두 비활성화
-   * - `{ escapeKey: true }`: ESC 키만 허용
-   * - `{ clickOutside: true }`: 외부 클릭만 허용
-   * - `{ escapeKey: true, clickOutside: true }`: 모두 허용 (명시적)
-   *
    * @default true
    */
   closeOnBackdrop?: CloseOnBackdropOptions;
@@ -82,7 +98,7 @@ export interface DrawerProps {
   closeOnDrag?: boolean;
 
   /**
-   * Drawer 최대 높이 (%, vh, dvh, px 등)
+   * Drawer 최대 높이
    * @default '70dvh'
    */
   maxHeight?: string;
@@ -95,20 +111,6 @@ export interface DrawerProps {
 
   /**
    * Drawer 최대 컨테이너 너비 (데스크톱 전용)
-   *
-   * 앱의 레이아웃 max-width와 Drawer를 일치시킬 때 사용합니다.
-   * 모바일에서는 무시되고 항상 100% 너비입니다.
-   *
-   * @default undefined (viewport 전체 너비)
-   *
-   * @example
-   * // 1024px 컨테이너 레이아웃에 맞추기
-   * <Drawer width="480px" maxWidth="1024px" />
-   *
-   * // 좌우 회색 배경이 있는 레이아웃
-   * <div style={{ maxWidth: '1024px', margin: '0 auto' }}>
-   *   <Drawer maxWidth="1024px" />
-   * </div>
    */
   maxWidth?: string;
 
@@ -117,191 +119,348 @@ export interface DrawerProps {
    * @default 9999
    */
   zIndex?: number;
-
-  /**
-   * 커스텀 className
-   */
-  className?: string;
-
-  /**
-   * 커스텀 스타일
-   */
-  style?: React.CSSProperties;
 }
 
-export const Drawer = forwardRef<DrawerHandle, DrawerProps>(
-  (
-    {
-      isOpen = false,
-      onClose,
-      onOpen,
-      title,
-      children,
-      closeOnBackdrop = true,
-      closeOnDrag = true,
-      maxHeight = "70dvh",
-      width = "480px",
-      maxWidth,
-      zIndex = 9999,
-      className = "",
-      style,
-    },
-    ref
-  ) => {
-    const drawerRef = useRef<HTMLDivElement>(null);
-    const overlayRef = useRef<HTMLDivElement>(null);
-    const bodyRef = useRef<HTMLDivElement>(null);
+export const DrawerRoot: React.FC<DrawerRootProps> = ({
+  children,
+  open: controlledOpen,
+  defaultOpen = false,
+  onOpenChange,
+  closeOnBackdrop = true,
+  closeOnDrag = true,
+  maxHeight = "70dvh",
+  width = "480px",
+  maxWidth,
+  zIndex = 9999,
+}) => {
+  const drawerRef = useRef<HTMLDivElement>(null);
+  const bodyRef = useRef<HTMLDivElement>(null);
 
-    // Drag state
-    const startYRef = useRef<number | null>(null);
-    const currentYRef = useRef<number>(0);
-    const isDraggingRef = useRef<boolean>(false);
+  // Drag state
+  const startYRef = useRef<number | null>(null);
+  const currentYRef = useRef<number>(0);
+  const isDraggingRef = useRef<boolean>(false);
 
-    // Animation state
-    const [isVisible, setIsVisible] = useState(false);
-    const [shouldRender, setShouldRender] = useState(false);
+  // Animation state
+  const [isVisible, setIsVisible] = useState(false);
+  const [shouldRender, setShouldRender] = useState(defaultOpen);
 
-    // closeOnBackdrop 옵션 처리
-    const backdropOptions =
-      typeof closeOnBackdrop === "boolean"
-        ? { escapeKey: closeOnBackdrop, clickOutside: closeOnBackdrop }
-        : {
-            escapeKey: closeOnBackdrop?.escapeKey ?? false,
-            clickOutside: closeOnBackdrop?.clickOutside ?? false,
-          };
+  // Controlled/Uncontrolled state
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
+  const open = controlledOpen !== undefined ? controlledOpen : uncontrolledOpen;
 
-    // 배경 스크롤 차단
-    useScrollLock({
-      enabled: isOpen,
-      allowedSelectors: [
-        "[data-scroll-allowed]",
-        ".motile-drawer__body",
-        ".motile-drawer-body",
-      ],
-    });
+  const setOpen = (value: boolean) => {
+    if (controlledOpen === undefined) {
+      setUncontrolledOpen(value);
+    }
+    onOpenChange?.(value);
+  };
 
-    // 외부에서 제어 가능하도록 expose
-    useImperativeHandle(ref, () => ({
-      close: () => handleClose(),
-      open: () => handleOpen(),
-    }));
+  // closeOnBackdrop 옵션 처리
+  const backdropOptions =
+    typeof closeOnBackdrop === "boolean"
+      ? { escapeKey: closeOnBackdrop, clickOutside: closeOnBackdrop }
+      : {
+          escapeKey: closeOnBackdrop?.escapeKey ?? false,
+          clickOutside: closeOnBackdrop?.clickOutside ?? false,
+        };
 
-    // Open/Close 핸들러
-    const handleOpen = () => {
-      setShouldRender(true);
-      onOpen?.();
-    };
+  // 배경 스크롤 차단
+  useScrollLock({
+    enabled: open,
+    allowedSelectors: ["[data-scroll-allowed]", ".motile-drawer__body"],
+  });
 
-    const handleClose = () => {
-      if (!drawerRef.current) {
-        setIsVisible(false);
-        setTimeout(() => {
-          setShouldRender(false);
-          onClose?.();
-        }, 300);
-        return;
-      }
-
-      // Closing animation
-      drawerRef.current.style.transition = "transform 0.3s ease";
-      drawerRef.current.style.transform = "translateY(100%)";
+  // Open/Close 핸들러
+  const handleClose = () => {
+    if (!drawerRef.current) {
       setIsVisible(false);
-
       setTimeout(() => {
         setShouldRender(false);
-        onClose?.();
+        setOpen(false);
       }, 300);
-    };
+      return;
+    }
 
-    // isOpen prop 변경 감지
-    useEffect(() => {
-      if (isOpen) {
-        handleOpen();
-      } else if (shouldRender) {
-        handleClose();
-      }
-    }, [isOpen]);
+    // Closing animation
+    drawerRef.current.style.transition = "transform 0.3s ease";
+    drawerRef.current.style.transform = "translateY(100%)";
+    setIsVisible(false);
 
-    // Opening animation
-    useEffect(() => {
-      if (!shouldRender || !drawerRef.current) return;
+    setTimeout(() => {
+      setShouldRender(false);
+      setOpen(false);
+    }, 300);
+  };
 
-      const drawer = drawerRef.current;
+  // open prop 변경 감지
+  useEffect(() => {
+    if (open) {
+      setShouldRender(true);
+    } else if (shouldRender) {
+      handleClose();
+    }
+  }, [open]);
 
-      // 초기 상태 (아래로 숨김)
-      drawer.style.transition = "none";
-      drawer.style.transform = "translateY(100%)";
+  // Opening animation
+  useEffect(() => {
+    if (!shouldRender || !drawerRef.current) return;
 
-      // 다음 프레임에 애니메이션 시작
+    const drawer = drawerRef.current;
+
+    // 초기 상태 (아래로 숨김)
+    drawer.style.transition = "none";
+    drawer.style.transform = "translateY(100%)";
+
+    // 다음 프레임에 애니메이션 시작
+    requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          drawer.style.transition = "transform 0.3s ease";
-          drawer.style.transform = "translateY(0)";
-          setIsVisible(true);
-        });
+        drawer.style.transition = "transform 0.3s ease";
+        drawer.style.transform = "translateY(0)";
+        setIsVisible(true);
       });
-    }, [shouldRender]);
-
-    // 외부 클릭으로 닫기
-    useClickOutside({
-      refs: [drawerRef],
-      handler: handleClose,
-      enabled: isOpen && backdropOptions.clickOutside,
     });
+  }, [shouldRender]);
 
-    // ESC 키로 닫기
-    useEscapeKey({
-      handler: handleClose,
-      enabled: isOpen && backdropOptions.escapeKey,
-    });
+  // 외부 클릭으로 닫기
+  useClickOutside({
+    refs: [drawerRef],
+    handler: handleClose,
+    enabled: open && backdropOptions.clickOutside,
+  });
 
-    // Drag handlers
-    const handleDragStart = (clientY: number) => {
-      if (!closeOnDrag) return;
-      startYRef.current = clientY;
-      isDraggingRef.current = false;
+  // ESC 키로 닫기
+  useEscapeKey({
+    handler: handleClose,
+    enabled: open && backdropOptions.escapeKey,
+  });
+
+  // Drag handlers
+  const handleDragStart = (clientY: number) => {
+    if (!closeOnDrag) return;
+    startYRef.current = clientY;
+    isDraggingRef.current = false;
+  };
+
+  const handleDragMove = (clientY: number) => {
+    if (
+      !closeOnDrag ||
+      !drawerRef.current ||
+      startYRef.current === null ||
+      !bodyRef.current
+    )
+      return;
+
+    const deltaY = clientY - startYRef.current;
+
+    // Body가 최상단에 있고 아래로 드래그할 때만 Drawer 이동
+    if (bodyRef.current.scrollTop <= 0 && deltaY > 0) {
+      isDraggingRef.current = true;
+      currentYRef.current = deltaY;
+      drawerRef.current.style.transition = "none";
+      drawerRef.current.style.transform = `translateY(${deltaY}px)`;
+    }
+  };
+
+  const handleDragEnd = () => {
+    if (!closeOnDrag || !drawerRef.current) return;
+
+    const threshold = window.innerHeight * 0.2;
+    drawerRef.current.style.transition = "transform 0.3s ease";
+
+    if (isDraggingRef.current && currentYRef.current > threshold) {
+      // 임계값 초과 시 닫기
+      handleClose();
+    } else {
+      // 원위치
+      drawerRef.current.style.transform = "translateY(0)";
+      currentYRef.current = 0;
+    }
+
+    isDraggingRef.current = false;
+    startYRef.current = null;
+  };
+
+  const contextValue: DrawerContextValue = {
+    open: shouldRender,
+    setOpen,
+    closeOnBackdrop,
+    closeOnDrag,
+    maxHeight,
+    width,
+    maxWidth,
+    zIndex,
+    drawerRef,
+    bodyRef,
+    isVisible,
+    handleClose,
+    handleDragStart,
+    handleDragMove,
+    handleDragEnd,
+  };
+
+  return (
+    <DrawerContext.Provider value={contextValue}>
+      {children}
+    </DrawerContext.Provider>
+  );
+};
+
+DrawerRoot.displayName = "Drawer.Root";
+
+// ============================================================================
+// Drawer.Trigger - 열기 트리거
+// ============================================================================
+
+export interface DrawerTriggerProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  children: React.ReactElement;
+  asChild?: boolean;
+}
+
+export const DrawerTrigger = forwardRef<HTMLButtonElement, DrawerTriggerProps>(
+  ({ children, asChild, onClick, ...props }, ref) => {
+    const { setOpen } = useDrawerContext();
+
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+      onClick?.(e);
+      setOpen(true);
     };
 
-    const handleDragMove = (clientY: number) => {
-      if (
-        !closeOnDrag ||
-        !drawerRef.current ||
-        startYRef.current === null ||
-        !bodyRef.current
-      )
-        return;
+    if (asChild) {
+      return (
+        <Slot
+          {...props}
+          onClick={handleClick}
+          ref={ref as React.Ref<HTMLElement>}
+        >
+          {children}
+        </Slot>
+      );
+    }
 
-      const deltaY = clientY - startYRef.current;
+    return (
+      <button type="button" onClick={handleClick} ref={ref} {...props}>
+        {children}
+      </button>
+    );
+  }
+);
 
-      // Body가 최상단에 있고 아래로 드래그할 때만 Drawer 이동
-      if (bodyRef.current.scrollTop <= 0 && deltaY > 0) {
-        isDraggingRef.current = true;
-        currentYRef.current = deltaY;
-        drawerRef.current.style.transition = "none";
-        drawerRef.current.style.transform = `translateY(${deltaY}px)`;
-      }
+DrawerTrigger.displayName = "Drawer.Trigger";
+
+// ============================================================================
+// Drawer.Portal - Portal wrapper
+// ============================================================================
+
+export interface DrawerPortalProps {
+  children: React.ReactNode;
+  container?: HTMLElement;
+}
+
+export const DrawerPortal: React.FC<DrawerPortalProps> = ({
+  children,
+  container,
+}) => {
+  const { open } = useDrawerContext();
+
+  if (!open) return null;
+
+  return createPortal(children, container || document.body);
+};
+
+DrawerPortal.displayName = "Drawer.Portal";
+
+// ============================================================================
+// Drawer.Overlay - 배경 오버레이
+// ============================================================================
+
+export interface DrawerOverlayProps
+  extends React.HTMLAttributes<HTMLDivElement> {}
+
+export const DrawerOverlay = forwardRef<HTMLDivElement, DrawerOverlayProps>(
+  ({ className, ...props }, ref) => {
+    const { isVisible, zIndex } = useDrawerContext();
+
+    return (
+      <div
+        ref={ref}
+        className={`motile-drawer__overlay ${
+          isVisible ? "motile-drawer__overlay--visible" : ""
+        } ${className || ""}`}
+        style={{ zIndex }}
+        role="presentation"
+        {...props}
+      />
+    );
+  }
+);
+
+DrawerOverlay.displayName = "Drawer.Overlay";
+
+// ============================================================================
+// Drawer.Content - 메인 컨테이너
+// ============================================================================
+
+export interface DrawerContentProps
+  extends React.HTMLAttributes<HTMLDivElement> {}
+
+export const DrawerContent = forwardRef<HTMLDivElement, DrawerContentProps>(
+  ({ className, style, children, ...props }, ref) => {
+    const { drawerRef, isVisible, maxHeight, width, maxWidth, zIndex } =
+      useDrawerContext();
+
+    const drawerStyle: React.CSSProperties = {
+      ...(maxHeight !== "70dvh" &&
+        ({ "--drawer-max-height": maxHeight } as React.CSSProperties)),
+      ...(width !== "480px" &&
+        ({ "--drawer-width": width } as React.CSSProperties)),
+      ...(maxWidth &&
+        ({ "--drawer-max-width": maxWidth } as React.CSSProperties)),
+      zIndex: zIndex + 1,
+      ...style,
     };
 
-    const handleDragEnd = () => {
-      if (!closeOnDrag || !drawerRef.current) return;
+    return (
+      <div
+        ref={(node) => {
+          if (typeof ref === "function") {
+            ref(node);
+          } else if (ref) {
+            ref.current = node;
+          }
+          (drawerRef as React.MutableRefObject<HTMLDivElement | null>).current =
+            node;
+        }}
+        className={`motile-drawer__content ${
+          isVisible ? "motile-drawer__content--visible" : ""
+        } ${className || ""}`}
+        style={drawerStyle}
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  }
+);
 
-      const threshold = window.innerHeight * 0.2;
-      drawerRef.current.style.transition = "transform 0.3s ease";
+DrawerContent.displayName = "Drawer.Content";
 
-      if (isDraggingRef.current && currentYRef.current > threshold) {
-        // 임계값 초과 시 닫기
-        handleClose();
-      } else {
-        // 원위치
-        drawerRef.current.style.transform = "translateY(0)";
-        currentYRef.current = 0;
-      }
+// ============================================================================
+// Drawer.Handle - 드래그 핸들
+// ============================================================================
 
-      isDraggingRef.current = false;
-      startYRef.current = null;
-    };
+export interface DrawerHandleProps
+  extends React.HTMLAttributes<HTMLDivElement> {}
 
-    // Touch events
+export const DrawerHandle = forwardRef<HTMLDivElement, DrawerHandleProps>(
+  ({ className, ...props }, ref) => {
+    const { handleDragStart, handleDragMove, handleDragEnd } =
+      useDrawerContext();
+
     const handleTouchStart = (e: React.TouchEvent) => {
       handleDragStart(e.touches[0].clientY);
     };
@@ -314,7 +473,6 @@ export const Drawer = forwardRef<DrawerHandle, DrawerProps>(
       handleDragEnd();
     };
 
-    // Mouse events
     const handleMouseDown = (e: React.MouseEvent) => {
       handleDragStart(e.clientY);
 
@@ -332,80 +490,151 @@ export const Drawer = forwardRef<DrawerHandle, DrawerProps>(
       window.addEventListener("mouseup", handleMouseUp);
     };
 
-    if (!shouldRender) return null;
-
-    const baseClass = "motile-drawer";
-
-    const drawerClasses = [
-      `${baseClass}__content`,
-      isVisible && `${baseClass}__content--visible`,
-      className,
-    ]
-      .filter(Boolean)
-      .join(" ");
-
-    const drawerStyle: React.CSSProperties = {
-      ...(maxHeight !== "70dvh" &&
-        ({ "--drawer-max-height": maxHeight } as React.CSSProperties)),
-      ...(width !== "480px" &&
-        ({ "--drawer-width": width } as React.CSSProperties)),
-      ...(maxWidth &&
-        ({ "--drawer-max-width": maxWidth } as React.CSSProperties)),
-      zIndex: zIndex + 1,
-      ...style,
-    };
-
-    return createPortal(
+    return (
       <div
-        ref={overlayRef}
-        className={`${baseClass}__overlay ${
-          isVisible ? `${baseClass}__overlay--visible` : ""
-        }`}
-        style={{ zIndex }}
-        role="presentation"
+        ref={ref}
+        className={`motile-drawer__header ${className || ""}`}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        onMouseDown={handleMouseDown}
+        {...props}
       >
-        <div
-          ref={drawerRef}
-          className={drawerClasses}
-          style={drawerStyle}
-          onClick={(e) => e.stopPropagation()}
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby={title ? `${baseClass}-title` : undefined}
-        >
-          {/* Handle (드래그 영역) */}
-          <div
-            className={`${baseClass}__header`}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-            onMouseDown={handleMouseDown}
-          >
-            <div className={`${baseClass}__handle`} aria-hidden="true" />
-          </div>
-
-          {/* Title (optional) */}
-          {title && (
-            <div className={`${baseClass}__title-wrapper`}>
-              <h2 id={`${baseClass}-title`} className={`${baseClass}__title`}>
-                {title}
-              </h2>
-            </div>
-          )}
-
-          {/* Body (스크롤 가능 영역) */}
-          <div
-            ref={bodyRef}
-            className={`${baseClass}__body`}
-            data-scroll-allowed
-          >
-            {children}
-          </div>
-        </div>
-      </div>,
-      document.body
+        <div className="motile-drawer__handle" aria-hidden="true" />
+      </div>
     );
   }
 );
 
-Drawer.displayName = "Drawer";
+DrawerHandle.displayName = "Drawer.Handle";
+
+// ============================================================================
+// Drawer.Title - 제목
+// ============================================================================
+
+export interface DrawerTitleProps
+  extends React.HTMLAttributes<HTMLHeadingElement> {
+  children: React.ReactNode;
+  asChild?: boolean;
+}
+
+export const DrawerTitle = forwardRef<HTMLHeadingElement, DrawerTitleProps>(
+  ({ children, asChild, className, ...props }, ref) => {
+    if (asChild && React.isValidElement(children)) {
+      return (
+        <Slot
+          {...props}
+          className={`motile-drawer__title ${className || ""}`}
+          ref={ref as React.Ref<HTMLElement>}
+        >
+          {children}
+        </Slot>
+      );
+    }
+
+    return (
+      <div className="motile-drawer__title-wrapper">
+        <h2
+          ref={ref}
+          id="motile-drawer-title"
+          className={`motile-drawer__title ${className || ""}`}
+          {...props}
+        >
+          {children}
+        </h2>
+      </div>
+    );
+  }
+);
+
+DrawerTitle.displayName = "Drawer.Title";
+
+// ============================================================================
+// Drawer.Body - 스크롤 가능 영역
+// ============================================================================
+
+export interface DrawerBodyProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+export const DrawerBody = forwardRef<HTMLDivElement, DrawerBodyProps>(
+  ({ className, children, ...props }, ref) => {
+    const { bodyRef } = useDrawerContext();
+
+    return (
+      <div
+        ref={(node) => {
+          if (typeof ref === "function") {
+            ref(node);
+          } else if (ref) {
+            ref.current = node;
+          }
+          (bodyRef as React.MutableRefObject<HTMLDivElement | null>).current =
+            node;
+        }}
+        className={`motile-drawer__body ${className || ""}`}
+        data-scroll-allowed
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  }
+);
+
+DrawerBody.displayName = "Drawer.Body";
+
+// ============================================================================
+// Drawer.Close - 닫기 버튼
+// ============================================================================
+
+export interface DrawerCloseProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  children: React.ReactElement;
+  asChild?: boolean;
+}
+
+export const DrawerClose = forwardRef<HTMLButtonElement, DrawerCloseProps>(
+  ({ children, asChild, onClick, ...props }, ref) => {
+    const { handleClose } = useDrawerContext();
+
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+      onClick?.(e);
+      handleClose();
+    };
+
+    if (asChild) {
+      return (
+        <Slot
+          {...props}
+          onClick={handleClick}
+          ref={ref as React.Ref<HTMLElement>}
+        >
+          {children}
+        </Slot>
+      );
+    }
+
+    return (
+      <button type="button" onClick={handleClick} ref={ref} {...props}>
+        {children}
+      </button>
+    );
+  }
+);
+
+DrawerClose.displayName = "Drawer.Close";
+
+// ============================================================================
+// Compound Component Export
+// ============================================================================
+
+export const Drawer = {
+  Root: DrawerRoot,
+  Trigger: DrawerTrigger,
+  Portal: DrawerPortal,
+  Overlay: DrawerOverlay,
+  Content: DrawerContent,
+  Handle: DrawerHandle,
+  Title: DrawerTitle,
+  Body: DrawerBody,
+  Close: DrawerClose,
+};

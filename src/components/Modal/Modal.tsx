@@ -1,8 +1,9 @@
 import React, { useRef, useId, createContext, useContext } from "react";
 import { createPortal } from "react-dom";
-import { useClickOutside } from "../../hooks/useClickOutside";
-import { useEscapeKey } from "../../hooks/useEscapeKey";
-import { useScrollLock } from "../../hooks/useScrollLock";
+import { Slot } from "@/utils/Slot";
+import { useClickOutside } from "@/hooks/useClickOutside";
+import { useEscapeKey } from "@/hooks/useEscapeKey";
+import { useScrollLock } from "@/hooks/useScrollLock";
 import "./Modal.css";
 
 // ============================================================================
@@ -395,7 +396,7 @@ ModalDescription.displayName = "Modal.Description";
 // ============================================================================
 
 export const ModalClose = React.forwardRef<HTMLButtonElement, ModalCloseProps>(
-  ({ asChild, className, onClick, ...props }, ref) => {
+  ({ asChild, className, onClick, children, ...props }, ref) => {
     const { onOpenChange } = useModalContext();
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -403,10 +404,16 @@ export const ModalClose = React.forwardRef<HTMLButtonElement, ModalCloseProps>(
       onOpenChange(false);
     };
 
-    if (asChild && React.isValidElement(props.children)) {
-      return React.cloneElement(props.children as React.ReactElement, {
-        onClick: handleClick,
-      });
+    if (asChild) {
+      return (
+        <Slot
+          {...props}
+          onClick={handleClick}
+          ref={ref as React.Ref<HTMLElement>}
+        >
+          {children}
+        </Slot>
+      );
     }
 
     return (
@@ -418,7 +425,7 @@ export const ModalClose = React.forwardRef<HTMLButtonElement, ModalCloseProps>(
         aria-label="닫기"
         {...props}
       >
-        {props.children || (
+        {children || (
           <svg
             width="18"
             height="18"

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Accordion, AccordionHeader, AccordionContent } from "./Accordion";
+import { Accordion } from "./Accordion";
 
 // Props that can be controlled via Storybook
 interface AccordionStoryArgs {
@@ -62,7 +62,7 @@ type Story = StoryObj<AccordionStoryArgs>;
 
 /**
  * 기본 아코디언입니다.
- * AccordionHeader를 클릭하면 AccordionContent가 열리고 닫힙니다.
+ * Accordion.Header를 클릭하면 Accordion.Content가 열리고 닫힙니다.
  */
 export const Default: Story = {
   args: {
@@ -76,11 +76,11 @@ export const Default: Story = {
       defaultExpanded={defaultExpanded}
       disabled={disabled}
     >
-      <AccordionHeader>자주 묻는 질문</AccordionHeader>
-      <AccordionContent>
+      <Accordion.Header>자주 묻는 질문</Accordion.Header>
+      <Accordion.Content>
         여기에 아코디언 내용이 표시됩니다. 긴 텍스트나 다양한 컴포넌트를 넣을 수
         있습니다.
-      </AccordionContent>
+      </Accordion.Content>
     </Accordion>
   ),
 };
@@ -100,10 +100,10 @@ export const Disabled: Story = {
       defaultExpanded={defaultExpanded}
       disabled={disabled}
     >
-      <AccordionHeader>비활성화 상태</AccordionHeader>
-      <AccordionContent>
+      <Accordion.Header>비활성화 상태</Accordion.Header>
+      <Accordion.Content>
         비활성화된 아코디언은 클릭할 수 없습니다.
-      </AccordionContent>
+      </Accordion.Content>
     </Accordion>
   ),
 };
@@ -123,10 +123,10 @@ export const Outlined: Story = {
       defaultExpanded={defaultExpanded}
       disabled={disabled}
     >
-      <AccordionHeader>테두리 있는 아코디언</AccordionHeader>
-      <AccordionContent>
+      <Accordion.Header>테두리 있는 아코디언</Accordion.Header>
+      <Accordion.Content>
         outlined variant가 적용된 아코디언입니다.
-      </AccordionContent>
+      </Accordion.Content>
     </Accordion>
   ),
 };

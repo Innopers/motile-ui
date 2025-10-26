@@ -13,11 +13,7 @@ export type { CheckboxProps } from "./components/Checkbox";
 export { Switch } from "./components/Switch";
 export type { SwitchProps } from "./components/Switch";
 
-export {
-  Accordion,
-  AccordionHeader,
-  AccordionContent,
-} from "./components/Accordion";
+export { Accordion } from "./components/Accordion";
 export type {
   AccordionProps,
   AccordionHeaderProps,
@@ -49,16 +45,30 @@ export type {
 
 export { Drawer } from "./components/Drawer";
 export type {
-  DrawerProps,
-  DrawerHandle,
   CloseOnBackdropOptions,
+  DrawerRootProps,
+  DrawerTriggerProps,
+  DrawerPortalProps,
+  DrawerOverlayProps,
+  DrawerContentProps,
+  DrawerHandleProps,
+  DrawerTitleProps,
+  DrawerBodyProps,
+  DrawerCloseProps,
 } from "./components/Drawer";
 
 export { Sheet } from "./components/Sheet";
 export type {
-  SheetProps,
-  SheetHandle,
   SheetPosition,
+  SheetRootProps,
+  SheetTriggerProps,
+  SheetPortalProps,
+  SheetOverlayProps,
+  SheetContentProps,
+  SheetHeaderProps,
+  SheetTitleProps,
+  SheetBodyProps,
+  SheetCloseProps,
 } from "./components/Sheet";
 
 export { Modal } from "./components/Modal";

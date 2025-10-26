@@ -9,6 +9,7 @@ import React, {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
+import { Slot } from "@/utils/Slot";
 import "./Tooltip.css";
 
 type TooltipVariant = "default" | "outlined";
@@ -384,9 +385,10 @@ function TooltipRoot({
 
 interface TooltipTriggerProps {
   children: React.ReactElement;
+  asChild?: boolean;
 }
 
-function TooltipTrigger({ children }: TooltipTriggerProps) {
+function TooltipTrigger({ children, asChild = false }: TooltipTriggerProps) {
   const { open, setOpen, tooltipId, triggerRef, keepOpen } =
     useTooltipContext();
 
@@ -417,13 +419,33 @@ function TooltipTrigger({ children }: TooltipTriggerProps) {
     setOpen(!open, 0);
   }, [setOpen, open]);
 
+  if (asChild) {
+    return (
+      <Slot
+        ref={(node: HTMLElement | null) => {
+          triggerRef.current = node;
+        }}
+        className="motile-tooltip-trigger"
+        aria-describedby={open ? tooltipId : undefined}
+        tabIndex={0}
+        onMouseEnter={handleTriggerEnter}
+        onMouseLeave={handleTriggerLeave}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        onClick={handleClick}
+      >
+        {children}
+      </Slot>
+    );
+  }
+
   return React.cloneElement(children, {
     ref: (node: HTMLElement | null) => {
       triggerRef.current = node;
 
-      const childRef = (
-        children as React.ReactElement & { ref?: React.Ref<HTMLElement> }
-      ).ref;
+      const childRef =
+        children.props.ref ||
+        (children as React.ReactElement & { ref?: React.Ref<HTMLElement> }).ref;
 
       if (childRef) {
         if (typeof childRef === "function") {
@@ -434,7 +456,9 @@ function TooltipTrigger({ children }: TooltipTriggerProps) {
         }
       }
     },
-    className: `motile-tooltip-trigger ${children.props.className || ""}`.trim(),
+    className: `motile-tooltip-trigger ${
+      children.props.className || ""
+    }`.trim(),
     "aria-describedby": open ? tooltipId : undefined,
     tabIndex: children.props.tabIndex ?? 0,
     onMouseEnter: handleTriggerEnter,

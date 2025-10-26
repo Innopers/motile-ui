@@ -5,6 +5,7 @@ import React, {
   useId,
   forwardRef,
 } from "react";
+import { Slot } from "@/utils/Slot";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { useEscapeKey } from "@/hooks/useEscapeKey";
 import "./SpeedDial.css";
@@ -75,6 +76,12 @@ export interface SpeedDialTriggerProps
    * 자식 요소
    */
   children: React.ReactNode;
+
+  /**
+   * Slot 패턴 활성화 (자식을 루트 요소로 렌더링)
+   * @default false
+   */
+  asChild?: boolean;
 }
 
 /**
@@ -97,6 +104,12 @@ export interface SpeedDialActionProps
    * 자식 요소
    */
   children: React.ReactNode;
+
+  /**
+   * Slot 패턴 활성화 (자식을 루트 요소로 렌더링)
+   * @default false
+   */
+  asChild?: boolean;
 }
 
 // ============================================================================
@@ -177,7 +190,7 @@ export const SpeedDialRoot: React.FC<SpeedDialRootProps> = ({
 export const SpeedDialTrigger = forwardRef<
   HTMLButtonElement,
   SpeedDialTriggerProps
->(({ className, onClick, children, ...props }, ref) => {
+>(({ className, onClick, children, asChild = false, ...props }, ref) => {
   const { open, onOpenChange, triggerId } = useSpeedDialContext();
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -186,6 +199,26 @@ export const SpeedDialTrigger = forwardRef<
       onOpenChange(!open);
     }
   };
+
+  if (asChild) {
+    return (
+      <Slot
+        ref={ref}
+        id={triggerId}
+        className={
+          className
+            ? `motile-speed-dial__trigger ${className}`
+            : "motile-speed-dial__trigger"
+        }
+        aria-expanded={open}
+        aria-haspopup="menu"
+        onClick={handleClick}
+        {...props}
+      >
+        {children}
+      </Slot>
+    );
+  }
 
   return (
     <button
@@ -261,10 +294,28 @@ SpeedDialActions.displayName = "SpeedDial.Actions";
 export const SpeedDialAction = forwardRef<
   HTMLButtonElement,
   SpeedDialActionProps
->(({ className, onClick, children, ...props }, ref) => {
+>(({ className, onClick, children, asChild = false, ...props }, ref) => {
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     onClick?.(e);
   };
+
+  if (asChild) {
+    return (
+      <Slot
+        ref={ref}
+        role="menuitem"
+        className={
+          className
+            ? `motile-speed-dial__action ${className}`
+            : "motile-speed-dial__action"
+        }
+        onClick={handleClick}
+        {...props}
+      >
+        {children}
+      </Slot>
+    );
+  }
 
   return (
     <button

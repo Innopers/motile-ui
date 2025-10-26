@@ -1,4 +1,5 @@
 import React from "react";
+import { Slot } from "@/utils/Slot";
 import "./Button.css";
 
 type ButtonVariant = "primary" | "secondary" | "default";
@@ -43,6 +44,13 @@ export interface ButtonProps
   isLoading?: boolean;
 
   /**
+   * children을 wrapper 없이 직접 렌더링
+   * true일 경우, children이 직접 button 역할을 함
+   * @default false
+   */
+  asChild?: boolean;
+
+  /**
    * 버튼 내용
    */
   children: React.ReactNode;
@@ -57,6 +65,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       color,
       hoverOnTouch = false,
       isLoading = false,
+      asChild = false,
       children,
       className,
       disabled,
@@ -87,6 +96,15 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       ...style,
       ...(color && ({ "--motile-btn-color": color } as React.CSSProperties)),
     };
+
+    // asChild 사용 시 간단한 wrapper만 전달
+    if (asChild) {
+      return (
+        <Slot ref={ref} className={classes} style={customStyle} {...props}>
+          {children}
+        </Slot>
+      );
+    }
 
     return (
       <button

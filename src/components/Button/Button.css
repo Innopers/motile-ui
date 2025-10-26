@@ -40,7 +40,9 @@
 }
 
 /* hoverOnTouch prop이 true일 때: 모든 디바이스에서 hover 활성화 */
-.motile-btn--hover-on-touch.motile-btn--primary:hover:not(.motile-btn--disabled) {
+.motile-btn--hover-on-touch.motile-btn--primary:hover:not(
+    .motile-btn--disabled
+  ) {
   filter: brightness(0.9);
   /* translateY 제거 - Popover 위치 계산 오류 방지 */
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
@@ -96,7 +98,7 @@
 
 /* Default Variant */
 .motile-btn--default {
-  background: white;
+  background: transparent;
   border: none;
   color: var(
     --motile-btn-color,
@@ -113,7 +115,9 @@
   }
 }
 
-.motile-btn--hover-on-touch.motile-btn--default:hover:not(.motile-btn--disabled) {
+.motile-btn--hover-on-touch.motile-btn--default:hover:not(
+    .motile-btn--disabled
+  ) {
   opacity: 0.7;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -152,28 +156,28 @@
 .motile-btn--primary.motile-btn--disabled {
   opacity: 0.5;
   filter: saturate(0.9);
-  cursor: not-allowed !important;
-  transform: none !important;
-  box-shadow: none !important;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
   pointer-events: none;
 }
 
 .motile-btn--secondary.motile-btn--disabled {
-  background: #f3f4f6 !important;
-  color: #9ca3af !important;
-  border: none !important;
-  cursor: not-allowed !important;
-  transform: none !important;
-  box-shadow: none !important;
+  background: #e5e7eb;
+  color: #6b7280;
+  border: none;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
   pointer-events: none;
 }
 
 .motile-btn--default.motile-btn--disabled {
-  background: #f3f4f6 !important;
-  color: #9ca3af !important;
-  cursor: not-allowed !important;
-  transform: none !important;
-  box-shadow: none !important;
+  background: #e5e7eb;
+  color: #6b7280;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
   pointer-events: none;
 }
 

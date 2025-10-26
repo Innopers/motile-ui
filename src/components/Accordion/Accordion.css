@@ -20,6 +20,11 @@
   outline: none;
   user-select: none;
   padding: 16px 20px;
+  color: #111827;
+  background-color: transparent;
+  font-size: 16px;
+  font-weight: 400;
+  -webkit-text-size-adjust: 100%;
 }
 
 .motile-accordion__header:focus-visible {
@@ -107,20 +112,31 @@
   border-radius: 12px;
 }
 
+/* Outlined: Header/Content 구분선 (열렸을 때만) */
+.motile-accordion--outlined.motile-accordion--expanded
+  .motile-accordion__header,
+.motile-accordion--outlined[data-state="open"] .motile-accordion__header {
+  border-bottom: 1px solid #e5e7eb;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .motile-accordion__header {
-    padding: 14px;
+    padding: 16px 18px;
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
   }
   .motile-accordion__content {
-    padding: 12px 14px 16px 14px;
+    padding: 14px 18px 18px 18px;
+    font-size: 15px;
+    -webkit-text-size-adjust: 100%;
   }
   .motile-accordion__title {
-    font-size: 15px;
+    font-size: 16px;
   }
   .motile-accordion__chevron {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
   }
 }
 

@@ -1,0 +1,326 @@
+/* Button Base */
+.motile-btn {
+  width: fit-content;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  min-height: fit-content;
+}
+
+.motile-btn:active:not(.motile-btn--disabled) {
+  filter: brightness(0.95);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Primary Variant */
+.motile-btn--primary {
+  background: var(
+    --motile-btn-color,
+    var(--motile-ui-btn, var(--motile-theme, #3b82f6))
+  );
+  color: white;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* Hover 기본: 터치 디바이스에서는 hover 비활성화 */
+@media (hover: hover) {
+  .motile-btn--primary:hover:not(.motile-btn--disabled) {
+    filter: brightness(0.9);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+}
+
+/* hoverOnTouch prop이 true일 때: 모든 디바이스에서 hover 활성화 */
+.motile-btn--hover-on-touch.motile-btn--primary:hover:not(
+    .motile-btn--disabled
+  ) {
+  filter: brightness(0.9);
+  /* translateY 제거 - Popover 위치 계산 오류 방지 */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Secondary Variant */
+.motile-btn--secondary {
+  background: white;
+  color: var(
+    --motile-btn-color,
+    var(--motile-ui-btn-secondary, var(--motile-theme, #3b82f6))
+  );
+  border: 1px solid
+    var(
+      --motile-btn-color,
+      var(--motile-ui-btn-secondary, var(--motile-theme, #3b82f6))
+    );
+  box-shadow: none;
+}
+
+@media (hover: hover) {
+  .motile-btn--secondary:hover:not(.motile-btn--disabled) {
+    background: color-mix(
+      in srgb,
+      var(
+          --motile-btn-color,
+          var(--motile-ui-btn-secondary, var(--motile-theme, #3b82f6))
+        )
+        10%,
+      transparent
+    );
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+}
+
+.motile-btn--hover-on-touch.motile-btn--secondary:hover:not(
+    .motile-btn--disabled
+  ) {
+  background: color-mix(
+    in srgb,
+    var(
+        --motile-btn-color,
+        var(--motile-ui-btn-secondary, var(--motile-theme, #3b82f6))
+      )
+      10%,
+    transparent
+  );
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Default Variant */
+.motile-btn--default {
+  background: transparent;
+  border: none;
+  color: var(
+    --motile-btn-color,
+    var(--motile-ui-btn-default, var(--motile-theme, #3b82f6))
+  );
+  box-shadow: none;
+}
+
+@media (hover: hover) {
+  .motile-btn--default:hover:not(.motile-btn--disabled) {
+    opacity: 0.7;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+}
+
+.motile-btn--hover-on-touch.motile-btn--default:hover:not(
+    .motile-btn--disabled
+  ) {
+  opacity: 0.7;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Large Size */
+.motile-btn--large {
+  padding: 0 24px;
+  font-size: 16px;
+  height: 56px;
+  min-height: 56px;
+  line-height: 1.4;
+}
+
+/* Medium Size */
+.motile-btn--medium {
+  padding: 0 20px;
+  font-size: 15px;
+  height: 48px;
+  min-height: 48px;
+  min-width: 80px;
+  line-height: 1.4;
+}
+
+/* Small Size */
+.motile-btn--small {
+  padding: 0 16px;
+  font-size: 14px;
+  height: 40px;
+  min-height: 40px;
+  min-width: 64px;
+  line-height: 1.4;
+}
+
+/* States */
+.motile-btn--primary.motile-btn--disabled {
+  opacity: 0.5;
+  filter: saturate(0.9);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+.motile-btn--secondary.motile-btn--disabled {
+  background: #e5e7eb;
+  color: #6b7280;
+  border: none;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+.motile-btn--default.motile-btn--disabled {
+  background: #e5e7eb;
+  color: #6b7280;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+.motile-btn--full-width {
+  width: 100%;
+}
+
+/* Icon support */
+.motile-btn svg {
+  flex-shrink: 0;
+  margin-right: 8px;
+}
+
+.motile-btn svg:last-child {
+  margin-right: 0;
+  margin-left: 8px;
+}
+
+.motile-btn svg:only-child {
+  margin: 0;
+}
+
+/* Tablet optimization (768px - 1024px) */
+@media (max-width: 1024px) {
+  .motile-btn--large {
+    padding: 0 20px;
+    font-size: 15px;
+    height: 52px;
+    min-height: 52px;
+  }
+}
+
+/* Mobile optimization (< 768px) */
+@media (max-width: 768px) {
+  .motile-btn--large {
+    padding: 0 18px;
+    font-size: 14px;
+    height: 48px;
+    min-height: 48px;
+  }
+
+  /* Touch feedback for mobile */
+  .motile-btn:active:not(.motile-btn--disabled) {
+    filter: brightness(0.92);
+  }
+}
+
+/* iOS Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+  .motile-btn {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+}
+
+/* Loading States */
+.motile-btn__wrapper {
+  display: grid;
+  grid-template-areas: "content";
+  place-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.motile-btn__content {
+  grid-area: content;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.motile-btn__loading {
+  grid-area: content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.motile-btn__dots {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  height: 1em;
+}
+
+/* Size-specific dot sizing */
+.motile-btn--large .motile-btn__dot {
+  width: 8px;
+  height: 8px;
+}
+
+.motile-btn--medium .motile-btn__dot {
+  width: 6px;
+  height: 6px;
+}
+
+.motile-btn--small .motile-btn__dot {
+  width: 5px;
+  height: 5px;
+}
+
+.motile-btn__dot {
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.7);
+  animation: motile-btn-loading-bounce 1.4s ease-in-out infinite both;
+}
+
+.motile-btn__dot:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.motile-btn__dot:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+.motile-btn__dot:nth-child(3) {
+  animation-delay: 0s;
+}
+
+/* Variant-specific dot colors */
+.motile-btn--primary .motile-btn__dot {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.motile-btn--secondary .motile-btn__dot {
+  background-color: rgba(156, 163, 175, 0.7);
+}
+
+.motile-btn--default .motile-btn__dot {
+  background-color: rgba(156, 163, 175, 0.7);
+}
+
+/* Loading bounce animation */
+@keyframes motile-btn-loading-bounce {
+  0%,
+  80%,
+  100% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+  40% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}

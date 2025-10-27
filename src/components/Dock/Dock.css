@@ -1,0 +1,293 @@
+/* Dock Container */
+.motile-dock {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  /* Glass morphism effect */
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.05),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+  position: relative;
+  user-select: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Position: Top - 가로 배치 */
+.motile-dock[data-position="top"] {
+  flex-direction: row;
+}
+
+/* Position: Bottom (default) - 가로 배치 */
+.motile-dock[data-position="bottom"] {
+  flex-direction: row;
+}
+
+/* Position: Left - 세로 배치 */
+.motile-dock[data-position="left"] {
+  flex-direction: column;
+}
+
+/* Position: Right - 세로 배치 */
+.motile-dock[data-position="right"] {
+  flex-direction: column;
+}
+
+/* Dock Item */
+.motile-dock__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: #374151;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  outline: none;
+  /* GPU 가속 활성화 */
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Position별 transform-origin */
+.motile-dock[data-position="top"] .motile-dock__item {
+  transform-origin: center top;
+}
+
+.motile-dock[data-position="bottom"] .motile-dock__item {
+  transform-origin: center bottom;
+}
+
+.motile-dock[data-position="left"] .motile-dock__item {
+  transform-origin: left center;
+}
+
+.motile-dock[data-position="right"] .motile-dock__item {
+  transform-origin: right center;
+}
+
+/* Hover State */
+.motile-dock__item:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.motile-dock__item:active {
+  background: rgba(255, 255, 255, 0.6);
+  filter: brightness(0.9);
+}
+
+.motile-dock__item:focus-visible {
+  outline: 2px solid rgba(100, 116, 139, 0.6);
+  outline-offset: 2px;
+}
+
+/* Dock Item Icon Container */
+.motile-dock__item > * {
+  pointer-events: none;
+}
+
+/* Dock Separator */
+.motile-dock__separator {
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* Horizontal Dock (top/bottom) - Vertical Separator */
+.motile-dock__separator[data-position="top"],
+.motile-dock__separator[data-position="bottom"] {
+  width: 1px;
+  height: 40px;
+  margin: 0 6px;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.15) 20%,
+    rgba(0, 0, 0, 0.15) 80%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+/* Vertical Dock (left/right) - Horizontal Separator */
+.motile-dock__separator[data-position="left"],
+.motile-dock__separator[data-position="right"] {
+  height: 1px;
+  width: 40px;
+  margin: 6px 0;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.15) 20%,
+    rgba(0, 0, 0, 0.15) 80%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  .motile-dock {
+    background: rgba(30, 30, 30, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.2),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  }
+
+  .motile-dock__item {
+    color: #e5e7eb;
+  }
+
+  .motile-dock__item:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .motile-dock__item:active {
+    background: rgba(255, 255, 255, 0.2);
+    filter: brightness(0.9);
+  }
+
+  /* Dark Mode Separator */
+  .motile-dock__separator[data-position="top"],
+  .motile-dock__separator[data-position="bottom"] {
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.15) 20%,
+      rgba(255, 255, 255, 0.15) 80%,
+      rgba(255, 255, 255, 0) 100%
+    );
+  }
+
+  .motile-dock__separator[data-position="left"],
+  .motile-dock__separator[data-position="right"] {
+    background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.15) 20%,
+      rgba(255, 255, 255, 0.15) 80%,
+      rgba(255, 255, 255, 0) 100%
+    );
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .motile-dock {
+    border: 2px solid currentColor;
+    background: rgba(255, 255, 255, 0.95);
+  }
+
+  .motile-dock__item {
+    border: 1px solid currentColor;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .motile-dock,
+  .motile-dock__item {
+    transition: none;
+  }
+}
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+  .motile-dock {
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 40px;
+  }
+
+  .motile-dock__item {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+  }
+}
+
+/* Touch Device - Larger Touch Targets */
+@media (hover: none) and (pointer: coarse) {
+  .motile-dock__item {
+    min-width: 44px;
+    min-height: 44px;
+    /* 터치 기기에서는 magnification 비활성화 */
+    transform: scale(1) !important;
+  }
+}
+
+/* Extra Styling for Better Visual Appeal */
+.motile-dock::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50px;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.4),
+    rgba(255, 255, 255, 0.1)
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .motile-dock::before {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.2),
+      rgba(255, 255, 255, 0.05)
+    );
+  }
+}
+
+/* Glow effect on hover for items */
+.motile-dock__item::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 14px;
+  background: radial-gradient(
+    circle at center,
+    color-mix(
+      in srgb,
+      var(
+          --motile-dock-color,
+          var(--motile-ui-dock, var(--motile-theme, #3b82f6))
+        )
+        30%,
+      transparent
+    ),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.motile-dock__item:hover::before {
+  opacity: 1;
+}
+
+/* Disable glow in high contrast mode */
+@media (prefers-contrast: high) {
+  .motile-dock__item::before {
+    display: none;
+  }
+
+  .motile-dock::before {
+    display: none;
+  }
+}

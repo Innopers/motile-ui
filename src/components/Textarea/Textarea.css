@@ -1,0 +1,250 @@
+.motile-textarea {
+  width: 100%;
+  border: 2px solid #e5e8eb;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 16px;
+  font-weight: 400;
+  color: #111827;
+  background: white;
+  outline: none;
+  transition: none;
+  min-height: 120px;
+  line-height: 1.6;
+  box-sizing: border-box;
+  font-family: inherit;
+  resize: none;
+}
+
+.motile-textarea:hover:not(:disabled):not(:focus):not(.motile-textarea--error) {
+  border-color: #c9cdd2;
+}
+
+.motile-textarea:focus {
+  border: 2px solid
+    var(
+      --motile-textarea-color,
+      var(--motile-ui-textarea, var(--motile-theme, #3182f6))
+    );
+}
+
+.motile-textarea:disabled {
+  background: #f9fafb;
+  color: #9ca3af;
+  cursor: not-allowed;
+  border-color: #e5e7eb;
+  resize: none;
+}
+
+.motile-textarea.motile-textarea--error {
+  border: 2px solid #ef4444;
+  background: #fef5f5;
+}
+
+.motile-textarea.motile-textarea--error:focus {
+  border: 2px solid #ef4444;
+  background: #fef5f5;
+}
+
+.motile-textarea--shake {
+  animation: motile-textarea-shake 0.5s ease-in-out;
+}
+
+@keyframes motile-textarea-shake {
+  0% {
+    transform: translateX(0);
+  }
+  15% {
+    transform: translateX(-10px);
+  }
+  30% {
+    transform: translateX(8px);
+  }
+  45% {
+    transform: translateX(-6px);
+  }
+  60% {
+    transform: translateX(4px);
+  }
+  75% {
+    transform: translateX(-2px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.motile-textarea::placeholder {
+  color: #9ca3af;
+  opacity: 1;
+}
+
+.motile-textarea-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.motile-textarea--with-clear {
+  padding-right: 40px;
+}
+
+.motile-textarea--with-clear:focus {
+  padding-right: 40px;
+}
+
+.motile-textarea__clear-button {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.motile-textarea__clear-button:hover {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.motile-textarea__clear-icon {
+  width: 16px;
+  height: 16px;
+}
+
+@media (max-width: 768px) {
+  .motile-textarea {
+    font-size: 16px;
+    padding: 12px;
+    min-height: 100px;
+  }
+
+  .motile-textarea:focus {
+    border: 2px solid
+      var(
+        --motile-textarea-color,
+        var(--motile-ui-textarea, var(--motile-theme, #3182f6))
+      );
+  }
+
+  .motile-textarea--with-clear {
+    padding-right: 36px;
+  }
+
+  .motile-textarea--with-clear:focus {
+    padding-right: 36px;
+  }
+}
+
+@supports (-webkit-touch-callout: none) {
+  .motile-textarea {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+.motile-textarea__helper-text {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 4px;
+  min-height: 16px;
+  gap: 8px;
+}
+
+.motile-textarea__helper-text--both {
+  justify-content: space-between;
+}
+
+.motile-textarea__helper-text--error-only {
+  justify-content: flex-start;
+}
+
+.motile-textarea__helper-text--counter-only {
+  justify-content: flex-end;
+}
+
+.motile-textarea__error-message {
+  font-size: 12px;
+  color: #ef4444;
+  line-height: 16px;
+  flex: 1;
+}
+
+.motile-textarea__counter {
+  font-size: 12px;
+  color: #9ca3af;
+  line-height: 16px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Floating Label */
+.motile-textarea__label {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  font-size: 16px;
+  color: #9ca3af;
+  pointer-events: none;
+  transition: all 0.2s ease;
+  background: transparent;
+  padding: 0;
+  z-index: 1;
+}
+
+/* Label이 있을 때 placeholder 숨기기 (focus 전) */
+.motile-textarea--with-label::placeholder {
+  opacity: 0;
+}
+
+/* Focus 시 placeholder 표시 */
+.motile-textarea--with-label:focus::placeholder {
+  opacity: 1;
+}
+
+/* Label이 active일 때 (focus 또는 값 있을 때) */
+.motile-textarea-wrapper:has(.motile-textarea:focus) .motile-textarea__label,
+.motile-textarea-wrapper:has(.motile-textarea:not(:placeholder-shown)) .motile-textarea__label {
+  top: 0;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: var(
+    --motile-textarea-color,
+    var(--motile-ui-textarea, var(--motile-theme, #3182f6))
+  );
+  background: white;
+  padding: 0 4px;
+}
+
+/* Error 상태의 label 색상 (focus 또는 값 있을 때) */
+.motile-textarea-wrapper:has(.motile-textarea:focus) .motile-textarea__label--error,
+.motile-textarea-wrapper:has(.motile-textarea:not(:placeholder-shown)) .motile-textarea__label--error {
+  color: #ef4444;
+}
+
+/* Label이 있을 때 textarea padding 조정 (placeholder처럼 보이도록) */
+.motile-textarea.motile-textarea--with-label {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+@media (max-width: 768px) {
+  .motile-textarea__label {
+    font-size: 16px;
+    left: 12px;
+    top: 16px;
+  }
+
+  /* Mobile - Active 상태 (focus 또는 값 있을 때) */
+  .motile-textarea-wrapper:has(.motile-textarea:focus) .motile-textarea__label,
+  .motile-textarea-wrapper:has(.motile-textarea:not(:placeholder-shown)) .motile-textarea__label {
+    font-size: 12px;
+  }
+}

@@ -1,0 +1,241 @@
+/* SpeedDial Container */
+.motile-speed-dial {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* SpeedDial Trigger Button */
+.motile-speed-dial__trigger {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--motile-speeddial-color, var(--motile-theme, #3b82f6));
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.motile-speed-dial__trigger:hover {
+  filter: brightness(0.9);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.15);
+  transform: scale(1.05);
+}
+
+.motile-speed-dial__trigger:active {
+  filter: brightness(0.85);
+  transform: scale(0.95);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.motile-speed-dial__trigger[aria-expanded="true"] {
+  filter: brightness(0.75);
+  transform: rotate(45deg);
+}
+
+/* SpeedDial Actions Container */
+.motile-speed-dial__actions {
+  position: absolute;
+  display: flex;
+  gap: 12px;
+  z-index: 1;
+}
+
+/* Direction: Up - 위로 올라감 */
+.motile-speed-dial__actions[data-direction="up"] {
+  flex-direction: column-reverse;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 12px;
+}
+
+/* Direction: Down - 아래로 내려감 */
+.motile-speed-dial__actions[data-direction="down"] {
+  flex-direction: column;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 12px;
+}
+
+/* Direction: Left - 왼쪽으로 */
+.motile-speed-dial__actions[data-direction="left"] {
+  flex-direction: row-reverse;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-right: 12px;
+}
+
+/* Direction: Right - 오른쪽으로 */
+.motile-speed-dial__actions[data-direction="right"] {
+  flex-direction: row;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 12px;
+}
+
+/* SpeedDial Action Button */
+.motile-speed-dial__action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: #ffffff;
+  color: #374151;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 14px;
+}
+
+.motile-speed-dial__action:hover {
+  background-color: #f3f4f6;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: scale(1.08);
+}
+
+.motile-speed-dial__action:active {
+  transform: scale(0.95);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1), 0 0px 2px rgba(0, 0, 0, 0.08);
+}
+
+/* Animation for Up direction */
+.motile-speed-dial__actions[data-direction="up"] .motile-speed-dial__action {
+  animation: motile-speed-dial-slide-up 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)
+    backwards;
+  animation-delay: calc(var(--action-index) * 0.05s);
+}
+
+/* Animation for Down direction */
+.motile-speed-dial__actions[data-direction="down"] .motile-speed-dial__action {
+  animation: motile-speed-dial-slide-down 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)
+    backwards;
+  animation-delay: calc(var(--action-index) * 0.05s);
+}
+
+/* Animation for Left direction */
+.motile-speed-dial__actions[data-direction="left"] .motile-speed-dial__action {
+  animation: motile-speed-dial-slide-left 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)
+    backwards;
+  animation-delay: calc(var(--action-index) * 0.05s);
+}
+
+/* Animation for Right direction */
+.motile-speed-dial__actions[data-direction="right"] .motile-speed-dial__action {
+  animation: motile-speed-dial-slide-right 0.3s
+    cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+  animation-delay: calc(var(--action-index) * 0.05s);
+}
+
+/* ============================================================================ */
+/* Keyframe Animations
+/* ============================================================================ */
+
+@keyframes motile-speed-dial-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes motile-speed-dial-slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes motile-speed-dial-slide-left {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes motile-speed-dial-slide-right {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ============================================================================ */
+/* Accessibility
+/* ============================================================================ */
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .motile-speed-dial__actions[data-direction="up"] .motile-speed-dial__action,
+  .motile-speed-dial__actions[data-direction="down"] .motile-speed-dial__action,
+  .motile-speed-dial__actions[data-direction="left"] .motile-speed-dial__action,
+  .motile-speed-dial__actions[data-direction="right"]
+    .motile-speed-dial__action {
+    animation: none;
+  }
+}
+
+/* Focus Visible */
+.motile-speed-dial__trigger:focus-visible,
+.motile-speed-dial__action:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* ============================================================================ */
+/* Dark Mode
+/* ============================================================================ */
+
+@media (prefers-color-scheme: dark) {
+  .motile-speed-dial__trigger {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .motile-speed-dial__trigger:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4), 0 3px 6px rgba(0, 0, 0, 0.3);
+  }
+
+  .motile-speed-dial__action {
+    background-color: #374151;
+    color: #f9fafb;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+
+  .motile-speed-dial__action:hover {
+    background-color: #4b5563;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+}

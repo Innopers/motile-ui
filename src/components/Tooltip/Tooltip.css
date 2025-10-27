@@ -1,0 +1,165 @@
+/* 트리거 래퍼: 라인박스 영향 최소화 + DOM 확정 */
+.motile-tooltip-trigger {
+  position: relative;
+  display: inline-block; /* 버튼 크기를 그대로 따름 */
+  line-height: normal;
+  vertical-align: middle;
+}
+
+/* 포털에 고정 렌더링되는 버블 */
+.motile-tooltip-bubble {
+  position: fixed;
+  z-index: 2147483647;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 초기 애니메이션 상태 - placement별 다른 방향 */
+.motile-tooltip-bubble[data-placement="top"] {
+  transform: translateY(8px) scale(0.96);
+}
+
+.motile-tooltip-bubble[data-placement="bottom"] {
+  transform: translateY(-8px) scale(0.96);
+}
+
+.motile-tooltip-bubble[data-placement="left"] {
+  transform: translateX(8px) scale(0.96);
+}
+
+.motile-tooltip-bubble[data-placement="right"] {
+  transform: translateX(-8px) scale(0.96);
+}
+
+/* 열린 상태: 부드럽게 제자리로 */
+.motile-tooltip-bubble[data-open="true"] {
+  opacity: 1;
+  transform: translate(0, 0) scale(1);
+}
+
+/* keepOpen 모드: 툴팁 내부 클릭 가능 */
+.motile-tooltip-bubble[data-keep-open] {
+  pointer-events: auto;
+}
+
+/* Default Variant */
+.motile-tooltip-bubble--default {
+  --arrow-color: var(
+    --motile-tooltip-color,
+    var(--motile-ui-tooltip, rgba(0, 0, 0, 0.9))
+  );
+  background: var(--arrow-color);
+  color: #fff;
+}
+
+/* Outlined Variant */
+.motile-tooltip-bubble--outlined {
+  --arrow-color: var(--motile-tooltip-color, var(--motile-ui-tooltip, #3b82f6));
+  background: white;
+  color: var(--arrow-color);
+  border: 1px solid var(--arrow-color);
+}
+
+/* 크기 측정용 임시 스타일 */
+.motile-tooltip-bubble.measuring {
+  visibility: hidden !important;
+  opacity: 1 !important;
+  max-width: none !important;
+  max-height: none !important;
+  left: 0 !important;
+  top: 0 !important;
+}
+
+/* 화살표 */
+.motile-tooltip-bubble[data-show-arrow]::before {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+}
+
+/* Outlined variant 화살표 배경 (흰색) */
+.motile-tooltip-bubble--outlined[data-show-arrow]::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 5px solid transparent;
+}
+
+/* Top placement: 화살표가 툴팁 아래에서 위로 */
+.motile-tooltip-bubble[data-placement="top"][data-show-arrow]::before {
+  bottom: -5px;
+  left: var(--arrow-left, 50%);
+  transform: translateX(-50%);
+  border-bottom-width: 0;
+  border-top-color: var(--arrow-color);
+}
+
+.motile-tooltip-bubble--outlined[data-placement="top"][data-show-arrow]::after {
+  bottom: -4px;
+  left: var(--arrow-left, 50%);
+  transform: translateX(-50%);
+  border-bottom-width: 0;
+  border-top-color: white;
+}
+
+/* Bottom placement: 화살표가 툴팁 위에서 아래로 */
+.motile-tooltip-bubble[data-placement="bottom"][data-show-arrow]::before {
+  top: -5px;
+  left: var(--arrow-left, 50%);
+  transform: translateX(-50%);
+  border-top-width: 0;
+  border-bottom-color: var(--arrow-color);
+}
+
+.motile-tooltip-bubble--outlined[data-placement="bottom"][data-show-arrow]::after {
+  top: -4px;
+  left: var(--arrow-left, 50%);
+  transform: translateX(-50%);
+  border-top-width: 0;
+  border-bottom-color: white;
+}
+
+/* Left placement: 화살표가 툴팁 오른쪽에서 왼쪽으로 */
+.motile-tooltip-bubble[data-placement="left"][data-show-arrow]::before {
+  right: -5px;
+  top: var(--arrow-top, 50%);
+  transform: translateY(-50%);
+  border-right-width: 0;
+  border-left-color: var(--arrow-color);
+}
+
+.motile-tooltip-bubble--outlined[data-placement="left"][data-show-arrow]::after {
+  right: -4px;
+  top: var(--arrow-top, 50%);
+  transform: translateY(-50%);
+  border-right-width: 0;
+  border-left-color: white;
+}
+
+/* Right placement: 화살표가 툴팁 왼쪽에서 오른쪽으로 */
+.motile-tooltip-bubble[data-placement="right"][data-show-arrow]::before {
+  left: -5px;
+  top: var(--arrow-top, 50%);
+  transform: translateY(-50%);
+  border-left-width: 0;
+  border-right-color: var(--arrow-color);
+}
+
+.motile-tooltip-bubble--outlined[data-placement="right"][data-show-arrow]::after {
+  left: -4px;
+  top: var(--arrow-top, 50%);
+  transform: translateY(-50%);
+  border-left-width: 0;
+  border-right-color: white;
+}

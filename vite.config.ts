@@ -2,18 +2,18 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { resolve } from "path";
 import dts from "vite-plugin-dts";
-import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
+import { libInjectCss } from "vite-plugin-lib-inject-css";
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
     react(),
+    libInjectCss(),
     dts({
       insertTypesEntry: true,
       include: ["src"],
       exclude: ["**/*.stories.tsx", "**/*.stories.ts", "src/dev"],
     }),
-    cssInjectedByJsPlugin(),
   ],
   resolve: {
     alias: {
@@ -37,6 +37,6 @@ export default defineConfig({
         },
       },
     },
-    cssCodeSplit: false,
+    cssCodeSplit: true,
   },
 });

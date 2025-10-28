@@ -195,6 +195,12 @@ export interface ToastProviderProps {
 
 export function ToastProvider({ children, zIndex = 9999 }: ToastProviderProps) {
   const [toasts, setToasts] = useState<Toast[]>([]);
+  const [mounted, setMounted] = useState(false);
+
+  // Only render portal on client side after mount
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const addToast = useCallback(
     (
@@ -244,7 +250,7 @@ export function ToastProvider({ children, zIndex = 9999 }: ToastProviderProps) {
   return (
     <ToastContext.Provider value={contextValue}>
       {children}
-      {typeof window !== "undefined" &&
+      {mounted &&
         createPortal(
           <div
             className="motile-toast-container"

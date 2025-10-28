@@ -48,6 +48,11 @@
 
 ## 📦 설치
 
+### 요구사항
+
+- **React**: 18.0.0 이상 (React 18 또는 React 19)
+- **React DOM**: 18.0.0 이상
+
 ```bash
 # npm
 npm install motile-ui
@@ -224,6 +229,11 @@ MIT © [Innopers](https://github.com/Innopers)
 ---
 
 ## 📦 Installation
+
+### Requirements
+
+- **React**: 18.0.0 or higher (React 18 or React 19)
+- **React DOM**: 18.0.0 or higher
 
 ```bash
 # npm

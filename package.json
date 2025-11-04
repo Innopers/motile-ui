@@ -23,6 +23,9 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "prepublishOnly": "npm run build"
@@ -48,6 +51,7 @@
     "@vitejs/plugin-react": "^4.3.3",
     "@vitest/coverage-v8": "^4.0.6",
     "@vitest/ui": "^4.0.6",
+    "happy-dom": "^20.0.10",
     "jsdom": "^27.0.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

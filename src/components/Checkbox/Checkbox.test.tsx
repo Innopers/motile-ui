@@ -4,15 +4,15 @@ import { render, screen, userEvent } from "@/test/utils";
 import { Checkbox } from "./Checkbox";
 
 describe("Checkbox", () => {
-  describe("Core Functionality", () => {
+  describe("핵심 기능", () => {
     // 기본 렌더링: checkbox role로 렌더링되는지 확인 (Smoke Test)
-    it("should render checkbox with correct role", () => {
+    it("올바른 role로 checkbox가 렌더링됨", () => {
       render(<Checkbox />);
       expect(screen.getByRole("checkbox")).toBeInTheDocument();
     });
 
     // 기본값 테스트: variant="default", size="medium", filled=false (Breaking Change 방지)
-    it("should use default variant and medium size by default", () => {
+    it("기본적으로 default variant와 medium 크기를 사용함", () => {
       render(<Checkbox data-testid="checkbox" />);
       const checkbox = screen.getByTestId("checkbox");
 
@@ -22,27 +22,27 @@ describe("Checkbox", () => {
     });
 
     // type="checkbox" 고정: form 안에서 올바른 input 타입 보장
-    it("should have type='checkbox' attribute", () => {
+    it("type='checkbox' 속성을 가짐", () => {
       render(<Checkbox />);
       const checkbox = screen.getByRole("checkbox");
       expect(checkbox).toHaveAttribute("type", "checkbox");
     });
 
     // label 렌더링: label prop 전달 시 label 텍스트 표시
-    it("should render label when provided", () => {
+    it("label이 제공되면 렌더링됨", () => {
       render(<Checkbox label="Accept terms" />);
       expect(screen.getByText("Accept terms")).toBeInTheDocument();
     });
 
     // label 없을 때: label prop 안 주면 label 요소 없음 (Breaking Change 방지)
-    it("should not render label when not provided", () => {
+    it("label이 제공되지 않으면 렌더링되지 않음", () => {
       const { container } = render(<Checkbox />);
       const label = container.querySelector(".motile-checkbox__label");
       expect(label).not.toBeInTheDocument();
     });
 
     // color prop: CSS variable로 전달됨
-    it("should apply color as CSS variable", () => {
+    it("color가 CSS 변수로 적용됨", () => {
       const { container } = render(<Checkbox color="#ff0000" />);
       const checkboxContainer = container.querySelector(
         ".motile-checkbox-container"
@@ -53,7 +53,7 @@ describe("Checkbox", () => {
     });
 
     // className 전달: 사용자 정의 클래스가 input에 추가됨
-    it("should apply custom className", () => {
+    it("커스텀 className이 적용됨", () => {
       render(<Checkbox className="custom-checkbox" />);
       const checkbox = screen.getByRole("checkbox");
       expect(checkbox).toHaveClass("motile-checkbox");
@@ -61,23 +61,23 @@ describe("Checkbox", () => {
     });
 
     // style 전달: 사용자 정의 스타일이 input에 적용됨
-    it("should apply custom style", () => {
+    it("커스텀 style이 적용됨", () => {
       render(<Checkbox style={{ margin: "10px" }} />);
       const checkbox = screen.getByRole("checkbox");
       expect(checkbox).toHaveStyle({ margin: "10px" });
     });
   });
 
-  describe("Checked State", () => {
+  describe("체크 상태", () => {
     // Uncontrolled: defaultChecked로 초기 상태 설정
-    it("should work as uncontrolled with defaultChecked", () => {
+    it("defaultChecked로 비제어 컴포넌트로 동작함", () => {
       render(<Checkbox defaultChecked />);
       const checkbox = screen.getByRole("checkbox") as HTMLInputElement;
       expect(checkbox.checked).toBe(true);
     });
 
     // Controlled: checked prop으로 상태 제어
-    it("should work as controlled with checked prop", () => {
+    it("checked prop으로 제어 컴포넌트로 동작함", () => {
       const { rerender } = render(<Checkbox checked={false} readOnly />);
       const checkbox = screen.getByRole("checkbox") as HTMLInputElement;
 
@@ -91,7 +91,7 @@ describe("Checkbox", () => {
 
     // onChange 호출: 클릭 시 onChange 이벤트 발생
     // input은 pointer-events: none이라 label wrapper를 클릭
-    it("should call onChange when clicked", async () => {
+    it("클릭 시 onChange가 호출됨", async () => {
       const user = userEvent.setup();
       const handleChange = vi.fn();
 
@@ -105,7 +105,7 @@ describe("Checkbox", () => {
 
     // toggle 동작: Uncontrolled 모드에서 클릭으로 상태 변경
     // input은 pointer-events: none이라 label wrapper를 클릭
-    it("should toggle checked state when clicked (uncontrolled)", async () => {
+    it("클릭 시 체크 상태가 토글됨 (비제어)", async () => {
       const user = userEvent.setup();
 
       const { container } = render(<Checkbox />);
@@ -125,7 +125,7 @@ describe("Checkbox", () => {
     });
 
     // disabled 상태: 클릭해도 onChange 호출 안 됨
-    it("should not call onChange when disabled", async () => {
+    it("disabled 상태일 때 onChange가 호출되지 않음", async () => {
       const user = userEvent.setup();
       const handleChange = vi.fn();
 
@@ -140,9 +140,9 @@ describe("Checkbox", () => {
     });
   });
 
-  describe("Variant Tests", () => {
+  describe("Variant 테스트", () => {
     // default variant
-    it("should apply default variant class", () => {
+    it("default variant 클래스가 적용됨", () => {
       render(<Checkbox variant="default" />);
       expect(screen.getByRole("checkbox")).toHaveClass(
         "motile-checkbox--default"
@@ -150,7 +150,7 @@ describe("Checkbox", () => {
     });
 
     // rounded variant
-    it("should apply rounded variant class", () => {
+    it("rounded variant 클래스가 적용됨", () => {
       render(<Checkbox variant="rounded" />);
       expect(screen.getByRole("checkbox")).toHaveClass(
         "motile-checkbox--rounded"
@@ -158,7 +158,7 @@ describe("Checkbox", () => {
     });
 
     // square variant
-    it("should apply square variant class", () => {
+    it("square variant 클래스가 적용됨", () => {
       render(<Checkbox variant="square" />);
       expect(screen.getByRole("checkbox")).toHaveClass(
         "motile-checkbox--square"
@@ -166,9 +166,9 @@ describe("Checkbox", () => {
     });
   });
 
-  describe("Size Tests", () => {
+  describe("크기 테스트", () => {
     // large 크기
-    it("should apply large size class", () => {
+    it("large 크기 클래스가 적용됨", () => {
       render(<Checkbox size="large" />);
       expect(screen.getByRole("checkbox")).toHaveClass(
         "motile-checkbox--large"
@@ -176,7 +176,7 @@ describe("Checkbox", () => {
     });
 
     // medium 크기 (기본값)
-    it("should apply medium size class", () => {
+    it("medium 크기 클래스가 적용됨", () => {
       render(<Checkbox size="medium" />);
       expect(screen.getByRole("checkbox")).toHaveClass(
         "motile-checkbox--medium"
@@ -184,7 +184,7 @@ describe("Checkbox", () => {
     });
 
     // small 크기
-    it("should apply small size class", () => {
+    it("small 크기 클래스가 적용됨", () => {
       render(<Checkbox size="small" />);
       expect(screen.getByRole("checkbox")).toHaveClass(
         "motile-checkbox--small"
@@ -194,16 +194,16 @@ describe("Checkbox", () => {
 
   describe("Filled Prop", () => {
     // filled prop: 체크 안 되어도 아이콘 보임 (회색)
-    it("should apply filled class when filled is true", () => {
+    it("filled가 true면 filled 클래스가 적용됨", () => {
       render(<Checkbox filled />);
       const checkbox = screen.getByRole("checkbox");
       expect(checkbox).toHaveClass("motile-checkbox--filled");
     });
   });
 
-  describe("Ref Forwarding", () => {
+  describe("Ref 전달", () => {
     // Ref 전달: HTMLInputElement로 올바르게 전달됨
-    it("should forward ref to input element", () => {
+    it("input 요소로 ref가 전달됨", () => {
       const ref = React.createRef<HTMLInputElement>();
       render(<Checkbox ref={ref} />);
 
@@ -212,16 +212,16 @@ describe("Checkbox", () => {
     });
   });
 
-  describe("Accessibility", () => {
+  describe("접근성", () => {
     // role="checkbox": input[type="checkbox"]가 자동으로 제공
-    it("should have checkbox role", () => {
+    it("checkbox role을 가짐", () => {
       render(<Checkbox />);
       const checkbox = screen.getByRole("checkbox");
       expect(checkbox).toBeInTheDocument();
     });
 
     // label 연결: label prop으로 checkbox 찾을 수 있음
-    it("should be accessible by label text", () => {
+    it("label 텍스트로 접근 가능함", () => {
       render(<Checkbox label="Subscribe to newsletter" />);
 
       // label 텍스트로 checkbox 찾기
@@ -232,7 +232,7 @@ describe("Checkbox", () => {
     });
 
     // keyboard: Space 키로 toggle (브라우저 기본 동작)
-    it("should toggle with Space key", async () => {
+    it("Space 키로 토글됨", async () => {
       const user = userEvent.setup();
 
       render(<Checkbox />);
@@ -247,7 +247,7 @@ describe("Checkbox", () => {
     });
 
     // focusable: Tab 키로 포커스 가능 (WCAG 2.1 기준)
-    it("should be focusable", () => {
+    it("포커스 가능함", () => {
       render(<Checkbox />);
       const checkbox = screen.getByRole("checkbox");
 
@@ -256,9 +256,9 @@ describe("Checkbox", () => {
     });
   });
 
-  describe("Props Spreading", () => {
+  describe("Props 전달", () => {
     // HTMLInputElement 속성 전달: name, id, aria-label 등
-    it("should forward HTML input attributes", () => {
+    it("HTML input 속성이 전달됨", () => {
       render(
         <Checkbox
           name="terms"

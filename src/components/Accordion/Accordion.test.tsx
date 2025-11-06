@@ -4,9 +4,9 @@ import { render, screen, userEvent } from "@/test/utils";
 import { Accordion } from "./Accordion";
 
 describe("Accordion", () => {
-  describe("Core Functionality", () => {
+  describe("핵심 기능", () => {
     // 기본 렌더링: 3개 컴포넌트가 정상적으로 렌더링되는지 확인
-    it("should render accordion with header and content", () => {
+    it("header와 content가 함께 accordion이 렌더링됨", () => {
       render(
         <Accordion>
           <Accordion.Header>Header</Accordion.Header>
@@ -21,7 +21,7 @@ describe("Accordion", () => {
     });
 
     // 기본값 테스트: variant="default", 닫힌 상태로 시작
-    it("should use default variant and closed state by default", () => {
+    it("기본적으로 default variant와 닫힌 상태를 사용함", () => {
       render(
         <Accordion>
           <Accordion.Header>Header</Accordion.Header>
@@ -35,7 +35,7 @@ describe("Accordion", () => {
     });
 
     // 토글 동작: Header 클릭 시 Content 열림/닫힘
-    it("should toggle content when header is clicked", async () => {
+    it("header 클릭 시 content가 토글됨", async () => {
       const user = userEvent.setup();
 
       render(
@@ -60,7 +60,7 @@ describe("Accordion", () => {
     });
 
     // disabled 상태: 클릭해도 토글 안 됨
-    it("should not toggle when disabled", async () => {
+    it("disabled 상태일 때 토글되지 않음", async () => {
       const user = userEvent.setup();
 
       render(
@@ -81,7 +81,7 @@ describe("Accordion", () => {
     });
 
     // onChange 콜백: 상태 변경 시 호출됨
-    it("should call onChange when toggled", async () => {
+    it("토글 시 onChange가 호출됨", async () => {
       const user = userEvent.setup();
       const handleChange = vi.fn();
 
@@ -102,7 +102,7 @@ describe("Accordion", () => {
     });
 
     // type="button": form 안에서 의도치 않은 submit 방지
-    it("should have type='button' on header", () => {
+    it("header에 type='button'이 있음", () => {
       render(
         <Accordion>
           <Accordion.Header>Header</Accordion.Header>
@@ -114,9 +114,9 @@ describe("Accordion", () => {
     });
   });
 
-  describe("Controlled/Uncontrolled", () => {
+  describe("제어/비제어 모드", () => {
     // Uncontrolled: defaultExpanded로 초기 상태 설정
-    it("should work as uncontrolled with defaultExpanded", async () => {
+    it("defaultExpanded로 비제어 컴포넌트로 동작함", async () => {
       const user = userEvent.setup();
 
       render(
@@ -137,7 +137,7 @@ describe("Accordion", () => {
     });
 
     // Controlled: expanded prop으로 상태 제어
-    it("should work as controlled with expanded prop", async () => {
+    it("expanded prop으로 제어 컴포넌트로 동작함", async () => {
       const user = userEvent.setup();
       const handleChange = vi.fn();
 
@@ -170,7 +170,7 @@ describe("Accordion", () => {
     });
 
     // Controlled 읽기 전용: onChange 없어도 작동
-    it("should work as controlled without onChange", () => {
+    it("onChange 없이 제어 컴포넌트로 동작함", () => {
       render(
         <Accordion expanded={true}>
           <Accordion.Header>Header</Accordion.Header>
@@ -187,7 +187,7 @@ describe("Accordion", () => {
 
   describe("Context", () => {
     // Context 에러: Header가 Accordion 밖에 있으면 에러
-    it("should throw error when Header is used outside Accordion", () => {
+    it("Header가 Accordion 밖에서 사용되면 에러를 발생시킴", () => {
       // console.error를 mock해서 에러 메시지 숨김
       const consoleError = vi
         .spyOn(console, "error")
@@ -201,7 +201,7 @@ describe("Accordion", () => {
     });
 
     // Context 에러: Content가 Accordion 밖에 있으면 에러
-    it("should throw error when Content is used outside Accordion", () => {
+    it("Content가 Accordion 밖에서 사용되면 에러를 발생시킴", () => {
       const consoleError = vi
         .spyOn(console, "error")
         .mockImplementation(() => {});
@@ -214,9 +214,9 @@ describe("Accordion", () => {
     });
   });
 
-  describe("AsChild Pattern", () => {
+  describe("AsChild 패턴", () => {
     // Root asChild: Accordion이 다른 요소로 렌더링됨
-    it("should render as child element when asChild is true on root", () => {
+    it("root에서 asChild가 true면 자식 엘리먼트로 렌더링됨", () => {
       render(
         <Accordion asChild>
           <section data-testid="custom-section">
@@ -232,7 +232,7 @@ describe("Accordion", () => {
     });
 
     // Header asChild: 커스텀 버튼으로 렌더링
-    it("should render header as child element when asChild is true", () => {
+    it("asChild가 true면 header가 자식 엘리먼트로 렌더링됨", () => {
       render(
         <Accordion>
           <Accordion.Header asChild>
@@ -247,7 +247,7 @@ describe("Accordion", () => {
     });
 
     // Content asChild: 커스텀 div로 렌더링
-    it("should render content as child element when asChild is true", () => {
+    it("asChild가 true면 content가 자식 엘리먼트로 렌더링됨", () => {
       render(
         <Accordion>
           <Accordion.Header>Header</Accordion.Header>
@@ -262,9 +262,9 @@ describe("Accordion", () => {
     });
   });
 
-  describe("Ref Forwarding", () => {
+  describe("Ref 전달", () => {
     // Root ref 전달
-    it("should forward ref to accordion root", () => {
+    it("accordion root로 ref가 전달됨", () => {
       const ref = React.createRef<HTMLDivElement>();
 
       render(
@@ -278,7 +278,7 @@ describe("Accordion", () => {
     });
 
     // Header ref 전달
-    it("should forward ref to accordion header", () => {
+    it("accordion header로 ref가 전달됨", () => {
       const ref = React.createRef<HTMLButtonElement>();
 
       render(
@@ -293,7 +293,7 @@ describe("Accordion", () => {
     });
 
     // Content ref 전달
-    it("should forward ref to accordion content", () => {
+    it("accordion content로 ref가 전달됨", () => {
       const ref = React.createRef<HTMLDivElement>();
 
       render(
@@ -307,9 +307,9 @@ describe("Accordion", () => {
     });
   });
 
-  describe("Accessibility", () => {
+  describe("접근성", () => {
     // aria-expanded: 열림/닫힘 상태 표시
-    it("should have proper aria-expanded attribute", async () => {
+    it("올바른 aria-expanded 속성을 가짐", async () => {
       const user = userEvent.setup();
 
       render(
@@ -328,7 +328,7 @@ describe("Accordion", () => {
     });
 
     // aria-controls + id: Header와 Content 연결
-    it("should connect header and content with aria-controls", () => {
+    it("aria-controls로 header와 content가 연결됨", () => {
       render(
         <Accordion>
           <Accordion.Header>Header</Accordion.Header>
@@ -348,7 +348,7 @@ describe("Accordion", () => {
     });
 
     // aria-hidden: Content 숨김/보임 상태
-    it("should have proper aria-hidden on content", async () => {
+    it("content에 올바른 aria-hidden이 있음", async () => {
       const user = userEvent.setup();
 
       render(
@@ -371,7 +371,7 @@ describe("Accordion", () => {
     });
 
     // Enter 키: 키보드로 토글
-    it("should toggle with Enter key", async () => {
+    it("Enter 키로 토글됨", async () => {
       const user = userEvent.setup();
 
       render(
@@ -391,7 +391,7 @@ describe("Accordion", () => {
     });
 
     // Space 키: 키보드로 토글
-    it("should toggle with Space key", async () => {
+    it("Space 키로 토글됨", async () => {
       const user = userEvent.setup();
 
       render(
@@ -411,7 +411,7 @@ describe("Accordion", () => {
     });
 
     // aria-disabled: disabled 상태 표시
-    it("should have aria-disabled when disabled", () => {
+    it("disabled 상태일 때 aria-disabled가 있음", () => {
       render(
         <Accordion disabled>
           <Accordion.Header>Header</Accordion.Header>

@@ -4,9 +4,9 @@ import { render, screen } from "@/test/utils";
 import { Badge } from "./Badge";
 
 describe("Badge", () => {
-  describe("Core Functionality", () => {
+  describe("핵심 기능", () => {
     // 기본 렌더링: span 요소로 정상 렌더링되는지 확인 (Smoke Test)
-    it("should render badge as span element", () => {
+    it("badge가 span 요소로 렌더링됨", () => {
       render(<Badge>New</Badge>);
       const badge = screen.getByText("New");
       expect(badge).toBeInTheDocument();
@@ -14,14 +14,14 @@ describe("Badge", () => {
     });
 
     // 기본값 테스트: size="medium" (Breaking Change 방지)
-    it("should use medium size by default", () => {
+    it("기본적으로 medium 크기를 사용함", () => {
       render(<Badge>Badge</Badge>);
       const badge = screen.getByText("Badge");
       expect(badge).toHaveClass("motile-badge--medium");
     });
 
     // children 렌더링: 텍스트와 React 노드 모두 렌더링
-    it("should render children content", () => {
+    it("children 콘텐츠가 렌더링됨", () => {
       render(
         <Badge>
           <span data-testid="child">Custom Content</span>
@@ -32,7 +32,7 @@ describe("Badge", () => {
     });
 
     // className 전달: 사용자 정의 클래스 추가 가능
-    it("should apply custom className", () => {
+    it("커스텀 className이 적용됨", () => {
       render(<Badge className="custom-badge">Badge</Badge>);
       const badge = screen.getByText("Badge");
       expect(badge).toHaveClass("motile-badge");
@@ -40,7 +40,7 @@ describe("Badge", () => {
     });
 
     // style 전달: 사용자 정의 스타일 적용 가능
-    it("should apply custom style", () => {
+    it("커스텀 style이 적용됨", () => {
       render(
         <Badge style={{ fontSize: "20px" }} data-testid="badge">
           Badge
@@ -51,7 +51,7 @@ describe("Badge", () => {
     });
 
     // color prop: CSS variable로 전달됨
-    it("should apply color as CSS variable", () => {
+    it("color가 CSS 변수로 적용됨", () => {
       render(
         <Badge color="#ff0000" data-testid="badge">
           Badge
@@ -62,29 +62,29 @@ describe("Badge", () => {
     });
   });
 
-  describe("Size Variants", () => {
+  describe("크기 Variants", () => {
     // large 크기
-    it("should apply large size class", () => {
+    it("large 크기 클래스가 적용됨", () => {
       render(<Badge size="large">Large</Badge>);
       expect(screen.getByText("Large")).toHaveClass("motile-badge--large");
     });
 
     // medium 크기 (기본값)
-    it("should apply medium size class", () => {
+    it("medium 크기 클래스가 적용됨", () => {
       render(<Badge size="medium">Medium</Badge>);
       expect(screen.getByText("Medium")).toHaveClass("motile-badge--medium");
     });
 
     // small 크기
-    it("should apply small size class", () => {
+    it("small 크기 클래스가 적용됨", () => {
       render(<Badge size="small">Small</Badge>);
       expect(screen.getByText("Small")).toHaveClass("motile-badge--small");
     });
   });
 
-  describe("Variant Tests", () => {
+  describe("Variant 테스트", () => {
     // variant 안 줬을 때: variant 클래스가 붙지 않음 (Breaking Change 방지)
-    it("should not add variant class when variant is not provided", () => {
+    it("variant를 제공하지 않으면 variant 클래스가 추가되지 않음", () => {
       render(<Badge>Badge</Badge>);
       const badge = screen.getByText("Badge");
 
@@ -99,13 +99,13 @@ describe("Badge", () => {
     });
 
     // primary variant
-    it("should apply primary variant class", () => {
+    it("primary variant 클래스가 적용됨", () => {
       render(<Badge variant="primary">Primary</Badge>);
       expect(screen.getByText("Primary")).toHaveClass("motile-badge--primary");
     });
 
     // secondary variant
-    it("should apply secondary variant class", () => {
+    it("secondary variant 클래스가 적용됨", () => {
       render(<Badge variant="secondary">Secondary</Badge>);
       expect(screen.getByText("Secondary")).toHaveClass(
         "motile-badge--secondary"
@@ -113,7 +113,7 @@ describe("Badge", () => {
     });
 
     // outlined variant
-    it("should apply outlined variant class", () => {
+    it("outlined variant 클래스가 적용됨", () => {
       render(<Badge variant="outlined">Outlined</Badge>);
       expect(screen.getByText("Outlined")).toHaveClass(
         "motile-badge--outlined"
@@ -121,13 +121,13 @@ describe("Badge", () => {
     });
 
     // shimmer variant: className만 확인, 애니메이션은 CSS 구현 세부사항
-    it("should apply shimmer variant class", () => {
+    it("shimmer variant 클래스가 적용됨", () => {
       render(<Badge variant="shimmer">Shimmer</Badge>);
       expect(screen.getByText("Shimmer")).toHaveClass("motile-badge--shimmer");
     });
 
     // dot variant: 특수 DOM 구조 확인 (중요!)
-    it("should render dot variant with special structure", () => {
+    it("dot variant가 특별한 구조로 렌더링됨", () => {
       render(
         <Badge variant="dot" data-testid="badge">
           Online
@@ -152,9 +152,9 @@ describe("Badge", () => {
     });
   });
 
-  describe("Ref Forwarding", () => {
+  describe("Ref 전달", () => {
     // Ref 전달: HTMLSpanElement로 올바르게 전달됨
-    it("should forward ref to span element", () => {
+    it("span 요소로 ref가 전달됨", () => {
       const ref = React.createRef<HTMLSpanElement>();
       render(<Badge ref={ref}>Badge</Badge>);
 
@@ -163,9 +163,9 @@ describe("Badge", () => {
     });
   });
 
-  describe("Props Spreading", () => {
+  describe("Props 전달", () => {
     // HTMLSpanElement 속성 전달: data-testid, aria-label 등
-    it("should forward HTML attributes", () => {
+    it("HTML 속성이 전달됨", () => {
       render(
         <Badge data-testid="custom-badge" aria-label="Badge label">
           Badge

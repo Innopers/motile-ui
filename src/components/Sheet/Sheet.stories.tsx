@@ -6,7 +6,7 @@ import "./Sheet.css";
 
 const meta = {
   title: "Components/Sheet",
-  component: Sheet,
+  component: Sheet.Root,
   parameters: {
     layout: "centered",
     docs: {
@@ -26,17 +26,6 @@ const meta = {
         defaultValue: { summary: "right" },
       },
     },
-    title: {
-      control: "text",
-      description: "Sheet 제목",
-    },
-    showHeader: {
-      control: "boolean",
-      description: "Header 표시 여부",
-      table: {
-        defaultValue: { summary: "true" },
-      },
-    },
     maxWidth: {
       control: "text",
       description: "Sheet 최대 너비 (데스크톱 전용)",
@@ -45,7 +34,7 @@ const meta = {
       },
     },
     closeOnBackdrop: {
-      control: "object",
+      control: "boolean",
       description: "백드롭 클릭 또는 ESC 키로 닫기 제어",
       table: {
         defaultValue: { summary: "true" },
@@ -59,7 +48,7 @@ const meta = {
       },
     },
   },
-} satisfies Meta<typeof Sheet>;
+} satisfies Meta<typeof Sheet.Root>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -67,67 +56,100 @@ type Story = StoryObj<typeof meta>;
 // Default Sheet
 export const Default: Story = {
   render: (args) => {
-    const [isOpen, setIsOpen] = useState(false);
+    const [open, setOpen] = useState(false);
 
     return (
-      <div>
-        <Button onClick={() => setIsOpen(true)}>Sheet 열기</Button>
-
-        <Sheet {...args} isOpen={isOpen} onClose={() => setIsOpen(false)}>
-          <div style={{ padding: "0 4px" }}>
-            <h3 style={{ marginTop: 0 }}>Sheet 컴포넌트</h3>
-            <p>Controls 패널에서 다양한 props를 조정해보세요.</p>
-            <ul>
-              <li>position: left/right 변경</li>
-              <li>title: 제목 수정</li>
-              <li>maxWidth: 최대 너비 조정</li>
-              <li>showHeader: 헤더 표시/숨김</li>
-              <li>closeOnBackdrop: 닫기 옵션 제어</li>
-            </ul>
-          </div>
-        </Sheet>
-      </div>
+      <Sheet.Root {...args} open={open} onOpenChange={setOpen}>
+        <Sheet.Trigger asChild>
+          <Button>Sheet 열기</Button>
+        </Sheet.Trigger>
+        <Sheet.Portal>
+          <Sheet.Overlay />
+          <Sheet.Content>
+            <Sheet.Header>
+              <Sheet.Title>Sheet 제목</Sheet.Title>
+              <Sheet.Close asChild>
+                <button
+                  style={{
+                    background: "none",
+                    border: "none",
+                    fontSize: "24px",
+                    cursor: "pointer",
+                    padding: "4px",
+                  }}
+                >
+                  ×
+                </button>
+              </Sheet.Close>
+            </Sheet.Header>
+            <Sheet.Body>
+              <div style={{ padding: "0 4px" }}>
+                <h3 style={{ marginTop: 0 }}>Sheet 컴포넌트</h3>
+                <p>Controls 패널에서 다양한 props를 조정해보세요.</p>
+                <ul>
+                  <li>position: left/right 변경</li>
+                  <li>maxWidth: 최대 너비 조정</li>
+                  <li>closeOnBackdrop: 닫기 옵션 제어</li>
+                </ul>
+              </div>
+            </Sheet.Body>
+          </Sheet.Content>
+        </Sheet.Portal>
+      </Sheet.Root>
     );
   },
   args: {
-    isOpen: false,
-    onClose: () => {},
-    children: <></>,
-    title: "Sheet 제목",
     position: "right",
-    showHeader: true,
     maxWidth: "600px",
     closeOnBackdrop: true,
     zIndex: 1000,
+    children: <></>,
   },
 };
 
 // Left Sheet
 export const Left: Story = {
   render: (args) => {
-    const [isOpen, setIsOpen] = useState(false);
+    const [open, setOpen] = useState(false);
 
     return (
-      <div>
-        <Button onClick={() => setIsOpen(true)} variant="secondary">
-          왼쪽 Sheet 열기
-        </Button>
-
-        <Sheet {...args} isOpen={isOpen} onClose={() => setIsOpen(false)}>
-          <div style={{ padding: "0 4px" }}>
-            <h3 style={{ marginTop: 0 }}>왼쪽에서 나타나는 Sheet</h3>
-            <p>position="left"로 설정된 Sheet입니다.</p>
-            <p>오버레이를 클릭하거나 ESC 키를 눌러 닫을 수 있습니다.</p>
-          </div>
-        </Sheet>
-      </div>
+      <Sheet.Root {...args} open={open} onOpenChange={setOpen}>
+        <Sheet.Trigger asChild>
+          <Button variant="secondary">왼쪽 Sheet 열기</Button>
+        </Sheet.Trigger>
+        <Sheet.Portal>
+          <Sheet.Overlay />
+          <Sheet.Content>
+            <Sheet.Header>
+              <Sheet.Title>왼쪽 Sheet</Sheet.Title>
+              <Sheet.Close asChild>
+                <button
+                  style={{
+                    background: "none",
+                    border: "none",
+                    fontSize: "24px",
+                    cursor: "pointer",
+                    padding: "4px",
+                  }}
+                >
+                  ×
+                </button>
+              </Sheet.Close>
+            </Sheet.Header>
+            <Sheet.Body>
+              <div style={{ padding: "0 4px" }}>
+                <h3 style={{ marginTop: 0 }}>왼쪽에서 나타나는 Sheet</h3>
+                <p>position="left"로 설정된 Sheet입니다.</p>
+                <p>오버레이를 클릭하거나 ESC 키를 눌러 닫을 수 있습니다.</p>
+              </div>
+            </Sheet.Body>
+          </Sheet.Content>
+        </Sheet.Portal>
+      </Sheet.Root>
     );
   },
   args: {
-    isOpen: false,
-    onClose: () => {},
-    children: <></>,
-    title: "왼쪽 Sheet",
     position: "left",
+    children: <></>,
   },
 };

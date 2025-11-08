@@ -13,8 +13,28 @@ import { Slot } from "@/utils/Slot";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { useEscapeKey } from "@/hooks/useEscapeKey";
 
+/**
+ * Popover 위치
+ * - `top`: 위쪽
+ * - `bottom`: 아래쪽
+ * - `left`: 왼쪽
+ * - `right`: 오른쪽
+ */
 type Placement = "top" | "bottom" | "left" | "right";
+
+/**
+ * Popover 정렬 방식
+ * - `start`: 시작 (top/bottom일 때 왼쪽, left/right일 때 위)
+ * - `center`: 중앙
+ * - `end`: 끝 (top/bottom일 때 오른쪽, left/right일 때 아래)
+ */
 type Align = "start" | "center" | "end";
+
+/**
+ * Popover 스타일 variant
+ * - `filled`: 채워진 배경 (기본값)
+ * - `outlined`: 테두리 스타일
+ */
 type PopoverVariant = "filled" | "outlined";
 
 // ============================================================================
@@ -136,8 +156,23 @@ interface PopoverRootProps {
   children: React.ReactNode;
 
   // Position & Style
+  /**
+   * Popover 위치
+   * @default 'bottom'
+   * @type {'top' | 'bottom' | 'left' | 'right'}
+   */
   position?: Placement;
+  /**
+   * Popover 정렬 방식
+   * @default 'center'
+   * @type {'start' | 'center' | 'end'}
+   */
   align?: Align;
+  /**
+   * Popover 스타일 variant
+   * @default 'filled'
+   * @type {'filled' | 'outlined'}
+   */
   variant?: PopoverVariant;
   showArrow?: boolean;
   zIndex?: number;

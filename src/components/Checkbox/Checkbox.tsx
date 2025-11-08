@@ -1,7 +1,20 @@
 import React, { forwardRef } from "react";
 import "./Checkbox.css";
 
+/**
+ * 체크박스 스타일 variant
+ * - `standard`: 기본 스타일
+ * - `rounded`: 둥근 모서리
+ * - `square`: 직각 모서리
+ */
 type CheckboxVariant = "standard" | "rounded" | "square";
+
+/**
+ * 체크박스 크기
+ * - `large`: 24px (기본값)
+ * - `medium`: 20px
+ * - `small`: 16px
+ */
 type CheckboxSize = "large" | "medium" | "small";
 
 export interface CheckboxProps
@@ -9,12 +22,14 @@ export interface CheckboxProps
   /**
    * 체크박스 스타일 variant
    * @default 'standard'
+   * @type {'standard' | 'rounded' | 'square'}
    */
   variant?: CheckboxVariant;
 
   /**
    * 체크박스 크기
    * @default 'medium'
+   * @type {'large' | 'medium' | 'small'}
    */
   size?: CheckboxSize;
 

@@ -17,7 +17,9 @@ import { useHistoryClose } from "@/hooks/useHistoryClose";
 import "./Sheet.css";
 
 /**
- * Sheet 위치 타입
+ * Sheet 위치
+ * - `left`: 왼쪽에서 슬라이드
+ * - `right`: 오른쪽에서 슬라이드 (기본값)
  */
 export type SheetPosition = "left" | "right";
 
@@ -110,6 +112,11 @@ interface SheetRootProps {
   children: React.ReactNode;
 
   // Position & Style
+  /**
+   * Sheet 위치
+   * @default 'right'
+   * @type {'left' | 'right'}
+   */
   position?: SheetPosition;
   closeOnBackdrop?: CloseOnBackdropOptions;
   maxWidth?: string;

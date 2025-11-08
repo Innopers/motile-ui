@@ -1,6 +1,12 @@
 import React, { forwardRef } from "react";
 import "./Switch.css";
 
+/**
+ * 스위치 애니메이션 variant
+ * - `smooth`: 부드러운 전환 (기본값)
+ * - `elastic`: 탄성 효과
+ * - `bounce`: 바운스 효과
+ */
 type SwitchVariant = "smooth" | "elastic" | "bounce";
 
 export interface SwitchProps
@@ -8,6 +14,7 @@ export interface SwitchProps
   /**
    * 스위치 모양
    * @default 'smooth'
+   * @type {'smooth' | 'elastic' | 'bounce'}
    */
   variant?: SwitchVariant;
 

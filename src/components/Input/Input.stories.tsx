@@ -11,7 +11,7 @@ const meta = {
   argTypes: {
     variant: {
       control: "select",
-      options: ["default", "underline"],
+      options: ["outlined", "underline"],
       description: "Input 스타일 변형",
     },
     placeholder: {

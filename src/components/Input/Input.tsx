@@ -1,6 +1,13 @@
 import React, { forwardRef, useEffect, useId, useRef } from "react";
 import "./Input.css";
 
+/**
+ * Input 스타일 variant
+ * - `outlined`: 테두리 스타일 (기본값)
+ * - `underline`: 밑줄 스타일
+ */
+type InputVariant = "outlined" | "underline";
+
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   /**
@@ -18,8 +25,9 @@ export interface InputProps
   /**
    * Input 스타일 variant
    * @default 'outlined'
+   * @type {'outlined' | 'underline'}
    */
-  variant?: "outlined" | "underline";
+  variant?: InputVariant;
 
   /**
    * 에러 상태

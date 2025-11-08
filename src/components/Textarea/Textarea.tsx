@@ -63,6 +63,7 @@ export interface TextareaProps
   /**
    * Resize 제어 (autoSize 활성화 시 무시됨)
    * @default 'none'
+   * @type {'none' | 'vertical' | 'horizontal' | 'both'}
    */
   resize?: "none" | "vertical" | "horizontal" | "both";
 

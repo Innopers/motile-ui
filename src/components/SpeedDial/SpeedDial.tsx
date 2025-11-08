@@ -15,7 +15,11 @@ import "./SpeedDial.css";
 // ============================================================================
 
 /**
- * SpeedDial 방향
+ * SpeedDial Actions 방향
+ * - `up`: 위쪽으로 펼쳐짐 (기본값)
+ * - `down`: 아래쪽으로 펼쳐짐
+ * - `left`: 왼쪽으로 펼쳐짐
+ * - `right`: 오른쪽으로 펼쳐짐
  */
 export type SpeedDialDirection = "up" | "down" | "left" | "right";
 
@@ -46,6 +50,7 @@ export interface SpeedDialRootProps {
   /**
    * Actions가 나타나는 방향
    * @default "up"
+   * @type {'up' | 'down' | 'left' | 'right'}
    */
   direction?: SpeedDialDirection;
 

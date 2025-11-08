@@ -77,6 +77,7 @@ interface ModalOverlayProps extends React.HTMLAttributes<HTMLDivElement> {
    * - `bottomSheet`: 화면 하단에서 올라오는 drawer 스타일 (모바일 친화적)
    *
    * @default "scale"
+   * @type {'scale' | 'slideDown' | 'slideUp' | 'bottomSheet'}
    */
   variant?: ModalVariant;
 

@@ -16,6 +16,12 @@ const BASE = "motile-accordion";
 // ===========================
 // Types
 // ===========================
+
+/**
+ * Accordion 스타일 variant
+ * - `filled`: 채워진 배경
+ * - `outlined`: 테두리 스타일
+ */
 export type AccordionVariant = "filled" | "outlined";
 
 // ===========================
@@ -44,6 +50,11 @@ const useAccordion = () => {
 // ===========================
 export interface AccordionProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
+  /**
+   * Accordion 스타일 variant
+   * @default 'filled'
+   * @type {'filled' | 'outlined'}
+   */
   variant?: AccordionVariant;
   defaultExpanded?: boolean;
   expanded?: boolean;

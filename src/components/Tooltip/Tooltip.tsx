@@ -12,8 +12,28 @@ import { createPortal } from "react-dom";
 import { Slot } from "@/utils/Slot";
 import "./Tooltip.css";
 
+/**
+ * 툴팁 스타일 variant
+ * - `filled`: 채워진 배경 (기본값)
+ * - `outlined`: 테두리 스타일
+ */
 type TooltipVariant = "filled" | "outlined";
+
+/**
+ * 툴팁 위치
+ * - `top`: 위쪽
+ * - `bottom`: 아래쪽
+ * - `left`: 왼쪽
+ * - `right`: 오른쪽
+ */
 type TooltipPosition = "top" | "bottom" | "left" | "right";
+
+/**
+ * 툴팁 정렬 방식
+ * - `start`: 시작 (top/bottom일 때 왼쪽, left/right일 때 위)
+ * - `center`: 중앙
+ * - `end`: 끝 (top/bottom일 때 오른쪽, left/right일 때 아래)
+ */
 type TooltipAlign = "start" | "center" | "end";
 
 // ============================================================================
@@ -59,17 +79,24 @@ function useTooltipContext() {
 
 interface TooltipRootProps {
   children: React.ReactNode;
+  /**
+   * 툴팁 위치
+   * @default 'top'
+   * @type {'top' | 'bottom' | 'left' | 'right'}
+   */
   position?: TooltipPosition;
   /**
    * 툴팁 정렬 방식
    * - top/bottom일 때: start(왼쪽), center(중앙), end(오른쪽)
    * - left/right일 때: start(위), center(중앙), end(아래)
    * @default 'center'
+   * @type {'start' | 'center' | 'end'}
    */
   align?: TooltipAlign;
   /**
    * 툴팁 스타일 variant
-   * @default 'dark'
+   * @default 'filled'
+   * @type {'filled' | 'outlined'}
    */
   variant?: TooltipVariant;
   /**

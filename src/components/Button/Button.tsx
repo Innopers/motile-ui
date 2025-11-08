@@ -2,7 +2,20 @@ import React from "react";
 import { Slot } from "@/utils/Slot";
 import "./Button.css";
 
+/**
+ * 버튼 스타일 variant
+ * - `primary`: 채워진 배경 (기본값)
+ * - `secondary`: 테두리 스타일
+ * - `ghost`: 투명 배경
+ */
 type ButtonVariant = "primary" | "secondary" | "ghost";
+
+/**
+ * 버튼 크기
+ * - `large`: 56px (기본값)
+ * - `medium`: 48px
+ * - `small`: 40px
+ */
 type ButtonSize = "large" | "medium" | "small";
 
 export interface ButtonProps
@@ -10,12 +23,14 @@ export interface ButtonProps
   /**
    * 버튼 스타일 variant
    * @default 'primary'
+   * @type {'primary' | 'secondary' | 'ghost'}
    */
   variant?: ButtonVariant;
 
   /**
    * 버튼 크기
    * @default 'large'
+   * @type {'large' | 'medium' | 'small'}
    */
   size?: ButtonSize;
 

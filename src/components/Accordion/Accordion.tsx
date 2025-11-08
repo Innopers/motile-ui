@@ -16,7 +16,7 @@ const BASE = "motile-accordion";
 // ===========================
 // Types
 // ===========================
-export type AccordionVariant = "default" | "outlined";
+export type AccordionVariant = "filled" | "outlined";
 
 // ===========================
 // Context
@@ -60,7 +60,7 @@ export interface AccordionProps
 const AccordionRoot = forwardRef<HTMLDivElement, AccordionProps>(
   (
     {
-      variant = "default",
+      variant = "filled",
       defaultExpanded = false,
       expanded,
       onChange,

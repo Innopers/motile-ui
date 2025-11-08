@@ -20,8 +20,8 @@ describe("Accordion", () => {
       expect(screen.getByText("Content")).toBeInTheDocument();
     });
 
-    // 기본값 테스트: variant="default", 닫힌 상태로 시작
-    it("기본적으로 default variant와 닫힌 상태를 사용함", () => {
+    // 기본값 테스트: variant="filled", 닫힌 상태로 시작
+    it("기본적으로 filled variant와 닫힌 상태를 사용함", () => {
       render(
         <Accordion>
           <Accordion.Header>Header</Accordion.Header>

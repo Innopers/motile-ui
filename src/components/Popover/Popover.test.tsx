@@ -399,8 +399,8 @@ describe("Popover", () => {
   });
 
   describe("Variant와 화살표", () => {
-    // variant="outlined" (기본값)
-    it("기본적으로 outlined variant를 사용함", () => {
+    // variant="filled" (기본값)
+    it("기본적으로 filled variant를 사용함", () => {
       const { container } = render(
         <Popover.Root open={true}>
           <Popover.Trigger asChild>
@@ -411,13 +411,13 @@ describe("Popover", () => {
       );
 
       const content = container.querySelector(".motile-popover-content");
-      expect(content).toHaveClass("motile-popover-content--outlined");
+      expect(content).toHaveClass("motile-popover-content--filled");
     });
 
-    // variant="default"
-    it("default variant를 지원함", () => {
+    // variant="filled"
+    it("filled variant를 지원함", () => {
       const { container } = render(
-        <Popover.Root open={true} variant="default">
+        <Popover.Root open={true} variant="filled">
           <Popover.Trigger asChild>
             <button>Trigger</button>
           </Popover.Trigger>
@@ -426,7 +426,7 @@ describe("Popover", () => {
       );
 
       const content = container.querySelector(".motile-popover-content");
-      expect(content).toHaveClass("motile-popover-content--default");
+      expect(content).toHaveClass("motile-popover-content--filled");
     });
 
     // showArrow + arrow 렌더링

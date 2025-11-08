@@ -23,7 +23,7 @@ const meta: Meta<typeof Tooltip.Root> = {
     },
     variant: {
       control: "select",
-      options: ["default", "outlined"],
+      options: ["filled", "outlined"],
       description: "Tooltip style variant",
     },
     color: {

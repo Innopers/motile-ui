@@ -85,12 +85,12 @@ export const Default: Story = {
                 <Modal.Title>Modal Title</Modal.Title>
                 <Modal.Close />
               </Modal.Header>
-              <Modal.Description>
+              <Modal.Body>
                 <p>This is modal content. You can put any content here.</p>
                 <p>
                   Click outside, press ESC, or click the close button to close.
                 </p>
-              </Modal.Description>
+              </Modal.Body>
             </Modal.Content>
           </Modal.Overlay>
         </Modal.Root>
@@ -135,9 +135,9 @@ export const WithFooter: Story = {
                 <Modal.Title>Modal with Footer</Modal.Title>
                 <Modal.Close />
               </Modal.Header>
-              <Modal.Description>
+              <Modal.Body>
                 <p>This modal has action buttons in the footer.</p>
-              </Modal.Description>
+              </Modal.Body>
               <Modal.Footer>
                 <button
                   onClick={() => setOpen(false)}
@@ -303,10 +303,10 @@ export const SlideDown: Story = {
                 <Modal.Title>Slide Down Animation</Modal.Title>
                 <Modal.Close />
               </Modal.Header>
-              <Modal.Description>
+              <Modal.Body>
                 <p>This modal slides down from the top of the screen.</p>
                 <p>The animation creates a smooth drop effect from above.</p>
-              </Modal.Description>
+              </Modal.Body>
             </Modal.Content>
           </Modal.Overlay>
         </Modal.Root>
@@ -351,10 +351,10 @@ export const SlideUp: Story = {
                 <Modal.Title>Slide Up Animation</Modal.Title>
                 <Modal.Close />
               </Modal.Header>
-              <Modal.Description>
+              <Modal.Body>
                 <p>This modal slides up from the bottom of the screen.</p>
                 <p>The animation creates a smooth rise effect from below.</p>
-              </Modal.Description>
+              </Modal.Body>
             </Modal.Content>
           </Modal.Overlay>
         </Modal.Root>

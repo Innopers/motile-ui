@@ -11,7 +11,7 @@ const meta = {
   argTypes: {
     variant: {
       control: "select",
-      options: ["default", "rounded", "square"],
+      options: ["standard", "rounded", "square"],
       description: "체크박스 스타일 variant",
     },
     filled: {

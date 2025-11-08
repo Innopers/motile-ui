@@ -111,9 +111,7 @@ Motile UI는 CSS 변수를 통해 전역 테마를 쉽게 커스터마이징할 
 ```css
 :root {
   /* 버튼 */
-  --motile-ui-btn: #10b981; /* Primary 버튼 색상 */
-  --motile-ui-btn-secondary: #6b7280; /* Secondary 버튼 색상 */
-  --motile-ui-btn-default: #3b82f6; /* Default 버튼 색상 */
+  --motile-ui-btn: #10b981; /* 모든 버튼 variant 색상 */
 
   /* 입력 필드 */
   --motile-ui-input: #8b5cf6; /* Input 포커스 색상 */
@@ -137,19 +135,19 @@ Motile UI는 CSS 변수를 통해 전역 테마를 쉽게 커스터마이징할 
 
 ```tsx
 <Button
-  style={{ '--motile-btn-color': '#ef4444' }}
+  color="#ef4444"
   variant="primary"
 >
   빨간 버튼
 </Button>
 
 <Input
-  style={{ '--motile-input-color': '#8b5cf6' }}
+  color="#8b5cf6"
   label="보라색 입력 필드"
 />
 
 <Checkbox
-  style={{ '--motile-checkbox-color': '#f59e0b' }}
+  color="#f59e0b"
   label="주황색 체크박스"
 />
 ```
@@ -293,9 +291,7 @@ Set global colors for specific component types:
 ```css
 :root {
   /* Buttons */
-  --motile-ui-btn: #10b981; /* Primary button color */
-  --motile-ui-btn-secondary: #6b7280; /* Secondary button color */
-  --motile-ui-btn-default: #3b82f6; /* Default button color */
+  --motile-ui-btn: #10b981; /* All button variants color */
 
   /* Input Fields */
   --motile-ui-input: #8b5cf6; /* Input focus color */
@@ -319,19 +315,19 @@ Apply different colors to each component instance:
 
 ```tsx
 <Button
-  style={{ '--motile-btn-color': '#ef4444' }}
+  color="#ef4444"
   variant="primary"
 >
   Red Button
 </Button>
 
 <Input
-  style={{ '--motile-input-color': '#8b5cf6' }}
+  color="#8b5cf6"
   label="Purple Input Field"
 />
 
 <Checkbox
-  style={{ '--motile-checkbox-color': '#f59e0b' }}
+  color="#f59e0b"
   label="Orange Checkbox"
 />
 ```

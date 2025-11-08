@@ -1,3 +1,8 @@
+.motile-textarea-root {
+  display: block;
+  width: 100%;
+}
+
 .motile-textarea {
   width: 100%;
   border: 2px solid #e5e8eb;
@@ -211,7 +216,8 @@
 
 /* Label이 active일 때 (focus 또는 값 있을 때) */
 .motile-textarea-wrapper:has(.motile-textarea:focus) .motile-textarea__label,
-.motile-textarea-wrapper:has(.motile-textarea:not(:placeholder-shown)) .motile-textarea__label {
+.motile-textarea-wrapper:has(.motile-textarea:not(:placeholder-shown))
+  .motile-textarea__label {
   top: 0;
   transform: translateY(-50%);
   font-size: 12px;
@@ -224,8 +230,10 @@
 }
 
 /* Error 상태의 label 색상 (focus 또는 값 있을 때) */
-.motile-textarea-wrapper:has(.motile-textarea:focus) .motile-textarea__label--error,
-.motile-textarea-wrapper:has(.motile-textarea:not(:placeholder-shown)) .motile-textarea__label--error {
+.motile-textarea-wrapper:has(.motile-textarea:focus)
+  .motile-textarea__label--error,
+.motile-textarea-wrapper:has(.motile-textarea:not(:placeholder-shown))
+  .motile-textarea__label--error {
   color: #ef4444;
 }
 
@@ -244,7 +252,8 @@
 
   /* Mobile - Active 상태 (focus 또는 값 있을 때) */
   .motile-textarea-wrapper:has(.motile-textarea:focus) .motile-textarea__label,
-  .motile-textarea-wrapper:has(.motile-textarea:not(:placeholder-shown)) .motile-textarea__label {
+  .motile-textarea-wrapper:has(.motile-textarea:not(:placeholder-shown))
+    .motile-textarea__label {
     font-size: 12px;
   }
 }

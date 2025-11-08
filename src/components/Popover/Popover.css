@@ -10,6 +10,7 @@
   border-radius: 12px;
   font-size: 14px;
   line-height: 1.5;
+  padding: 12px 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   pointer-events: auto;
   width: max-content;
@@ -23,8 +24,8 @@
   perspective: 1000px;
 }
 
-/* Default Variant - 배경색 적용, 텍스트 흰색 */
-.motile-popover-content--default {
+/* Filled Variant - 배경색 적용, 텍스트 흰색 */
+.motile-popover-content--filled {
   background: var(--motile-popover-color, var(--motile-ui-popover, #3b82f6));
   color: #fff;
   border: 1px solid
@@ -532,8 +533,8 @@
   transform: rotate(45deg);
 }
 
-/* Default Variant - Arrow */
-.motile-popover-content--default .motile-popover-arrow {
+/* Filled Variant - Arrow */
+.motile-popover-content--filled .motile-popover-arrow {
   background: var(--motile-popover-color, var(--motile-ui-popover, #3b82f6));
   border: 1px solid
     var(--motile-popover-color, var(--motile-ui-popover, #3b82f6));

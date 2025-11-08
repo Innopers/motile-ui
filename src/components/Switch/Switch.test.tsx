@@ -26,12 +26,12 @@ describe("Switch", () => {
       expect(switchContainer).toHaveClass("motile-switch-container--bounce");
     });
 
-    it("기본적으로 default variant를 사용함", () => {
+    it("기본적으로 smooth variant를 사용함", () => {
       const { container } = render(<Switch />);
       const switchContainer = container.querySelector(
         ".motile-switch-container"
       );
-      expect(switchContainer).toHaveClass("motile-switch-container--default");
+      expect(switchContainer).toHaveClass("motile-switch-container--smooth");
     });
 
     it("input 엘리먼트에 variant 클래스가 적용됨", () => {

@@ -7,7 +7,7 @@ export type {
   ModalContentProps,
   ModalCloseProps,
   ModalTitleProps,
-  ModalDescriptionProps,
+  ModalBodyProps,
   ModalHeaderProps,
   ModalFooterProps,
 } from "./Modal";

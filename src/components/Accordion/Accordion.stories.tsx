@@ -3,7 +3,7 @@ import { Accordion } from "./Accordion";
 
 // Props that can be controlled via Storybook
 interface AccordionStoryArgs {
-  variant?: "default" | "outlined";
+  variant?: "filled" | "outlined";
   defaultExpanded?: boolean;
   disabled?: boolean;
 }
@@ -24,11 +24,11 @@ const meta = {
   argTypes: {
     variant: {
       control: "select",
-      options: ["default", "outlined"],
+      options: ["filled", "outlined"],
       description: "아코디언 스타일 variant",
       table: {
-        defaultValue: { summary: '"default"' },
-        type: { summary: '"default" | "outlined"' },
+        defaultValue: { summary: '"filled"' },
+        type: { summary: '"filled" | "outlined"' },
       },
     },
     defaultExpanded: {
@@ -66,7 +66,7 @@ type Story = StoryObj<AccordionStoryArgs>;
  */
 export const Default: Story = {
   args: {
-    variant: "default",
+    variant: "filled",
     defaultExpanded: false,
     disabled: false,
   },
@@ -90,7 +90,7 @@ export const Default: Story = {
  */
 export const Disabled: Story = {
   args: {
-    variant: "default",
+    variant: "filled",
     defaultExpanded: false,
     disabled: true,
   },

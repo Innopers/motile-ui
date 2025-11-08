@@ -158,7 +158,7 @@ interface ModalCloseProps
 
 interface ModalTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {}
 
-interface ModalDescriptionProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface ModalBodyProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 interface ModalHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -370,26 +370,25 @@ export const ModalTitle = React.forwardRef<HTMLHeadingElement, ModalTitleProps>(
 ModalTitle.displayName = "Modal.Title";
 
 // ============================================================================
-// Modal.Description - Accessible Description
+// Modal.Body - Accessible Body Content
 // ============================================================================
 
-export const ModalDescription = React.forwardRef<
-  HTMLDivElement,
-  ModalDescriptionProps
->(({ className, ...props }, ref) => {
-  const { descriptionId } = useModalContext();
+export const ModalBody = React.forwardRef<HTMLDivElement, ModalBodyProps>(
+  ({ className, ...props }, ref) => {
+    const { descriptionId } = useModalContext();
 
-  return (
-    <div
-      ref={ref}
-      id={descriptionId}
-      className={`motile-modal__body ${className || ""}`}
-      {...props}
-    />
-  );
-});
+    return (
+      <div
+        ref={ref}
+        id={descriptionId}
+        className={`motile-modal__body ${className || ""}`}
+        {...props}
+      />
+    );
+  }
+);
 
-ModalDescription.displayName = "Modal.Description";
+ModalBody.displayName = "Modal.Body";
 
 // ============================================================================
 // Modal.Close - Close Button
@@ -492,7 +491,7 @@ export const Modal = {
   Overlay: ModalOverlay,
   Content: ModalContent,
   Title: ModalTitle,
-  Description: ModalDescription,
+  Body: ModalBody,
   Close: ModalClose,
   Footer: ModalFooter,
   Header: ModalHeader,
@@ -509,7 +508,7 @@ export type {
   ModalContentProps,
   ModalCloseProps,
   ModalTitleProps,
-  ModalDescriptionProps,
+  ModalBodyProps,
   ModalHeaderProps,
   ModalFooterProps,
 };

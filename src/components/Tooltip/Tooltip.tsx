@@ -12,7 +12,7 @@ import { createPortal } from "react-dom";
 import { Slot } from "@/utils/Slot";
 import "./Tooltip.css";
 
-type TooltipVariant = "default" | "outlined";
+type TooltipVariant = "filled" | "outlined";
 type TooltipPosition = "top" | "bottom" | "left" | "right";
 type TooltipAlign = "start" | "center" | "end";
 
@@ -69,7 +69,7 @@ interface TooltipRootProps {
   align?: TooltipAlign;
   /**
    * 툴팁 스타일 variant
-   * @default 'default'
+   * @default 'dark'
    */
   variant?: TooltipVariant;
   /**
@@ -112,7 +112,7 @@ function TooltipRoot({
   children,
   position = "top",
   align = "center",
-  variant = "default",
+  variant = "filled",
   color,
   showArrow = false,
   keepOpen = false,

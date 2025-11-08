@@ -1,3 +1,8 @@
+.motile-input-root {
+  display: block;
+  width: 100%;
+}
+
 .motile-input {
   width: 100%;
   border: 1px solid #e5e8eb;

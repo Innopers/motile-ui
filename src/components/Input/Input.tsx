@@ -166,7 +166,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         .join(" ") || undefined;
 
     return (
-      <>
+      <div className={`${baseClass}-root`}>
         <div className={wrapperClasses} style={wrapperStyle}>
           {label && (
             <label className={labelClasses} htmlFor={id}>
@@ -238,7 +238,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             )}
           </div>
         )}
-      </>
+      </div>
     );
   }
 );

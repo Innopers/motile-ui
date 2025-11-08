@@ -1,14 +1,14 @@
 import React, { forwardRef } from "react";
 import "./Checkbox.css";
 
-type CheckboxVariant = "default" | "rounded" | "square";
+type CheckboxVariant = "standard" | "rounded" | "square";
 type CheckboxSize = "large" | "medium" | "small";
 
 export interface CheckboxProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "size"> {
   /**
    * 체크박스 스타일 variant
-   * @default 'default'
+   * @default 'standard'
    */
   variant?: CheckboxVariant;
 
@@ -39,7 +39,7 @@ export interface CheckboxProps
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   (
     {
-      variant = "default",
+      variant = "standard",
       size = "medium",
       label,
       color,

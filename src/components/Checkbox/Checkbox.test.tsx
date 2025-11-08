@@ -11,12 +11,12 @@ describe("Checkbox", () => {
       expect(screen.getByRole("checkbox")).toBeInTheDocument();
     });
 
-    // 기본값 테스트: variant="default", size="medium", filled=false (Breaking Change 방지)
-    it("기본적으로 default variant와 medium 크기를 사용함", () => {
+    // 기본값 테스트: variant="standard", size="medium", filled=false (Breaking Change 방지)
+    it("기본적으로 standard variant와 medium 크기를 사용함", () => {
       render(<Checkbox data-testid="checkbox" />);
       const checkbox = screen.getByTestId("checkbox");
 
-      expect(checkbox).toHaveClass("motile-checkbox--default");
+      expect(checkbox).toHaveClass("motile-checkbox--standard");
       expect(checkbox).toHaveClass("motile-checkbox--medium");
       expect(checkbox).not.toHaveClass("motile-checkbox--filled");
     });
@@ -141,11 +141,11 @@ describe("Checkbox", () => {
   });
 
   describe("Variant 테스트", () => {
-    // default variant
-    it("default variant 클래스가 적용됨", () => {
-      render(<Checkbox variant="default" />);
+    // standard variant
+    it("standard variant 클래스가 적용됨", () => {
+      render(<Checkbox variant="standard" />);
       expect(screen.getByRole("checkbox")).toHaveClass(
-        "motile-checkbox--default"
+        "motile-checkbox--standard"
       );
     });
 

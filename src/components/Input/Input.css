@@ -24,7 +24,10 @@
 
 .motile-input--default:focus {
   border: 2px solid
-    var(--motile-input-color, var(--motile-ui-input, var(--motile-theme, #3182f6)));
+    var(
+      --motile-input-color,
+      var(--motile-ui-input, var(--motile-theme, #3182f6))
+    );
 }
 
 .motile-input--default:disabled {
@@ -114,7 +117,10 @@
 .motile-input--underline:focus {
   border: none;
   border-bottom: 2px solid
-    var(--motile-input-color, var(--motile-ui-input, var(--motile-theme, #3182f6)));
+    var(
+      --motile-input-color,
+      var(--motile-ui-input, var(--motile-theme, #3182f6))
+    );
   padding: 18px 4px 4px 4px;
   height: 48px;
   line-height: 1.5;
@@ -230,7 +236,8 @@
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.motile-input-wrapper:has(.motile-input--underline) .motile-input__clear-button {
+.motile-input-wrapper:has(.motile-input--underline)
+  .motile-input__clear-button {
   right: 4px;
   top: calc(50% + 7px);
 }
@@ -286,12 +293,14 @@
     transform: translateY(-50%);
   }
 
-  .motile-input-wrapper:has(.motile-input--underline) .motile-input__right-icon {
+  .motile-input-wrapper:has(.motile-input--underline)
+    .motile-input__right-icon {
     top: calc(50% + 7px);
     transform: translateY(-50%);
   }
 
-  .motile-input-wrapper:has(.motile-input--underline) .motile-input__clear-button {
+  .motile-input-wrapper:has(.motile-input--underline)
+    .motile-input__clear-button {
     top: calc(50% + 7px);
     transform: translateY(-50%);
   }
@@ -414,8 +423,10 @@
   opacity: 1;
 }
 
-/* Default variant - label이 active일 때 (focus 또는 값 있을 때) */
-.motile-input-wrapper:not(:has(.motile-input--underline)):has(.motile-input:focus)
+/* Default variant - label이 active일 때 (focus 또는 값 있을 때) - 위치와 크기 */
+.motile-input-wrapper:not(:has(.motile-input--underline)):has(
+    .motile-input:focus
+  )
   .motile-input__label,
 .motile-input-wrapper:not(:has(.motile-input--underline)):has(
     .motile-input:not(:placeholder-shown)
@@ -424,12 +435,23 @@
   top: 0;
   transform: translateY(-50%);
   font-size: 12px;
+  background: white;
+  padding: 0 4px;
+}
+
+/* Default variant - active 상태 색상 (error가 아닌 경우만) */
+.motile-input-wrapper:not(:has(.motile-input--underline)):has(
+    .motile-input:focus
+  )
+  .motile-input__label:not(.motile-input__label--error),
+.motile-input-wrapper:not(:has(.motile-input--underline)):has(
+    .motile-input:not(:placeholder-shown)
+  )
+  .motile-input__label:not(.motile-input__label--error) {
   color: var(
     --motile-input-color,
     var(--motile-ui-input, var(--motile-theme, #3182f6))
   );
-  background: white;
-  padding: 0 4px;
 }
 
 /* Underline variant - label 기본 위치 */
@@ -439,7 +461,7 @@
   transform: translateY(-50%);
 }
 
-/* Underline variant - label이 active일 때 (focus 또는 값 있을 때) */
+/* Underline variant - label이 active일 때 (focus 또는 값 있을 때) - 위치와 크기 */
 .motile-input-wrapper:has(.motile-input--underline):has(.motile-input:focus)
   .motile-input__label,
 .motile-input-wrapper:has(.motile-input--underline):has(
@@ -449,13 +471,22 @@
   top: 14px;
   transform: translateY(-100%);
   font-size: 12px;
+}
+
+/* Underline variant - active 상태 색상 (error가 아닌 경우만) */
+.motile-input-wrapper:has(.motile-input--underline):has(.motile-input:focus)
+  .motile-input__label:not(.motile-input__label--error),
+.motile-input-wrapper:has(.motile-input--underline):has(
+    .motile-input:not(:placeholder-shown)
+  )
+  .motile-input__label:not(.motile-input__label--error) {
   color: var(
     --motile-input-color,
     var(--motile-ui-input, var(--motile-theme, #3182f6))
   );
 }
 
-/* Error 상태의 label 색상 (focus 또는 값 있을 때) */
+/* Error 상태의 label 색상 - active 상태(위로 올라갔을 때)만 적용 */
 .motile-input-wrapper:has(.motile-input:focus) .motile-input__label--error,
 .motile-input-wrapper:has(.motile-input:not(:placeholder-shown))
   .motile-input__label--error {
@@ -531,7 +562,7 @@
     left: 12px;
   }
 
-  /* Mobile - Active 상태 (focus 또는 값 있을 때) */
+  /* Mobile - Active 상태 (focus 또는 값 있을 때) - 위치와 크기 */
   .motile-input-wrapper:not(:has(.motile-input--underline)):has(
       .motile-input:focus
     )
@@ -543,12 +574,28 @@
     font-size: 12px;
   }
 
+  /* Mobile - Active 상태 색상 (error가 아닌 경우만) - Default variant */
+  .motile-input-wrapper:not(:has(.motile-input--underline)):has(
+      .motile-input:focus
+    )
+    .motile-input__label:not(.motile-input__label--error),
+  .motile-input-wrapper:not(:has(.motile-input--underline)):has(
+      .motile-input:not(:placeholder-shown)
+    )
+    .motile-input__label:not(.motile-input__label--error) {
+    color: var(
+      --motile-input-color,
+      var(--motile-ui-input, var(--motile-theme, #3182f6))
+    );
+  }
+
   .motile-input-wrapper:has(.motile-input--underline) .motile-input__label {
     left: 4px;
     top: calc(50% + 7px);
     transform: translateY(-50%);
   }
 
+  /* Mobile - Underline Active 상태 위치와 크기 */
   .motile-input-wrapper:has(.motile-input--underline):has(.motile-input:focus)
     .motile-input__label,
   .motile-input-wrapper:has(.motile-input--underline):has(
@@ -560,11 +607,27 @@
     transform: translateY(-100%);
   }
 
-  .motile-input-wrapper:has(.motile-input--with-left-icon) .motile-input__label {
+  /* Mobile - Underline Active 상태 색상 (error가 아닌 경우만) */
+  .motile-input-wrapper:has(.motile-input--underline):has(.motile-input:focus)
+    .motile-input__label:not(.motile-input__label--error),
+  .motile-input-wrapper:has(.motile-input--underline):has(
+      .motile-input:not(:placeholder-shown)
+    )
+    .motile-input__label:not(.motile-input__label--error) {
+    color: var(
+      --motile-input-color,
+      var(--motile-ui-input, var(--motile-theme, #3182f6))
+    );
+  }
+
+  .motile-input-wrapper:has(.motile-input--with-left-icon)
+    .motile-input__label {
     left: 40px;
   }
 
-  .motile-input-wrapper:has(.motile-input--underline.motile-input--with-left-icon)
+  .motile-input-wrapper:has(
+      .motile-input--underline.motile-input--with-left-icon
+    )
     .motile-input__label {
     left: 32px;
     top: calc(50% + 7px);

@@ -14,7 +14,7 @@ describe("Modal", () => {
               <Modal.Header>
                 <Modal.Title>Title</Modal.Title>
               </Modal.Header>
-              <Modal.Description>Description</Modal.Description>
+              <Modal.Body>Description</Modal.Body>
               <Modal.Footer>
                 <Modal.Close>Close</Modal.Close>
               </Modal.Footer>
@@ -126,7 +126,7 @@ describe("Modal", () => {
         .mockImplementation(() => {});
 
       expect(() => {
-        render(<Modal.Description>Description</Modal.Description>);
+        render(<Modal.Body>Description</Modal.Body>);
       }).toThrow("Modal compound components must be used within Modal.Root");
 
       consoleError.mockRestore();
@@ -434,7 +434,7 @@ describe("Modal", () => {
         <Modal.Root open={true} onOpenChange={vi.fn()}>
           <Modal.Overlay>
             <Modal.Content>
-              <Modal.Description>Modal Description</Modal.Description>
+              <Modal.Body>Modal Description</Modal.Body>
             </Modal.Content>
           </Modal.Overlay>
         </Modal.Root>
@@ -470,7 +470,7 @@ describe("Modal", () => {
           <Modal.Overlay>
             <Modal.Content>
               <Modal.Title>Title</Modal.Title>
-              <Modal.Description>Description</Modal.Description>
+              <Modal.Body>Description</Modal.Body>
             </Modal.Content>
           </Modal.Overlay>
         </Modal.Root>

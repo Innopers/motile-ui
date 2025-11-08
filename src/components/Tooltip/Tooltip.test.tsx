@@ -412,6 +412,26 @@ describe("Tooltip", () => {
       });
     });
 
+    it("기본적으로 filled variant를 사용함", async () => {
+      const user = userEvent.setup();
+
+      render(
+        <TooltipRoot>
+          <TooltipTrigger>
+            <button>Trigger</button>
+          </TooltipTrigger>
+          <TooltipContent>Content</TooltipContent>
+        </TooltipRoot>
+      );
+
+      await user.hover(screen.getByRole("button"));
+
+      await waitFor(() => {
+        const tooltip = screen.getByRole("tooltip");
+        expect(tooltip).toHaveClass("motile-tooltip-bubble--filled");
+      });
+    });
+
     it("variant prop에 따라 클래스가 적용됨", async () => {
       const user = userEvent.setup();
 

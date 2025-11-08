@@ -14,7 +14,11 @@ import "./Dock.css";
 // ============================================================================
 
 /**
- * Dock Position
+ * Dock 위치
+ * - `top`: 화면 상단
+ * - `bottom`: 화면 하단 (기본값)
+ * - `left`: 화면 왼쪽
+ * - `right`: 화면 오른쪽
  */
 export type DockPosition = "top" | "bottom" | "left" | "right";
 
@@ -41,6 +45,7 @@ export interface DockRootProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
    * Dock 위치
    * @default "bottom"
+   * @type {'top' | 'bottom' | 'left' | 'right'}
    */
   position?: DockPosition;
 

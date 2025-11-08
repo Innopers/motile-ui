@@ -13,6 +13,14 @@ import "./Toast.css";
 // Types
 // ============================================================================
 
+/**
+ * Toast 스타일 variant
+ * - `default`: 기본 스타일
+ * - `success`: 성공 메시지
+ * - `error`: 에러 메시지
+ * - `warning`: 경고 메시지
+ * - `info`: 정보 메시지
+ */
 export type ToastVariant = "default" | "success" | "error" | "warning" | "info";
 
 export interface ToastOptions {

@@ -1,18 +1,36 @@
 import React from "react";
 import "./Badge.css";
 
+/**
+ * Badge 스타일 variant
+ * - `primary`: 채워진 배경 (기본값)
+ * - `secondary`: 연한 배경
+ * - `outlined`: 테두리 스타일
+ * - `dot`: 점 + 텍스트
+ * - `shimmer`: 반짝이는 효과
+ */
 type BadgeVariant = "primary" | "secondary" | "outlined" | "dot" | "shimmer";
+
+/**
+ * Badge 크기
+ * - `large`: 큰 크기
+ * - `medium`: 중간 크기 (기본값)
+ * - `small`: 작은 크기
+ */
 type BadgeSize = "large" | "medium" | "small";
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   /**
    * Badge 스타일 variant
+   * @default 'primary'
+   * @type {'primary' | 'secondary' | 'outlined' | 'dot' | 'shimmer'}
    */
   variant?: BadgeVariant;
 
   /**
    * Badge 크기
    * @default 'medium'
+   * @type {'large' | 'medium' | 'small'}
    */
   size?: BadgeSize;
 

@@ -1,13 +1,13 @@
 import React, { forwardRef } from "react";
 import "./Switch.css";
 
-type SwitchVariant = "default" | "elastic" | "bounce";
+type SwitchVariant = "smooth" | "elastic" | "bounce";
 
 export interface SwitchProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {
   /**
    * 스위치 모양
-   * @default 'default'
+   * @default 'smooth'
    */
   variant?: SwitchVariant;
 
@@ -20,7 +20,7 @@ export interface SwitchProps
 
 export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
   (
-    { variant = "default", color, className, disabled, style, ...props },
+    { variant = "smooth", color, className, disabled, style, ...props },
     ref
   ) => {
     const baseClass = "motile-switch";

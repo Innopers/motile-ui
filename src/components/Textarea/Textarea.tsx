@@ -249,7 +249,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         .join(" ") || undefined;
 
     return (
-      <>
+      <div className={`${baseClass}-root`}>
         <div className={wrapperClasses} style={wrapperStyle}>
           {label && <label className={labelClasses}>{label}</label>}
 
@@ -291,7 +291,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             )}
           </div>
         )}
-      </>
+      </div>
     );
   }
 );

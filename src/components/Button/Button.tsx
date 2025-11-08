@@ -2,7 +2,7 @@ import React from "react";
 import { Slot } from "@/utils/Slot";
 import "./Button.css";
 
-type ButtonVariant = "primary" | "secondary" | "default";
+type ButtonVariant = "primary" | "secondary" | "ghost";
 type ButtonSize = "large" | "medium" | "small";
 
 export interface ButtonProps

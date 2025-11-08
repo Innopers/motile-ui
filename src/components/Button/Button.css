@@ -96,28 +96,26 @@
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-/* Default Variant */
-.motile-btn--default {
+/* Ghost Variant */
+.motile-btn--ghost {
   background: transparent;
   border: none;
   color: var(
     --motile-btn-color,
-    var(--motile-ui-btn-default, var(--motile-theme, #3b82f6))
+    var(--motile-ui-btn-ghost, var(--motile-theme, #3b82f6))
   );
   box-shadow: none;
 }
 
 @media (hover: hover) {
-  .motile-btn--default:hover:not(.motile-btn--disabled) {
+  .motile-btn--ghost:hover:not(.motile-btn--disabled) {
     opacity: 0.7;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
       0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
 }
 
-.motile-btn--hover-on-touch.motile-btn--default:hover:not(
-    .motile-btn--disabled
-  ) {
+.motile-btn--hover-on-touch.motile-btn--ghost:hover:not(.motile-btn--disabled) {
   opacity: 0.7;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -172,7 +170,7 @@
   pointer-events: none;
 }
 
-.motile-btn--default.motile-btn--disabled {
+.motile-btn--ghost.motile-btn--disabled {
   background: #e5e7eb;
   color: #6b7280;
   cursor: not-allowed;
@@ -307,7 +305,7 @@
   background-color: rgba(156, 163, 175, 0.7);
 }
 
-.motile-btn--default .motile-btn__dot {
+.motile-btn--ghost .motile-btn__dot {
   background-color: rgba(156, 163, 175, 0.7);
 }
 

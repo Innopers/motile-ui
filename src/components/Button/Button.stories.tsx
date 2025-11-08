@@ -11,7 +11,7 @@ const meta = {
   argTypes: {
     variant: {
       control: "select",
-      options: ["primary", "secondary", "default"],
+      options: ["primary", "secondary", "ghost"],
       description: "Button variant style",
     },
     size: {
@@ -94,11 +94,11 @@ export const Secondary: Story = {
   },
 };
 
-export const Default: Story = {
+export const Ghost: Story = {
   args: {
-    variant: "default",
+    variant: "ghost",
     size: "large",
-    children: "Default Button",
+    children: "Ghost Button",
   },
 };
 

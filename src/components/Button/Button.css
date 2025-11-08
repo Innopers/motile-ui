@@ -54,13 +54,10 @@
   background: white;
   color: var(
     --motile-btn-color,
-    var(--motile-ui-btn-secondary, var(--motile-theme, #3b82f6))
+    var(--motile-ui-btn, var(--motile-theme, #3b82f6))
   );
   border: 1px solid
-    var(
-      --motile-btn-color,
-      var(--motile-ui-btn-secondary, var(--motile-theme, #3b82f6))
-    );
+    var(--motile-btn-color, var(--motile-ui-btn, var(--motile-theme, #3b82f6)));
   box-shadow: none;
 }
 
@@ -70,7 +67,7 @@
       in srgb,
       var(
           --motile-btn-color,
-          var(--motile-ui-btn-secondary, var(--motile-theme, #3b82f6))
+          var(--motile-ui-btn, var(--motile-theme, #3b82f6))
         )
         10%,
       transparent
@@ -85,10 +82,7 @@
   ) {
   background: color-mix(
     in srgb,
-    var(
-        --motile-btn-color,
-        var(--motile-ui-btn-secondary, var(--motile-theme, #3b82f6))
-      )
+    var(--motile-btn-color, var(--motile-ui-btn, var(--motile-theme, #3b82f6)))
       10%,
     transparent
   );
@@ -102,7 +96,7 @@
   border: none;
   color: var(
     --motile-btn-color,
-    var(--motile-ui-btn-ghost, var(--motile-theme, #3b82f6))
+    var(--motile-ui-btn, var(--motile-theme, #3b82f6))
   );
   box-shadow: none;
 }

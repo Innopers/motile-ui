@@ -37,7 +37,7 @@ const meta = {
     },
     variant: {
       control: "select",
-      options: ["default", "outlined"],
+      options: ["filled", "outlined"],
       description: "Popover 스타일 변형",
     },
     showArrow: {
@@ -71,7 +71,7 @@ export const Default: Story = {
     position: "bottom",
     align: "center",
     showArrow: false,
-    variant: "default",
+    variant: "filled",
     autoClose: true,
     bounceCount: 1,
     children: <></>,
@@ -133,7 +133,7 @@ export const CustomColor: Story = {
     position: "bottom",
     align: "center",
     showArrow: true,
-    variant: "default",
+    variant: "filled",
     autoClose: true,
     color: "#10b981",
     bounceCount: 1,

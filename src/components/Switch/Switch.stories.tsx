@@ -11,7 +11,7 @@ const meta = {
   argTypes: {
     variant: {
       control: "select",
-      options: ["default", "elastic", "bounce"],
+      options: ["smooth", "elastic", "bounce"],
       description: "스위치 모양",
     },
     color: {

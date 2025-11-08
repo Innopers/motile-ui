@@ -17,9 +17,9 @@ export interface InputProps
 
   /**
    * Input 스타일 variant
-   * @default 'default'
+   * @default 'outlined'
    */
-  variant?: "default" | "underline";
+  variant?: "outlined" | "underline";
 
   /**
    * 에러 상태
@@ -70,7 +70,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       id: idProp,
       autoFocus = false,
       autoSelect = false,
-      variant = "default",
+      variant = "outlined",
       isError,
       errorMessage,
       onClear,

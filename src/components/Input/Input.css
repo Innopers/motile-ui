@@ -23,11 +23,11 @@
   border-color: #c9cdd2;
 }
 
-.motile-input--default {
+.motile-input--outlined {
   border: 2px solid #e5e8eb;
 }
 
-.motile-input--default:focus {
+.motile-input--outlined:focus {
   border: 2px solid
     var(
       --motile-input-color,
@@ -35,7 +35,7 @@
     );
 }
 
-.motile-input--default:disabled {
+.motile-input--outlined:disabled {
   background: #f9fafb;
   color: #9ca3af;
   cursor: not-allowed;
@@ -50,7 +50,7 @@
   opacity: 0.5;
 }
 
-.motile-input--default.motile-input--error {
+.motile-input--outlined.motile-input--error {
   border: 2px solid #ef4444;
   background: #fef5f5;
 }
@@ -59,7 +59,7 @@
   border-bottom-color: #ef4444;
 }
 
-.motile-input--default.motile-input--error:focus {
+.motile-input--outlined.motile-input--error:focus {
   border: 2px solid #ef4444;
   background: #fef5f5;
 }
@@ -146,7 +146,7 @@
   padding-left: 40px;
 }
 
-.motile-input--default.motile-input--with-left-icon:focus {
+.motile-input--outlined.motile-input--with-left-icon:focus {
   padding-left: 40px;
 }
 
@@ -162,7 +162,7 @@
   padding-right: 40px;
 }
 
-.motile-input--default.motile-input--with-right-content:focus {
+.motile-input--outlined.motile-input--with-right-content:focus {
   padding-right: 40px;
 }
 
@@ -264,11 +264,11 @@
     min-height: 44px;
   }
 
-  .motile-input--default {
+  .motile-input--outlined {
     border: 2px solid #e5e8eb;
   }
 
-  .motile-input--default:focus {
+  .motile-input--outlined:focus {
     border: 2px solid
       var(
         --motile-input-color,
@@ -314,16 +314,16 @@
     padding-left: 40px;
   }
 
-  .motile-input--default.motile-input--with-left-icon:focus {
+  .motile-input--outlined.motile-input--with-left-icon:focus {
     padding-left: 40px;
   }
 
   /* Mobile: Label + Left Icon + Focus 상태 padding 유지 - default variant만 */
-  .motile-input--default.motile-input--with-label.motile-input--with-left-icon {
+  .motile-input--outlined.motile-input--with-label.motile-input--with-left-icon {
     padding-left: 40px;
   }
 
-  .motile-input--default.motile-input--with-label.motile-input--with-left-icon:focus {
+  .motile-input--outlined.motile-input--with-label.motile-input--with-left-icon:focus {
     padding-left: 40px;
   }
 
@@ -349,7 +349,7 @@
     padding-right: 36px;
   }
 
-  .motile-input--default.motile-input--with-right-content:focus {
+  .motile-input--outlined.motile-input--with-right-content:focus {
     padding-right: 36px;
   }
 
@@ -499,18 +499,18 @@
 }
 
 /* Label이 있을 때 input padding 조정 (placeholder처럼 보이도록) - default variant만 */
-.motile-input--default.motile-input--with-label {
+.motile-input--outlined.motile-input--with-label {
   padding-top: 12px;
   padding-bottom: 12px;
 }
 
 /* Label이 있을 때 left icon 조정 - default variant만 */
-.motile-input--default.motile-input--with-label.motile-input--with-left-icon {
+.motile-input--outlined.motile-input--with-label.motile-input--with-left-icon {
   padding-left: 40px;
 }
 
 /* Label + Left Icon + Focus 상태: border 2px 되어도 padding 유지 - default variant만 */
-.motile-input--default.motile-input--with-label.motile-input--with-left-icon:focus {
+.motile-input--outlined.motile-input--with-label.motile-input--with-left-icon:focus {
   padding-left: 40px;
 }
 

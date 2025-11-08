@@ -64,7 +64,7 @@ const meta = {
 } satisfies Meta<typeof Popover.Root>;
 
 export default meta;
-type Story = StoryObj<PopoverRootProps>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
@@ -74,6 +74,7 @@ export const Default: Story = {
     variant: "default",
     autoClose: true,
     bounceCount: 1,
+    children: <></>,
   },
   render: (args) => (
     <Popover.Root {...args}>
@@ -104,6 +105,7 @@ export const WithArrow: Story = {
     showArrow: true,
     variant: "outlined",
     autoClose: true,
+    children: <></>,
   },
   render: (args) => (
     <Popover.Root {...args}>
@@ -135,6 +137,7 @@ export const CustomColor: Story = {
     autoClose: true,
     color: "#10b981",
     bounceCount: 1,
+    children: <></>,
   },
   render: (args) => (
     <Popover.Root {...args}>
@@ -158,6 +161,7 @@ export const BounceAnimation: Story = {
     variant: "outlined",
     autoClose: true,
     bounceCount: 1,
+    children: <></>,
   },
   render: (args) => (
     <Popover.Root {...args}>

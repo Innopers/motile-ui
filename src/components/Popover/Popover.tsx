@@ -15,7 +15,7 @@ import { useEscapeKey } from "@/hooks/useEscapeKey";
 
 type Placement = "top" | "bottom" | "left" | "right";
 type Align = "start" | "center" | "end";
-type PopoverVariant = "default" | "outlined";
+type PopoverVariant = "filled" | "outlined";
 
 // ============================================================================
 // Context
@@ -159,7 +159,7 @@ function PopoverRoot({
   children,
   position = "top",
   align = "center",
-  variant = "outlined",
+  variant = "filled",
   showArrow = false,
   zIndex = 10,
   color,

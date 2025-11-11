@@ -79,6 +79,8 @@
   height: 56px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   padding: 0 20px;
   flex-shrink: 0;
   border-bottom: 1px solid #e5e7eb;
@@ -131,17 +133,56 @@
 }
 
 .motile-sheet__title {
+  flex: 1;
+  min-width: 0;
   margin: 0;
   font-size: 18px;
   font-weight: 600;
   color: #111827;
   line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 @media (max-width: 768px) {
   .motile-sheet__title {
     font-size: 16px;
   }
+}
+
+/* Close Button */
+.motile-sheet__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  min-height: 32px;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #6b7280;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.motile-sheet__close:hover {
+  background-color: #f3f4f6;
+  color: #111827;
+}
+
+.motile-sheet__close:active {
+  transform: scale(0.95);
+  background-color: #e5e7eb;
+}
+
+.motile-sheet__close:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
 }
 
 /* Body (스크롤 가능 영역) */
@@ -225,6 +266,19 @@
 
   .motile-sheet__body::-webkit-scrollbar-thumb:hover {
     background-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .motile-sheet__close {
+    color: #9ca3af;
+  }
+
+  .motile-sheet__close:hover {
+    background-color: #374151;
+    color: #f9fafb;
+  }
+
+  .motile-sheet__close:active {
+    background-color: #4b5563;
   }
 }
 

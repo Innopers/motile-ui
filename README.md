@@ -157,13 +157,13 @@ Motile UI는 CSS 변수를 통해 전역 테마를 쉽게 커스터마이징할 
 색상 적용 우선순위는 다음과 같습니다:
 
 ```
-개별 컴포넌트 색상 > 컴포넌트 타입 전역 색상 > 전역 테마 색상 > 기본 색상
+color props > 컴포넌트 타입 전역 색상 > 전역 테마 색상 > 기본 색상
 ```
 
 예시:
 
 ```
---motile-btn-color > --motile-ui-btn > --motile-theme > #3b82f6 (기본값)
+color props > --motile-ui-btn > --motile-theme > #3b82f6 (기본값)
 ```
 
 ---
@@ -337,13 +337,13 @@ Apply different colors to each component instance:
 Color application priority:
 
 ```
-Individual Component Color > Component Type Global Color > Global Theme Color > Default Color
+color props > Component Type Global Color > Global Theme Color > Default Color
 ```
 
 Example:
 
 ```
---motile-btn-color > --motile-ui-btn > --motile-theme > #3b82f6 (default)
+color props > --motile-ui-btn > --motile-theme > #3b82f6 (default)
 ```
 
 ---

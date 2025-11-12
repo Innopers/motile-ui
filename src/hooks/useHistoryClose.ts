@@ -12,7 +12,7 @@ import { useEffect, useRef, useState } from "react";
  * **동작 원리**
  * 1. 모달이 열릴 때 `window.history.pushState()`로 더미 히스토리 항목 추가
  * 2. 브라우저 뒤로가기 시 `popstate` 이벤트가 발생하면 모달 닫기
- * 3. 다른 방법(버튼 클릭, ESC, 외부 클릭 등)으로 닫을 때는 `history.back()`으로 더미 히스토리 제거
+ * 3. 다른 방법(버튼 클릭, ESC, 외부 클릭 등)으로 닫을 때는 히스토리 길이를 비교하여 정리
  *
  * **상태 관리**
  * - `useState`를 사용하여 히스토리 기반 닫기 여부를 추적
@@ -21,8 +21,15 @@ import { useEffect, useRef, useState } from "react";
  *
  * **히스토리 정리**
  * - 뒤로가기로 닫을 때: 브라우저가 자동으로 히스토리 pop (history.back() 불필요)
- * - ESC/외부 클릭으로 닫을 때: `history.back()` 호출하여 더미 히스토리 제거
- * - 더미 히스토리가 남지 않아 사용자 경험 개선
+ * - ESC/외부 클릭으로 닫을 때:
+ *   - Sheet 내부에서 페이지 이동이 없었으면 `history.back()` 호출하여 더미 히스토리 제거
+ *   - Sheet 내부에서 페이지 이동이 있었으면 더미 히스토리를 유지 (navigation 우선)
+ * - 더미 히스토리가 불필요하게 남지 않아 사용자 경험 개선
+ *
+ * **Navigation 감지**
+ * - Sheet이 열릴 때 히스토리 길이 저장
+ * - Sheet이 닫힐 때 히스토리 길이 비교로 내부 navigation 여부 판단
+ * - React Router, Next.js Router 등 모든 라우팅 라이브러리와 호환
  *
  * @limitation
  * - 모달 열린 상태에서 새로고침 시 히스토리에 더미 state가 남음
@@ -51,10 +58,7 @@ export interface UseHistoryCloseProps {
   onClose: () => void;
 }
 
-export function useHistoryClose({
-  onClose,
-  isOpen,
-}: UseHistoryCloseProps) {
+export function useHistoryClose({ onClose, isOpen }: UseHistoryCloseProps) {
   // onClose를 ref로 저장하여 popstate 이벤트 핸들러에서 최신 함수 참조
   const onCloseRef = useRef(onClose);
 
@@ -63,6 +67,9 @@ export function useHistoryClose({
 
   // 히스토리 기반 닫기 상태 (useState 사용으로 re-render 트리거)
   const [isClosingFromHistory, setIsClosingFromHistory] = useState(false);
+
+  // Sheet이 열릴 때의 히스토리 길이 저장 (navigation 감지용)
+  const initialHistoryLengthRef = useRef(0);
 
   // onClose 함수가 변경될 때마다 ref 업데이트
   useEffect(() => {
@@ -79,6 +86,9 @@ export function useHistoryClose({
         onCloseRef.current();
       };
 
+      // 현재 히스토리 길이 저장 (더미 항목 추가 전)
+      initialHistoryLengthRef.current = window.history.length;
+
       // 더미 히스토리 항목 추가
       window.history.pushState({ modal: true }, "");
       hasPushedRef.current = true;
@@ -92,9 +102,17 @@ export function useHistoryClose({
 
     // 모달이 닫힐 때: 히스토리 정리 및 상태 초기화
     if (!isOpen && hasPushedRef.current) {
-      // 히스토리 기반 닫기가 아닌 경우 (ESC, 외부 클릭, 닫기 버튼)에만 더미 히스토리 제거
+      // 히스토리 기반 닫기가 아닌 경우 (ESC, 외부 클릭, 닫기 버튼)
       if (!isClosingFromHistory) {
-        window.history.back();
+        // Sheet 내부에서 navigation이 발생했는지 확인
+        // 더미 항목 추가 후 예상되는 길이: initialHistoryLength + 1
+        const expectedLength = initialHistoryLengthRef.current + 1;
+        const hasNavigated = window.history.length !== expectedLength;
+
+        // navigation이 없었을 때만 더미 히스토리 제거
+        if (!hasNavigated) {
+          window.history.back();
+        }
       }
 
       hasPushedRef.current = false;

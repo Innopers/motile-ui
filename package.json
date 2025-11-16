@@ -1,6 +1,6 @@
 {
   "name": "motile-ui",
-  "version": "0.9.7",
+  "version": "1.0.0",
   "type": "module",
   "description": "A modern React component library for webview applications",
   "main": "./dist/motile-ui.umd.js",
@@ -85,7 +85,7 @@
     "type": "git",
     "url": "https://github.com/Innopers/motile-ui.git"
   },
-  "homepage": "https://github.com/Innopers/motile-ui#readme",
+  "homepage": "https://www.motile-ui.site",
   "bugs": {
     "url": "https://github.com/Innopers/motile-ui/issues"
   },

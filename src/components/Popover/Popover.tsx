@@ -158,7 +158,7 @@ interface PopoverRootProps {
   // Position & Style
   /**
    * Popover 위치
-   * @default 'bottom'
+   * @default 'top'
    * @type {'top' | 'bottom' | 'left' | 'right'}
    */
   position?: Placement;

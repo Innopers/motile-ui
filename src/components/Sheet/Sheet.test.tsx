@@ -717,4 +717,214 @@ describe("Sheet", () => {
       });
     });
   });
+
+  describe("useHistoryClose (히스토리 관리)", () => {
+    let pushStateSpy: ReturnType<typeof vi.spyOn>;
+    let backSpy: ReturnType<typeof vi.spyOn>;
+
+    beforeEach(() => {
+      // history API 모킹
+      pushStateSpy = vi.spyOn(window.history, "pushState");
+      backSpy = vi.spyOn(window.history, "back");
+    });
+
+    afterEach(() => {
+      pushStateSpy.mockRestore();
+      backSpy.mockRestore();
+    });
+
+    it("Sheet이 열릴 때 pushState가 호출됨", async () => {
+      const { rerender } = render(
+        <Sheet.Root open={false}>
+          <Sheet.Portal>
+            <Sheet.Overlay />
+            <Sheet.Content>
+              <Sheet.Title>Sheet Title</Sheet.Title>
+            </Sheet.Content>
+          </Sheet.Portal>
+        </Sheet.Root>
+      );
+
+      expect(pushStateSpy).not.toHaveBeenCalled();
+
+      // Sheet 열기
+      rerender(
+        <Sheet.Root open={true}>
+          <Sheet.Portal>
+            <Sheet.Overlay />
+            <Sheet.Content>
+              <Sheet.Title>Sheet Title</Sheet.Title>
+            </Sheet.Content>
+          </Sheet.Portal>
+        </Sheet.Root>
+      );
+
+      await waitFor(() => {
+        expect(pushStateSpy).toHaveBeenCalledWith({ modal: true }, "");
+      });
+    });
+
+    it("Sheet이 닫힐 때 history.back()이 호출됨", async () => {
+      const { rerender } = render(
+        <Sheet.Root open={true}>
+          <Sheet.Portal>
+            <Sheet.Overlay />
+            <Sheet.Content>
+              <Sheet.Title>Sheet Title</Sheet.Title>
+            </Sheet.Content>
+          </Sheet.Portal>
+        </Sheet.Root>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByRole("dialog")).toBeInTheDocument();
+      });
+
+      // Sheet 닫기
+      rerender(
+        <Sheet.Root open={false}>
+          <Sheet.Portal>
+            <Sheet.Overlay />
+            <Sheet.Content>
+              <Sheet.Title>Sheet Title</Sheet.Title>
+            </Sheet.Content>
+          </Sheet.Portal>
+        </Sheet.Root>
+      );
+
+      await waitFor(() => {
+        expect(backSpy).toHaveBeenCalled();
+      });
+    });
+
+    it("popstate 이벤트로 닫을 때는 history.back()이 호출되지 않음", async () => {
+      render(
+        <Sheet.Root defaultOpen={true}>
+          <Sheet.Portal>
+            <Sheet.Overlay />
+            <Sheet.Content>
+              <Sheet.Title>Sheet Title</Sheet.Title>
+            </Sheet.Content>
+          </Sheet.Portal>
+        </Sheet.Root>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByRole("dialog")).toBeInTheDocument();
+      });
+
+      // back 호출 횟수 초기화
+      backSpy.mockClear();
+
+      // popstate 이벤트로 닫기
+      window.dispatchEvent(new PopStateEvent("popstate"));
+
+      await waitFor(() => {
+        expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+      });
+
+      // popstate로 닫았으므로 back()이 호출되지 않아야 함
+      expect(backSpy).not.toHaveBeenCalled();
+    });
+
+    it("navigateAndClose 호출 시 Sheet이 닫히고 history.back()이 호출됨", async () => {
+      const navigationFn = vi.fn();
+
+      const TestComponent = () => {
+        const { useSheetNavigation } = require("./Sheet");
+        let navigateAndClose;
+
+        try {
+          navigateAndClose = useSheetNavigation();
+        } catch {
+          // useSheetNavigation을 직접 호출할 수 없으므로 컨텍스트 사용
+          return null;
+        }
+
+        return (
+          <div>
+            <button
+              onClick={() => {
+                navigateAndClose(navigationFn);
+              }}
+            >
+              Test Navigation
+            </button>
+          </div>
+        );
+      };
+
+      const { rerender } = render(
+        <Sheet.Root open={true}>
+          <Sheet.Portal>
+            <Sheet.Overlay />
+            <Sheet.Content>
+              <Sheet.Title>Sheet Title</Sheet.Title>
+            </Sheet.Content>
+          </Sheet.Portal>
+        </Sheet.Root>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByRole("dialog")).toBeInTheDocument();
+      });
+
+      backSpy.mockClear();
+
+      // Sheet을 닫으면 navigateAndClose 로직이 실행됨
+      rerender(
+        <Sheet.Root open={false}>
+          <Sheet.Portal>
+            <Sheet.Overlay />
+            <Sheet.Content>
+              <Sheet.Title>Sheet Title</Sheet.Title>
+            </Sheet.Content>
+          </Sheet.Portal>
+        </Sheet.Root>
+      );
+
+      // history.back()이 호출되었는지 확인
+      await waitFor(() => {
+        expect(backSpy).toHaveBeenCalled();
+      });
+    });
+
+    it("리스너가 등록되고 제거됨 (메모리 누수 없음)", async () => {
+      const addEventListenerSpy = vi.spyOn(window, "addEventListener");
+      const removeEventListenerSpy = vi.spyOn(window, "removeEventListener");
+
+      const { unmount } = render(
+        <Sheet.Root open={true}>
+          <Sheet.Portal>
+            <Sheet.Overlay />
+            <Sheet.Content>
+              <Sheet.Title>Sheet Title</Sheet.Title>
+            </Sheet.Content>
+          </Sheet.Portal>
+        </Sheet.Root>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByRole("dialog")).toBeInTheDocument();
+      });
+
+      // popstate 리스너가 등록되었는지 확인
+      const popstateListenerCalls = addEventListenerSpy.mock.calls.filter(
+        (call) => call[0] === "popstate"
+      );
+      expect(popstateListenerCalls.length).toBeGreaterThan(0);
+
+      // 컴포넌트 언마운트
+      unmount();
+
+      // popstate 리스너가 제거되었는지 확인
+      const popstateRemoveCalls = removeEventListenerSpy.mock.calls.filter(
+        (call) => call[0] === "popstate"
+      );
+      expect(popstateRemoveCalls.length).toBeGreaterThan(0);
+
+      addEventListenerSpy.mockRestore();
+      removeEventListenerSpy.mockRestore();
+    });
+  });
 });

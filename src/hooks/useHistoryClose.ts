@@ -1,49 +1,24 @@
 import { useEffect, useRef, useState } from "react";
 
 /**
- * useHistoryClose Hook
- *
- * 브라우저 히스토리를 활용하여 모달/Sheet를 뒤로가기로 닫는 기능을 제공합니다.
- * iOS Safari의 오른쪽 스와이프 제스처와 데스크톱의 브라우저 뒤로가기 버튼을 지원합니다.
+ * 브라우저 히스토리를 활용한 모달/Sheet 뒤로가기 닫기 기능
  *
  * @description
- * History Absorption Pattern 구현:
- *
- * **동작 원리**
- * 1. 모달이 열릴 때 `window.history.pushState()`로 더미 히스토리 항목 추가
- * 2. 브라우저 뒤로가기 시 `popstate` 이벤트가 발생하면 모달 닫기
- * 3. 다른 방법(버튼 클릭, ESC, 외부 클릭 등)으로 닫을 때는 히스토리 길이를 비교하여 정리
- *
- * **상태 관리**
- * - `useState`를 사용하여 히스토리 기반 닫기 여부를 추적
- * - 컴포넌트가 re-render되어 closing animation을 즉시 스킵 가능
- * - 빠른 스와이프 제스처에서도 깜빡임 없이 닫힘
- *
- * **히스토리 정리**
- * - 뒤로가기로 닫을 때: 브라우저가 자동으로 히스토리 pop (history.back() 불필요)
- * - ESC/외부 클릭으로 닫을 때:
- *   - Sheet 내부에서 페이지 이동이 없었으면 `history.back()` 호출하여 더미 히스토리 제거
- *   - Sheet 내부에서 페이지 이동이 있었으면 더미 히스토리를 유지 (navigation 우선)
- * - 더미 히스토리가 불필요하게 남지 않아 사용자 경험 개선
- *
- * **Navigation 감지**
- * - Sheet이 열릴 때 히스토리 길이 저장
- * - Sheet이 닫힐 때 히스토리 길이 비교로 내부 navigation 여부 판단
- * - React Router, Next.js Router 등 모든 라우팅 라이브러리와 호환
- *
- * @limitation
- * - 모달 열린 상태에서 새로고침 시 히스토리에 더미 state가 남음
- * - 이후 뒤로가기 시 같은 페이지가 한 번 더 렌더링됨 (acceptable trade-off)
+ * 모달 열림 시 더미 히스토리 추가 → 뒤로가기 시 모달 닫기
+ * iOS Safari 스와이프 제스처 및 브라우저 뒤로가기 버튼 지원
  *
  * @example
  * ```tsx
- * const isClosingFromHistory = useHistoryClose({
+ * const { isClosingFromHistory, navigateAndClose } = useHistoryClose({
  *   isOpen,
  *   onClose,
  * });
  *
- * // 히스토리 기반 닫기인 경우 애니메이션 스킵
- * const closingDuration = isClosingFromHistory ? 0 : 300;
+ * // 히스토리 기반 닫기 시 애니메이션 스킵
+ * const duration = isClosingFromHistory ? 0 : 300;
+ *
+ * // Sheet 내부 링크 클릭 시 네비게이션
+ * <a onClick={() => navigateAndClose(() => router.push('/path'))}>
  * ```
  */
 export interface UseHistoryCloseProps {
@@ -58,7 +33,34 @@ export interface UseHistoryCloseProps {
   onClose: () => void;
 }
 
-export function useHistoryClose({ onClose, isOpen }: UseHistoryCloseProps) {
+export interface UseHistoryCloseReturn {
+  /**
+   * 히스토리 기반 닫기 여부
+   */
+  isClosingFromHistory: boolean;
+
+  /**
+   * Sheet을 닫으면서 페이지 네비게이션을 수행하는 함수
+   * 히스토리를 깔끔하게 유지하면서 네비게이션을 처리합니다.
+   *
+   * @param navigationFn - 네비게이션 콜백 (예: () => router.push('/path'))
+   *
+   * @example
+   * ```tsx
+   * const { navigateAndClose } = useHistoryClose({ isOpen, onClose });
+   *
+   * const handleLinkClick = (href: string) => {
+   *   navigateAndClose(() => router.push(href));
+   * };
+   * ```
+   */
+  navigateAndClose: (navigationFn: () => void) => void;
+}
+
+export function useHistoryClose({
+  onClose,
+  isOpen,
+}: UseHistoryCloseProps): UseHistoryCloseReturn {
   // onClose를 ref로 저장하여 popstate 이벤트 핸들러에서 최신 함수 참조
   const onCloseRef = useRef(onClose);
 
@@ -70,6 +72,9 @@ export function useHistoryClose({ onClose, isOpen }: UseHistoryCloseProps) {
 
   // Sheet이 열릴 때의 히스토리 길이 저장 (navigation 감지용)
   const initialHistoryLengthRef = useRef(0);
+
+  // 대기 중인 네비게이션 콜백 저장
+  const pendingNavigationRef = useRef<(() => void) | null>(null);
 
   // onClose 함수가 변경될 때마다 ref 업데이트
   useEffect(() => {
@@ -111,7 +116,28 @@ export function useHistoryClose({ onClose, isOpen }: UseHistoryCloseProps) {
 
         // navigation이 없었을 때만 더미 히스토리 제거
         if (!hasNavigated) {
-          window.history.back();
+          // 대기 중인 네비게이션이 있는 경우
+          if (pendingNavigationRef.current) {
+            // popstate 이벤트 리스너 등록 (history.back() 완료 후 실행)
+            const handleNavigationPopState = () => {
+              window.removeEventListener("popstate", handleNavigationPopState);
+
+              // 히스토리 정리 후 네비게이션 실행
+              if (pendingNavigationRef.current) {
+                pendingNavigationRef.current();
+                pendingNavigationRef.current = null;
+              }
+            };
+
+            window.addEventListener("popstate", handleNavigationPopState);
+            window.history.back();
+          } else {
+            // 일반 닫기: 더미 히스토리만 제거
+            window.history.back();
+          }
+        } else {
+          // navigation이 발생한 경우 pending navigation 초기화
+          pendingNavigationRef.current = null;
         }
       }
 
@@ -120,5 +146,24 @@ export function useHistoryClose({ onClose, isOpen }: UseHistoryCloseProps) {
     }
   }, [isOpen, isClosingFromHistory]);
 
-  return isClosingFromHistory;
+  /**
+   * Sheet을 닫으면서 페이지 네비게이션을 수행하는 함수
+   *
+   * 동작 순서:
+   * 1. 네비게이션 콜백을 pendingNavigationRef에 저장
+   * 2. onClose() 호출로 Sheet 닫기
+   * 3. useEffect에서 history.back()으로 더미 히스토리 제거
+   * 4. popstate 이벤트 발생 후 저장된 네비게이션 콜백 실행
+   *
+   * 최종 히스토리: [page1, page2] (깔끔하게 유지)
+   */
+  const navigateAndClose = (navigationFn: () => void) => {
+    pendingNavigationRef.current = navigationFn;
+    onCloseRef.current();
+  };
+
+  return {
+    isClosingFromHistory,
+    navigateAndClose,
+  };
 }

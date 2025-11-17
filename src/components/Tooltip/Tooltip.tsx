@@ -294,13 +294,15 @@ function TooltipRoot({
         }
       }
 
-      // 화살표 위치 계산 (children 중앙 기준)
+      // 화살표 위치 계산 (align이 center일 때만 trigger 중앙 기준으로 계산, start/end는 CSS로 처리)
       const arrowLeft =
-        finalPlacement === "top" || finalPlacement === "bottom"
+        align === "center" &&
+        (finalPlacement === "top" || finalPlacement === "bottom")
           ? trigger.left + trigger.width / 2 - left
           : undefined;
       const arrowTop =
-        finalPlacement === "left" || finalPlacement === "right"
+        align === "center" &&
+        (finalPlacement === "left" || finalPlacement === "right")
           ? trigger.top + trigger.height / 2 - top
           : undefined;
 

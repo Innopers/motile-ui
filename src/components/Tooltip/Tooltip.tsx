@@ -118,10 +118,10 @@ interface TooltipRootProps {
    * 툴팁과 트리거 사이의 간격 (px)
    * - number: 모든 방향 동일하게 적용
    * - object: 방향별 개별 설정 가능
-   * @default top: 7, bottom: 6, left: 12, right: 6
+   * @default top: 7, bottom: 6, left: 6, right: 6
    * @example
    * offset={8}
-   * offset={{ top: 7, bottom: 6, left: 12, right: 6 }}
+   * offset={{ top: 7, bottom: 6, left: 6, right: 6 }}
    */
   offset?:
     | number
@@ -148,13 +148,13 @@ function TooltipRoot({
   // offset 정규화 (number → object 변환)
   const offsetValue =
     offset === undefined
-      ? { top: 7, bottom: 6, left: 12, right: 6 } // 기본값: top은 7, left는 화살표(6px) + 여백(6px) = 12px
+      ? { top: 7, bottom: 6, left: 6, right: 6 } // 기본값: top은 7, left는 6px (화살표에 더 가깝게)
       : typeof offset === "number"
       ? { top: offset, bottom: offset, left: offset, right: offset }
       : {
           top: offset.top ?? 7,
           bottom: offset.bottom ?? 6,
-          left: offset.left ?? 12,
+          left: offset.left ?? 6,
           right: offset.right ?? 6,
         };
 
@@ -199,14 +199,22 @@ function TooltipRoot({
 
       // 임시로 보이지 않게 해서 자연스러운 크기 측정
       bubble.classList.add("measuring");
-      const rect = bubble.getBoundingClientRect();
+
+      // 측정 전 레이아웃 플러시 강제 실행
+      bubble.offsetHeight;
+
+      // 정확한 크기 측정을 위해 getComputedStyle 사용
+      const computedStyle = window.getComputedStyle(bubble);
+      const originalWidth = parseFloat(computedStyle.width);
+      const originalHeight = parseFloat(computedStyle.height);
+
+      let bw = originalWidth;
+      let bh = originalHeight;
+
       bubble.classList.remove("measuring");
 
       const vw = window.innerWidth;
       const vh = window.innerHeight;
-
-      let bw = rect.width;
-      let bh = rect.height;
 
       // 뷰포트보다 크면 제한
       const maxW = vw - MARGIN * 2;
@@ -299,8 +307,8 @@ function TooltipRoot({
       setStyle({
         left: Math.round(left),
         top: Math.round(top),
-        ...(bw !== rect.width && { maxWidth: bw }),
-        ...(bh !== rect.height && { maxHeight: maxH }),
+        ...(bw !== originalWidth && { maxWidth: bw }),
+        ...(bh !== originalHeight && { maxHeight: maxH }),
         ...(color &&
           ({ "--motile-tooltip-color": color } as React.CSSProperties)),
       });

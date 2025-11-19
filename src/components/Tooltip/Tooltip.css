@@ -78,196 +78,101 @@
   top: 0 !important;
 }
 
-/* 화살표 */
-.motile-tooltip-bubble[data-show-arrow]::before {
-  content: "";
+/* SVG 화살표 스타일 */
+.motile-tooltip-arrow {
   position: absolute;
-  width: 0;
-  height: 0;
-  border: 6px solid transparent;
+  pointer-events: none;
+  z-index: 1;
 }
 
-.motile-tooltip-bubble--outlined[data-show-arrow]::before {
-  border: 7px solid transparent;
+/* Top position arrows */
+.motile-tooltip-bubble[data-placement="top"] .motile-tooltip-arrow {
+  bottom: -7.25px;
 }
 
-/* Outlined variant 화살표 배경 (흰색) */
-.motile-tooltip-bubble--outlined[data-show-arrow]::after {
-  content: "";
-  position: absolute;
-  width: 0;
-  height: 0;
-  border: 6px solid transparent;
+.motile-tooltip-bubble[data-placement="top"][data-align="start"]
+  .motile-tooltip-arrow {
+  left: 30%;
+  transform: translateX(-50%) rotate(180deg);
 }
 
-/* Top placement: 화살표가 툴팁 아래에서 위로 */
-.motile-tooltip-bubble[data-placement="top"][data-show-arrow]::before {
-  bottom: -6px;
-  left: var(--arrow-left, 50%);
-  transform: translateX(-50%);
-  border-bottom-width: 0;
-  border-top-color: var(--arrow-color);
-}
-/* Top - start alignment */
-.motile-tooltip-bubble[data-placement="top"][data-align="start"][data-show-arrow]::before {
-  left: 28px;
-  transform: none;
-}
-/* Top - end alignment */
-.motile-tooltip-bubble[data-placement="top"][data-align="end"][data-show-arrow]::before {
-  left: auto;
-  right: 28px;
-  transform: none;
+.motile-tooltip-bubble[data-placement="top"][data-align="center"]
+  .motile-tooltip-arrow {
+  left: 50%;
+  transform: translateX(-50%) rotate(180deg);
 }
 
-.motile-tooltip-bubble--outlined[data-placement="top"][data-show-arrow]::before {
-  bottom: -8px;
+.motile-tooltip-bubble[data-placement="top"][data-align="end"]
+  .motile-tooltip-arrow {
+  left: 70%;
+  transform: translateX(-50%) rotate(180deg);
 }
 
-.motile-tooltip-bubble--outlined[data-placement="top"][data-show-arrow]::after {
-  bottom: -6px;
-  left: var(--arrow-left, 50%);
-  transform: translateX(-50%);
-  border-bottom-width: 0;
-  border-top-color: white;
-}
-/* Top - start alignment (outlined) */
-.motile-tooltip-bubble--outlined[data-placement="top"][data-align="start"][data-show-arrow]::after {
-  left: 29px;
-  transform: none;
-}
-/* Top - end alignment (outlined) */
-.motile-tooltip-bubble--outlined[data-placement="top"][data-align="end"][data-show-arrow]::after {
-  left: auto;
-  right: 29px;
-  transform: none;
+/* Bottom position arrows */
+.motile-tooltip-bubble[data-placement="bottom"] .motile-tooltip-arrow {
+  top: -7px;
 }
 
-/* Bottom placement: 화살표가 툴팁 위에서 아래로 */
-.motile-tooltip-bubble[data-placement="bottom"][data-show-arrow]::before {
-  top: -6px;
-  left: var(--arrow-left, 50%);
-  transform: translateX(-50%);
-  border-top-width: 0;
-  border-bottom-color: var(--arrow-color);
-}
-/* Bottom - start alignment */
-.motile-tooltip-bubble[data-placement="bottom"][data-align="start"][data-show-arrow]::before {
-  left: 28px;
-  transform: none;
-}
-/* Bottom - end alignment */
-.motile-tooltip-bubble[data-placement="bottom"][data-align="end"][data-show-arrow]::before {
-  left: auto;
-  right: 28px;
-  transform: none;
+.motile-tooltip-bubble[data-placement="bottom"][data-align="start"]
+  .motile-tooltip-arrow {
+  left: 30%;
+  transform: translateX(-50%) rotate(0deg);
 }
 
-.motile-tooltip-bubble--outlined[data-placement="bottom"][data-show-arrow]::before {
-  top: -8px;
+.motile-tooltip-bubble[data-placement="bottom"][data-align="center"]
+  .motile-tooltip-arrow {
+  left: 50%;
+  transform: translateX(-50%) rotate(0deg);
 }
 
-.motile-tooltip-bubble--outlined[data-placement="bottom"][data-show-arrow]::after {
-  top: -6px;
-  left: var(--arrow-left, 50%);
-  transform: translateX(-50%);
-  border-top-width: 0;
-  border-bottom-color: white;
-}
-/* Bottom - start alignment (outlined) */
-.motile-tooltip-bubble--outlined[data-placement="bottom"][data-align="start"][data-show-arrow]::after {
-  left: 29px;
-  transform: none;
-}
-/* Bottom - end alignment (outlined) */
-.motile-tooltip-bubble--outlined[data-placement="bottom"][data-align="end"][data-show-arrow]::after {
-  left: auto;
-  right: 29px;
-  transform: none;
+.motile-tooltip-bubble[data-placement="bottom"][data-align="end"]
+  .motile-tooltip-arrow {
+  left: 70%;
+  transform: translateX(-50%) rotate(0deg);
 }
 
-/* Left placement: 화살표가 툴팁 오른쪽에서 왼쪽으로 */
-.motile-tooltip-bubble[data-placement="left"][data-show-arrow]::before {
-  right: -6px;
-  top: var(--arrow-top, 50%);
-  transform: translateY(-50%);
-  border-right-width: 0;
-  border-left-color: var(--arrow-color);
-}
-/* Left - start alignment */
-.motile-tooltip-bubble[data-placement="left"][data-align="start"][data-show-arrow]::before {
-  top: 28px;
-  transform: none;
-}
-/* Left - end alignment */
-.motile-tooltip-bubble[data-placement="left"][data-align="end"][data-show-arrow]::before {
-  top: auto;
-  bottom: 28px;
-  transform: none;
+/* Left position arrows */
+.motile-tooltip-bubble[data-placement="left"] .motile-tooltip-arrow {
+  right: -9.25px;
 }
 
-.motile-tooltip-bubble--outlined[data-placement="left"][data-show-arrow]::before {
-  right: -8px;
+.motile-tooltip-bubble[data-placement="left"][data-align="start"]
+  .motile-tooltip-arrow {
+  top: 35%;
+  transform: translateY(-50%) rotate(90deg);
 }
 
-.motile-tooltip-bubble--outlined[data-placement="left"][data-show-arrow]::after {
-  right: -6px;
-  top: var(--arrow-top, 50%);
-  transform: translateY(-50%);
-  border-right-width: 0;
-  border-left-color: white;
-}
-/* Left - start alignment (outlined) */
-.motile-tooltip-bubble--outlined[data-placement="left"][data-align="start"][data-show-arrow]::after {
-  top: 29px;
-  transform: none;
-}
-/* Left - end alignment (outlined) */
-.motile-tooltip-bubble--outlined[data-placement="left"][data-align="end"][data-show-arrow]::after {
-  top: auto;
-  bottom: 29px;
-  transform: none;
+.motile-tooltip-bubble[data-placement="left"][data-align="center"]
+  .motile-tooltip-arrow {
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
 }
 
-/* Right placement: 화살표가 툴팁 왼쪽에서 오른쪽으로 */
-.motile-tooltip-bubble[data-placement="right"][data-show-arrow]::before {
-  left: -6px;
-  top: var(--arrow-top, 50%);
-  transform: translateY(-50%);
-  border-left-width: 0;
-  border-right-color: var(--arrow-color);
-}
-/* Right - start alignment */
-.motile-tooltip-bubble[data-placement="right"][data-align="start"][data-show-arrow]::before {
-  top: 28px;
-  transform: none;
-}
-/* Right - end alignment */
-.motile-tooltip-bubble[data-placement="right"][data-align="end"][data-show-arrow]::before {
-  top: auto;
-  bottom: 28px;
-  transform: none;
+.motile-tooltip-bubble[data-placement="left"][data-align="end"]
+  .motile-tooltip-arrow {
+  top: 65%;
+  transform: translateY(-50%) rotate(90deg);
 }
 
-.motile-tooltip-bubble--outlined[data-placement="right"][data-show-arrow]::before {
-  left: -8px;
+/* Right position arrows */
+.motile-tooltip-bubble[data-placement="right"] .motile-tooltip-arrow {
+  left: -9.25px;
 }
 
-.motile-tooltip-bubble--outlined[data-placement="right"][data-show-arrow]::after {
-  left: -6px;
-  top: var(--arrow-top, 50%);
-  transform: translateY(-50%);
-  border-left-width: 0;
-  border-right-color: white;
+.motile-tooltip-bubble[data-placement="right"][data-align="start"]
+  .motile-tooltip-arrow {
+  top: 35%;
+  transform: translateY(-50%) rotate(-90deg);
 }
-/* Right - start alignment (outlined) */
-.motile-tooltip-bubble--outlined[data-placement="right"][data-align="start"][data-show-arrow]::after {
-  top: 29px;
-  transform: none;
+
+.motile-tooltip-bubble[data-placement="right"][data-align="center"]
+  .motile-tooltip-arrow {
+  top: 50%;
+  transform: translateY(-50%) rotate(-90deg);
 }
-/* Right - end alignment (outlined) */
-.motile-tooltip-bubble--outlined[data-placement="right"][data-align="end"][data-show-arrow]::after {
-  top: auto;
-  bottom: 29px;
-  transform: none;
+
+.motile-tooltip-bubble[data-placement="right"][data-align="end"]
+  .motile-tooltip-arrow {
+  top: 65%;
+  transform: translateY(-50%) rotate(-90deg);
 }

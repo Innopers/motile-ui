@@ -294,18 +294,6 @@ function TooltipRoot({
         }
       }
 
-      // 화살표 위치 계산 (align이 center일 때만 trigger 중앙 기준으로 계산, start/end는 CSS로 처리)
-      const arrowLeft =
-        align === "center" &&
-        (finalPlacement === "top" || finalPlacement === "bottom")
-          ? trigger.left + trigger.width / 2 - left
-          : undefined;
-      const arrowTop =
-        align === "center" &&
-        (finalPlacement === "left" || finalPlacement === "right")
-          ? trigger.top + trigger.height / 2 - top
-          : undefined;
-
       // 상태 업데이트
       setPlacement(finalPlacement);
       setStyle({
@@ -315,10 +303,6 @@ function TooltipRoot({
         ...(bh !== rect.height && { maxHeight: maxH }),
         ...(color &&
           ({ "--motile-tooltip-color": color } as React.CSSProperties)),
-        ...(arrowLeft !== undefined &&
-          ({ "--arrow-left": `${arrowLeft}px` } as React.CSSProperties)),
-        ...(arrowTop !== undefined &&
-          ({ "--arrow-top": `${arrowTop}px` } as React.CSSProperties)),
       });
     };
 
@@ -549,6 +533,13 @@ function TooltipContent({ children }: TooltipContentProps) {
     }
   }, [keepOpen, setOpen]);
 
+  // Arrow 색상 CSS 변수로 전달
+  const arrowColor =
+    (style as Record<string, unknown>)["--motile-tooltip-color"] ||
+    (variant === "filled"
+      ? "var(--motile-ui-tooltip, rgba(0, 0, 0, 0.9))"
+      : "var(--motile-ui-tooltip, #3b82f6)");
+
   if (!mounted || !open) return null;
 
   return createPortal(
@@ -568,6 +559,46 @@ function TooltipContent({ children }: TooltipContentProps) {
       onMouseLeave={handleBubbleLeave}
     >
       {children}
+      {showArrow && (
+        <svg
+          className="motile-tooltip-arrow"
+          width="12"
+          height="8"
+          viewBox="0 0 12 8"
+          style={
+            {
+              "--arrow-color": arrowColor,
+            } as React.CSSProperties
+          }
+        >
+          {variant === "filled" ? (
+            <path
+              d="M6 0 L12 8 L0 8 Z"
+              fill="var(--arrow-color)"
+              stroke="var(--arrow-color)"
+              strokeWidth="1"
+              strokeLinejoin="round"
+            />
+          ) : (
+            <>
+              {/* Extended base that overlaps with tooltip border for seamless connection */}
+              <path
+                d="M-1 7 L-0.5 8.5 L12.5 8.5 L13 7 L11 7 L6 1 L1 7 Z"
+                fill="white"
+              />
+              {/* Arrow outline only on visible edges */}
+              <path
+                d="M1 7 L6 1 L11 7"
+                fill="none"
+                stroke="var(--arrow-color)"
+                strokeWidth="1"
+                strokeLinejoin="round"
+                strokeLinecap="round"
+              />
+            </>
+          )}
+        </svg>
+      )}
     </div>,
     document.body
   );

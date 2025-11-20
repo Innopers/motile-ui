@@ -828,32 +828,6 @@ describe("Sheet", () => {
     });
 
     it("navigateAndClose 호출 시 Sheet이 닫히고 history.back()이 호출됨", async () => {
-      const navigationFn = vi.fn();
-
-      const TestComponent = () => {
-        const { useSheetNavigation } = require("./Sheet");
-        let navigateAndClose;
-
-        try {
-          navigateAndClose = useSheetNavigation();
-        } catch {
-          // useSheetNavigation을 직접 호출할 수 없으므로 컨텍스트 사용
-          return null;
-        }
-
-        return (
-          <div>
-            <button
-              onClick={() => {
-                navigateAndClose(navigationFn);
-              }}
-            >
-              Test Navigation
-            </button>
-          </div>
-        );
-      };
-
       const { rerender } = render(
         <Sheet.Root open={true}>
           <Sheet.Portal>

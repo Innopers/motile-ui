@@ -88,91 +88,27 @@
 /* Top position arrows */
 .motile-tooltip-bubble[data-placement="top"] .motile-tooltip-arrow {
   bottom: -7.25px;
-}
-
-.motile-tooltip-bubble[data-placement="top"][data-align="start"]
-  .motile-tooltip-arrow {
-  left: 30%;
-  transform: translateX(-50%) rotate(180deg);
-}
-
-.motile-tooltip-bubble[data-placement="top"][data-align="center"]
-  .motile-tooltip-arrow {
-  left: 50%;
-  transform: translateX(-50%) rotate(180deg);
-}
-
-.motile-tooltip-bubble[data-placement="top"][data-align="end"]
-  .motile-tooltip-arrow {
-  left: 70%;
+  left: var(--arrow-offset, 50%);
   transform: translateX(-50%) rotate(180deg);
 }
 
 /* Bottom position arrows */
 .motile-tooltip-bubble[data-placement="bottom"] .motile-tooltip-arrow {
   top: -7px;
-}
-
-.motile-tooltip-bubble[data-placement="bottom"][data-align="start"]
-  .motile-tooltip-arrow {
-  left: 30%;
-  transform: translateX(-50%) rotate(0deg);
-}
-
-.motile-tooltip-bubble[data-placement="bottom"][data-align="center"]
-  .motile-tooltip-arrow {
-  left: 50%;
-  transform: translateX(-50%) rotate(0deg);
-}
-
-.motile-tooltip-bubble[data-placement="bottom"][data-align="end"]
-  .motile-tooltip-arrow {
-  left: 70%;
+  left: var(--arrow-offset, 50%);
   transform: translateX(-50%) rotate(0deg);
 }
 
 /* Left position arrows */
 .motile-tooltip-bubble[data-placement="left"] .motile-tooltip-arrow {
   right: -9.25px;
-}
-
-.motile-tooltip-bubble[data-placement="left"][data-align="start"]
-  .motile-tooltip-arrow {
-  top: 35%;
-  transform: translateY(-50%) rotate(90deg);
-}
-
-.motile-tooltip-bubble[data-placement="left"][data-align="center"]
-  .motile-tooltip-arrow {
-  top: 50%;
-  transform: translateY(-50%) rotate(90deg);
-}
-
-.motile-tooltip-bubble[data-placement="left"][data-align="end"]
-  .motile-tooltip-arrow {
-  top: 65%;
+  top: var(--arrow-offset, 50%);
   transform: translateY(-50%) rotate(90deg);
 }
 
 /* Right position arrows */
 .motile-tooltip-bubble[data-placement="right"] .motile-tooltip-arrow {
   left: -9.25px;
-}
-
-.motile-tooltip-bubble[data-placement="right"][data-align="start"]
-  .motile-tooltip-arrow {
-  top: 35%;
-  transform: translateY(-50%) rotate(-90deg);
-}
-
-.motile-tooltip-bubble[data-placement="right"][data-align="center"]
-  .motile-tooltip-arrow {
-  top: 50%;
-  transform: translateY(-50%) rotate(-90deg);
-}
-
-.motile-tooltip-bubble[data-placement="right"][data-align="end"]
-  .motile-tooltip-arrow {
-  top: 65%;
+  top: var(--arrow-offset, 50%);
   transform: translateY(-50%) rotate(-90deg);
 }

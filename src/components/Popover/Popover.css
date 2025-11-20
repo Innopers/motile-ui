@@ -1,6 +1,7 @@
-/* 래퍼: position context 제공 (Content의 absolute positioning 기준) */
+/* 래퍼: trigger 크기에 맞춤, Content의 absolute positioning 기준 */
 .motile-popover-wrapper {
   position: relative;
+  display: inline-block;
 }
 
 /* 컨텐츠 박스 */
@@ -17,19 +18,22 @@
   max-width: min(90vw, 420px);
   box-sizing: border-box;
   overflow: visible;
-  opacity: 0;
-  visibility: hidden;
   will-change: transform;
   backface-visibility: hidden;
-  perspective: 1000px;
 }
 
 /* Filled Variant - 배경색 적용, 텍스트 흰색 */
 .motile-popover-content--filled {
-  background: var(--motile-popover-color, var(--motile-ui-popover, #3b82f6));
+  background: var(
+    --motile-popover-color,
+    var(--motile-ui-popover, var(--motile-theme, #3b82f6))
+  );
   color: #fff;
   border: 1px solid
-    var(--motile-popover-color, var(--motile-ui-popover, #3b82f6));
+    var(
+      --motile-popover-color,
+      var(--motile-ui-popover, var(--motile-theme, #3b82f6))
+    );
 }
 
 /* Outlined Variant - 배경 흰색, 테두리에 색상 */
@@ -37,580 +41,506 @@
   background: #fff;
   color: #111827;
   border: 1px solid
-    var(--motile-popover-color, var(--motile-ui-popover, #e5e7eb));
+    var(
+      --motile-popover-color,
+      var(--motile-ui-popover, var(--motile-theme, #e5e7eb))
+    );
 }
 
-/* 위치 계산 완료 후 표시 */
-.motile-popover-content[data-positioned="true"] {
-  opacity: 1;
-  visibility: visible;
+/* ============================================================================
+   Position: TOP
+   ============================================================================ */
+
+/* top/start */
+.motile-popover-content[data-placement="top"][data-align="start"] {
+  bottom: calc(100% + 5.5px);
+  left: 0;
+  animation: popover-fade-in-top 0.2s ease-out;
 }
 
-/* Base transforms for center alignment - 애니메이션 종료 후에도 유지 */
-.motile-popover-content[data-placement="top"][data-align="center"],
-.motile-popover-content[data-placement="bottom"][data-align="center"] {
-  transform: translate3d(-50%, 0, 0);
-}
-
-.motile-popover-content[data-placement="left"][data-align="center"],
-.motile-popover-content[data-placement="right"][data-align="center"] {
-  transform: translate3d(0, -50%, 0);
-}
-
-/* top - fade 애니메이션 (bounce 없을 때) */
-.motile-popover-content[data-placement="top"][data-align="center"][data-positioned="true"][data-bounce="false"] {
+/* top/center */
+.motile-popover-content[data-placement="top"][data-align="center"] {
+  bottom: calc(100% + 5.5px);
+  left: 50%;
+  transform: translateX(-50%);
   animation: popover-fade-in-top-center 0.2s ease-out;
 }
-.motile-popover-content[data-placement="top"][data-align="start"][data-positioned="true"][data-bounce="false"] {
-  animation: popover-fade-in-top-start 0.2s ease-out;
+
+/* top/end */
+.motile-popover-content[data-placement="top"][data-align="end"] {
+  bottom: calc(100% + 5.5px);
+  right: 0;
+  animation: popover-fade-in-top 0.2s ease-out;
 }
-.motile-popover-content[data-placement="top"][data-align="end"][data-positioned="true"][data-bounce="false"] {
-  animation: popover-fade-in-top-end 0.2s ease-out;
+
+/* ============================================================================
+   Position: BOTTOM
+   ============================================================================ */
+
+/* bottom/start */
+.motile-popover-content[data-placement="bottom"][data-align="start"] {
+  top: calc(100% + 5.5px);
+  left: 0;
+  animation: popover-fade-in-bottom 0.2s ease-out;
+}
+
+/* bottom/center */
+.motile-popover-content[data-placement="bottom"][data-align="center"] {
+  top: calc(100% + 5.5px);
+  left: 50%;
+  transform: translateX(-50%);
+  animation: popover-fade-in-bottom-center 0.2s ease-out;
+}
+
+/* bottom/end */
+.motile-popover-content[data-placement="bottom"][data-align="end"] {
+  top: calc(100% + 5.5px);
+  right: 0;
+  animation: popover-fade-in-bottom 0.2s ease-out;
+}
+
+/* ============================================================================
+   Position: LEFT
+   ============================================================================ */
+
+/* left/start */
+.motile-popover-content[data-placement="left"][data-align="start"] {
+  right: calc(100% + 5.5px);
+  top: 0;
+  animation: popover-fade-in-left 0.2s ease-out;
+}
+
+/* left/center */
+.motile-popover-content[data-placement="left"][data-align="center"] {
+  right: calc(100% + 5.5px);
+  top: 50%;
+  transform: translateY(-50%);
+  animation: popover-fade-in-left-center 0.2s ease-out;
+}
+
+/* left/end */
+.motile-popover-content[data-placement="left"][data-align="end"] {
+  right: calc(100% + 5.5px);
+  bottom: 0;
+  animation: popover-fade-in-left 0.2s ease-out;
+}
+
+/* ============================================================================
+   Position: RIGHT
+   ============================================================================ */
+
+/* right/start */
+.motile-popover-content[data-placement="right"][data-align="start"] {
+  left: calc(100% + 5.5px);
+  top: 0;
+  animation: popover-fade-in-right 0.2s ease-out;
+}
+
+/* right/center */
+.motile-popover-content[data-placement="right"][data-align="center"] {
+  left: calc(100% + 5.5px);
+  top: 50%;
+  transform: translateY(-50%);
+  animation: popover-fade-in-right-center 0.2s ease-out;
+}
+
+/* right/end */
+.motile-popover-content[data-placement="right"][data-align="end"] {
+  left: calc(100% + 5.5px);
+  bottom: 0;
+  animation: popover-fade-in-right 0.2s ease-out;
+}
+
+/* ============================================================================
+   Fade In Animations
+   ============================================================================ */
+
+@keyframes popover-fade-in-top {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes popover-fade-in-top-center {
   from {
     opacity: 0;
-    transform: translate3d(-50%, 8px, 0);
+    transform: translate(-50%, 8px);
   }
   to {
     opacity: 1;
-    transform: translate3d(-50%, 0, 0);
+    transform: translate(-50%, 0);
   }
 }
-@keyframes popover-fade-in-top-start {
+
+@keyframes popover-fade-in-bottom {
   from {
     opacity: 0;
-    transform: translate3d(0, 8px, 0);
+    transform: translateY(-8px);
   }
   to {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
+    transform: translateY(0);
   }
-}
-@keyframes popover-fade-in-top-end {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 8px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-/* top - bounce 애니메이션 */
-.motile-popover-content[data-placement="top"][data-align="center"][data-positioned="true"][data-bounce="true"] {
-  animation: popover-bounce-top-center 0.7s ease-out;
-  animation-iteration-count: var(--bounce-count, 1);
-}
-.motile-popover-content[data-placement="top"][data-align="start"][data-positioned="true"][data-bounce="true"] {
-  animation: popover-bounce-top-start 0.7s ease-out;
-  animation-iteration-count: var(--bounce-count, 1);
-}
-.motile-popover-content[data-placement="top"][data-align="end"][data-positioned="true"][data-bounce="true"] {
-  animation: popover-bounce-top-end 0.7s ease-out;
-  animation-iteration-count: var(--bounce-count, 1);
-}
-
-@keyframes popover-bounce-top-center {
-  0% {
-    transform: translate3d(-50%, 0, 0);
-  }
-  30% {
-    transform: translate3d(-50%, -10px, 0);
-  }
-  50% {
-    transform: translate3d(-50%, 0, 0);
-  }
-  65% {
-    transform: translate3d(-50%, -3px, 0);
-  }
-  80% {
-    transform: translate3d(-50%, 0, 0);
-  }
-  100% {
-    transform: translate3d(-50%, 0, 0);
-  }
-}
-@keyframes popover-bounce-top-start {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  30% {
-    transform: translate3d(0, -10px, 0);
-  }
-  50% {
-    transform: translate3d(0, 0, 0);
-  }
-  65% {
-    transform: translate3d(0, -3px, 0);
-  }
-  80% {
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-}
-@keyframes popover-bounce-top-end {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  30% {
-    transform: translate3d(0, -10px, 0);
-  }
-  50% {
-    transform: translate3d(0, 0, 0);
-  }
-  65% {
-    transform: translate3d(0, -3px, 0);
-  }
-  80% {
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-/* bottom - fade 애니메이션 (bounce 없을 때) */
-.motile-popover-content[data-placement="bottom"][data-align="center"][data-positioned="true"][data-bounce="false"] {
-  animation: popover-fade-in-bottom-center 0.2s ease-out;
-}
-.motile-popover-content[data-placement="bottom"][data-align="start"][data-positioned="true"][data-bounce="false"] {
-  animation: popover-fade-in-bottom-start 0.2s ease-out;
-}
-.motile-popover-content[data-placement="bottom"][data-align="end"][data-positioned="true"][data-bounce="false"] {
-  animation: popover-fade-in-bottom-end 0.2s ease-out;
 }
 
 @keyframes popover-fade-in-bottom-center {
   from {
     opacity: 0;
-    transform: translate3d(-50%, -8px, 0);
+    transform: translate(-50%, -8px);
   }
   to {
     opacity: 1;
-    transform: translate3d(-50%, 0, 0);
+    transform: translate(-50%, 0);
   }
 }
-@keyframes popover-fade-in-bottom-start {
+
+@keyframes popover-fade-in-left {
   from {
     opacity: 0;
-    transform: translate3d(0, -8px, 0);
+    transform: translateX(8px);
   }
   to {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
+    transform: translateX(0);
   }
-}
-@keyframes popover-fade-in-bottom-end {
-  from {
-    opacity: 0;
-    transform: translate3d(0, -8px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-/* bottom - bounce 애니메이션 */
-.motile-popover-content[data-placement="bottom"][data-align="center"][data-positioned="true"][data-bounce="true"] {
-  animation: popover-bounce-bottom-center 0.7s ease-out;
-  animation-iteration-count: var(--bounce-count, 1);
-}
-.motile-popover-content[data-placement="bottom"][data-align="start"][data-positioned="true"][data-bounce="true"] {
-  animation: popover-bounce-bottom-start 0.7s ease-out;
-  animation-iteration-count: var(--bounce-count, 1);
-}
-.motile-popover-content[data-placement="bottom"][data-align="end"][data-positioned="true"][data-bounce="true"] {
-  animation: popover-bounce-bottom-end 0.7s ease-out;
-  animation-iteration-count: var(--bounce-count, 1);
-}
-
-@keyframes popover-bounce-bottom-center {
-  0% {
-    transform: translate3d(-50%, 0, 0);
-  }
-  30% {
-    transform: translate3d(-50%, 10px, 0);
-  }
-  50% {
-    transform: translate3d(-50%, 0, 0);
-  }
-  65% {
-    transform: translate3d(-50%, 3px, 0);
-  }
-  80% {
-    transform: translate3d(-50%, 0, 0);
-  }
-  100% {
-    transform: translate3d(-50%, 0, 0);
-  }
-}
-@keyframes popover-bounce-bottom-start {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  30% {
-    transform: translate3d(0, 10px, 0);
-  }
-  50% {
-    transform: translate3d(0, 0, 0);
-  }
-  65% {
-    transform: translate3d(0, 3px, 0);
-  }
-  80% {
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-}
-@keyframes popover-bounce-bottom-end {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  30% {
-    transform: translate3d(0, 10px, 0);
-  }
-  50% {
-    transform: translate3d(0, 0, 0);
-  }
-  65% {
-    transform: translate3d(0, 3px, 0);
-  }
-  80% {
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-/* left - fade 애니메이션 (bounce 없을 때) */
-.motile-popover-content[data-placement="left"][data-align="center"][data-positioned="true"][data-bounce="false"] {
-  animation: popover-fade-in-left-center 0.2s ease-out;
-}
-.motile-popover-content[data-placement="left"][data-align="start"][data-positioned="true"][data-bounce="false"] {
-  animation: popover-fade-in-left-start 0.2s ease-out;
-}
-.motile-popover-content[data-placement="left"][data-align="end"][data-positioned="true"][data-bounce="false"] {
-  animation: popover-fade-in-left-end 0.2s ease-out;
 }
 
 @keyframes popover-fade-in-left-center {
   from {
     opacity: 0;
-    transform: translate3d(8px, -50%, 0);
+    transform: translate(8px, -50%);
   }
   to {
     opacity: 1;
-    transform: translate3d(0, -50%, 0);
+    transform: translate(0, -50%);
   }
 }
-@keyframes popover-fade-in-left-start {
+
+@keyframes popover-fade-in-right {
   from {
     opacity: 0;
-    transform: translate3d(8px, 0, 0);
+    transform: translateX(-8px);
   }
   to {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
+    transform: translateX(0);
   }
-}
-@keyframes popover-fade-in-left-end {
-  from {
-    opacity: 0;
-    transform: translate3d(8px, 0, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-/* left - bounce 애니메이션 */
-.motile-popover-content[data-placement="left"][data-align="center"][data-positioned="true"][data-bounce="true"] {
-  animation: popover-bounce-left-center 0.7s ease-out;
-  animation-iteration-count: var(--bounce-count, 1);
-}
-.motile-popover-content[data-placement="left"][data-align="start"][data-positioned="true"][data-bounce="true"] {
-  animation: popover-bounce-left-start 0.7s ease-out;
-  animation-iteration-count: var(--bounce-count, 1);
-}
-.motile-popover-content[data-placement="left"][data-align="end"][data-positioned="true"][data-bounce="true"] {
-  animation: popover-bounce-left-end 0.7s ease-out;
-  animation-iteration-count: var(--bounce-count, 1);
-}
-
-@keyframes popover-bounce-left-center {
-  0% {
-    transform: translate3d(0, -50%, 0);
-  }
-  30% {
-    transform: translate3d(-10px, -50%, 0);
-  }
-  50% {
-    transform: translate3d(0, -50%, 0);
-  }
-  65% {
-    transform: translate3d(-3px, -50%, 0);
-  }
-  80% {
-    transform: translate3d(0, -50%, 0);
-  }
-  100% {
-    transform: translate3d(0, -50%, 0);
-  }
-}
-@keyframes popover-bounce-left-start {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  30% {
-    transform: translate3d(-10px, 0, 0);
-  }
-  50% {
-    transform: translate3d(0, 0, 0);
-  }
-  65% {
-    transform: translate3d(-3px, 0, 0);
-  }
-  80% {
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-}
-@keyframes popover-bounce-left-end {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  30% {
-    transform: translate3d(-10px, 0, 0);
-  }
-  50% {
-    transform: translate3d(0, 0, 0);
-  }
-  65% {
-    transform: translate3d(-3px, 0, 0);
-  }
-  80% {
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-/* right - fade 애니메이션 (bounce 없을 때) */
-.motile-popover-content[data-placement="right"][data-align="center"][data-positioned="true"][data-bounce="false"] {
-  animation: popover-fade-in-right-center 0.2s ease-out;
-}
-.motile-popover-content[data-placement="right"][data-align="start"][data-positioned="true"][data-bounce="false"] {
-  animation: popover-fade-in-right-start 0.2s ease-out;
-}
-.motile-popover-content[data-placement="right"][data-align="end"][data-positioned="true"][data-bounce="false"] {
-  animation: popover-fade-in-right-end 0.2s ease-out;
 }
 
 @keyframes popover-fade-in-right-center {
   from {
     opacity: 0;
-    transform: translate3d(-8px, -50%, 0);
+    transform: translate(-8px, -50%);
   }
   to {
     opacity: 1;
-    transform: translate3d(0, -50%, 0);
-  }
-}
-@keyframes popover-fade-in-right-start {
-  from {
-    opacity: 0;
-    transform: translate3d(-8px, 0, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-@keyframes popover-fade-in-right-end {
-  from {
-    opacity: 0;
-    transform: translate3d(-8px, 0, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
+    transform: translate(0, -50%);
   }
 }
 
-/* right - bounce 애니메이션 */
-.motile-popover-content[data-placement="right"][data-align="center"][data-positioned="true"][data-bounce="true"] {
+/* ============================================================================
+   Bounce Animations
+   ============================================================================ */
+
+/* top bounce */
+.motile-popover-content[data-placement="top"][data-align="start"][data-bounce="true"],
+.motile-popover-content[data-placement="top"][data-align="end"][data-bounce="true"] {
+  animation: popover-bounce-top 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
+}
+
+.motile-popover-content[data-placement="top"][data-align="center"][data-bounce="true"] {
+  animation: popover-bounce-top-center 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
+}
+
+/* bottom bounce */
+.motile-popover-content[data-placement="bottom"][data-align="start"][data-bounce="true"],
+.motile-popover-content[data-placement="bottom"][data-align="end"][data-bounce="true"] {
+  animation: popover-bounce-bottom 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
+}
+
+.motile-popover-content[data-placement="bottom"][data-align="center"][data-bounce="true"] {
+  animation: popover-bounce-bottom-center 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
+}
+
+/* left bounce */
+.motile-popover-content[data-placement="left"][data-align="start"][data-bounce="true"],
+.motile-popover-content[data-placement="left"][data-align="end"][data-bounce="true"] {
+  animation: popover-bounce-left 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
+}
+
+.motile-popover-content[data-placement="left"][data-align="center"][data-bounce="true"] {
+  animation: popover-bounce-left-center 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
+}
+
+/* right bounce */
+.motile-popover-content[data-placement="right"][data-align="start"][data-bounce="true"],
+.motile-popover-content[data-placement="right"][data-align="end"][data-bounce="true"] {
+  animation: popover-bounce-right 0.7s ease-out;
+  animation-iteration-count: var(--bounce-count, 1);
+}
+
+.motile-popover-content[data-placement="right"][data-align="center"][data-bounce="true"] {
   animation: popover-bounce-right-center 0.7s ease-out;
   animation-iteration-count: var(--bounce-count, 1);
 }
-.motile-popover-content[data-placement="right"][data-align="start"][data-positioned="true"][data-bounce="true"] {
-  animation: popover-bounce-right-start 0.7s ease-out;
-  animation-iteration-count: var(--bounce-count, 1);
+
+@keyframes popover-bounce-top {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-10px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  65% {
+    transform: translateY(-3px);
+  }
+  80% {
+    transform: translateY(0);
+  }
 }
-.motile-popover-content[data-placement="right"][data-align="end"][data-positioned="true"][data-bounce="true"] {
-  animation: popover-bounce-right-end 0.7s ease-out;
-  animation-iteration-count: var(--bounce-count, 1);
+
+@keyframes popover-bounce-top-center {
+  0%,
+  100% {
+    transform: translate(-50%, 0);
+  }
+  30% {
+    transform: translate(-50%, -10px);
+  }
+  50% {
+    transform: translate(-50%, 0);
+  }
+  65% {
+    transform: translate(-50%, -3px);
+  }
+  80% {
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes popover-bounce-bottom {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(10px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  65% {
+    transform: translateY(3px);
+  }
+  80% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes popover-bounce-bottom-center {
+  0%,
+  100% {
+    transform: translate(-50%, 0);
+  }
+  30% {
+    transform: translate(-50%, 10px);
+  }
+  50% {
+    transform: translate(-50%, 0);
+  }
+  65% {
+    transform: translate(-50%, 3px);
+  }
+  80% {
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes popover-bounce-left {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  30% {
+    transform: translateX(-10px);
+  }
+  50% {
+    transform: translateX(0);
+  }
+  65% {
+    transform: translateX(-3px);
+  }
+  80% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes popover-bounce-left-center {
+  0%,
+  100% {
+    transform: translate(0, -50%);
+  }
+  30% {
+    transform: translate(-10px, -50%);
+  }
+  50% {
+    transform: translate(0, -50%);
+  }
+  65% {
+    transform: translate(-3px, -50%);
+  }
+  80% {
+    transform: translate(0, -50%);
+  }
+}
+
+@keyframes popover-bounce-right {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  30% {
+    transform: translateX(10px);
+  }
+  50% {
+    transform: translateX(0);
+  }
+  65% {
+    transform: translateX(3px);
+  }
+  80% {
+    transform: translateX(0);
+  }
 }
 
 @keyframes popover-bounce-right-center {
-  0% {
-    transform: translate3d(0, -50%, 0);
+  0%,
+  100% {
+    transform: translate(0, -50%);
   }
   30% {
-    transform: translate3d(10px, -50%, 0);
+    transform: translate(10px, -50%);
   }
   50% {
-    transform: translate3d(0, -50%, 0);
+    transform: translate(0, -50%);
   }
   65% {
-    transform: translate3d(3px, -50%, 0);
+    transform: translate(3px, -50%);
   }
   80% {
-    transform: translate3d(0, -50%, 0);
-  }
-  100% {
-    transform: translate3d(0, -50%, 0);
-  }
-}
-@keyframes popover-bounce-right-start {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  30% {
-    transform: translate3d(10px, 0, 0);
-  }
-  50% {
-    transform: translate3d(0, 0, 0);
-  }
-  65% {
-    transform: translate3d(3px, 0, 0);
-  }
-  80% {
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-}
-@keyframes popover-bounce-right-end {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  30% {
-    transform: translate3d(10px, 0, 0);
-  }
-  50% {
-    transform: translate3d(0, 0, 0);
-  }
-  65% {
-    transform: translate3d(3px, 0, 0);
-  }
-  80% {
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    transform: translate3d(0, 0, 0);
+    transform: translate(0, -50%);
   }
 }
 
-/* Arrow */
+/* ============================================================================
+   SVG Arrow
+   ============================================================================ */
+
 .motile-popover-arrow {
   position: absolute;
-  width: 12px;
-  height: 12px;
-  transform: rotate(45deg);
+  pointer-events: none;
+  z-index: 1;
 }
 
-/* Filled Variant - Arrow */
-.motile-popover-content--filled .motile-popover-arrow {
-  background: var(--motile-popover-color, var(--motile-ui-popover, #3b82f6));
-  border: 1px solid
-    var(--motile-popover-color, var(--motile-ui-popover, #3b82f6));
+/* Top position arrows */
+.motile-popover-content[data-placement="top"] .motile-popover-arrow {
+  bottom: -7.25px;
+  transform: rotate(180deg);
 }
 
-/* Outlined Variant - Arrow */
-.motile-popover-content--outlined .motile-popover-arrow {
-  background: #fff;
-  border: 1px solid
-    var(--motile-popover-color, var(--motile-ui-popover, #e5e7eb));
-}
-
-/* Arrow position - Top */
-.motile-popover-arrow[data-placement="top"] {
-  bottom: -7px;
-  border-top: none;
-  border-left: none;
-}
-.motile-popover-arrow[data-placement="top"][data-align="start"] {
+.motile-popover-content[data-placement="top"][data-align="start"]
+  .motile-popover-arrow {
   left: 20px;
 }
-.motile-popover-arrow[data-placement="top"][data-align="center"] {
+
+.motile-popover-content[data-placement="top"][data-align="center"]
+  .motile-popover-arrow {
   left: 50%;
-  transform: translateX(-50%) rotate(45deg);
+  margin-left: -6px;
 }
-.motile-popover-arrow[data-placement="top"][data-align="end"] {
+
+.motile-popover-content[data-placement="top"][data-align="end"]
+  .motile-popover-arrow {
   right: 20px;
 }
 
-/* Arrow position - Bottom */
-.motile-popover-arrow[data-placement="bottom"] {
-  top: -7px;
-  border-bottom: none;
-  border-right: none;
+/* Bottom position arrows */
+.motile-popover-content[data-placement="bottom"] .motile-popover-arrow {
+  top: -7.25px;
+  transform: rotate(0deg);
 }
-.motile-popover-arrow[data-placement="bottom"][data-align="start"] {
+
+.motile-popover-content[data-placement="bottom"][data-align="start"]
+  .motile-popover-arrow {
   left: 20px;
 }
-.motile-popover-arrow[data-placement="bottom"][data-align="center"] {
+
+.motile-popover-content[data-placement="bottom"][data-align="center"]
+  .motile-popover-arrow {
   left: 50%;
-  transform: translateX(-50%) rotate(45deg);
+  margin-left: -6px;
 }
-.motile-popover-arrow[data-placement="bottom"][data-align="end"] {
+
+.motile-popover-content[data-placement="bottom"][data-align="end"]
+  .motile-popover-arrow {
   right: 20px;
 }
 
-/* Arrow position - Left */
-.motile-popover-arrow[data-placement="left"] {
-  right: -7px;
-  border-left: none;
-  border-bottom: none;
-}
-.motile-popover-arrow[data-placement="left"][data-align="start"] {
-  top: 20px;
-}
-.motile-popover-arrow[data-placement="left"][data-align="center"] {
-  top: 50%;
-  transform: translateY(-50%) rotate(45deg);
-}
-.motile-popover-arrow[data-placement="left"][data-align="end"] {
-  bottom: 20px;
+/* Left position arrows */
+.motile-popover-content[data-placement="left"] .motile-popover-arrow {
+  right: -9.25px;
+  transform: rotate(90deg);
 }
 
-/* Arrow position - Right */
-.motile-popover-arrow[data-placement="right"] {
-  left: -7px;
-  border-right: none;
-  border-top: none;
+.motile-popover-content[data-placement="left"][data-align="start"]
+  .motile-popover-arrow {
+  top: 12px;
 }
-.motile-popover-arrow[data-placement="right"][data-align="start"] {
-  top: 20px;
-}
-.motile-popover-arrow[data-placement="right"][data-align="center"] {
+
+.motile-popover-content[data-placement="left"][data-align="center"]
+  .motile-popover-arrow {
   top: 50%;
-  transform: translateY(-50%) rotate(45deg);
+  margin-top: -4px;
 }
-.motile-popover-arrow[data-placement="right"][data-align="end"] {
-  bottom: 20px;
+
+.motile-popover-content[data-placement="left"][data-align="end"]
+  .motile-popover-arrow {
+  bottom: 12px;
+}
+
+/* Right position arrows */
+.motile-popover-content[data-placement="right"] .motile-popover-arrow {
+  left: -9.25px;
+  transform: rotate(-90deg);
+}
+
+.motile-popover-content[data-placement="right"][data-align="start"]
+  .motile-popover-arrow {
+  top: 12px;
+}
+
+.motile-popover-content[data-placement="right"][data-align="center"]
+  .motile-popover-arrow {
+  top: 50%;
+  margin-top: -4px;
+}
+
+.motile-popover-content[data-placement="right"][data-align="end"]
+  .motile-popover-arrow {
+  bottom: 12px;
 }

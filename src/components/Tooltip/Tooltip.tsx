@@ -10,6 +10,7 @@ import React, {
 } from "react";
 import { createPortal } from "react-dom";
 import { Slot } from "@/utils/Slot";
+import { FloatingArrow } from "@/utils/FloatingArrow";
 import "./Tooltip.css";
 
 /**
@@ -758,7 +759,9 @@ function TooltipContent({ children }: TooltipContentProps) {
 
   // Arrow 색상 CSS 변수로 전달
   const arrowColor =
-    (style as Record<string, unknown>)["--motile-tooltip-color"] ||
+    ((style as Record<string, unknown>)["--motile-tooltip-color"] as
+      | string
+      | undefined) ||
     (variant === "filled"
       ? "var(--motile-ui-tooltip, rgba(0, 0, 0, 0.9))"
       : "var(--motile-ui-tooltip, #3b82f6)");
@@ -783,38 +786,11 @@ function TooltipContent({ children }: TooltipContentProps) {
     >
       {children}
       {showArrow && (
-        <svg
+        <FloatingArrow
           className="motile-tooltip-arrow"
-          width="12"
-          height="8"
-          viewBox="0 0 12 8"
-          style={
-            {
-              "--arrow-color": arrowColor,
-            } as React.CSSProperties
-          }
-        >
-          {variant === "filled" ? (
-            <path d="M6 1 L11 7 L12 8 L0 8 L1 7 Z" fill="var(--arrow-color)" />
-          ) : (
-            <>
-              {/* Extended base that overlaps with tooltip border for seamless connection */}
-              <path
-                d="M-1 7 L-0.5 8.5 L12.5 8.5 L13 7 L11 7 L6 1 L1 7 Z"
-                fill="white"
-              />
-              {/* Arrow outline only on visible edges */}
-              <path
-                d="M1 7 L6 1 L11 7"
-                fill="none"
-                stroke="var(--arrow-color)"
-                strokeWidth="1.2"
-                strokeLinejoin="round"
-                strokeLinecap="round"
-              />
-            </>
-          )}
-        </svg>
+          variant={variant}
+          color={arrowColor}
+        />
       )}
     </div>,
     document.body

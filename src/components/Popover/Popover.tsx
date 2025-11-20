@@ -2,16 +2,15 @@ import React, {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useId,
   useMemo,
   useRef,
-  useState,
 } from "react";
 import "./Popover.css";
 import { Slot } from "@/utils/Slot";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { useEscapeKey } from "@/hooks/useEscapeKey";
+import { FloatingArrow } from "@/utils/FloatingArrow";
 
 /**
  * Popover 위치
@@ -67,10 +66,6 @@ interface PopoverContextValue {
   triggerRef: React.MutableRefObject<HTMLElement | null>;
   contentRef: React.MutableRefObject<HTMLDivElement | null>;
   wrapperRef: React.MutableRefObject<HTMLDivElement | null>;
-
-  // Position
-  isPositioned: boolean;
-  popoverStyle: React.CSSProperties;
 }
 
 const PopoverContext = createContext<PopoverContextValue | null>(null);
@@ -81,38 +76,6 @@ function usePopoverContext() {
     throw new Error("Popover components must be used within Popover.Root");
   }
   return context;
-}
-
-// ============================================================================
-// Utility: throttle
-// ============================================================================
-
-function throttle<T extends (...args: unknown[]) => void>(
-  func: T,
-  wait: number
-): T {
-  let timeout: ReturnType<typeof setTimeout> | null = null;
-  let lastTime = 0;
-
-  return function (this: unknown, ...args: Parameters<T>) {
-    const now = Date.now();
-    const remaining = wait - (now - lastTime);
-
-    if (remaining <= 0) {
-      if (timeout) {
-        clearTimeout(timeout);
-        timeout = null;
-      }
-      lastTime = now;
-      func.apply(this, args);
-    } else if (!timeout) {
-      timeout = setTimeout(() => {
-        lastTime = Date.now();
-        timeout = null;
-        func.apply(this, args);
-      }, remaining);
-    }
-  } as T;
 }
 
 // ============================================================================
@@ -129,7 +92,7 @@ function useControllableState({
   onChange?: (open: boolean) => void;
 }) {
   const isControlled = value !== undefined;
-  const [internalState, setInternalState] = useState(defaultValue);
+  const [internalState, setInternalState] = React.useState(defaultValue);
   const state = isControlled ? value : internalState;
 
   const setState = useCallback(
@@ -237,8 +200,6 @@ function PopoverRoot({
       triggerRef,
       contentRef,
       wrapperRef,
-      isPositioned: false,
-      popoverStyle: {},
     }),
     [
       open,
@@ -255,9 +216,6 @@ function PopoverRoot({
       onClickOutside,
       onDismiss,
       id,
-      triggerRef,
-      contentRef,
-      wrapperRef,
     ]
   );
 
@@ -347,96 +305,9 @@ function PopoverContent({
     onClickOutside,
     onDismiss,
     contentId,
-    triggerRef,
     contentRef,
     wrapperRef,
   } = usePopoverContext();
-
-  const [isPositioned, setIsPositioned] = useState(false);
-  const [popoverStyle, setPopoverStyle] = useState<React.CSSProperties>({});
-
-  // 위치 계산 함수
-  const updatePosition = useCallback(() => {
-    if (!triggerRef.current || !contentRef.current || !wrapperRef.current)
-      return;
-
-    requestAnimationFrame(() => {
-      if (!triggerRef.current || !contentRef.current || !wrapperRef.current)
-        return;
-
-      const popoverWidth = contentRef.current.offsetWidth;
-      const popoverHeight = contentRef.current.offsetHeight;
-      const triggerWidth = triggerRef.current.offsetWidth;
-      const triggerHeight = triggerRef.current.offsetHeight;
-
-      const trigger = triggerRef.current.getBoundingClientRect();
-      const wrapper = wrapperRef.current.getBoundingClientRect();
-
-      const relativeLeft = trigger.left - wrapper.left;
-      const relativeTop = trigger.top - wrapper.top;
-
-      let left = 0;
-      let top = 0;
-      const gap = 8;
-
-      if (position === "top" || position === "bottom") {
-        switch (align) {
-          case "start":
-            left = relativeLeft;
-            break;
-          case "center":
-            left = relativeLeft + triggerWidth / 2;
-            break;
-          case "end":
-            left = relativeLeft + triggerWidth - popoverWidth;
-            break;
-        }
-
-        if (position === "top") {
-          top = relativeTop - popoverHeight - gap;
-        } else {
-          top = relativeTop + triggerHeight + gap;
-        }
-      } else {
-        switch (align) {
-          case "start":
-            top = relativeTop;
-            break;
-          case "center":
-            top = relativeTop + triggerHeight / 2;
-            break;
-          case "end":
-            top = relativeTop + triggerHeight - popoverHeight;
-            break;
-        }
-
-        if (position === "left") {
-          left = relativeLeft - popoverWidth - gap;
-        } else {
-          left = relativeLeft + triggerWidth + gap;
-        }
-      }
-
-      setPopoverStyle({
-        left: `${Math.round(left)}px`,
-        top: `${Math.round(top)}px`,
-      });
-      setIsPositioned(true);
-    });
-  }, [position, align, triggerRef, contentRef, wrapperRef]);
-
-  // Throttled resize handler (100ms)
-  const handleResize = useMemo(
-    () => throttle(updatePosition, 100),
-    [updatePosition]
-  );
-
-  // Position state 초기화
-  useEffect(() => {
-    if (!open) {
-      setIsPositioned(false);
-    }
-  }, [open]);
 
   // ESC 키로 닫기
   useEscapeKey({
@@ -470,24 +341,6 @@ function PopoverContent({
     enabled: open,
   });
 
-  // 위치 계산
-  useEffect(() => {
-    if (
-      !open ||
-      !triggerRef.current ||
-      !contentRef.current ||
-      !wrapperRef.current
-    )
-      return;
-
-    updatePosition();
-
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [open, updatePosition, handleResize]);
-
   if (!open) return null;
 
   const hasBounce = bounceCount !== 0;
@@ -501,11 +354,9 @@ function PopoverContent({
       className={`motile-popover-content motile-popover-content--${variant} ${className}`}
       data-placement={position}
       data-align={align}
-      data-positioned={isPositioned}
       data-bounce={hasBounce ? "true" : "false"}
       style={
         {
-          ...popoverStyle,
           zIndex,
           ...(color &&
             ({ "--motile-popover-color": color } as React.CSSProperties)),
@@ -515,10 +366,15 @@ function PopoverContent({
       }
     >
       {showArrow && (
-        <div
+        <FloatingArrow
           className="motile-popover-arrow"
-          data-placement={position}
-          data-align={align}
+          variant={variant}
+          color={
+            color ||
+            (variant === "filled"
+              ? "var(--motile-ui-popover, #3b82f6)"
+              : "var(--motile-ui-popover, #e5e7eb)")
+          }
         />
       )}
       {children}

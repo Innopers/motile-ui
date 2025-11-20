@@ -59,6 +59,9 @@ interface SheetContextValue {
 
   // History
   isClosingFromHistory: boolean;
+
+  // Navigation
+  navigateAndClose: (navigationFn: () => void) => void;
 }
 
 const SheetContext = createContext<SheetContextValue | null>(null);
@@ -149,7 +152,7 @@ function SheetRoot({
   });
 
   // 히스토리 기반 뒤로가기 제스처로 닫기 (모바일 웹뷰)
-  const isClosingFromHistory = useHistoryClose({
+  const { isClosingFromHistory, navigateAndClose } = useHistoryClose({
     isOpen: open,
     onClose: () => setOpen(false),
   });
@@ -168,6 +171,7 @@ function SheetRoot({
       overlayRef,
       sheetRef,
       isClosingFromHistory,
+      navigateAndClose,
     }),
     [
       open,
@@ -181,6 +185,7 @@ function SheetRoot({
       overlayRef,
       sheetRef,
       isClosingFromHistory,
+      navigateAndClose,
     ]
   );
 
@@ -545,6 +550,24 @@ function SheetClose({ children, asChild = false }: SheetCloseProps) {
       )}
     </button>
   );
+}
+
+// ============================================================================
+// useSheetNavigation Hook
+// ============================================================================
+
+/**
+ * Sheet을 닫으면서 페이지 네비게이션을 수행하는 Hook
+ *
+ * @example
+ * ```tsx
+ * const navigateAndClose = useSheetNavigation();
+ * navigateAndClose(() => router.push('/path'));
+ * ```
+ */
+export function useSheetNavigation() {
+  const { navigateAndClose } = useSheetContext();
+  return navigateAndClose;
 }
 
 // ============================================================================

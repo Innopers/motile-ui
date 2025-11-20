@@ -78,88 +78,37 @@
   top: 0 !important;
 }
 
-/* 화살표 */
-.motile-tooltip-bubble[data-show-arrow]::before {
-  content: "";
+/* SVG 화살표 스타일 */
+.motile-tooltip-arrow {
   position: absolute;
-  width: 0;
-  height: 0;
-  border: 6px solid transparent;
+  pointer-events: none;
+  z-index: 1;
 }
 
-/* Outlined variant 화살표 배경 (흰색) */
-.motile-tooltip-bubble--outlined[data-show-arrow]::after {
-  content: "";
-  position: absolute;
-  width: 0;
-  height: 0;
-  border: 5px solid transparent;
+/* Top position arrows */
+.motile-tooltip-bubble[data-placement="top"] .motile-tooltip-arrow {
+  bottom: -7.25px;
+  left: var(--arrow-offset, 50%);
+  transform: translateX(-50%) rotate(180deg);
 }
 
-/* Top placement: 화살표가 툴팁 아래에서 위로 */
-.motile-tooltip-bubble[data-placement="top"][data-show-arrow]::before {
-  bottom: -5px;
-  left: var(--arrow-left, 50%);
-  transform: translateX(-50%);
-  border-bottom-width: 0;
-  border-top-color: var(--arrow-color);
+/* Bottom position arrows */
+.motile-tooltip-bubble[data-placement="bottom"] .motile-tooltip-arrow {
+  top: -7px;
+  left: var(--arrow-offset, 50%);
+  transform: translateX(-50%) rotate(0deg);
 }
 
-.motile-tooltip-bubble--outlined[data-placement="top"][data-show-arrow]::after {
-  bottom: -4px;
-  left: var(--arrow-left, 50%);
-  transform: translateX(-50%);
-  border-bottom-width: 0;
-  border-top-color: white;
+/* Left position arrows */
+.motile-tooltip-bubble[data-placement="left"] .motile-tooltip-arrow {
+  right: -9.25px;
+  top: var(--arrow-offset, 50%);
+  transform: translateY(-50%) rotate(90deg);
 }
 
-/* Bottom placement: 화살표가 툴팁 위에서 아래로 */
-.motile-tooltip-bubble[data-placement="bottom"][data-show-arrow]::before {
-  top: -5px;
-  left: var(--arrow-left, 50%);
-  transform: translateX(-50%);
-  border-top-width: 0;
-  border-bottom-color: var(--arrow-color);
-}
-
-.motile-tooltip-bubble--outlined[data-placement="bottom"][data-show-arrow]::after {
-  top: -4px;
-  left: var(--arrow-left, 50%);
-  transform: translateX(-50%);
-  border-top-width: 0;
-  border-bottom-color: white;
-}
-
-/* Left placement: 화살표가 툴팁 오른쪽에서 왼쪽으로 */
-.motile-tooltip-bubble[data-placement="left"][data-show-arrow]::before {
-  right: -5px;
-  top: var(--arrow-top, 50%);
-  transform: translateY(-50%);
-  border-right-width: 0;
-  border-left-color: var(--arrow-color);
-}
-
-.motile-tooltip-bubble--outlined[data-placement="left"][data-show-arrow]::after {
-  right: -4px;
-  top: var(--arrow-top, 50%);
-  transform: translateY(-50%);
-  border-right-width: 0;
-  border-left-color: white;
-}
-
-/* Right placement: 화살표가 툴팁 왼쪽에서 오른쪽으로 */
-.motile-tooltip-bubble[data-placement="right"][data-show-arrow]::before {
-  left: -5px;
-  top: var(--arrow-top, 50%);
-  transform: translateY(-50%);
-  border-left-width: 0;
-  border-right-color: var(--arrow-color);
-}
-
-.motile-tooltip-bubble--outlined[data-placement="right"][data-show-arrow]::after {
-  left: -4px;
-  top: var(--arrow-top, 50%);
-  transform: translateY(-50%);
-  border-left-width: 0;
-  border-right-color: white;
+/* Right position arrows */
+.motile-tooltip-bubble[data-placement="right"] .motile-tooltip-arrow {
+  left: -9.25px;
+  top: var(--arrow-offset, 50%);
+  transform: translateY(-50%) rotate(-90deg);
 }

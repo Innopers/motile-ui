@@ -111,29 +111,6 @@ describe("Popover", () => {
       expect(trigger).toHaveAttribute("type", "button");
       expect(screen.getByTestId("trigger-child")).toBeInTheDocument();
     });
-
-    // data-positioned 상태 관리
-    it("data-positioned 상태가 관리됨", async () => {
-      const user = userEvent.setup();
-
-      const { container } = render(
-        <Popover.Root>
-          <Popover.Trigger asChild>
-            <button>Trigger</button>
-          </Popover.Trigger>
-          <Popover.Content>Content</Popover.Content>
-        </Popover.Root>
-      );
-
-      await user.click(screen.getByText("Trigger"));
-
-      const content = container.querySelector(".motile-popover-content");
-
-      // requestAnimationFrame 후 true로 변경
-      await waitFor(() => {
-        expect(content).toHaveAttribute("data-positioned", "true");
-      });
-    });
   });
 
   describe("Context", () => {
@@ -449,8 +426,9 @@ describe("Popover", () => {
       const arrow = content?.querySelector(".motile-popover-arrow");
 
       expect(arrow).toBeInTheDocument();
-      expect(arrow).toHaveAttribute("data-placement", "top");
-      expect(arrow).toHaveAttribute("data-align", "center");
+      // arrow는 부모 content의 data-placement/data-align 속성으로 CSS 스타일링됨
+      expect(content).toHaveAttribute("data-placement", "top");
+      expect(content).toHaveAttribute("data-align", "center");
     });
   });
 

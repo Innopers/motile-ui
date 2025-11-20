@@ -795,13 +795,7 @@ function TooltipContent({ children }: TooltipContentProps) {
           }
         >
           {variant === "filled" ? (
-            <path
-              d="M6 0 L12 8 L0 8 Z"
-              fill="var(--arrow-color)"
-              stroke="var(--arrow-color)"
-              strokeWidth="1"
-              strokeLinejoin="round"
-            />
+            <path d="M6 1 L11 7 L12 8 L0 8 L1 7 Z" fill="var(--arrow-color)" />
           ) : (
             <>
               {/* Extended base that overlaps with tooltip border for seamless connection */}

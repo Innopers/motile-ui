@@ -135,6 +135,155 @@ interface TooltipRootProps {
 
 const MARGIN = 8;
 
+// ============================================================================
+// Positioning Helper Functions
+// ============================================================================
+
+/**
+ * 툴팁 offset 값 타입
+ */
+interface OffsetValue {
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
+}
+
+/**
+ * 특정 위치에 툴팁을 배치할 공간이 충분한지 확인
+ * @param position - 확인할 위치 (top, bottom, left, right)
+ * @param trigger - 트리거 요소의 위치 정보
+ * @param tooltipWidth - 툴팁 너비
+ * @param tooltipHeight - 툴팁 높이
+ * @param offset - 툴팁과 트리거 사이의 간격
+ * @param viewportWidth - 뷰포트 너비
+ * @param viewportHeight - 뷰포트 높이
+ * @returns 공간이 충분하면 true, 부족하면 false
+ */
+function hasSpace(
+  position: TooltipPosition,
+  trigger: DOMRect,
+  tooltipWidth: number,
+  tooltipHeight: number,
+  offset: OffsetValue,
+  viewportWidth: number,
+  viewportHeight: number
+): boolean {
+  switch (position) {
+    case "top":
+      return trigger.top - offset.top - tooltipHeight >= MARGIN;
+    case "bottom":
+      return (
+        trigger.bottom + offset.bottom + tooltipHeight <=
+        viewportHeight - MARGIN
+      );
+    case "left":
+      return trigger.left - offset.left - tooltipWidth >= MARGIN;
+    case "right":
+      return (
+        trigger.right + offset.right + tooltipWidth <= viewportWidth - MARGIN
+      );
+  }
+}
+
+/**
+ * 데스크톱 환경에서의 fallback 위치 결정 (반대편 우선)
+ * @param preferred - 선호하는 위치
+ * @returns fallback 위치 배열
+ */
+function getDesktopFallbacks(preferred: TooltipPosition): TooltipPosition[] {
+  const opposites: Record<TooltipPosition, TooltipPosition> = {
+    top: "bottom",
+    bottom: "top",
+    left: "right",
+    right: "left",
+  };
+
+  return [opposites[preferred]];
+}
+
+/**
+ * 스마트 fallback 위치 결정 (뷰포트 크기와 트리거 위치 고려)
+ * @param preferred - 선호하는 위치
+ * @param trigger - 트리거 요소의 위치 정보
+ * @param viewportWidth - 뷰포트 너비
+ * @param viewportHeight - 뷰포트 높이
+ * @returns 시도할 fallback 위치 배열 (우선순위 순서)
+ */
+function getSmartFallbacks(
+  preferred: TooltipPosition,
+  trigger: DOMRect,
+  viewportWidth: number,
+  viewportHeight: number
+): TooltipPosition[] {
+  // 모바일 여부 판단 (768px 미만)
+  const isMobile = viewportWidth < 768;
+
+  // 데스크톱: 기존 로직 유지 (반대편만 시도)
+  if (!isMobile) {
+    return getDesktopFallbacks(preferred);
+  }
+
+  // 모바일: 축 전환 우선
+  // 트리거가 화면 상단/하단 중 어디에 가까운지 판단
+  const triggerCenterY = trigger.top + trigger.height / 2;
+  const isUpperHalf = triggerCenterY < viewportHeight / 2;
+
+  if (preferred === "left" || preferred === "right") {
+    // 수평 위치 → 수직 위치로 전환 (모바일에서 수직이 더 안전)
+    const verticalPreferred = isUpperHalf ? "bottom" : "top";
+    const verticalAlternative = isUpperHalf ? "top" : "bottom";
+    const horizontalOpposite = preferred === "left" ? "right" : "left";
+
+    // 우선순위: 1) 공간 많은 수직 2) 다른 수직 3) 반대편 수평 (최후의 수단)
+    return [verticalPreferred, verticalAlternative, horizontalOpposite];
+  }
+
+  if (preferred === "top" || preferred === "bottom") {
+    // 수직 위치 → 반대편 수직 시도 (모바일에서도 수직이 안전)
+    const opposite = preferred === "top" ? "bottom" : "top";
+    return [opposite];
+  }
+
+  return [];
+}
+
+/**
+ * 모든 위치가 맞지 않을 때 가장 큰 공간을 가진 위치 선택
+ * @param trigger - 트리거 요소의 위치 정보
+ * @param offset - 툴팁과 트리거 사이의 간격
+ * @param viewportWidth - 뷰포트 너비
+ * @param viewportHeight - 뷰포트 높이
+ * @returns 가장 많은 공간이 있는 위치
+ */
+function getBestFitPosition(
+  trigger: DOMRect,
+  offset: OffsetValue,
+  viewportWidth: number,
+  viewportHeight: number
+): TooltipPosition {
+  // 각 방향의 사용 가능한 공간 계산
+  const spaces = {
+    top: trigger.top - offset.top - MARGIN,
+    bottom: viewportHeight - trigger.bottom - offset.bottom - MARGIN,
+    left: trigger.left - offset.left - MARGIN,
+    right: viewportWidth - trigger.right - offset.right - MARGIN,
+  };
+
+  // 가장 큰 공간을 가진 위치 선택
+  let bestPosition: TooltipPosition = "bottom";
+  let maxSpace = spaces.bottom;
+
+  for (const [pos, space] of Object.entries(spaces)) {
+    if (space > maxSpace) {
+      maxSpace = space;
+      bestPosition = pos as TooltipPosition;
+    }
+  }
+
+  return bestPosition;
+}
+
 function TooltipRoot({
   children,
   position = "top",
@@ -222,25 +371,31 @@ function TooltipRoot({
       if (bw > maxW) bw = maxW;
       if (bh > maxH) bh = maxH;
 
-      // 위치 자동 조정 (flip)
-      let finalPlacement = position;
-      if (position === "top" && trigger.top - offsetValue.top - bh < MARGIN) {
-        finalPlacement = "bottom";
-      } else if (
-        position === "bottom" &&
-        trigger.bottom + offsetValue.bottom + bh > vh - MARGIN
-      ) {
-        finalPlacement = "top";
-      } else if (
-        position === "left" &&
-        trigger.left - offsetValue.left - bw < MARGIN
-      ) {
-        finalPlacement = "right";
-      } else if (
-        position === "right" &&
-        trigger.right + offsetValue.right + bw > vw - MARGIN
-      ) {
-        finalPlacement = "left";
+      // 위치 자동 조정 (스마트 fallback)
+      let finalPlacement: TooltipPosition = position;
+
+      // 1단계: 선호하는 위치에 공간이 있는지 확인
+      if (hasSpace(position, trigger, bw, bh, offsetValue, vw, vh)) {
+        finalPlacement = position;
+      } else {
+        // 2단계: 스마트 fallback 시도 (모바일/데스크톱 자동 감지)
+        const fallbacks = getSmartFallbacks(position, trigger, vw, vh);
+        let found = false;
+
+        for (const fallbackPosition of fallbacks) {
+          if (
+            hasSpace(fallbackPosition, trigger, bw, bh, offsetValue, vw, vh)
+          ) {
+            finalPlacement = fallbackPosition;
+            found = true;
+            break; // 첫 번째 적합한 위치에서 조기 종료
+          }
+        }
+
+        // 3단계: 모든 fallback 실패 시 가장 큰 공간을 가진 위치 선택
+        if (!found) {
+          finalPlacement = getBestFitPosition(trigger, offsetValue, vw, vh);
+        }
       }
 
       // 좌표 계산

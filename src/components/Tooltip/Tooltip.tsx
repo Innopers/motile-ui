@@ -814,7 +814,7 @@ function TooltipContent({ children }: TooltipContentProps) {
                 d="M1 7 L6 1 L11 7"
                 fill="none"
                 stroke="var(--arrow-color)"
-                strokeWidth="1"
+                strokeWidth="1.2"
                 strokeLinejoin="round"
                 strokeLinecap="round"
               />

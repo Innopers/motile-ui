@@ -24,10 +24,16 @@
 
 /* Filled Variant - 배경색 적용, 텍스트 흰색 */
 .motile-popover-content--filled {
-  background: var(--motile-popover-color, var(--motile-ui-popover, #3b82f6));
+  background: var(
+    --motile-popover-color,
+    var(--motile-ui-popover, var(--motile-theme, #3b82f6))
+  );
   color: #fff;
   border: 1px solid
-    var(--motile-popover-color, var(--motile-ui-popover, #3b82f6));
+    var(
+      --motile-popover-color,
+      var(--motile-ui-popover, var(--motile-theme, #3b82f6))
+    );
 }
 
 /* Outlined Variant - 배경 흰색, 테두리에 색상 */
@@ -35,7 +41,10 @@
   background: #fff;
   color: #111827;
   border: 1px solid
-    var(--motile-popover-color, var(--motile-ui-popover, #e5e7eb));
+    var(
+      --motile-popover-color,
+      var(--motile-ui-popover, var(--motile-theme, #e5e7eb))
+    );
 }
 
 /* ============================================================================

@@ -372,8 +372,8 @@ function PopoverContent({
           color={
             color ||
             (variant === "filled"
-              ? "var(--motile-ui-popover, #3b82f6)"
-              : "var(--motile-ui-popover, #e5e7eb)")
+              ? "var(--motile-ui-popover, var(--motile-theme, #3b82f6))"
+              : "var(--motile-ui-popover, var(--motile-theme, #e5e7eb))")
           }
         />
       )}

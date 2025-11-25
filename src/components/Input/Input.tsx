@@ -129,7 +129,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       baseClass,
       `${baseClass}--${variant}`,
       hasError && `${baseClass}--error`,
-      hasError && `${baseClass}--shake`,
       hasLeftIcon && `${baseClass}--with-left-icon`,
       hasRightContent && `${baseClass}--with-right-content`,
       label && `${baseClass}--with-label`,
@@ -141,6 +140,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const wrapperClasses = [
       `${baseClass}-wrapper`,
       label && `${baseClass}-wrapper--with-label`,
+      hasError && `${baseClass}-wrapper--shake`,
     ]
       .filter(Boolean)
       .join(" ");

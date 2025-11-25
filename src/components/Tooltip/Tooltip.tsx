@@ -728,10 +728,7 @@ function TooltipContent({ children }: TooltipContentProps) {
     placement,
   } = useTooltipContext();
 
-  const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(false);
-
-  useEffect(() => setMounted(true), []);
 
   // 애니메이션을 위해 DOM 렌더링 후 다음 프레임에 visible 상태 변경
   useEffect(() => {
@@ -766,7 +763,10 @@ function TooltipContent({ children }: TooltipContentProps) {
       ? "var(--motile-ui-tooltip, rgba(0, 0, 0, 0.9))"
       : "var(--motile-ui-tooltip, #3b82f6)");
 
-  if (!mounted || !open) return null;
+  if (!open) return null;
+
+  // SSR 체크
+  if (typeof document === "undefined") return null;
 
   return createPortal(
     <div

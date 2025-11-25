@@ -366,6 +366,9 @@ export const DrawerPortal: React.FC<DrawerPortalProps> = ({
 
   if (!open) return null;
 
+  // SSR 체크
+  if (typeof document === "undefined") return null;
+
   return createPortal(children, container || document.body);
 };
 

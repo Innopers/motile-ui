@@ -24,16 +24,20 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
       name: "MotileUI",
-      formats: ["es", "umd"],
-      fileName: (format) => `motile-ui.${format}.js`,
+      formats: ["es"],
     },
     rollupOptions: {
       external: ["react", "react-dom", "react/jsx-runtime"],
       output: {
-        globals: {
-          react: "React",
-          "react-dom": "ReactDOM",
-          "react/jsx-runtime": "jsxRuntime",
+        preserveModules: true,
+        preserveModulesRoot: "src",
+        entryFileNames: "[name].js",
+        assetFileNames: (assetInfo) => {
+          // CSS 파일을 컴포넌트 폴더에 배치
+          if (assetInfo.name?.endsWith(".css")) {
+            return "[name][extname]";
+          }
+          return "assets/[name][extname]";
         },
       },
     },

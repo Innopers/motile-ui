@@ -1,6 +1,6 @@
 {
   "name": "motile-ui",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "description": "A modern React component library for webview applications",
   "main": "./dist/motile-ui.umd.js",

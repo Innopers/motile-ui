@@ -249,15 +249,11 @@ interface SheetPortalProps {
 
 function SheetPortal({ children, container }: SheetPortalProps) {
   const { open } = useSheetContext();
-  const [isMounted, setIsMounted] = useState(false);
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  if (!open) return null;
 
-  if (!isMounted || !open) {
-    return null;
-  }
+  // SSR 체크
+  if (typeof document === "undefined") return null;
 
   return createPortal(children, container || document.body);
 }

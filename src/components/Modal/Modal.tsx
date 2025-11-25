@@ -280,6 +280,9 @@ export const ModalOverlay = React.forwardRef<HTMLDivElement, ModalOverlayProps>(
 
     if (!open) return null;
 
+    // SSR 체크
+    if (typeof document === "undefined") return null;
+
     // Backdrop style (z-index)
     const backdropStyle: React.CSSProperties = {
       zIndex,

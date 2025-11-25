@@ -1,18 +1,100 @@
 {
   "name": "motile-ui",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "type": "module",
   "description": "A modern React component library for webview applications",
-  "main": "./dist/motile-ui.umd.js",
-  "module": "./dist/motile-ui.es.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/motile-ui.es.js",
-      "require": "./dist/motile-ui.umd.js"
+      "import": "./dist/index.js"
     },
-    "./style.css": "./dist/index.css"
+    "./Accordion": {
+      "types": "./dist/components/Accordion/Accordion.d.ts",
+      "import": "./dist/components/Accordion/Accordion.js"
+    },
+    "./Badge": {
+      "types": "./dist/components/Badge/Badge.d.ts",
+      "import": "./dist/components/Badge/Badge.js"
+    },
+    "./Button": {
+      "types": "./dist/components/Button/Button.d.ts",
+      "import": "./dist/components/Button/Button.js"
+    },
+    "./Checkbox": {
+      "types": "./dist/components/Checkbox/Checkbox.d.ts",
+      "import": "./dist/components/Checkbox/Checkbox.js"
+    },
+    "./Dock": {
+      "types": "./dist/components/Dock/Dock.d.ts",
+      "import": "./dist/components/Dock/Dock.js"
+    },
+    "./Drawer": {
+      "types": "./dist/components/Drawer/Drawer.d.ts",
+      "import": "./dist/components/Drawer/Drawer.js"
+    },
+    "./Input": {
+      "types": "./dist/components/Input/Input.d.ts",
+      "import": "./dist/components/Input/Input.js"
+    },
+    "./Modal": {
+      "types": "./dist/components/Modal/Modal.d.ts",
+      "import": "./dist/components/Modal/Modal.js"
+    },
+    "./Popover": {
+      "types": "./dist/components/Popover/Popover.d.ts",
+      "import": "./dist/components/Popover/Popover.js"
+    },
+    "./Sheet": {
+      "types": "./dist/components/Sheet/Sheet.d.ts",
+      "import": "./dist/components/Sheet/Sheet.js"
+    },
+    "./Skeleton": {
+      "types": "./dist/components/Skeleton/Skeleton.d.ts",
+      "import": "./dist/components/Skeleton/Skeleton.js"
+    },
+    "./SpeedDial": {
+      "types": "./dist/components/SpeedDial/SpeedDial.d.ts",
+      "import": "./dist/components/SpeedDial/SpeedDial.js"
+    },
+    "./Switch": {
+      "types": "./dist/components/Switch/Switch.d.ts",
+      "import": "./dist/components/Switch/Switch.js"
+    },
+    "./Textarea": {
+      "types": "./dist/components/Textarea/Textarea.d.ts",
+      "import": "./dist/components/Textarea/Textarea.js"
+    },
+    "./Toast": {
+      "types": "./dist/components/Toast/Toast.d.ts",
+      "import": "./dist/components/Toast/Toast.js"
+    },
+    "./ToastProvider": {
+      "types": "./dist/components/Toast/Toast.d.ts",
+      "import": "./dist/components/Toast/Toast.js"
+    },
+    "./Tooltip": {
+      "types": "./dist/components/Tooltip/Tooltip.d.ts",
+      "import": "./dist/components/Tooltip/Tooltip.js"
+    },
+    "./useToast": {
+      "types": "./dist/components/Toast/useToast.d.ts",
+      "import": "./dist/components/Toast/useToast.js"
+    },
+    "./useScrollLock": {
+      "types": "./dist/hooks/useScrollLock.d.ts",
+      "import": "./dist/hooks/useScrollLock.js"
+    },
+    "./useClickOutside": {
+      "types": "./dist/hooks/useClickOutside.d.ts",
+      "import": "./dist/hooks/useClickOutside.js"
+    },
+    "./useEscapeKey": {
+      "types": "./dist/hooks/useEscapeKey.d.ts",
+      "import": "./dist/hooks/useEscapeKey.js"
+    }
   },
   "files": [
     "dist",

@@ -52,11 +52,20 @@ interface ToastContextValue {
 
 const ToastContext = createContext<ToastContextValue | null>(null);
 
-export function useToastContext() {
+export function useToastContext(): ToastContextValue {
   const context = useContext(ToastContext);
+
+  // SSR 환경에서는 no-op 반환 (서버에서는 toast가 동작하지 않음)
   if (!context) {
+    if (typeof window === "undefined") {
+      return {
+        toasts: [],
+        addToast: () => "",
+      };
+    }
     throw new Error("useToastContext must be used within ToastProvider");
   }
+
   return context;
 }
 

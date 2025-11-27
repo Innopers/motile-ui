@@ -728,7 +728,13 @@ function TooltipContent({ children }: TooltipContentProps) {
     placement,
   } = useTooltipContext();
 
+  const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(false);
+
+  // 클라이언트 마운트 후에만 Portal 렌더링 (SSR hydration 불일치 방지)
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // 애니메이션을 위해 DOM 렌더링 후 다음 프레임에 visible 상태 변경
   useEffect(() => {
@@ -763,10 +769,7 @@ function TooltipContent({ children }: TooltipContentProps) {
       ? "var(--motile-ui-tooltip, rgba(0, 0, 0, 0.9))"
       : "var(--motile-ui-tooltip, #3b82f6)");
 
-  if (!open) return null;
-
-  // SSR 체크
-  if (typeof document === "undefined") return null;
+  if (!mounted || !open) return null;
 
   return createPortal(
     <div

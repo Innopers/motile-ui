@@ -363,11 +363,14 @@ export const DrawerPortal: React.FC<DrawerPortalProps> = ({
   container,
 }) => {
   const { open } = useDrawerContext();
+  const [mounted, setMounted] = useState(false);
 
-  if (!open) return null;
+  // 클라이언트 마운트 후에만 Portal 렌더링 (SSR hydration 불일치 방지)
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-  // SSR 체크
-  if (typeof document === "undefined") return null;
+  if (!mounted || !open) return null;
 
   return createPortal(children, container || document.body);
 };

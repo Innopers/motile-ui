@@ -1,4 +1,11 @@
-import React, { useRef, useId, createContext, useContext } from "react";
+import React, {
+  useRef,
+  useId,
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+} from "react";
 import { createPortal } from "react-dom";
 import { Slot } from "@/utils/Slot";
 import { useClickOutside } from "@/hooks/useClickOutside";
@@ -231,6 +238,12 @@ export const ModalOverlay = React.forwardRef<HTMLDivElement, ModalOverlayProps>(
   ) => {
     const { open, onOpenChange } = useModalContext();
     const overlayRef = useRef<HTMLDivElement>(null);
+    const [mounted, setMounted] = useState(false);
+
+    // 클라이언트 마운트 후에만 Portal 렌더링 (SSR hydration 불일치 방지)
+    useEffect(() => {
+      setMounted(true);
+    }, []);
 
     // closeOnBackdrop 옵션 파싱
     const enableClickOutside =
@@ -278,10 +291,8 @@ export const ModalOverlay = React.forwardRef<HTMLDivElement, ModalOverlayProps>(
       }
     };
 
-    if (!open) return null;
-
-    // SSR 체크
-    if (typeof document === "undefined") return null;
+    // 클라이언트 마운트 전이거나 닫힌 상태면 렌더링 안 함
+    if (!mounted || !open) return null;
 
     // Backdrop style (z-index)
     const backdropStyle: React.CSSProperties = {

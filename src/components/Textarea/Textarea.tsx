@@ -143,6 +143,12 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       if (!autoSizeConfig || !textareaRef.current) return;
 
       const textarea = textareaRef.current;
+      const hasContent = value && String(value).length > 0;
+
+      // 첫 렌더 + 내용 없음: native rows 유지 (깜빡임 방지)
+      if (!hasContent && sizeState.height === undefined) {
+        return;
+      }
 
       // 정확한 측정을 위해 높이 초기화
       textarea.style.height = "auto";
@@ -230,8 +236,10 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       resize: autoSizeConfig ? "none" : resize,
       ...(autoSizeConfig
         ? {
-            height: sizeState.height !== undefined ? sizeState.height : "auto",
-            minHeight: "auto",
+            // 계산된 후에만 height 적용 (첫 렌더에서는 native rows 사용)
+            ...(sizeState.height !== undefined && { height: sizeState.height }),
+            // 계산된 후에만 minHeight 오버라이드
+            ...(sizeState.height !== undefined && { minHeight: "auto" }),
             overflowY: sizeState.isMaxHeight ? "auto" : "hidden",
           }
         : {}),
@@ -260,7 +268,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             className={textareaClasses}
             value={value}
             maxLength={maxLength}
-            rows={rows}
+            rows={autoSizeConfig?.minRows ?? rows}
             style={textareaStyle}
             placeholder={label ? placeholder || " " : placeholder}
           />

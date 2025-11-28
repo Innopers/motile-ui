@@ -1,6 +1,6 @@
 {
   "name": "motile-ui",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "type": "module",
   "description": "A modern React component library for webview applications",
   "main": "./dist/index.js",
@@ -48,8 +48,8 @@
       "import": "./dist/components/Popover/Popover.js"
     },
     "./Sheet": {
-      "types": "./dist/components/Sheet/Sheet.d.ts",
-      "import": "./dist/components/Sheet/Sheet.js"
+      "types": "./dist/components/Sheet/useSheetNavigation.d.ts",
+      "import": "./dist/components/Sheet/useSheetNavigation.js"
     },
     "./Skeleton": {
       "types": "./dist/components/Skeleton/Skeleton.d.ts",
@@ -83,17 +83,9 @@
       "types": "./dist/components/Toast/useToast.d.ts",
       "import": "./dist/components/Toast/useToast.js"
     },
-    "./useScrollLock": {
-      "types": "./dist/hooks/useScrollLock.d.ts",
-      "import": "./dist/hooks/useScrollLock.js"
-    },
-    "./useClickOutside": {
-      "types": "./dist/hooks/useClickOutside.d.ts",
-      "import": "./dist/hooks/useClickOutside.js"
-    },
-    "./useEscapeKey": {
-      "types": "./dist/hooks/useEscapeKey.d.ts",
-      "import": "./dist/hooks/useEscapeKey.js"
+    "./hooks": {
+      "types": "./dist/hooks/index.d.ts",
+      "import": "./dist/hooks/index.js"
     }
   },
   "files": [

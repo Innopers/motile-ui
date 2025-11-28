@@ -109,10 +109,3 @@ export type {
   SpeedDialActionsProps,
   SpeedDialActionProps,
 } from "./components/SpeedDial";
-
-// Hooks
-export { useScrollLock } from "./hooks/useScrollLock";
-export { useClickOutside } from "./hooks/useClickOutside";
-export type { UseClickOutsideOptions } from "./hooks/useClickOutside";
-export { useEscapeKey } from "./hooks/useEscapeKey";
-export type { UseEscapeKeyOptions } from "./hooks/useEscapeKey";

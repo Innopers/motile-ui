@@ -22,7 +22,14 @@ export default defineConfig({
   },
   build: {
     lib: {
-      entry: resolve(__dirname, "src/index.ts"),
+      entry: {
+        index: resolve(__dirname, "src/index.ts"),
+        "hooks/index": resolve(__dirname, "src/hooks/index.ts"),
+        "components/Sheet/useSheetNavigation": resolve(
+          __dirname,
+          "src/components/Sheet/useSheetNavigation.ts"
+        ),
+      },
       name: "MotileUI",
       formats: ["es"],
     },

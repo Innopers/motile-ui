@@ -353,10 +353,10 @@ function TooltipRoot({
       // 측정 전 레이아웃 플러시 강제 실행
       bubble.offsetHeight;
 
-      // 정확한 크기 측정을 위해 getComputedStyle 사용
-      const computedStyle = window.getComputedStyle(bubble);
-      const originalWidth = parseFloat(computedStyle.width);
-      const originalHeight = parseFloat(computedStyle.height);
+      // getBoundingClientRect로 실제 렌더링된 크기 측정
+      const bubbleRect = bubble.getBoundingClientRect();
+      const originalWidth = bubbleRect.width;
+      const originalHeight = bubbleRect.height;
 
       let bw = originalWidth;
       let bh = originalHeight;
@@ -676,6 +676,17 @@ function TooltipTrigger({ children, asChild = false }: TooltipTriggerProps) {
     );
   }
 
+  // 이벤트 핸들러 조합 함수
+  const composeHandler = <E extends React.SyntheticEvent>(
+    originalHandler: ((e: E) => void) | undefined,
+    newHandler: (e: E) => void
+  ) => {
+    return (e: E) => {
+      originalHandler?.(e);
+      newHandler(e);
+    };
+  };
+
   return React.cloneElement(children, {
     ref: (node: HTMLElement | null) => {
       triggerRef.current = node;
@@ -698,11 +709,17 @@ function TooltipTrigger({ children, asChild = false }: TooltipTriggerProps) {
     }`.trim(),
     "aria-describedby": open ? tooltipId : undefined,
     tabIndex: children.props.tabIndex ?? 0,
-    onMouseEnter: handleTriggerEnter,
-    onMouseLeave: handleTriggerLeave,
-    onFocus: handleFocus,
-    onBlur: handleBlur,
-    onClick: handleClick,
+    onMouseEnter: composeHandler(
+      children.props.onMouseEnter,
+      handleTriggerEnter
+    ),
+    onMouseLeave: composeHandler(
+      children.props.onMouseLeave,
+      handleTriggerLeave
+    ),
+    onFocus: composeHandler(children.props.onFocus, handleFocus),
+    onBlur: composeHandler(children.props.onBlur, handleBlur),
+    onClick: composeHandler(children.props.onClick, handleClick),
   });
 }
 

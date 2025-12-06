@@ -11,7 +11,6 @@ import React, {
 import { createPortal } from "react-dom";
 import { Slot } from "@/utils/Slot";
 import { useScrollLock } from "@/hooks/useScrollLock";
-import { useClickOutside } from "@/hooks/useClickOutside";
 import { useEscapeKey } from "@/hooks/useEscapeKey";
 import { useHistoryClose } from "@/hooks/useHistoryClose";
 import "./Sheet.css";
@@ -129,6 +128,13 @@ interface SheetRootProps {
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
+
+  /**
+   * 히스토리 기반 뒤로가기 닫기 기능 활성화 여부
+   * URL로 Sheet를 제어하는 경우 false로 설정하세요.
+   * @default true
+   */
+  enableHistoryClose?: boolean;
 }
 
 function SheetRoot({
@@ -140,6 +146,7 @@ function SheetRoot({
   open: controlledOpen,
   defaultOpen = false,
   onOpenChange,
+  enableHistoryClose = true,
 }: SheetRootProps) {
   const id = useId().replace(/:/g, "");
   const overlayRef = useRef<HTMLDivElement | null>(null);
@@ -155,6 +162,7 @@ function SheetRoot({
   const { isClosingFromHistory, navigateAndClose } = useHistoryClose({
     isOpen: open,
     onClose: () => setOpen(false),
+    enabled: enableHistoryClose,
   });
 
   const contextValue: SheetContextValue = useMemo(
@@ -317,6 +325,8 @@ function SheetOverlay({ className = "", style }: SheetOverlayProps) {
   const handleOverlayClick = useCallback(
     (e: React.MouseEvent) => {
       if (normalizedOptions.clickOutside && e.target === overlayRef.current) {
+        // useClickOutside와 중복 실행 방지
+        e.stopPropagation();
         setOpen(false);
       }
     },
@@ -386,14 +396,8 @@ function SheetContent({ children, className = "", style }: SheetContentProps) {
     allowedSelectors: [".motile-sheet__body"],
   });
 
-  // 외부 클릭으로 닫기
-  useClickOutside({
-    refs: [sheetRef],
-    handler: () => setOpen(false),
-    enabled: open && normalizedOptions.clickOutside,
-  });
-
   // ESC 키로 닫기
+  // 외부 클릭 닫기는 SheetOverlay의 handleOverlayClick에서 처리
   useEscapeKey({
     handler: () => setOpen(false),
     enabled: open && normalizedOptions.escapeKey,

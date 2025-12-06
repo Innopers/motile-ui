@@ -31,6 +31,13 @@ export interface UseHistoryCloseProps {
    * 모달/Sheet 닫기 핸들러
    */
   onClose: () => void;
+
+  /**
+   * 히스토리 기반 닫기 기능 활성화 여부
+   * URL로 Sheet를 제어하는 경우 false로 설정
+   * @default true
+   */
+  enabled?: boolean;
 }
 
 export interface UseHistoryCloseReturn {
@@ -60,6 +67,7 @@ export interface UseHistoryCloseReturn {
 export function useHistoryClose({
   onClose,
   isOpen,
+  enabled = true,
 }: UseHistoryCloseProps): UseHistoryCloseReturn {
   // onClose를 ref로 저장하여 popstate 이벤트 핸들러에서 최신 함수 참조
   const onCloseRef = useRef(onClose);
@@ -85,6 +93,9 @@ export function useHistoryClose({
   // 열림 상태: popstate 리스너 등록 + pushState
   // ============================================================================
   useEffect(() => {
+    // 기능 비활성화 시 아무것도 안 함 (URL 기반 제어 등)
+    if (!enabled) return;
+
     // Sheet이 닫혀있으면 아무것도 안 함
     if (!isOpen) return;
 
@@ -114,12 +125,15 @@ export function useHistoryClose({
     return () => {
       window.removeEventListener("popstate", handlePopState);
     };
-  }, [isOpen]);
+  }, [isOpen, enabled]);
 
   // ============================================================================
   // 닫힘 상태: 히스토리 정리 및 상태 초기화
   // ============================================================================
   useEffect(() => {
+    // 기능 비활성화 시 아무것도 안 함
+    if (!enabled) return;
+
     // Sheet이 열려있거나, pushState를 안 했으면 아무것도 안 함
     if (isOpen || !hasPushedRef.current) return;
 
@@ -174,7 +188,7 @@ export function useHistoryClose({
         window.removeEventListener("popstate", navigationPopStateHandler);
       }
     };
-  }, [isOpen, isClosingFromHistory]);
+  }, [isOpen, isClosingFromHistory, enabled]);
 
   /**
    * Sheet을 닫으면서 페이지 네비게이션을 수행하는 함수

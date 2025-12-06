@@ -81,69 +81,99 @@ export function useHistoryClose({
     onCloseRef.current = onClose;
   }, [onClose]);
 
-  // 모달 열림/닫힘 상태에 따른 히스토리 관리
+  // ============================================================================
+  // 열림 상태: popstate 리스너 등록 + pushState
+  // ============================================================================
   useEffect(() => {
-    // 모달이 열릴 때: 더미 히스토리 항목 추가 및 이벤트 리스너 등록
-    if (isOpen && !hasPushedRef.current) {
-      const handlePopState = (_e: PopStateEvent) => {
-        // 히스토리 기반 닫기 플래그 설정 (컴포넌트 re-render 발생)
-        setIsClosingFromHistory(true);
-        onCloseRef.current();
-      };
+    // Sheet이 닫혀있으면 아무것도 안 함
+    if (!isOpen) return;
 
+    // popstate 이벤트 핸들러 (뒤로가기/스와이프 감지)
+    const handlePopState = (_e: PopStateEvent) => {
+      // 히스토리 기반 닫기 플래그 설정 (컴포넌트 re-render 발생)
+      setIsClosingFromHistory(true);
+      onCloseRef.current();
+    };
+
+    // pushState는 한 번만 실행 (React Strict Mode에서도 안전)
+    // hasPushedRef로 중복 방지
+    if (!hasPushedRef.current) {
       // 현재 히스토리 길이 저장 (더미 항목 추가 전)
       initialHistoryLengthRef.current = window.history.length;
 
       // 더미 히스토리 항목 추가
       window.history.pushState({ modal: true }, "");
       hasPushedRef.current = true;
-      window.addEventListener("popstate", handlePopState);
-
-      // cleanup: 컴포넌트 unmount 또는 isOpen 변경 시 리스너 제거
-      return () => {
-        window.removeEventListener("popstate", handlePopState);
-      };
     }
 
-    // 모달이 닫힐 때: 히스토리 정리 및 상태 초기화
-    if (!isOpen && hasPushedRef.current) {
-      // 히스토리 기반 닫기가 아닌 경우 (ESC, 외부 클릭, 닫기 버튼)
-      if (!isClosingFromHistory) {
-        // Sheet 내부에서 navigation이 발생했는지 확인
-        // 더미 항목 추가 후 예상되는 길이: initialHistoryLength + 1
-        const expectedLength = initialHistoryLengthRef.current + 1;
-        const hasNavigated = window.history.length !== expectedLength;
+    // 리스너는 항상 등록 (React Strict Mode cleanup 후 재등록 필요)
+    // 핵심 수정: 조건문 밖에서 리스너 등록하여 Strict Mode에서도 정상 작동
+    window.addEventListener("popstate", handlePopState);
 
-        // navigation이 없었을 때만 더미 히스토리 제거
-        if (!hasNavigated) {
-          // 대기 중인 네비게이션이 있는 경우
-          if (pendingNavigationRef.current) {
-            // popstate 이벤트 리스너 등록 (history.back() 완료 후 실행)
-            const handleNavigationPopState = () => {
-              window.removeEventListener("popstate", handleNavigationPopState);
+    // cleanup: 컴포넌트 unmount 또는 isOpen 변경 시 리스너 제거
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [isOpen]);
 
-              // 히스토리 정리 후 네비게이션 실행
-              if (pendingNavigationRef.current) {
-                pendingNavigationRef.current();
-                pendingNavigationRef.current = null;
-              }
-            };
+  // ============================================================================
+  // 닫힘 상태: 히스토리 정리 및 상태 초기화
+  // ============================================================================
+  useEffect(() => {
+    // Sheet이 열려있거나, pushState를 안 했으면 아무것도 안 함
+    if (isOpen || !hasPushedRef.current) return;
 
-            window.addEventListener("popstate", handleNavigationPopState);
-            window.history.back();
-          } else {
-            // 일반 닫기: 더미 히스토리만 제거
-            window.history.back();
-          }
+    // cleanup에서 제거할 리스너 참조
+    let navigationPopStateHandler: (() => void) | null = null;
+
+    // 히스토리 기반 닫기가 아닌 경우 (ESC, 외부 클릭, 닫기 버튼)
+    if (!isClosingFromHistory) {
+      // Sheet 내부에서 navigation이 발생했는지 확인
+      // 더미 항목 추가 후 예상되는 길이: initialHistoryLength + 1
+      const expectedLength = initialHistoryLengthRef.current + 1;
+      const hasNavigated = window.history.length !== expectedLength;
+
+      // navigation이 없었을 때만 더미 히스토리 제거
+      if (!hasNavigated) {
+        // 대기 중인 네비게이션이 있는 경우
+        if (pendingNavigationRef.current) {
+          // navigationFn을 로컬 변수에 저장 (참조 안정성)
+          const navigationFn = pendingNavigationRef.current;
+          pendingNavigationRef.current = null; // 먼저 초기화
+
+          // popstate 이벤트 핸들러 정의
+          navigationPopStateHandler = () => {
+            window.removeEventListener("popstate", navigationPopStateHandler!);
+            navigationPopStateHandler = null;
+
+            // 핵심 수정: popstate 핸들러 밖에서 navigation 실행
+            // popstate 이벤트 처리 중 history 변경 시 브라우저 충돌 방지
+            setTimeout(() => {
+              navigationFn();
+            }, 0);
+          };
+
+          window.addEventListener("popstate", navigationPopStateHandler);
+          window.history.back();
         } else {
-          // navigation이 발생한 경우 pending navigation 초기화
-          pendingNavigationRef.current = null;
+          // 일반 닫기: 더미 히스토리만 제거
+          window.history.back();
         }
+      } else {
+        // navigation이 발생한 경우 pending navigation 초기화
+        pendingNavigationRef.current = null;
       }
-
-      hasPushedRef.current = false;
-      setIsClosingFromHistory(false);
     }
+
+    hasPushedRef.current = false;
+    setIsClosingFromHistory(false);
+
+    // cleanup: 등록된 popstate 리스너 제거 (메모리 누수 방지)
+    return () => {
+      if (navigationPopStateHandler) {
+        window.removeEventListener("popstate", navigationPopStateHandler);
+      }
+    };
   }, [isOpen, isClosingFromHistory]);
 
   /**

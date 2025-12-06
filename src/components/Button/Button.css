@@ -195,8 +195,8 @@
   .motile-btn--large {
     padding: 0 20px;
     font-size: 15px;
-    height: 52px;
-    min-height: 52px;
+    height: 54px;
+    min-height: 54px;
   }
 }
 
@@ -204,9 +204,9 @@
 @media (max-width: 768px) {
   .motile-btn--large {
     padding: 0 18px;
-    font-size: 14px;
-    height: 48px;
-    min-height: 48px;
+    font-size: 15px;
+    height: 52px;
+    min-height: 52px;
   }
 
   /* Touch feedback for mobile */

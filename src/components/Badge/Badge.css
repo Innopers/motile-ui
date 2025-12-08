@@ -48,7 +48,10 @@
   /* 배경: 우선순위 색상을 연하게 (10% 투명도) */
   background: color-mix(
     in srgb,
-    var(--motile-badge-color, var(--motile-ui-badge, var(--motile-theme, #3b82f6)))
+    var(
+        --motile-badge-color,
+        var(--motile-ui-badge, var(--motile-theme, #3b82f6))
+      )
       10%,
     transparent
   );
@@ -59,7 +62,10 @@
   );
   /* border: 우선순위 색상 그대로 */
   border: 1px solid
-    var(--motile-badge-color, var(--motile-ui-badge, var(--motile-theme, #3b82f6)));
+    var(
+      --motile-badge-color,
+      var(--motile-ui-badge, var(--motile-theme, #3b82f6))
+    );
 }
 
 /* secondary는 border 1px 때문에 padding 조정 필요 */
@@ -88,7 +94,10 @@
   );
   /* border: 우선순위 색상 그대로 */
   border: 1px solid
-    var(--motile-badge-color, var(--motile-ui-badge, var(--motile-theme, #3b82f6)));
+    var(
+      --motile-badge-color,
+      var(--motile-ui-badge, var(--motile-theme, #3b82f6))
+    );
 }
 
 /* outlined도 border 1px 때문에 padding 조정 필요 */

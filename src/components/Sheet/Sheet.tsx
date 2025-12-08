@@ -9,10 +9,12 @@ import React, {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
-import { Slot } from "@/utils/Slot";
-import { useScrollLock } from "@/hooks/useScrollLock";
+
 import { useEscapeKey } from "@/hooks/useEscapeKey";
 import { useHistoryClose } from "@/hooks/useHistoryClose";
+import { useScrollLock } from "@/hooks/useScrollLock";
+import { Slot } from "@/utils/Slot";
+
 import "./Sheet.css";
 
 /**
@@ -590,13 +592,13 @@ export const Sheet = {
 };
 
 export type {
-  SheetRootProps,
-  SheetTriggerProps,
-  SheetPortalProps,
-  SheetOverlayProps,
-  SheetContentProps,
-  SheetHeaderProps,
-  SheetTitleProps,
   SheetBodyProps,
   SheetCloseProps,
+  SheetContentProps,
+  SheetHeaderProps,
+  SheetOverlayProps,
+  SheetPortalProps,
+  SheetRootProps,
+  SheetTitleProps,
+  SheetTriggerProps,
 };

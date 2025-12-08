@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+
 import { Accordion } from "./Accordion";
 
 // Props that can be controlled via Storybook

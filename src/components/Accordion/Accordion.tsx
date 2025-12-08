@@ -8,7 +8,9 @@ import React, {
   useRef,
   useState,
 } from "react";
+
 import { Slot } from "@/utils/Slot";
+
 import "./Accordion.css";
 
 const BASE = "motile-accordion";
@@ -48,8 +50,10 @@ const useAccordion = () => {
 // ===========================
 // Accordion Root (Container)
 // ===========================
-export interface AccordionProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
+export interface AccordionProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  "onChange"
+> {
   /**
    * Accordion 스타일 variant
    * @default 'filled'
@@ -137,8 +141,7 @@ AccordionRoot.displayName = "Accordion";
 // ===========================
 // Accordion Header
 // ===========================
-export interface AccordionHeaderProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface AccordionHeaderProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   /**
    * children을 wrapper 없이 직접 렌더링
@@ -189,8 +192,7 @@ AccordionHeader.displayName = "Accordion.Header";
 // ===========================
 // Accordion Content
 // ===========================
-export interface AccordionContentProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+export interface AccordionContentProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   /**
    * children을 wrapper 없이 직접 렌더링

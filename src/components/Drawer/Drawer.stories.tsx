@@ -1,7 +1,9 @@
-import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
-import { Drawer } from "./Drawer";
+
+import type { Meta, StoryObj } from "@storybook/react";
+
 import { Button } from "../Button";
+import { Drawer } from "./Drawer";
 
 const meta = {
   title: "Components/Drawer",
@@ -16,6 +18,9 @@ const meta = {
     },
   },
   tags: ["autodocs"],
+  args: {
+    children: undefined,
+  },
   argTypes: {
     open: {
       control: "boolean",

@@ -1,6 +1,9 @@
 import React from "react";
-import { describe, it, expect, vi } from "vitest";
-import { render, screen, userEvent, waitFor, fireEvent } from "@/test/utils";
+
+import { describe, expect, it, vi } from "vitest";
+
+import { fireEvent, render, screen, userEvent, waitFor } from "@/test/utils";
+
 import { Drawer } from "./Drawer";
 
 describe("Drawer", () => {

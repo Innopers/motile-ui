@@ -112,7 +112,9 @@
   color: #9ca3af;
   cursor: pointer;
   border-radius: 4px;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .motile-textarea__clear-button:hover {

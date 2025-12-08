@@ -1,13 +1,13 @@
-export { Modal } from "./Modal";
 export type {
-  ModalVariant,
   CloseOnBackdropOptions,
-  ModalRootProps,
-  ModalOverlayProps,
-  ModalContentProps,
-  ModalCloseProps,
-  ModalTitleProps,
   ModalBodyProps,
-  ModalHeaderProps,
+  ModalCloseProps,
+  ModalContentProps,
   ModalFooterProps,
+  ModalHeaderProps,
+  ModalOverlayProps,
+  ModalRootProps,
+  ModalTitleProps,
+  ModalVariant,
 } from "./Modal";
+export { Modal } from "./Modal";

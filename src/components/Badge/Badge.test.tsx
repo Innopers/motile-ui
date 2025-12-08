@@ -1,6 +1,9 @@
 import React from "react";
-import { describe, it, expect } from "vitest";
+
+import { describe, expect, it } from "vitest";
+
 import { render, screen } from "@/test/utils";
+
 import { Badge } from "./Badge";
 
 describe("Badge", () => {

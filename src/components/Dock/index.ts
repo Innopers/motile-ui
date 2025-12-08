@@ -1,8 +1,7 @@
-export { Dock, DockRoot, DockItem, DockSeparator } from "./Dock";
-
 export type {
-  DockRootProps,
   DockItemProps,
-  DockSeparatorProps,
   DockPosition,
+  DockRootProps,
+  DockSeparatorProps,
 } from "./Dock";
+export { Dock, DockItem, DockRoot, DockSeparator } from "./Dock";

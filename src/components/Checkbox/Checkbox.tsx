@@ -1,4 +1,5 @@
 import React, { forwardRef } from "react";
+
 import "./Checkbox.css";
 
 /**
@@ -17,8 +18,10 @@ type CheckboxVariant = "standard" | "rounded" | "square";
  */
 type CheckboxSize = "large" | "medium" | "small";
 
-export interface CheckboxProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "size"> {
+export interface CheckboxProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "type" | "size"
+> {
   /**
    * 체크박스 스타일 variant
    * @default 'standard'

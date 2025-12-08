@@ -92,7 +92,8 @@
 .motile-modal__content {
   background-color: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
   /* Content 크기는 내부 요소에 따라 자동 결정 */
   max-height: 90vh;
@@ -115,7 +116,8 @@
   max-height: 90vh;
   max-height: calc(90vh - env(safe-area-inset-top));
   max-height: calc(90dvh - env(safe-area-inset-top));
-  box-shadow: 0 -10px 25px -5px rgba(0, 0, 0, 0.1),
+  box-shadow:
+    0 -10px 25px -5px rgba(0, 0, 0, 0.1),
     0 -4px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
@@ -410,7 +412,8 @@
 
   .motile-modal__content {
     background-color: #1f2937;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5),
+    box-shadow:
+      0 20px 25px -5px rgba(0, 0, 0, 0.5),
       0 10px 10px -5px rgba(0, 0, 0, 0.3);
   }
 

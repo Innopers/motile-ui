@@ -9,8 +9,10 @@ import React, {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
-import { Slot } from "@/utils/Slot";
+
 import { FloatingArrow } from "@/utils/FloatingArrow";
+import { Slot } from "@/utils/Slot";
+
 import "./Tooltip.css";
 
 /**
@@ -300,13 +302,13 @@ function TooltipRoot({
     offset === undefined
       ? { top: 7, bottom: 6, left: 6, right: 6 } // 기본값: top은 7, left는 6px (화살표에 더 가깝게)
       : typeof offset === "number"
-      ? { top: offset, bottom: offset, left: offset, right: offset }
-      : {
-          top: offset.top ?? 7,
-          bottom: offset.bottom ?? 6,
-          left: offset.left ?? 6,
-          right: offset.right ?? 6,
-        };
+        ? { top: offset, bottom: offset, left: offset, right: offset }
+        : {
+            top: offset.top ?? 7,
+            bottom: offset.bottom ?? 6,
+            left: offset.left ?? 6,
+            right: offset.right ?? 6,
+          };
 
   const id = useId().replace(/:/g, "");
   const triggerRef = useRef<HTMLElement | null>(null);
@@ -351,7 +353,7 @@ function TooltipRoot({
       bubble.classList.add("measuring");
 
       // 측정 전 레이아웃 플러시 강제 실행
-      bubble.offsetHeight;
+      void bubble.offsetHeight;
 
       // getBoundingClientRect로 실제 렌더링된 크기 측정
       const bubbleRect = bubble.getBoundingClientRect();
@@ -828,10 +830,10 @@ export const Tooltip = {
 };
 
 export type {
+  TooltipAlign,
+  TooltipContentProps,
+  TooltipPosition,
   TooltipRootProps,
   TooltipTriggerProps,
-  TooltipContentProps,
   TooltipVariant,
-  TooltipPosition,
-  TooltipAlign,
 };

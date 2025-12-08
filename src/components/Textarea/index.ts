@@ -1,2 +1,2 @@
-export { Textarea } from './Textarea'
-export type { TextareaProps, AutoSizeConfig } from './Textarea'
+export type { AutoSizeConfig, TextareaProps } from "./Textarea";
+export { Textarea } from "./Textarea";

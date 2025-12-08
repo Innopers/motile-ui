@@ -1,7 +1,10 @@
-import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
-import { Sheet } from "./Sheet";
+
+import type { Meta, StoryObj } from "@storybook/react";
+
 import { Button } from "../Button/Button";
+import { Sheet } from "./Sheet";
+
 import "./Sheet.css";
 
 const meta = {
@@ -115,7 +118,7 @@ export const Left: Story = {
             <Sheet.Body>
               <div style={{ padding: "0 4px" }}>
                 <h3 style={{ marginTop: 0 }}>왼쪽에서 나타나는 Sheet</h3>
-                <p>position="left"로 설정된 Sheet입니다.</p>
+                <p>position=&quot;left&quot;로 설정된 Sheet입니다.</p>
                 <p>오버레이를 클릭하거나 ESC 키를 눌러 닫을 수 있습니다.</p>
               </div>
             </Sheet.Body>

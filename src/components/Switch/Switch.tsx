@@ -1,4 +1,5 @@
 import React, { forwardRef } from "react";
+
 import "./Switch.css";
 
 /**
@@ -9,8 +10,10 @@ import "./Switch.css";
  */
 type SwitchVariant = "smooth" | "elastic" | "bounce";
 
-export interface SwitchProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {
+export interface SwitchProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "type"
+> {
   /**
    * 스위치 모양
    * @default 'smooth'

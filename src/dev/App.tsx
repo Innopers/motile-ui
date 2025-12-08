@@ -1,5 +1,6 @@
-import React from 'react'
-import './App.css'
+import React from "react";
+
+import "./App.css";
 
 function App() {
   return (
@@ -19,14 +20,20 @@ function App() {
         <div className="info">
           <h3>개발 도구</h3>
           <ul>
-            <li><code>npm run dev</code> - Vite 개발 서버 (현재)</li>
-            <li><code>npm run storybook</code> - Storybook 문서</li>
-            <li><code>npm run build</code> - 라이브러리 빌드</li>
+            <li>
+              <code>npm run dev</code> - Vite 개발 서버 (현재)
+            </li>
+            <li>
+              <code>npm run storybook</code> - Storybook 문서
+            </li>
+            <li>
+              <code>npm run build</code> - 라이브러리 빌드
+            </li>
           </ul>
         </div>
       </main>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

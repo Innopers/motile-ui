@@ -1,14 +1,14 @@
-export { Sheet } from "./Sheet";
 export type {
-  SheetPosition,
   CloseOnBackdropOptions,
-  SheetRootProps,
-  SheetTriggerProps,
-  SheetPortalProps,
-  SheetOverlayProps,
-  SheetContentProps,
-  SheetHeaderProps,
-  SheetTitleProps,
   SheetBodyProps,
   SheetCloseProps,
+  SheetContentProps,
+  SheetHeaderProps,
+  SheetOverlayProps,
+  SheetPortalProps,
+  SheetPosition,
+  SheetRootProps,
+  SheetTitleProps,
+  SheetTriggerProps,
 } from "./Sheet";
+export { Sheet } from "./Sheet";

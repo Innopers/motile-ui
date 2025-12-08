@@ -1,16 +1,18 @@
 import React, {
-  useRef,
-  useId,
   createContext,
   useContext,
-  useState,
   useEffect,
+  useId,
+  useRef,
+  useState,
 } from "react";
 import { createPortal } from "react-dom";
-import { Slot } from "@/utils/Slot";
+
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { useEscapeKey } from "@/hooks/useEscapeKey";
 import { useScrollLock } from "@/hooks/useScrollLock";
+import { Slot } from "@/utils/Slot";
+
 import "./Modal.css";
 
 // ============================================================================
@@ -156,8 +158,7 @@ interface ModalContentProps extends React.HTMLAttributes<HTMLDivElement> {
   forceMount?: boolean;
 }
 
-interface ModalCloseProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ModalCloseProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /**
    * 커스텀 자식 요소 사용
    */
@@ -249,12 +250,12 @@ export const ModalOverlay = React.forwardRef<HTMLDivElement, ModalOverlayProps>(
     const enableClickOutside =
       typeof closeOnBackdrop === "boolean"
         ? closeOnBackdrop
-        : closeOnBackdrop.clickOutside ?? false;
+        : (closeOnBackdrop.clickOutside ?? false);
 
     const enableEscapeKey =
       typeof closeOnBackdrop === "boolean"
         ? closeOnBackdrop
-        : closeOnBackdrop.escapeKey ?? false;
+        : (closeOnBackdrop.escapeKey ?? false);
 
     // 배경 스크롤 잠금
     useScrollLock({
@@ -517,13 +518,13 @@ export const Modal = {
 // ============================================================================
 
 export type {
-  ModalVariant,
-  ModalRootProps,
-  ModalOverlayProps,
-  ModalContentProps,
-  ModalCloseProps,
-  ModalTitleProps,
   ModalBodyProps,
-  ModalHeaderProps,
+  ModalCloseProps,
+  ModalContentProps,
   ModalFooterProps,
+  ModalHeaderProps,
+  ModalOverlayProps,
+  ModalRootProps,
+  ModalTitleProps,
+  ModalVariant,
 };

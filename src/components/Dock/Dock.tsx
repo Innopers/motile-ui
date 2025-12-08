@@ -1,12 +1,14 @@
 import React, {
   createContext,
+  forwardRef,
   useContext,
+  useEffect,
   useRef,
   useState,
-  useEffect,
-  forwardRef,
 } from "react";
+
 import { Tooltip } from "@/components/Tooltip/Tooltip";
+
 import "./Dock.css";
 
 // ============================================================================
@@ -66,8 +68,7 @@ export interface DockRootProps extends React.HTMLAttributes<HTMLDivElement> {
 /**
  * Dock Item Props
  */
-export interface DockItemProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface DockItemProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /**
    * 아이콘 (ReactNode)
    */
@@ -258,10 +259,10 @@ export const DockItem = forwardRef<HTMLButtonElement, DockItemProps>(
       position === "top"
         ? "bottom"
         : position === "bottom"
-        ? "top"
-        : position === "left"
-        ? "right"
-        : "left";
+          ? "top"
+          : position === "left"
+            ? "right"
+            : "left";
 
     // CSS 변수로 색상 전달
     const customStyle = {
@@ -346,8 +347,7 @@ DockItem.displayName = "Dock.Item";
 // Dock.Separator - Divider between items
 // ============================================================================
 
-export interface DockSeparatorProps
-  extends React.HTMLAttributes<HTMLDivElement> {}
+export interface DockSeparatorProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const DockSeparator = forwardRef<HTMLDivElement, DockSeparatorProps>(
   ({ className, ...props }, ref) => {

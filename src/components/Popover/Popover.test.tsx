@@ -1,5 +1,7 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
 import { render, screen, userEvent, waitFor } from "@/test/utils";
+
 import { Popover } from "./Popover";
 
 describe("Popover", () => {

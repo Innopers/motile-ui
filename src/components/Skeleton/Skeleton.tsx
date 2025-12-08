@@ -1,5 +1,6 @@
-import React from 'react'
-import './Skeleton.css'
+import React from "react";
+
+import "./Skeleton.css";
 
 export interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
@@ -7,47 +8,50 @@ export interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
    * @default '100%'
    * @example '200px', '50%', 200
    */
-  width?: string | number
+  width?: string | number;
 
   /**
    * Skeleton 높이
    * @default '1rem'
    * @example '40px', '3rem', 40
    */
-  height?: string | number
+  height?: string | number;
 
   /**
    * Skeleton border radius
    * @default '4px'
    * @example '8px', '50%', 12, 0
    */
-  borderRadius?: string | number
+  borderRadius?: string | number;
 }
 
 export const Skeleton: React.FC<SkeletonProps> = ({
-  width = '100%',
-  height = '1rem',
-  borderRadius = '4px',
+  width = "100%",
+  height = "1rem",
+  borderRadius = "4px",
   className,
   style,
   ...props
 }) => {
-  const baseClass = 'motile-skeleton'
+  const baseClass = "motile-skeleton";
 
-  const classes = [baseClass, className].filter(Boolean).join(' ')
+  const classes = [baseClass, className].filter(Boolean).join(" ");
 
   // width, height, borderRadius 값을 string으로 변환 (number인 경우 px 추가)
-  const formatSize = (size: string | number | undefined, defaultValue: string): string => {
-    if (size === undefined) return defaultValue
-    return typeof size === 'number' ? `${size}px` : size
-  }
+  const formatSize = (
+    size: string | number | undefined,
+    defaultValue: string
+  ): string => {
+    if (size === undefined) return defaultValue;
+    return typeof size === "number" ? `${size}px` : size;
+  };
 
   const customStyle = {
     ...style,
-    width: formatSize(width, '100%'),
-    height: formatSize(height, '1rem'),
-    borderRadius: formatSize(borderRadius, '4px'),
-  }
+    width: formatSize(width, "100%"),
+    height: formatSize(height, "1rem"),
+    borderRadius: formatSize(borderRadius, "4px"),
+  };
 
   return (
     <div
@@ -57,5 +61,5 @@ export const Skeleton: React.FC<SkeletonProps> = ({
       aria-live="polite"
       {...props}
     />
-  )
-}
+  );
+};

@@ -191,13 +191,12 @@ export interface TimePickerColumnProps extends Omit<
   "children"
 > {
   type: "hour" | "minute" | "period";
-  itemClassName?: string;
 }
 
 export const TimePickerColumn = forwardRef<
   HTMLDivElement,
   TimePickerColumnProps
->(({ type, className, itemClassName, ...props }, ref) => {
+>(({ type, className, ...props }, ref) => {
   const {
     value,
     disabled,
@@ -519,7 +518,7 @@ export const TimePickerColumn = forwardRef<
         return (
           <div
             key={index}
-            className={`motile-timepicker__item ${isSelected ? "motile-timepicker__item--selected" : ""} ${disabled ? "motile-timepicker__item--disabled" : ""} ${itemClassName || ""}`}
+            className={`motile-timepicker__item ${isSelected ? "motile-timepicker__item--selected" : ""} ${disabled ? "motile-timepicker__item--disabled" : ""}`}
             style={{ height: itemHeight }}
             role="option"
             aria-selected={isSelected}

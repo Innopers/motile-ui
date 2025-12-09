@@ -71,6 +71,10 @@
       "types": "./dist/components/Textarea/Textarea.d.ts",
       "import": "./dist/components/Textarea/Textarea.js"
     },
+    "./TimePicker": {
+      "types": "./dist/components/TimePicker/TimePicker.d.ts",
+      "import": "./dist/components/TimePicker/TimePicker.js"
+    },
     "./Toast": {
       "types": "./dist/components/Toast/Toast.d.ts",
       "import": "./dist/components/Toast/Toast.js"

@@ -80,6 +80,16 @@ export { Switch } from "./components/Switch";
 export type { AutoSizeConfig, TextareaProps } from "./components/Textarea";
 export { Textarea } from "./components/Textarea";
 export type {
+  MinuteStep,
+  TimeFormat,
+  TimePeriod,
+  TimePickerColumnProps,
+  TimePickerHighlightProps,
+  TimePickerRootProps,
+  TimeValue,
+} from "./components/TimePicker";
+export { TimePicker } from "./components/TimePicker";
+export type {
   Toast,
   ToastOptions,
   ToastProviderProps,

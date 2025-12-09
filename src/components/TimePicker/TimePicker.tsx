@@ -73,6 +73,7 @@ export interface TimePickerRootProps extends Omit<
   minuteStep?: MinuteStep;
   disabled?: boolean;
   itemHeight?: number;
+  fullWidth?: boolean;
   children: React.ReactNode;
 }
 
@@ -86,6 +87,7 @@ export const TimePickerRoot = forwardRef<HTMLDivElement, TimePickerRootProps>(
       minuteStep = 5,
       disabled = false,
       itemHeight = 40,
+      fullWidth = false,
       children,
       className,
       style,
@@ -162,7 +164,7 @@ export const TimePickerRoot = forwardRef<HTMLDivElement, TimePickerRootProps>(
       <TimePickerContext.Provider value={contextValue}>
         <div
           ref={ref}
-          className={`motile-timepicker ${disabled ? "motile-timepicker--disabled" : ""} ${className || ""}`}
+          className={`motile-timepicker ${disabled ? "motile-timepicker--disabled" : ""} ${fullWidth ? "motile-timepicker--full-width" : ""} ${className || ""}`}
           style={rootStyle}
           aria-disabled={disabled}
           role="group"

@@ -33,6 +33,12 @@ export interface NumberFlowProps {
    * 인라인 스타일
    */
   style?: React.CSSProperties;
+
+  /**
+   * 마운트 시 애니메이션 적용 여부
+   * @default true
+   */
+  animateOnMount?: boolean;
 }
 
 // ============================================================================
@@ -63,6 +69,7 @@ interface DigitProps {
   direction: "up" | "down";
   duration: number;
   index: number;
+  animateOnMount: boolean;
 }
 
 // 0-9를 3번 반복하여 스핀 효과를 위한 배열 생성
@@ -100,10 +107,15 @@ const SPIN_DIGITS = [
 ];
 
 const Digit: React.FC<DigitProps> = React.memo(
-  ({ value, prevValue, direction, duration, index }) => {
+  ({ value, prevValue, direction, duration, index, animateOnMount }) => {
     const currentDigit = parseInt(value, 10);
-    const prevDigit =
-      prevValue !== null ? parseInt(prevValue, 10) : currentDigit;
+    // 초기 렌더링 + animateOnMount면 0에서 시작, 아니면 이전 값 또는 현재 값
+    const isInitialMount = prevValue === null;
+    const prevDigit = isInitialMount
+      ? animateOnMount
+        ? 0
+        : currentDigit
+      : parseInt(prevValue, 10);
 
     // 이전 숫자에서 시작해서 현재 숫자로 애니메이션
     const [currentOffset, setCurrentOffset] = useState(prevDigit);
@@ -186,7 +198,17 @@ Separator.displayName = "NumberFlow.Separator";
 // ============================================================================
 
 export const NumberFlow = React.forwardRef<HTMLSpanElement, NumberFlowProps>(
-  ({ value, locale = "ko-KR", duration = 600, className, style }, ref) => {
+  (
+    {
+      value,
+      locale = "ko-KR",
+      duration = 600,
+      className,
+      style,
+      animateOnMount = true,
+    },
+    ref
+  ) => {
     const prevValueRef = useRef<number | null>(null);
     const prevFormattedRef = useRef<string | null>(null);
 
@@ -246,13 +268,14 @@ export const NumberFlow = React.forwardRef<HTMLSpanElement, NumberFlowProps>(
               direction={overallDirection}
               duration={duration}
               index={currentDigitIndex}
+              animateOnMount={animateOnMount}
             />
           );
         }
 
         return <Separator key={key} value={char} />;
       });
-    }, [formatted, prevFormatted, overallDirection, duration]);
+    }, [formatted, prevFormatted, overallDirection, duration, animateOnMount]);
 
     return (
       <span

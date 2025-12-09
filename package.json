@@ -43,6 +43,10 @@
       "types": "./dist/components/Modal/Modal.d.ts",
       "import": "./dist/components/Modal/Modal.js"
     },
+    "./NumberFlow": {
+      "types": "./dist/components/NumberFlow/NumberFlow.d.ts",
+      "import": "./dist/components/NumberFlow/NumberFlow.js"
+    },
     "./Popover": {
       "types": "./dist/components/Popover/Popover.d.ts",
       "import": "./dist/components/Popover/Popover.js"

@@ -1,13 +1,13 @@
-export { Drawer } from "./Drawer";
 export type {
   CloseOnBackdropOptions,
-  DrawerRootProps,
-  DrawerTriggerProps,
-  DrawerPortalProps,
-  DrawerOverlayProps,
-  DrawerContentProps,
-  DrawerHandleProps,
-  DrawerTitleProps,
   DrawerBodyProps,
   DrawerCloseProps,
+  DrawerContentProps,
+  DrawerHandleProps,
+  DrawerOverlayProps,
+  DrawerPortalProps,
+  DrawerRootProps,
+  DrawerTitleProps,
+  DrawerTriggerProps,
 } from "./Drawer";
+export { Drawer } from "./Drawer";

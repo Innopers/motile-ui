@@ -1,9 +1,9 @@
-export { Popover } from "./Popover";
 export type {
+  Align,
+  Placement,
+  PopoverContentProps,
   PopoverRootProps,
   PopoverTriggerProps,
-  PopoverContentProps,
-  Placement,
-  Align,
   PopoverVariant,
 } from "./Popover";
+export { Popover } from "./Popover";

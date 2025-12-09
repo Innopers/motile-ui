@@ -1,5 +1,6 @@
 import { useCallback } from "react";
-import { useToastContext, ToastOptions } from "./Toast";
+
+import { ToastOptions, useToastContext } from "./Toast";
 
 export interface UseToastReturn {
   /**

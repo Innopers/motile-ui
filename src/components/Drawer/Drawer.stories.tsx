@@ -1,9 +1,11 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { useState } from "react";
-import { Drawer } from "./Drawer";
-import { Button } from "../Button";
+import React, { useState } from "react";
 
-const meta = {
+import type { Meta, StoryObj } from "@storybook/react";
+
+import { Button } from "../Button";
+import { Drawer } from "./Drawer";
+
+const meta: Meta<typeof Drawer.Root> = {
   title: "Components/Drawer",
   component: Drawer.Root,
   parameters: {
@@ -16,6 +18,9 @@ const meta = {
     },
   },
   tags: ["autodocs"],
+  args: {
+    children: undefined,
+  },
   argTypes: {
     open: {
       control: "boolean",
@@ -24,25 +29,35 @@ const meta = {
     defaultOpen: {
       control: "boolean",
       description: "Drawer 기본 열림 상태 (uncontrolled)",
+      table: { defaultValue: { summary: "false" } },
     },
     closeOnBackdrop: {
       control: "boolean",
       description: "백드롭 인터랙션으로 닫기 허용",
+      table: { defaultValue: { summary: "true" } },
     },
     closeOnDrag: {
       control: "boolean",
       description: "드래그로 닫기 허용",
+      table: { defaultValue: { summary: "true" } },
     },
     maxHeight: {
       control: "text",
       description: "Drawer 최대 높이",
+      table: { defaultValue: { summary: "70dvh" } },
     },
     width: {
       control: "text",
       description: "Drawer 너비 (데스크톱)",
+      table: { defaultValue: { summary: "480px" } },
+    },
+    zIndex: {
+      control: "number",
+      description: "z-index 값",
+      table: { defaultValue: { summary: "9999" } },
     },
   },
-} satisfies Meta<typeof Drawer.Root>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -52,9 +67,9 @@ type Story = StoryObj<typeof meta>;
  * Trigger를 클릭하면 Drawer가 열립니다.
  */
 export const Default: Story = {
-  render: () => {
+  render: (args) => {
     return (
-      <Drawer.Root>
+      <Drawer.Root {...args}>
         <Drawer.Trigger asChild>
           <Button variant="primary">Drawer 열기</Button>
         </Drawer.Trigger>
@@ -110,11 +125,11 @@ export const Default: Story = {
  * Close 버튼으로 명시적으로 닫을 수 있습니다.
  */
 export const Controlled: Story = {
-  render: () => {
+  render: (args) => {
     const [open, setOpen] = useState(false);
 
     return (
-      <Drawer.Root open={open} onOpenChange={setOpen}>
+      <Drawer.Root {...args} open={open} onOpenChange={setOpen}>
         <Drawer.Trigger asChild>
           <Button variant="primary">알림 설정</Button>
         </Drawer.Trigger>
@@ -212,9 +227,9 @@ export const Controlled: Story = {
  * 드래그는 Body가 최상단에 있을 때만 작동합니다.
  */
 export const WithScroll: Story = {
-  render: () => {
+  render: (args) => {
     return (
-      <Drawer.Root>
+      <Drawer.Root {...args}>
         <Drawer.Trigger asChild>
           <Button variant="secondary">이용 약관</Button>
         </Drawer.Trigger>
@@ -280,9 +295,9 @@ export const WithScroll: Story = {
  * 오버레이 클릭이나 ESC 키로만 닫을 수 있습니다.
  */
 export const NoDrag: Story = {
-  render: () => {
+  render: (args) => {
     return (
-      <Drawer.Root closeOnDrag={false}>
+      <Drawer.Root {...args} closeOnDrag={false}>
         <Drawer.Trigger asChild>
           <Button variant="secondary">드래그 비활성화</Button>
         </Drawer.Trigger>
@@ -311,9 +326,12 @@ export const NoDrag: Story = {
  * 오버레이 클릭은 비활성화되어 있습니다.
  */
 export const EscapeKeyOnly: Story = {
-  render: () => {
+  render: (args) => {
     return (
-      <Drawer.Root closeOnBackdrop={{ escapeKey: true, clickOutside: false }}>
+      <Drawer.Root
+        {...args}
+        closeOnBackdrop={{ escapeKey: true, clickOutside: false }}
+      >
         <Drawer.Trigger asChild>
           <Button variant="secondary">ESC 키만 가능</Button>
         </Drawer.Trigger>
@@ -342,9 +360,9 @@ export const EscapeKeyOnly: Story = {
  * Close 버튼으로만 닫을 수 있습니다.
  */
 export const NoBackdrop: Story = {
-  render: () => {
+  render: (args) => {
     return (
-      <Drawer.Root closeOnBackdrop={false}>
+      <Drawer.Root {...args} closeOnBackdrop={false}>
         <Drawer.Trigger asChild>
           <Button variant="secondary">백드롭 비활성화</Button>
         </Drawer.Trigger>
@@ -388,9 +406,9 @@ export const NoBackdrop: Story = {
  * maxHeight를 90vh로 설정했습니다.
  */
 export const CustomHeight: Story = {
-  render: () => {
+  render: (args) => {
     return (
-      <Drawer.Root maxHeight="90vh">
+      <Drawer.Root {...args} maxHeight="90vh">
         <Drawer.Trigger asChild>
           <Button variant="primary">높은 Drawer</Button>
         </Drawer.Trigger>
@@ -436,9 +454,9 @@ export const CustomHeight: Story = {
  * Title을 asChild로 커스텀 스타일링한 예시입니다.
  */
 export const CustomTitle: Story = {
-  render: () => {
+  render: (args) => {
     return (
-      <Drawer.Root>
+      <Drawer.Root {...args}>
         <Drawer.Trigger asChild>
           <Button variant="primary">커스텀 제목</Button>
         </Drawer.Trigger>

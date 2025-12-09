@@ -1,5 +1,7 @@
-import { describe, it, expect, vi, beforeAll, afterEach } from "vitest";
+import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
+
 import { render, screen, userEvent, waitFor } from "@/test/utils";
+
 import { Tooltip } from "./Tooltip";
 
 const {

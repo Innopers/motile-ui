@@ -37,7 +37,7 @@
 
 ## ✨ 주요 기능
 
-- 🎨 **16개의 고품질 컴포넌트** - 웹뷰 애플리케이션을 위해 세심하게 제작
+- 🎨 **18개의 고품질 컴포넌트** - 웹뷰 애플리케이션을 위해 세심하게 제작
 - 💪 **TypeScript 우선** - 포괄적인 타입 정의 완벽 지원
 - 🎭 **커스터마이징 가능** - CSS 변수로 쉬운 테마 설정
 - 📱 **모바일 최적화** - 터치 친화적 인터랙션과 반응형 디자인
@@ -187,6 +187,8 @@ color props > --motile-ui-btn > --motile-theme > #3b82f6 (기본값)
 - **Tooltip** - 툴팁
 - **Accordion** - 접을 수 있는 패널
 - **Dock** - 독 스타일 네비게이션 바
+- **NumberFlow** - 숫자 애니메이션 컴포넌트
+- **TimePicker** - 휠 스크롤 방식 타임피커
 
 ---
 
@@ -217,7 +219,7 @@ MIT © [Innopers](https://github.com/Innopers)
 
 ## ✨ Features
 
-- 🎨 **16 High-Quality Components** - Carefully crafted for webview applications
+- 🎨 **18 High-Quality Components** - Carefully crafted for webview applications
 - 💪 **TypeScript First** - Full TypeScript support with comprehensive type definitions
 - 🎭 **Customizable** - Easy theming with CSS variables
 - 📱 **Mobile Optimized** - Touch-friendly interactions and responsive design
@@ -367,6 +369,8 @@ color props > --motile-ui-btn > --motile-theme > #3b82f6 (default)
 - **Tooltip** - Tooltip
 - **Accordion** - Collapsible panel
 - **Dock** - Dock-style navigation bar
+- **NumberFlow** - Animated number transition component
+- **TimePicker** - Wheel scroll style time picker
 
 ---
 

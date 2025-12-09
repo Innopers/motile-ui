@@ -1,13 +1,15 @@
 import React, {
   createContext,
-  useContext,
-  useRef,
-  useId,
   forwardRef,
+  useContext,
+  useId,
+  useRef,
 } from "react";
-import { Slot } from "@/utils/Slot";
+
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { useEscapeKey } from "@/hooks/useEscapeKey";
+import { Slot } from "@/utils/Slot";
+
 import "./SpeedDial.css";
 
 // ============================================================================
@@ -81,8 +83,7 @@ export interface SpeedDialRootProps {
 /**
  * SpeedDial Trigger Props
  */
-export interface SpeedDialTriggerProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface SpeedDialTriggerProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /**
    * 자식 요소
    */
@@ -98,8 +99,7 @@ export interface SpeedDialTriggerProps
 /**
  * SpeedDial Actions Props
  */
-export interface SpeedDialActionsProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+export interface SpeedDialActionsProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
    * 자식 요소
    */
@@ -109,8 +109,7 @@ export interface SpeedDialActionsProps
 /**
  * SpeedDial Action Props
  */
-export interface SpeedDialActionProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface SpeedDialActionProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /**
    * 자식 요소
    */

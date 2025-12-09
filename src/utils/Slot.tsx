@@ -43,8 +43,8 @@ function getElementRef<T extends React.ReactElement>(
 ): React.Ref<unknown> | undefined {
   // React 19 이상에서는 element.props.ref 사용
   // React 18 이하에서는 element.ref 사용
-  let getter = Object.getOwnPropertyDescriptor(element.props, "ref")?.get;
-  let mayWarn = getter && "isReactWarning" in getter && getter.isReactWarning;
+  const getter = Object.getOwnPropertyDescriptor(element.props, "ref")?.get;
+  const mayWarn = getter && "isReactWarning" in getter && getter.isReactWarning;
 
   if (mayWarn) {
     return (element as unknown as { ref: React.Ref<unknown> }).ref;

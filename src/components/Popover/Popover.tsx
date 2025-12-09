@@ -6,11 +6,13 @@ import React, {
   useMemo,
   useRef,
 } from "react";
-import "./Popover.css";
-import { Slot } from "@/utils/Slot";
+
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { useEscapeKey } from "@/hooks/useEscapeKey";
 import { FloatingArrow } from "@/utils/FloatingArrow";
+import { Slot } from "@/utils/Slot";
+
+import "./Popover.css";
 
 /**
  * Popover 위치
@@ -393,10 +395,10 @@ export const Popover = {
 };
 
 export type {
+  Align,
+  Placement,
+  PopoverContentProps,
   PopoverRootProps,
   PopoverTriggerProps,
-  PopoverContentProps,
-  Placement,
-  Align,
   PopoverVariant,
 };

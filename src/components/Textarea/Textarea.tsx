@@ -6,6 +6,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+
 import "./Textarea.css";
 
 export interface AutoSizeConfig {
@@ -13,8 +14,7 @@ export interface AutoSizeConfig {
   maxRows?: number;
 }
 
-export interface TextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   /**
    * 자동 포커스 여부
    * @default false
@@ -280,8 +280,8 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
               errorMessage && showCounter
                 ? `${baseClass}__helper-text--both`
                 : errorMessage
-                ? `${baseClass}__helper-text--error-only`
-                : `${baseClass}__helper-text--counter-only`
+                  ? `${baseClass}__helper-text--error-only`
+                  : `${baseClass}__helper-text--counter-only`
             }`}
           >
             {errorMessage && (

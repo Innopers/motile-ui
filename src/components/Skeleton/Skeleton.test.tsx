@@ -1,5 +1,7 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
+
 import { render } from "@/test/utils";
+
 import { Skeleton } from "./Skeleton";
 
 describe("Skeleton", () => {

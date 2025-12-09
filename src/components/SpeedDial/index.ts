@@ -1,15 +1,14 @@
-export {
-  SpeedDial,
-  SpeedDialRoot,
-  SpeedDialTrigger,
-  SpeedDialActions,
-  SpeedDialAction,
-} from "./SpeedDial";
-
 export type {
+  SpeedDialActionProps,
+  SpeedDialActionsProps,
   SpeedDialDirection,
   SpeedDialRootProps,
   SpeedDialTriggerProps,
-  SpeedDialActionsProps,
-  SpeedDialActionProps,
+} from "./SpeedDial";
+export {
+  SpeedDial,
+  SpeedDialAction,
+  SpeedDialActions,
+  SpeedDialRoot,
+  SpeedDialTrigger,
 } from "./SpeedDial";

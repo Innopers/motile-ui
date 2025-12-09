@@ -20,7 +20,9 @@
   border-radius: 50%;
   background-color: var(--motile-speeddial-color, var(--motile-theme, #3b82f6));
   color: white;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    0 2px 4px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   font-size: 16px;
@@ -29,14 +31,18 @@
 
 .motile-speed-dial__trigger:hover {
   filter: brightness(0.9);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.15);
+  box-shadow:
+    0 6px 16px rgba(0, 0, 0, 0.2),
+    0 3px 6px rgba(0, 0, 0, 0.15);
   transform: scale(1.05);
 }
 
 .motile-speed-dial__trigger:active {
   filter: brightness(0.85);
   transform: scale(0.95);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.15),
+    0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .motile-speed-dial__trigger[aria-expanded="true"] {
@@ -100,7 +106,9 @@
   border-radius: 50%;
   background-color: #ffffff;
   color: #374151;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    0 1px 3px rgba(0, 0, 0, 0.08);
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   font-size: 14px;
@@ -108,13 +116,17 @@
 
 .motile-speed-dial__action:hover {
   background-color: #f3f4f6;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    0 2px 4px rgba(0, 0, 0, 0.1);
   transform: scale(1.08);
 }
 
 .motile-speed-dial__action:active {
   transform: scale(0.95);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1), 0 0px 2px rgba(0, 0, 0, 0.08);
+  box-shadow:
+    0 1px 4px rgba(0, 0, 0, 0.1),
+    0 0px 2px rgba(0, 0, 0, 0.08);
 }
 
 /* Animation for Up direction */
@@ -221,21 +233,29 @@
 
 @media (prefers-color-scheme: dark) {
   .motile-speed-dial__trigger {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow:
+      0 4px 12px rgba(0, 0, 0, 0.3),
+      0 2px 4px rgba(0, 0, 0, 0.2);
   }
 
   .motile-speed-dial__trigger:hover {
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4), 0 3px 6px rgba(0, 0, 0, 0.3);
+    box-shadow:
+      0 6px 16px rgba(0, 0, 0, 0.4),
+      0 3px 6px rgba(0, 0, 0, 0.3);
   }
 
   .motile-speed-dial__action {
     background-color: #374151;
     color: #f9fafb;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.2);
+    box-shadow:
+      0 2px 8px rgba(0, 0, 0, 0.3),
+      0 1px 3px rgba(0, 0, 0, 0.2);
   }
 
   .motile-speed-dial__action:hover {
     background-color: #4b5563;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3);
+    box-shadow:
+      0 4px 12px rgba(0, 0, 0, 0.4),
+      0 2px 4px rgba(0, 0, 0, 0.3);
   }
 }

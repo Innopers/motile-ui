@@ -1,6 +1,9 @@
 import { useEffect } from "react";
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, act } from "@/test/utils";
+
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+import { act, render, screen } from "@/test/utils";
+
 import { ToastProvider } from "./Toast";
 import { useToast, type UseToastReturn } from "./useToast";
 

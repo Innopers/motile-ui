@@ -1,6 +1,6 @@
 {
   "name": "motile-ui",
-  "version": "1.1.3",
+  "version": "1.2.0",
   "type": "module",
   "description": "A modern React component library for webview applications",
   "main": "./dist/index.js",
@@ -43,6 +43,10 @@
       "types": "./dist/components/Modal/Modal.d.ts",
       "import": "./dist/components/Modal/Modal.js"
     },
+    "./NumberFlow": {
+      "types": "./dist/components/NumberFlow/NumberFlow.d.ts",
+      "import": "./dist/components/NumberFlow/NumberFlow.js"
+    },
     "./Popover": {
       "types": "./dist/components/Popover/Popover.d.ts",
       "import": "./dist/components/Popover/Popover.js"
@@ -66,6 +70,10 @@
     "./Textarea": {
       "types": "./dist/components/Textarea/Textarea.d.ts",
       "import": "./dist/components/Textarea/Textarea.js"
+    },
+    "./TimePicker": {
+      "types": "./dist/components/TimePicker/TimePicker.d.ts",
+      "import": "./dist/components/TimePicker/TimePicker.js"
     },
     "./Toast": {
       "types": "./dist/components/Toast/Toast.d.ts",
@@ -100,6 +108,10 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,css}\"",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "prepublishOnly": "npm run build"
@@ -109,6 +121,7 @@
     "react-dom": ">=18.0.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.1",
     "@storybook/addon-essentials": "^8.4.7",
     "@storybook/addon-interactions": "^8.4.7",
     "@storybook/addon-links": "^8.4.7",
@@ -126,12 +139,19 @@
     "@vitest/coverage-v8": "^2.1.8",
     "@vitest/ui": "^2.1.8",
     "chromatic": "^13.3.3",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
     "happy-dom": "^20.0.10",
     "jsdom": "^27.0.1",
+    "prettier": "^3.7.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "storybook": "^8.4.7",
     "typescript": "^5.6.3",
+    "typescript-eslint": "^8.48.1",
     "vite": "^5.4.11",
     "vite-plugin-dts": "^4.3.0",
     "vite-plugin-lib-inject-css": "^2.2.2",

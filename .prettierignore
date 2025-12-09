@@ -1,0 +1,20 @@
+# Build outputs
+dist/
+storybook-static/
+coverage/
+
+# Dependencies
+node_modules/
+
+# Generated files
+*.d.ts
+
+# Config files (keep original formatting)
+package.json
+package-lock.json
+tsconfig.json
+
+# Other
+.git/
+*.md
+LICENSE

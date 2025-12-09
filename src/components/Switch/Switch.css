@@ -188,7 +188,9 @@
   transform: translateX(20px);
 }
 
-.motile-switch--bounce:not(:checked) + .motile-switch__track .motile-switch__thumb {
+.motile-switch--bounce:not(:checked)
+  + .motile-switch__track
+  .motile-switch__thumb {
   animation: switch-bounce-off 0.65s cubic-bezier(0.68, -0.55, 0.27, 1.55);
   transform: translateX(0);
 }

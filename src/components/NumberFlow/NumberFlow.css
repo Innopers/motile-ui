@@ -1,0 +1,70 @@
+/* ============================================================================
+   NumberFlow - 슬롯 머신 스타일 숫자 애니메이션 컴포넌트
+   ============================================================================ */
+
+/* 메인 컨테이너 */
+.motile-number-flow {
+  display: inline-flex;
+  align-items: center;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+/* 스크린 리더 전용 */
+.motile-number-flow__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* 숫자 값 컨테이너 */
+.motile-number-flow__value {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* 개별 숫자 슬롯 */
+.motile-number-flow__digit {
+  display: inline-block;
+  height: 1em;
+  overflow: hidden;
+  line-height: 1;
+  vertical-align: top;
+}
+
+/* 숫자 열 (0-9가 3번 반복되어 세로로 나열) */
+.motile-number-flow__digit-column {
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* 개별 숫자 값 */
+.motile-number-flow__digit-value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 1em;
+  line-height: 1;
+}
+
+/* 구분자 (천단위, 소수점 등) */
+.motile-number-flow__separator {
+  display: inline-block;
+  line-height: 1;
+}
+
+/* 접근성: 모션 감소 설정 존중 */
+@media (prefers-reduced-motion: reduce) {
+  .motile-number-flow__digit-column {
+    transition: none !important;
+  }
+}

@@ -1,4 +1,5 @@
 import React, { forwardRef, useEffect, useId, useRef } from "react";
+
 import "./Input.css";
 
 /**
@@ -8,8 +9,7 @@ import "./Input.css";
  */
 type InputVariant = "outlined" | "underline";
 
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   /**
    * 자동 포커스 여부
    * @default false
@@ -226,8 +226,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               errorMessage && showCounter
                 ? `${baseClass}__helper-text--both`
                 : errorMessage
-                ? `${baseClass}__helper-text--error-only`
-                : `${baseClass}__helper-text--counter-only`
+                  ? `${baseClass}__helper-text--error-only`
+                  : `${baseClass}__helper-text--counter-only`
             }`}
           >
             {errorMessage && (

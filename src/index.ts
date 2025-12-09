@@ -44,6 +44,8 @@ export type {
   ModalVariant,
 } from "./components/Modal";
 export { Modal } from "./components/Modal";
+export type { NumberFlowProps } from "./components/NumberFlow";
+export { NumberFlow } from "./components/NumberFlow";
 export type {
   PopoverContentProps,
   PopoverRootProps,

@@ -9,16 +9,15 @@
   user-select: none;
   -webkit-user-select: none;
   overflow: hidden;
+
+  /* 기본 크기 */
+  width: 200px;
+  height: 120px;
 }
 
 /* Disabled state */
 .motile-timepicker--disabled {
   pointer-events: none;
-}
-
-/* Full width */
-.motile-timepicker--full-width {
-  width: 100%;
 }
 
 /* ============================================================================
@@ -104,6 +103,13 @@
   pointer-events: none;
   background-color: rgba(0, 0, 0, 0.05);
   border-radius: 8px;
+  z-index: 0;
+}
+
+/* Column이 Highlight 위에 표시되도록 */
+.motile-timepicker__column {
+  position: relative;
+  z-index: 1;
 }
 
 /* ============================================================================

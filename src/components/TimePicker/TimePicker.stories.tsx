@@ -35,11 +35,6 @@ const meta = {
       description: "비활성화 상태",
       table: { defaultValue: { summary: "false" } },
     },
-    fullWidth: {
-      control: "boolean",
-      description: "전체 너비 사용",
-      table: { defaultValue: { summary: "false" } },
-    },
   },
 } satisfies Meta<typeof TimePicker.Root>;
 
@@ -49,7 +44,7 @@ type Story = StoryObj<typeof meta>;
 // 기본 TimePicker (12시간 형식)
 export const Default: Story = {
   render: (args) => (
-    <TimePicker.Root {...args} style={{ height: "120px", width: "200px" }}>
+    <TimePicker.Root {...args}>
       <TimePicker.Column type="hour" />
       <TimePicker.Column type="minute" />
       <TimePicker.Column type="period" />
@@ -70,7 +65,7 @@ export const Format24Hour: Story = {
       {...args}
       format="24"
       defaultValue={{ hour: 14, minute: 30 }}
-      style={{ height: "120px", width: "140px" }}
+      style={{ width: "140px" }}
     >
       <TimePicker.Column type="hour" />
       <TimePicker.Column type="minute" />
@@ -94,12 +89,7 @@ export const Controlled: Story = {
 
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-        <TimePicker.Root
-          {...args}
-          value={time}
-          onChange={setTime}
-          style={{ height: "120px", width: "200px" }}
-        >
+        <TimePicker.Root {...args} value={time} onChange={setTime}>
           <TimePicker.Column type="hour" />
           <TimePicker.Column type="minute" />
           <TimePicker.Column type="period" />
@@ -130,11 +120,7 @@ export const MinuteSteps: Story = {
         >
           1분 단위
         </div>
-        <TimePicker.Root
-          minuteStep={1}
-          format="24"
-          style={{ height: "120px", width: "100px" }}
-        >
+        <TimePicker.Root minuteStep={1} format="24" style={{ width: "100px" }}>
           <TimePicker.Column type="hour" />
           <TimePicker.Column type="minute" />
           <TimePicker.Highlight />
@@ -147,11 +133,7 @@ export const MinuteSteps: Story = {
         >
           15분 단위
         </div>
-        <TimePicker.Root
-          minuteStep={15}
-          format="24"
-          style={{ height: "120px", width: "100px" }}
-        >
+        <TimePicker.Root minuteStep={15} format="24" style={{ width: "100px" }}>
           <TimePicker.Column type="hour" />
           <TimePicker.Column type="minute" />
           <TimePicker.Highlight />
@@ -164,11 +146,7 @@ export const MinuteSteps: Story = {
         >
           30분 단위
         </div>
-        <TimePicker.Root
-          minuteStep={30}
-          format="24"
-          style={{ height: "120px", width: "100px" }}
-        >
+        <TimePicker.Root minuteStep={30} format="24" style={{ width: "100px" }}>
           <TimePicker.Column type="hour" />
           <TimePicker.Column type="minute" />
           <TimePicker.Highlight />
@@ -188,7 +166,6 @@ export const Disabled: Story = {
       {...args}
       disabled
       defaultValue={{ hour: 9, minute: 30, period: "AM" }}
-      style={{ height: "120px", width: "200px" }}
     >
       <TimePicker.Column type="hour" />
       <TimePicker.Column type="minute" />
@@ -206,7 +183,7 @@ export const Disabled: Story = {
 // Highlight 없이 사용
 export const WithoutHighlight: Story = {
   render: (args) => (
-    <TimePicker.Root {...args} style={{ height: "120px", width: "200px" }}>
+    <TimePicker.Root {...args}>
       <TimePicker.Column type="hour" />
       <TimePicker.Column type="minute" />
       <TimePicker.Column type="period" />

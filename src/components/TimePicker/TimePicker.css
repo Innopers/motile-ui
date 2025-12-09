@@ -35,12 +35,16 @@
   /* 터치 스크롤 최적화 */
   -webkit-overflow-scrolling: touch;
   touch-action: pan-y;
+
+  /* PC 드래그 스크롤 커서 */
+  cursor: grab;
 }
 
 /* 터치 디바이스: mandatory - 정확한 스냅으로 빠른 반응 */
 @media (hover: none) and (pointer: coarse) {
   .motile-timepicker__column {
     scroll-snap-type: y mandatory;
+    cursor: default;
   }
 }
 

@@ -214,6 +214,11 @@ export const TimePickerColumn = forwardRef<
   const wheelDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isInitialMountRef = useRef(true);
 
+  // PC 드래그 스크롤 관련 refs
+  const isDraggingRef = useRef(false);
+  const dragStartYRef = useRef(0);
+  const dragStartScrollTopRef = useRef(0);
+
   const options = useMemo(() => {
     switch (type) {
       case "hour":
@@ -331,9 +336,64 @@ export const TimePickerColumn = forwardRef<
     [options, itemHeight, currentValue, updateValue, type, isTouchDevice]
   );
 
+  // PC 드래그 스크롤 - 드래그 시작
+  const handleMouseDown = useCallback(
+    (e: React.MouseEvent) => {
+      if (isTouchDevice() || disabled) return;
+
+      const container = columnRef.current;
+      if (!container) return;
+
+      isDraggingRef.current = true;
+      dragStartYRef.current = e.clientY;
+      dragStartScrollTopRef.current = container.scrollTop;
+      container.style.cursor = "grabbing";
+
+      e.preventDefault();
+    },
+    [isTouchDevice, disabled]
+  );
+
+  // PC 드래그 스크롤 - 드래그 중 (document에 등록)
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (!isDraggingRef.current) return;
+
+    const container = columnRef.current;
+    if (!container) return;
+
+    const deltaY = dragStartYRef.current - e.clientY;
+    container.scrollTop = dragStartScrollTopRef.current + deltaY;
+  }, []);
+
+  // PC 드래그 스크롤 - 드래그 종료 + 스냅 (document에 등록)
+  const handleMouseUp = useCallback(() => {
+    if (!isDraggingRef.current) return;
+
+    isDraggingRef.current = false;
+
+    const container = columnRef.current;
+    if (!container) return;
+
+    container.style.cursor = "grab";
+
+    // 현재 스크롤 위치에서 가장 가까운 아이템으로 스냅
+    const scrollTop = container.scrollTop;
+    const index = Math.round(scrollTop / itemHeight);
+    const clampedIndex = Math.max(0, Math.min(index, options.length - 1));
+    const targetScrollTop = clampedIndex * itemHeight;
+
+    container.scrollTo({ top: targetScrollTop, behavior: "smooth" });
+
+    const selectedValue = options[clampedIndex];
+    if (selectedValue !== undefined && selectedValue !== currentValue) {
+      updateValue(type, selectedValue as number | TimePeriod);
+    }
+  }, [options, itemHeight, currentValue, updateValue, type]);
+
   // 스크롤 종료 감지 후 값 업데이트
   const handleScroll = useCallback(() => {
-    if (isWheelScrollingRef.current) return;
+    // 휠 스크롤 또는 드래그 중에는 무시
+    if (isWheelScrollingRef.current || isDraggingRef.current) return;
 
     if (scrollTimeoutRef.current) {
       clearTimeout(scrollTimeoutRef.current);
@@ -407,6 +467,17 @@ export const TimePickerColumn = forwardRef<
     };
   }, [handleWheel]);
 
+  // PC 드래그 스크롤 - document 이벤트 리스너 등록
+  useEffect(() => {
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [handleMouseMove, handleMouseUp]);
+
   useEffect(() => {
     return () => {
       if (scrollTimeoutRef.current !== null) {
@@ -428,6 +499,7 @@ export const TimePickerColumn = forwardRef<
       }}
       className={`motile-timepicker__column ${className || ""}`}
       onScroll={handleScroll}
+      onMouseDown={handleMouseDown}
       role="listbox"
       aria-label={`${type} selector`}
       aria-orientation="vertical"

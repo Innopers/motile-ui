@@ -1,0 +1,108 @@
+/* ============================================================================
+   TimePicker - Minimal Functional Styles
+   ============================================================================ */
+
+/* Root - 기본 레이아웃 */
+.motile-timepicker {
+  display: flex;
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+  overflow: hidden;
+}
+
+/* Disabled state */
+.motile-timepicker--disabled {
+  pointer-events: none;
+}
+
+/* ============================================================================
+   Column - 스크롤 컨테이너 (핵심 기능)
+   ============================================================================ */
+
+.motile-timepicker__column {
+  flex: 1;
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+  /* PC: scroll-snap 비활성화 (JS wheel 이벤트로 제어) */
+  scroll-snap-type: none;
+
+  /* 스크롤바 숨김 */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  /* 터치 스크롤 최적화 */
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+}
+
+/* 터치 디바이스: mandatory - 정확한 스냅으로 빠른 반응 */
+@media (hover: none) and (pointer: coarse) {
+  .motile-timepicker__column {
+    scroll-snap-type: y mandatory;
+  }
+}
+
+/* 스크롤바 숨김 (webkit) */
+.motile-timepicker__column::-webkit-scrollbar {
+  display: none;
+}
+
+/* ============================================================================
+   Item - 개별 옵션
+   ============================================================================ */
+
+.motile-timepicker__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* scroll-snap: 아이템이 중앙에 스냅 */
+  scroll-snap-align: center;
+
+  /* 숫자 정렬 (고정폭) */
+  font-variant-numeric: tabular-nums;
+
+  /* 비선택 아이템 스타일 */
+  color: #d1d5db;
+}
+
+/* 선택된 아이템 스타일 */
+.motile-timepicker__item--selected {
+  color: inherit;
+}
+
+/* ============================================================================
+   Spacer - 상하 여백 (첫/끝 아이템이 중앙에 오도록)
+   ============================================================================ */
+
+.motile-timepicker__spacer {
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+/* ============================================================================
+   Highlight - 선택 영역 표시 (선택적)
+   ============================================================================ */
+
+.motile-timepicker__highlight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+}
+
+/* ============================================================================
+   Reduced motion 지원
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .motile-timepicker__column {
+    scroll-behavior: auto;
+  }
+}

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 /**
  * 브라우저 히스토리를 활용한 모달/Sheet 뒤로가기 닫기 기능
@@ -45,6 +45,26 @@ export interface UseHistoryCloseReturn {
    * 히스토리 기반 닫기 여부
    */
   isClosingFromHistory: boolean;
+
+  /**
+   * Sheet/Modal을 닫는 함수
+   * 히스토리 기반 닫기가 활성화된 경우 history.back()을 통해 닫아
+   * 더미 히스토리를 확실하게 제거합니다.
+   *
+   * @description
+   * - enableHistoryClose=true: history.back() → popstate → onClose
+   * - enableHistoryClose=false: 직접 onClose() 호출
+   *
+   * Sheet.Close, 닫기 버튼 등에서 사용하세요.
+   *
+   * @example
+   * ```tsx
+   * const { close } = useHistoryClose({ isOpen, onClose });
+   *
+   * <button onClick={close}>닫기</button>
+   * ```
+   */
+  close: () => void;
 
   /**
    * Sheet을 닫으면서 페이지 네비게이션을 수행하는 함수
@@ -191,6 +211,33 @@ export function useHistoryClose({
   }, [isOpen, isClosingFromHistory, enabled]);
 
   /**
+   * Sheet/Modal을 닫는 함수
+   *
+   * 동작 방식:
+   * - enabled=true이고 더미 히스토리가 추가된 상태: history.back() 호출
+   *   → popstate 이벤트 발생 → handlePopState에서 onClose 호출
+   *   → 뒤로가기와 동일한 경로로 닫힘 (더미 히스토리 확실히 제거)
+   * - 그 외: 직접 onClose() 호출
+   */
+  const close = useCallback(() => {
+    // 히스토리 기능 비활성화 시 직접 닫기
+    if (!enabled) {
+      onCloseRef.current();
+      return;
+    }
+
+    // 더미 히스토리가 추가된 상태면 history.back()으로 닫기
+    // → popstate 이벤트 발생 → handlePopState에서 isClosingFromHistory=true, onClose() 호출
+    // → 뒤로가기와 동일한 경로로 처리되어 더미 히스토리 확실히 제거
+    if (hasPushedRef.current) {
+      window.history.back();
+    } else {
+      // 아직 pushState 안 했거나 이미 처리된 경우
+      onCloseRef.current();
+    }
+  }, [enabled]);
+
+  /**
    * Sheet을 닫으면서 페이지 네비게이션을 수행하는 함수
    *
    * 동작 순서:
@@ -201,13 +248,14 @@ export function useHistoryClose({
    *
    * 최종 히스토리: [page1, page2] (깔끔하게 유지)
    */
-  const navigateAndClose = (navigationFn: () => void) => {
+  const navigateAndClose = useCallback((navigationFn: () => void) => {
     pendingNavigationRef.current = navigationFn;
     onCloseRef.current();
-  };
+  }, []);
 
   return {
     isClosingFromHistory,
+    close,
     navigateAndClose,
   };
 }

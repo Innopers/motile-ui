@@ -61,7 +61,16 @@ interface SheetContextValue {
   // History
   isClosingFromHistory: boolean;
 
-  // Navigation
+  // Close & Navigation
+  /**
+   * Sheet을 닫는 함수 (히스토리 처리 포함)
+   * Sheet.Close, 닫기 버튼 등에서 사용
+   */
+  close: () => void;
+
+  /**
+   * Sheet을 닫으면서 페이지 네비게이션을 수행하는 함수
+   */
   navigateAndClose: (navigationFn: () => void) => void;
 }
 
@@ -161,7 +170,7 @@ function SheetRoot({
   });
 
   // 히스토리 기반 뒤로가기 제스처로 닫기 (모바일 웹뷰)
-  const { isClosingFromHistory, navigateAndClose } = useHistoryClose({
+  const { isClosingFromHistory, close, navigateAndClose } = useHistoryClose({
     isOpen: open,
     onClose: () => setOpen(false),
     enabled: enableHistoryClose,
@@ -181,6 +190,7 @@ function SheetRoot({
       overlayRef,
       sheetRef,
       isClosingFromHistory,
+      close,
       navigateAndClose,
     }),
     [
@@ -195,6 +205,7 @@ function SheetRoot({
       overlayRef,
       sheetRef,
       isClosingFromHistory,
+      close,
       navigateAndClose,
     ]
   );
@@ -281,7 +292,7 @@ interface SheetOverlayProps {
 }
 
 function SheetOverlay({ className = "", style }: SheetOverlayProps) {
-  const { open, setOpen, position, closeOnBackdrop, zIndex, overlayRef } =
+  const { open, close, position, closeOnBackdrop, zIndex, overlayRef } =
     useSheetContext();
 
   const [shouldRender, setShouldRender] = useState(false);
@@ -329,10 +340,11 @@ function SheetOverlay({ className = "", style }: SheetOverlayProps) {
       if (normalizedOptions.clickOutside && e.target === overlayRef.current) {
         // useClickOutside와 중복 실행 방지
         e.stopPropagation();
-        setOpen(false);
+        // close()는 히스토리 처리를 포함하여 닫습니다
+        close();
       }
     },
-    [normalizedOptions.clickOutside, setOpen, overlayRef]
+    [normalizedOptions.clickOutside, close, overlayRef]
   );
 
   if (!shouldRender) {
@@ -370,7 +382,7 @@ interface SheetContentProps {
 function SheetContent({ children, className = "", style }: SheetContentProps) {
   const {
     open,
-    setOpen,
+    close,
     position,
     closeOnBackdrop,
     maxWidth,
@@ -401,7 +413,7 @@ function SheetContent({ children, className = "", style }: SheetContentProps) {
   // ESC 키로 닫기
   // 외부 클릭 닫기는 SheetOverlay의 handleOverlayClick에서 처리
   useEscapeKey({
-    handler: () => setOpen(false),
+    handler: close,
     enabled: open && normalizedOptions.escapeKey,
   });
 
@@ -513,11 +525,14 @@ interface SheetCloseProps {
 }
 
 function SheetClose({ children, asChild = false }: SheetCloseProps) {
-  const { setOpen } = useSheetContext();
+  const { close } = useSheetContext();
 
   const handleClick = useCallback(() => {
-    setOpen(false);
-  }, [setOpen]);
+    // close()는 히스토리 처리를 포함하여 Sheet을 닫습니다.
+    // - enableHistoryClose=true: history.back() → popstate → 닫기 (더미 히스토리 확실히 제거)
+    // - enableHistoryClose=false: 직접 닫기
+    close();
+  }, [close]);
 
   if (asChild) {
     return (

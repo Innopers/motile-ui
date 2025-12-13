@@ -373,29 +373,26 @@ describe("Sheet", () => {
       });
     });
 
-    // useClickOutside로 닫기 (Content 밖 클릭)
-    it("sheet content 밖을 클릭하면 닫힘", async () => {
+    // Overlay 클릭으로 닫기
+    it("overlay를 클릭하면 닫힘", async () => {
       const user = userEvent.setup();
 
       render(
-        <div>
-          <div data-testid="outside">Outside Element</div>
-          <Sheet.Root defaultOpen={true}>
-            <Sheet.Portal>
-              <Sheet.Overlay />
-              <Sheet.Content>
-                <Sheet.Title>Sheet Title</Sheet.Title>
-              </Sheet.Content>
-            </Sheet.Portal>
-          </Sheet.Root>
-        </div>
+        <Sheet.Root defaultOpen={true}>
+          <Sheet.Portal>
+            <Sheet.Overlay />
+            <Sheet.Content>
+              <Sheet.Title>Sheet Title</Sheet.Title>
+            </Sheet.Content>
+          </Sheet.Portal>
+        </Sheet.Root>
       );
 
       await waitFor(() =>
         expect(screen.getByRole("dialog")).toBeInTheDocument()
       );
 
-      await user.click(screen.getByTestId("outside"));
+      await user.click(screen.getByRole("presentation"));
 
       await waitFor(() => {
         expect(screen.queryByRole("dialog")).not.toBeInTheDocument();

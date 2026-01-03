@@ -1,0 +1,218 @@
+/**
+ * Select 컴포넌트 스타일
+ */
+
+/* Root Container */
+.motile-select {
+  display: inline-block;
+  width: 100%;
+}
+
+/* Trigger (Button) */
+.motile-select__trigger {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 40px 12px 16px;
+
+  display: flex;
+  align-items: center;
+
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+
+  font-size: 16px;
+  color: #1f2937;
+  text-align: left;
+
+  cursor: pointer;
+
+  /* border-color 애니메이션 */
+  transition: border-color 0.2s ease;
+}
+
+.motile-select__trigger[aria-expanded="true"] {
+  border-color: var(
+    --motile-select-color,
+    var(--motile-ui-select, var(--motile-theme, #3b82f6))
+  );
+}
+
+/* Trigger Icon */
+.motile-select__icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  pointer-events: none;
+  transition: transform 0.2s;
+}
+
+.motile-select__trigger[aria-expanded="true"] .motile-select__icon {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+/* Value */
+.motile-select__value {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Content (Dropdown) */
+.motile-select__content {
+  box-sizing: border-box;
+
+  max-height: 300px;
+  overflow-y: auto;
+
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+  /* 애니메이션 초기 상태 (닫혀있을 때) */
+  transform-origin: top center;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-12px) scaleY(0.85);
+  pointer-events: none;
+
+  /* 애니메이션 설정 */
+  transition:
+    opacity 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+    visibility 0s linear 0.45s;
+}
+
+.motile-select__content--open {
+  /* 열렸을 때 */
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0) scaleY(1);
+  pointer-events: auto;
+
+  transition:
+    opacity 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+    visibility 0s linear 0s;
+}
+
+/* Content Scrollbar */
+.motile-select__content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.motile-select__content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.motile-select__content::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 4px;
+}
+
+.motile-select__content::-webkit-scrollbar-thumb:hover {
+  background-color: #9ca3af;
+}
+
+/* Item */
+.motile-select__item {
+  position: relative;
+  box-sizing: border-box;
+
+  min-height: 44px;
+  padding: 12px 40px 12px 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+
+  font-size: 16px;
+  line-height: 1.5;
+  color: #1f2937;
+
+  cursor: pointer;
+  transition: background-color 0.15s;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+.motile-select__item:hover:not(.motile-select__item--disabled) {
+  background-color: #f9fafb;
+}
+
+.motile-select__item--selected {
+  font-weight: 500;
+}
+
+.motile-select__item--selected:not(.motile-select__item--disabled) {
+  /* 글자색은 유지하고 배경색만 변경 (5% 투명도) */
+  background-color: color-mix(
+    in srgb,
+    var(
+        --motile-select-color,
+        var(--motile-ui-select, var(--motile-theme, #3b82f6))
+      )
+      5%,
+    transparent
+  );
+}
+
+.motile-select__item--disabled {
+  color: #d1d5db;
+  cursor: not-allowed;
+}
+
+/* Check Icon */
+.motile-select__check {
+  position: absolute;
+  right: 12px;
+
+  color: var(
+    --motile-select-color,
+    var(--motile-ui-select, var(--motile-theme, #3b82f6))
+  );
+}
+
+/* 다크 모드 지원 (옵션) */
+@media (prefers-color-scheme: dark) {
+  .motile-select__content {
+    background-color: #1f2937;
+    border-color: #374151;
+  }
+
+  .motile-select__item {
+    color: #f9fafb;
+  }
+
+  .motile-select__item:hover:not(.motile-select__item--disabled) {
+    background-color: #374151;
+  }
+
+  .motile-select__item--selected:not(.motile-select__item--disabled) {
+    background-color: rgba(59, 130, 246, 0.15);
+  }
+
+  .motile-select__item--disabled {
+    color: #4b5563;
+  }
+}
+
+/* 애니메이션 감소 모드 */
+@media (prefers-reduced-motion: reduce) {
+  .motile-select__content {
+    transition: none;
+  }
+
+  .motile-select__item {
+    transition: none;
+  }
+}

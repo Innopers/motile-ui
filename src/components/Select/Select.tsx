@@ -206,7 +206,7 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
 
   return (
     <SelectContext.Provider value={contextValue}>
-      <div className="motile-select">{children}</div>
+      {children}
     </SelectContext.Provider>
   );
 };

@@ -40,6 +40,14 @@
   );
 }
 
+.motile-select__trigger:disabled,
+.motile-select__trigger[disabled] {
+  background-color: #f9fafb;
+  color: #9ca3af;
+  border-color: #e5e7eb;
+  cursor: not-allowed;
+}
+
 /* Trigger Icon */
 .motile-select__icon {
   position: absolute;
@@ -184,6 +192,13 @@
 
 /* 다크 모드 지원 (옵션) */
 @media (prefers-color-scheme: dark) {
+  .motile-select__trigger:disabled,
+  .motile-select__trigger[disabled] {
+    background-color: #1f2937;
+    color: #6b7280;
+    border-color: #374151;
+  }
+
   .motile-select__content {
     background-color: #1f2937;
     border-color: #374151;

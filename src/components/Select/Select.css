@@ -32,6 +32,10 @@
     --motile-select-color,
     var(--motile-ui-select, var(--motile-theme, #3b82f6))
   );
+  background-color: rgba(229, 231, 235, 0.5);
+  backdrop-filter: blur(8px);
+  filter: blur(1.5px);
+  color: rgba(31, 41, 55, 0.5);
 }
 
 .motile-select__trigger:disabled,

@@ -40,6 +40,7 @@ interface SelectContextValue {
   registerItem: (value: string, label: React.ReactNode) => void;
   unregisterItem: (value: string) => void;
   zIndex: number;
+  hideCheckIcon: boolean;
   // Floating UI
   refs: {
     setReference: (node: HTMLButtonElement | null) => void;
@@ -94,6 +95,16 @@ export interface SelectRootProps {
   zIndex?: number;
 
   /**
+   * 체크 아이콘 숨김 여부
+   * @default false
+   *
+   * @example
+   * // 커스텀 레이아웃 사용 시 체크 아이콘 숨기기
+   * <Select.Root hideCheckIcon>
+   */
+  hideCheckIcon?: boolean;
+
+  /**
    * 자식 컴포넌트
    */
   children: React.ReactNode;
@@ -108,6 +119,7 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
   onValueChange,
   disabled = false,
   zIndex = 40,
+  hideCheckIcon = false,
   children,
 }) => {
   const [uncontrolledValue, setUncontrolledValue] = useState<
@@ -200,6 +212,7 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
     registerItem,
     unregisterItem,
     zIndex,
+    hideCheckIcon,
     refs,
     floatingStyles,
   };
@@ -490,6 +503,7 @@ export const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
       onValueChange,
       registerItem,
       unregisterItem,
+      hideCheckIcon,
     } = useSelectContext();
 
     const isSelected = selectedValue === itemValue;
@@ -528,7 +542,7 @@ export const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
         {...props}
       >
         {children}
-        {isSelected && (
+        {isSelected && !hideCheckIcon && (
           <svg
             className="motile-select__check"
             width="16"

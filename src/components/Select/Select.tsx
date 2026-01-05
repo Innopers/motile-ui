@@ -7,16 +7,6 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { createPortal } from "react-dom";
-
-import {
-  autoUpdate,
-  flip,
-  offset,
-  shift,
-  size,
-  useFloating,
-} from "@floating-ui/react";
 
 import { Drawer } from "@/components/Drawer/Drawer";
 import { useClickOutside } from "@/hooks/useClickOutside";
@@ -45,12 +35,6 @@ interface SelectContextValue {
   hideCheckIcon: boolean;
   isMobile: boolean;
   maxWidth?: string | number;
-  // Floating UI
-  refs: {
-    setReference: (node: HTMLButtonElement | null) => void;
-    setFloating: (node: HTMLDivElement | null) => void;
-  };
-  floatingStyles: React.CSSProperties;
 }
 
 const SelectContext = createContext<SelectContextValue | null>(null);
@@ -154,6 +138,9 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
 
   const triggerRef = useRef<HTMLButtonElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  // open 상태를 ref로 추적 (isMobile 변경 시 최신 값 참조용)
+  const openRef = useRef(open);
+  openRef.current = open;
 
   // Item labels를 저장하는 Map (useState로 변경하여 re-render 트리거)
   const [itemLabels, setItemLabels] = useState<Map<string, React.ReactNode>>(
@@ -169,24 +156,6 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
     : "(max-width: 768px)";
 
   const isMobile = useMediaQuery(mediaQueryString);
-
-  // Floating UI setup
-  const { refs, floatingStyles } = useFloating({
-    middleware: [
-      offset(4), // trigger와 4px 간격
-      flip(), // viewport 끝에서 자동 뒤집기
-      shift({ padding: 8 }), // viewport 내부로 이동
-      size({
-        apply({ rects, elements }) {
-          // content width를 trigger width와 동일하게
-          Object.assign(elements.floating.style, {
-            width: `${rects.reference.width}px`,
-          });
-        },
-      }),
-    ],
-    whileElementsMounted: autoUpdate, // 스크롤/리사이즈 시 자동 업데이트
-  });
 
   // Controlled vs Uncontrolled
   const isControlled = controlledValue !== undefined;
@@ -241,6 +210,25 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
     enabled: open && !isMobile,
   });
 
+  // resize 시 Select 닫기
+  useEffect(() => {
+    if (!open) return;
+
+    const handleResize = () => {
+      setOpen(false);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [open]);
+
+  // isMobile 변경 시 Select 닫기 (Dropdown↔Drawer 전환 방지)
+  useEffect(() => {
+    if (openRef.current) {
+      setOpen(false);
+    }
+  }, [isMobile, setOpen]);
+
   const contextValue: SelectContextValue = {
     open,
     setOpen,
@@ -257,13 +245,11 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
     hideCheckIcon,
     isMobile,
     maxWidth,
-    refs,
-    floatingStyles,
   };
 
   return (
     <SelectContext.Provider value={contextValue}>
-      {children}
+      <div style={{ position: "relative" }}>{children}</div>
     </SelectContext.Provider>
   );
 };
@@ -304,7 +290,7 @@ export const SelectTrigger = React.forwardRef<
     { children, color, className, style, asChild = false, ...props },
     forwardedRef
   ) => {
-    const { open, setOpen, disabled, triggerRef, contentId, zIndex, refs } =
+    const { open, setOpen, disabled, triggerRef, contentId, zIndex } =
       useSelectContext();
 
     const handleClick = () => {
@@ -312,15 +298,13 @@ export const SelectTrigger = React.forwardRef<
       setOpen(!open);
     };
 
-    // Ref callback for merging internal, floating-ui, and forwarded refs
+    // Ref callback for merging internal and forwarded refs
     const mergedRef = React.useCallback(
       (node: HTMLButtonElement | null) => {
-        // Internal ref (for useClickOutside)
+        // Internal ref (for useClickOutside and position calculation)
         (
           triggerRef as React.MutableRefObject<HTMLButtonElement | null>
         ).current = node;
-        // Floating UI ref
-        refs.setReference(node);
         // Forwarded ref
         if (typeof forwardedRef === "function") {
           forwardedRef(node);
@@ -328,7 +312,7 @@ export const SelectTrigger = React.forwardRef<
           forwardedRef.current = node;
         }
       },
-      [forwardedRef, triggerRef, refs]
+      [forwardedRef, triggerRef]
     );
 
     const classes = ["motile-select__trigger", className]
@@ -438,16 +422,8 @@ export const SelectContent = React.forwardRef<
   HTMLDivElement,
   SelectContentProps
 >(({ children, className, style, ...props }, forwardedRef) => {
-  const {
-    open,
-    setOpen,
-    contentRef,
-    contentId,
-    floatingStyles,
-    zIndex,
-    refs,
-    isMobile,
-  } = useSelectContext();
+  const { open, setOpen, contentRef, contentId, zIndex, isMobile } =
+    useSelectContext();
 
   const [isMounted, setIsMounted] = useState(false);
 
@@ -455,15 +431,12 @@ export const SelectContent = React.forwardRef<
     setIsMounted(true);
   }, []);
 
-  // Merge refs (internal, floating-ui, and forwarded) - 항상 호출 (hooks 규칙)
-  // 모바일에서는 사용하지 않지만, hooks는 조건부 호출 불가
+  // Merge refs
   const mergedRef = React.useCallback(
     (node: HTMLDivElement | null) => {
       // Internal ref (for useClickOutside)
       (contentRef as React.MutableRefObject<HTMLDivElement | null>).current =
         node;
-      // Floating UI ref
-      refs.setFloating(node);
       // Forwarded ref
       if (typeof forwardedRef === "function") {
         forwardedRef(node);
@@ -471,7 +444,7 @@ export const SelectContent = React.forwardRef<
         forwardedRef.current = node;
       }
     },
-    [forwardedRef, contentRef, refs]
+    [forwardedRef, contentRef]
   );
 
   // SSR 시에는 렌더링하지 않음
@@ -518,7 +491,7 @@ export const SelectContent = React.forwardRef<
     );
   }
 
-  // 데스크톱: 기존 floating dropdown
+  // 데스크톱: absolute positioning (부모의 position: relative 기준)
 
   const classes = [
     "motile-select__content",
@@ -528,14 +501,12 @@ export const SelectContent = React.forwardRef<
     .filter(Boolean)
     .join(" ");
 
-  // Combine floating-ui styles with user styles
   const combinedStyles: React.CSSProperties = {
-    ...floatingStyles,
     zIndex,
     ...style,
   };
 
-  const content = (
+  return (
     <div
       ref={mergedRef}
       id={contentId}
@@ -548,9 +519,6 @@ export const SelectContent = React.forwardRef<
       {children}
     </div>
   );
-
-  // Portal to body (클라이언트 사이드에서만)
-  return createPortal(content, document.body);
 });
 
 SelectContent.displayName = "SelectContent";

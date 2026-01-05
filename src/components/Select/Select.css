@@ -71,8 +71,12 @@
 
 /* Content (Dropdown) */
 .motile-select__content {
-  box-sizing: border-box;
+  position: absolute;
+  top: calc(100% + 4px); /* trigger 바로 아래 (4px gap) */
+  left: 0;
+  width: 100%; /* trigger와 같은 너비 */
 
+  box-sizing: border-box;
   max-height: 300px;
   overflow-y: auto;
 

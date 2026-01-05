@@ -18,8 +18,10 @@ import {
   useFloating,
 } from "@floating-ui/react";
 
+import { Drawer } from "@/components/Drawer/Drawer";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { useEscapeKey } from "@/hooks/useEscapeKey";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { Slot } from "@/utils/Slot";
 
 import "./Select.css";
@@ -41,6 +43,8 @@ interface SelectContextValue {
   unregisterItem: (value: string) => void;
   zIndex: number;
   hideCheckIcon: boolean;
+  isMobile: boolean;
+  maxWidth?: string | number;
   // Floating UI
   refs: {
     setReference: (node: HTMLButtonElement | null) => void;
@@ -105,6 +109,26 @@ export interface SelectRootProps {
   hideCheckIcon?: boolean;
 
   /**
+   * Select의 breakpoint (모바일/데스크톱 전환점)
+   * @default 768
+   *
+   * @example
+   * // 600px 이하: Drawer, 초과: Floating dropdown
+   * <Select.Root maxWidth="600px">
+   *
+   * // 1024px 이하: Drawer, 초과: Floating dropdown
+   * <Select.Root maxWidth={1024}>
+   *
+   * @remarks
+   * - maxWidth는 오직 mobile/desktop 전환 breakpoint로만 사용됩니다
+   * - viewport <= maxWidth: Drawer 사용 (전체 화면)
+   * - viewport > maxWidth: Floating dropdown 사용 (Trigger 너비와 동일)
+   * - Content 너비는 항상 Trigger 너비를 따라갑니다
+   * - 기본값: 768px breakpoint
+   */
+  maxWidth?: string | number;
+
+  /**
    * 자식 컴포넌트
    */
   children: React.ReactNode;
@@ -120,6 +144,7 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
   disabled = false,
   zIndex = 40,
   hideCheckIcon = false,
+  maxWidth = 768,
   children,
 }) => {
   const [uncontrolledValue, setUncontrolledValue] = useState<
@@ -135,6 +160,13 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
 
   const id = useId();
   const contentId = `select-content-${id}`;
+
+  // maxWidth를 breakpoint로 사용 (기본값: 768px)
+  const mediaQueryString = maxWidth
+    ? `(max-width: ${typeof maxWidth === "number" ? `${maxWidth}px` : maxWidth})`
+    : "(max-width: 768px)";
+
+  const isMobile = useMediaQuery(mediaQueryString);
 
   // Floating UI setup
   const { refs, floatingStyles } = useFloating({
@@ -179,16 +211,16 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
     itemLabelsRef.current.delete(itemValue);
   }, []);
 
-  // 외부 클릭 시 닫기
+  // 외부 클릭 시 닫기 (모바일에서는 Drawer가 처리)
   useClickOutside({
     refs: [contentRef, triggerRef],
     handler: () => {
       if (open) setOpen(false);
     },
-    enabled: open,
+    enabled: open && !isMobile,
   });
 
-  // ESC 키로 닫기
+  // ESC 키로 닫기 (모바일에서는 Drawer가 처리)
   useEscapeKey({
     handler: () => {
       if (open) {
@@ -196,7 +228,7 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
         triggerRef.current?.focus();
       }
     },
-    enabled: open,
+    enabled: open && !isMobile,
   });
 
   const contextValue: SelectContextValue = {
@@ -213,6 +245,8 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
     unregisterItem,
     zIndex,
     hideCheckIcon,
+    isMobile,
+    maxWidth,
     refs,
     floatingStyles,
   };
@@ -388,13 +422,22 @@ export interface SelectContentProps extends React.HTMLAttributes<HTMLDivElement>
 
 /**
  * SelectContent - 드롭다운 컨테이너 (Portal)
+ * 모바일에서는 Drawer로, 데스크톱에서는 floating dropdown으로 렌더링
  */
 export const SelectContent = React.forwardRef<
   HTMLDivElement,
   SelectContentProps
 >(({ children, className, style, ...props }, forwardedRef) => {
-  const { open, contentRef, contentId, floatingStyles, zIndex, refs } =
-    useSelectContext();
+  const {
+    open,
+    setOpen,
+    contentRef,
+    contentId,
+    floatingStyles,
+    zIndex,
+    refs,
+    isMobile,
+  } = useSelectContext();
 
   const [isMounted, setIsMounted] = useState(false);
 
@@ -402,7 +445,8 @@ export const SelectContent = React.forwardRef<
     setIsMounted(true);
   }, []);
 
-  // Merge refs (internal, floating-ui, and forwarded)
+  // Merge refs (internal, floating-ui, and forwarded) - 항상 호출 (hooks 규칙)
+  // 모바일에서는 사용하지 않지만, hooks는 조건부 호출 불가
   const mergedRef = React.useCallback(
     (node: HTMLDivElement | null) => {
       // Internal ref (for useClickOutside)
@@ -419,6 +463,47 @@ export const SelectContent = React.forwardRef<
     },
     [forwardedRef, contentRef, refs]
   );
+
+  // SSR 시에는 렌더링하지 않음
+  if (!isMounted) {
+    return null;
+  }
+
+  // 모바일: Drawer로 렌더링
+  if (isMobile) {
+    return (
+      <Drawer.Root
+        open={open}
+        onOpenChange={setOpen}
+        closeOnBackdrop={true}
+        closeOnDrag={true}
+        maxHeight="70dvh"
+        zIndex={9999} // Drawer의 기본 z-index 사용 (Select의 zIndex는 desktop용)
+      >
+        <Drawer.Portal>
+          <Drawer.Overlay />
+          <Drawer.Content>
+            <Drawer.Handle />
+            <Drawer.Body
+              style={{ padding: 0 }} // SelectItem이 자체 padding 가짐
+            >
+              {/* listbox role wrapper for accessibility */}
+              <div
+                id={contentId}
+                role="listbox"
+                className={`motile-select__mobile-list ${className || ""}`}
+                {...props}
+              >
+                {children}
+              </div>
+            </Drawer.Body>
+          </Drawer.Content>
+        </Drawer.Portal>
+      </Drawer.Root>
+    );
+  }
+
+  // 데스크톱: 기존 floating dropdown
 
   const classes = [
     "motile-select__content",
@@ -448,11 +533,6 @@ export const SelectContent = React.forwardRef<
       {children}
     </div>
   );
-
-  // SSR 시에는 렌더링하지 않음
-  if (!isMounted) {
-    return null;
-  }
 
   // Portal to body (클라이언트 사이드에서만)
   return createPortal(content, document.body);

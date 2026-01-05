@@ -219,6 +219,20 @@
   }
 }
 
+/* Mobile list wrapper (inside Drawer) */
+.motile-select__mobile-list {
+  /* SelectItem들이 자체 padding/margin을 가지므로 여기서는 최소한만 */
+  width: 100%;
+  box-sizing: border-box;
+
+  /* 하단 여백: 엄지 접근성 + Safe Area 대응 */
+  padding-bottom: 16px; /* Fallback for older browsers */
+  padding-bottom: max(
+    16px,
+    env(safe-area-inset-bottom)
+  ); /* iPhone 노치/홈 인디케이터 */
+}
+
 /* 애니메이션 감소 모드 */
 @media (prefers-reduced-motion: reduce) {
   .motile-select__content {

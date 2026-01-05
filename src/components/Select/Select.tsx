@@ -155,8 +155,10 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
   const triggerRef = useRef<HTMLButtonElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  // Item labels를 저장하는 Map
-  const itemLabelsRef = useRef<Map<string, React.ReactNode>>(new Map());
+  // Item labels를 저장하는 Map (useState로 변경하여 re-render 트리거)
+  const [itemLabels, setItemLabels] = useState<Map<string, React.ReactNode>>(
+    new Map()
+  );
 
   const id = useId();
   const contentId = `select-content-${id}`;
@@ -202,13 +204,21 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
   // Item 등록/해제 함수 (useCallback으로 안정화)
   const registerItem = useCallback(
     (itemValue: string, label: React.ReactNode) => {
-      itemLabelsRef.current.set(itemValue, label);
+      setItemLabels((prev) => {
+        const newMap = new Map(prev);
+        newMap.set(itemValue, label);
+        return newMap;
+      });
     },
     []
   );
 
   const unregisterItem = useCallback((itemValue: string) => {
-    itemLabelsRef.current.delete(itemValue);
+    setItemLabels((prev) => {
+      const newMap = new Map(prev);
+      newMap.delete(itemValue);
+      return newMap;
+    });
   }, []);
 
   // 외부 클릭 시 닫기 (모바일에서는 Drawer가 처리)
@@ -240,7 +250,7 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
     triggerRef,
     contentRef,
     contentId,
-    itemLabels: itemLabelsRef.current,
+    itemLabels,
     registerItem,
     unregisterItem,
     zIndex,
@@ -499,6 +509,11 @@ export const SelectContent = React.forwardRef<
             </Drawer.Body>
           </Drawer.Content>
         </Drawer.Portal>
+        {/* Portal 밖에서 children을 숨겨서 마운트 (itemLabels 등록 유지용) */}
+        {/* Portal이 닫힐 때도 SelectItem들이 마운트 상태를 유지하여 defaultValue가 올바르게 표시됨 */}
+        <div style={{ display: "none" }} aria-hidden="true">
+          {children}
+        </div>
       </Drawer.Root>
     );
   }
@@ -582,20 +597,17 @@ export const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
       value: selectedValue,
       onValueChange,
       registerItem,
-      unregisterItem,
       hideCheckIcon,
     } = useSelectContext();
 
     const isSelected = selectedValue === itemValue;
 
-    // Item이 마운트될 때 label을 등록하고, 언마운트될 때 제거
+    // Item이 마운트될 때 label을 등록
+    // Drawer.Portal이 닫힐 때 임시로 언마운트되어도 label은 유지
     useEffect(() => {
       registerItem(itemValue, children);
-
-      return () => {
-        unregisterItem(itemValue);
-      };
-    }, [itemValue, children, registerItem, unregisterItem]);
+      // cleanup 제거: Drawer 모드에서 Portal이 닫힐 때 label이 사라지는 것 방지
+    }, [itemValue, children, registerItem]);
 
     const handleClick = () => {
       if (itemDisabled) return;

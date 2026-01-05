@@ -186,8 +186,5 @@
   "license": "MIT",
   "sideEffects": [
     "**/*.css"
-  ],
-  "dependencies": {
-    "@floating-ui/react": "^0.26.24"
-  }
+  ]
 }

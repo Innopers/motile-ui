@@ -17,20 +17,25 @@ import { Slot } from "@/utils/Slot";
 import "./Select.css";
 
 /**
+ * Select Value Type
+ */
+export type SelectValue = string | number;
+
+/**
  * Select Context
  */
 interface SelectContextValue {
   open: boolean;
   setOpen: (open: boolean) => void;
-  value: string | undefined;
-  onValueChange: (value: string) => void;
+  value: SelectValue | undefined;
+  onValueChange: (value: SelectValue) => void;
   disabled: boolean;
   triggerRef: React.RefObject<HTMLButtonElement>;
   contentRef: React.RefObject<HTMLDivElement>;
   contentId: string;
-  itemLabels: Map<string, React.ReactNode>;
-  registerItem: (value: string, label: React.ReactNode) => void;
-  unregisterItem: (value: string) => void;
+  itemLabels: Map<SelectValue, React.ReactNode>;
+  registerItem: (value: SelectValue, label: React.ReactNode) => void;
+  unregisterItem: (value: SelectValue) => void;
   zIndex: number;
   hideCheckIcon: boolean;
   isMobile: boolean;
@@ -53,18 +58,30 @@ const useSelectContext = () => {
 export interface SelectRootProps {
   /**
    * 선택된 값 (Controlled)
+   * @remarks string | number를 지원합니다
    */
-  value?: string;
+  value?: SelectValue;
 
   /**
    * 초기 선택 값 (Uncontrolled)
    */
-  defaultValue?: string;
+  defaultValue?: SelectValue;
 
   /**
    * 값 변경 콜백
    */
-  onValueChange?: (value: string) => void;
+  onValueChange?: (value: SelectValue) => void;
+
+  /**
+   * 열림/닫힘 상태 (Controlled)
+   * @remarks open prop을 제공하면 외부에서 열림 상태를 제어할 수 있습니다
+   */
+  open?: boolean;
+
+  /**
+   * 열림/닫힘 상태 변경 콜백
+   */
+  onOpenChange?: (open: boolean) => void;
 
   /**
    * 비활성화 여부
@@ -125,6 +142,8 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
   value: controlledValue,
   defaultValue,
   onValueChange,
+  open: controlledOpen,
+  onOpenChange,
   disabled = false,
   zIndex = 40,
   hideCheckIcon = false,
@@ -132,20 +151,28 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
   children,
 }) => {
   const [uncontrolledValue, setUncontrolledValue] = useState<
-    string | undefined
+    SelectValue | undefined
   >(defaultValue);
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
 
   const triggerRef = useRef<HTMLButtonElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+
+  // Controlled vs Uncontrolled
+  const isControlled = controlledValue !== undefined;
+  const value = isControlled ? controlledValue : uncontrolledValue;
+
+  const isOpenControlled = controlledOpen !== undefined;
+  const open = isOpenControlled ? controlledOpen : internalOpen;
+
   // open 상태를 ref로 추적 (isMobile 변경 시 최신 값 참조용)
   const openRef = useRef(open);
   openRef.current = open;
 
   // Item labels를 저장하는 Map (useState로 변경하여 re-render 트리거)
-  const [itemLabels, setItemLabels] = useState<Map<string, React.ReactNode>>(
-    new Map()
-  );
+  const [itemLabels, setItemLabels] = useState<
+    Map<SelectValue, React.ReactNode>
+  >(new Map());
 
   const id = useId();
   const contentId = `select-content-${id}`;
@@ -157,22 +184,25 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
 
   const isMobile = useMediaQuery(mediaQueryString);
 
-  // Controlled vs Uncontrolled
-  const isControlled = controlledValue !== undefined;
-  const value = isControlled ? controlledValue : uncontrolledValue;
+  const handleOpenChange = (newOpen: boolean) => {
+    if (!isOpenControlled) {
+      setInternalOpen(newOpen);
+    }
+    onOpenChange?.(newOpen);
+  };
 
-  const handleValueChange = (newValue: string) => {
+  const handleValueChange = (newValue: SelectValue) => {
     if (!isControlled) {
       setUncontrolledValue(newValue);
     }
     onValueChange?.(newValue);
-    setOpen(false);
+    handleOpenChange(false);
     triggerRef.current?.focus();
   };
 
   // Item 등록/해제 함수 (useCallback으로 안정화)
   const registerItem = useCallback(
-    (itemValue: string, label: React.ReactNode) => {
+    (itemValue: SelectValue, label: React.ReactNode) => {
       setItemLabels((prev) => {
         const newMap = new Map(prev);
         newMap.set(itemValue, label);
@@ -182,7 +212,7 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
     []
   );
 
-  const unregisterItem = useCallback((itemValue: string) => {
+  const unregisterItem = useCallback((itemValue: SelectValue) => {
     setItemLabels((prev) => {
       const newMap = new Map(prev);
       newMap.delete(itemValue);
@@ -194,7 +224,7 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
   useClickOutside({
     refs: [contentRef, triggerRef],
     handler: () => {
-      if (open) setOpen(false);
+      if (open) handleOpenChange(false);
     },
     enabled: open && !isMobile,
   });
@@ -203,7 +233,7 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
   useEscapeKey({
     handler: () => {
       if (open) {
-        setOpen(false);
+        handleOpenChange(false);
         triggerRef.current?.focus();
       }
     },
@@ -215,7 +245,7 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
     if (!open) return;
 
     const handleResize = () => {
-      setOpen(false);
+      handleOpenChange(false);
     };
 
     window.addEventListener("resize", handleResize);
@@ -225,13 +255,13 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
   // isMobile 변경 시 Select 닫기 (Dropdown↔Drawer 전환 방지)
   useEffect(() => {
     if (openRef.current) {
-      setOpen(false);
+      handleOpenChange(false);
     }
-  }, [isMobile, setOpen]);
+  }, [isMobile]);
 
   const contextValue: SelectContextValue = {
     open,
-    setOpen,
+    setOpen: handleOpenChange,
     value,
     onValueChange: handleValueChange,
     disabled,
@@ -526,9 +556,20 @@ export interface SelectItemProps extends Omit<
   "children"
 > {
   /**
-   * 옵션 값
+   * 옵션 값 (선택적)
+   * @remarks
+   * - value prop을 제공하면 SelectValue가 자동으로 label을 표시합니다
+   * - value prop이 없으면 onClick으로 완전히 제어할 수 있습니다
    */
-  value: string;
+  value?: SelectValue;
+
+  /**
+   * 선택 상태 (선택적)
+   * @remarks
+   * - selected prop을 제공하면 value 비교보다 우선합니다
+   * - 객체 데이터를 사용할 때 유용합니다
+   */
+  selected?: boolean;
 
   /**
    * 비활성화 여부
@@ -549,6 +590,7 @@ export const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
   (
     {
       value: itemValue,
+      selected: externalSelected,
       disabled: itemDisabled = false,
       children,
       className,
@@ -560,25 +602,50 @@ export const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
     const {
       value: selectedValue,
       onValueChange,
+      setOpen,
       registerItem,
       hideCheckIcon,
     } = useSelectContext();
 
-    const isSelected = selectedValue === itemValue;
+    // 하이브리드 선택 상태 로직:
+    // 1순위: external selected prop
+    // 2순위: value 비교
+    const isSelected =
+      externalSelected !== undefined
+        ? externalSelected
+        : itemValue !== undefined && selectedValue === itemValue;
 
-    // Item이 마운트될 때 label을 등록
+    // Item이 마운트될 때 label을 등록 (value prop이 있을 때만)
     // Drawer.Portal이 닫힐 때 임시로 언마운트되어도 label은 유지
     useEffect(() => {
-      registerItem(itemValue, children);
+      if (itemValue !== undefined) {
+        registerItem(itemValue, children);
+      }
       // cleanup 제거: Drawer 모드에서 Portal이 닫힐 때 label이 사라지는 것 방지
     }, [itemValue, children, registerItem]);
 
+    // 하이브리드 클릭 핸들러:
+    // 1. 사용자 onClick 먼저 실행
+    // 2. preventDefault 체크
+    // 3. value prop이 있으면 자동 처리, 없으면 닫기만
     const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
       if (itemDisabled) return;
-      // 사용자 onClick 먼저 실행
+
+      // 1단계: 사용자 onClick 먼저 실행
       onClick?.(e);
-      if (!e.defaultPrevented) {
+
+      // 2단계: preventDefault 체크
+      if (e.defaultPrevented) {
+        return; // 사용자가 기본 동작 막음
+      }
+
+      // 3단계: value prop이 있으면 자동 처리
+      if (itemValue !== undefined) {
         onValueChange(itemValue);
+        // onValueChange 안에서 자동으로 닫힘
+      } else {
+        // value prop이 없으면 닫기만 수행 (사용자가 onClick에서 데이터 처리)
+        setOpen(false);
       }
     };
 

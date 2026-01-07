@@ -359,12 +359,7 @@ export const SelectTrigger = React.forwardRef<
     );
 
     if (asChild) {
-      return (
-        <Slot {...triggerProps}>
-          {children}
-          {icon}
-        </Slot>
-      );
+      return <Slot {...triggerProps}>{children}</Slot>;
     }
 
     return (
@@ -557,6 +552,7 @@ export const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
       disabled: itemDisabled = false,
       children,
       className,
+      onClick,
       ...props
     },
     ref
@@ -577,9 +573,13 @@ export const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
       // cleanup 제거: Drawer 모드에서 Portal이 닫힐 때 label이 사라지는 것 방지
     }, [itemValue, children, registerItem]);
 
-    const handleClick = () => {
+    const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
       if (itemDisabled) return;
-      onValueChange(itemValue);
+      // 사용자 onClick 먼저 실행
+      onClick?.(e);
+      if (!e.defaultPrevented) {
+        onValueChange(itemValue);
+      }
     };
 
     const classes = [

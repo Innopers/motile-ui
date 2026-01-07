@@ -61,6 +61,7 @@ interface SelectContextValue {
   isMobile: boolean;
   maxWidth?: string | number;
   closeOnBackdrop: CloseOnBackdropOptions;
+  color: string | undefined;
 }
 
 const SelectContext = createContext<SelectContextValue | null>(null);
@@ -177,6 +178,16 @@ export interface SelectRootProps {
   closeOnBackdrop?: CloseOnBackdropOptions;
 
   /**
+   * 커스텀 색상
+   * @example '#10b981'
+   *
+   * @remarks
+   * Trigger, Content, Item 전체에 적용되는 테마 색상을 설정합니다.
+   * CSS 변수 `--motile-select-color`로 적용됩니다.
+   */
+  color?: string;
+
+  /**
    * 자식 컴포넌트
    */
   children: React.ReactNode;
@@ -196,6 +207,7 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
   hideCheckIcon = false,
   maxWidth = 768,
   closeOnBackdrop = true,
+  color,
   children,
 }) => {
   const [uncontrolledValue, setUncontrolledValue] = useState<
@@ -340,6 +352,7 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
     isMobile,
     maxWidth,
     closeOnBackdrop,
+    color,
   };
 
   return (
@@ -362,12 +375,6 @@ export interface SelectTriggerProps extends Omit<
   children: React.ReactNode;
 
   /**
-   * 커스텀 색상 (focus border)
-   * @example '#10b981'
-   */
-  color?: string;
-
-  /**
    * 자식 요소를 렌더링할지 여부 (Slot 패턴)
    * @default false
    */
@@ -380,91 +387,85 @@ export interface SelectTriggerProps extends Omit<
 export const SelectTrigger = React.forwardRef<
   HTMLButtonElement,
   SelectTriggerProps
->(
-  (
-    { children, color, className, style, asChild = false, ...props },
-    forwardedRef
-  ) => {
-    const { open, setOpen, disabled, triggerRef, contentId, zIndex } =
-      useSelectContext();
+>(({ children, className, style, asChild = false, ...props }, forwardedRef) => {
+  const { open, setOpen, disabled, triggerRef, contentId, zIndex, color } =
+    useSelectContext();
 
-    const handleClick = () => {
-      if (disabled) return;
-      setOpen(!open);
-    };
+  const handleClick = () => {
+    if (disabled) return;
+    setOpen(!open);
+  };
 
-    // Ref callback for merging internal and forwarded refs
-    const mergedRef = React.useCallback(
-      (node: HTMLButtonElement | null) => {
-        // Internal ref (for useClickOutside and position calculation)
-        (
-          triggerRef as React.MutableRefObject<HTMLButtonElement | null>
-        ).current = node;
-        // Forwarded ref
-        if (typeof forwardedRef === "function") {
-          forwardedRef(node);
-        } else if (forwardedRef) {
-          forwardedRef.current = node;
-        }
-      },
-      [forwardedRef, triggerRef]
-    );
+  // Ref callback for merging internal and forwarded refs
+  const mergedRef = React.useCallback(
+    (node: HTMLButtonElement | null) => {
+      // Internal ref (for useClickOutside and position calculation)
+      (triggerRef as React.MutableRefObject<HTMLButtonElement | null>).current =
+        node;
+      // Forwarded ref
+      if (typeof forwardedRef === "function") {
+        forwardedRef(node);
+      } else if (forwardedRef) {
+        forwardedRef.current = node;
+      }
+    },
+    [forwardedRef, triggerRef]
+  );
 
-    const classes = ["motile-select__trigger", className]
-      .filter(Boolean)
-      .join(" ");
+  const classes = ["motile-select__trigger", className]
+    .filter(Boolean)
+    .join(" ");
 
-    const inlineStyle: React.CSSProperties = {
-      zIndex,
-      ...style,
-      ...(color && ({ "--motile-select-color": color } as React.CSSProperties)),
-    };
+  const inlineStyle: React.CSSProperties = {
+    zIndex,
+    ...style,
+    ...(color && ({ "--motile-select-color": color } as React.CSSProperties)),
+  };
 
-    const triggerProps = {
-      ref: mergedRef,
-      type: "button" as const,
-      role: "combobox",
-      "aria-controls": contentId,
-      "aria-expanded": open,
-      "aria-haspopup": "listbox" as const,
-      disabled,
-      className: classes,
-      style: inlineStyle,
-      onClick: handleClick,
-      ...props,
-    };
+  const triggerProps = {
+    ref: mergedRef,
+    type: "button" as const,
+    role: "combobox",
+    "aria-controls": contentId,
+    "aria-expanded": open,
+    "aria-haspopup": "listbox" as const,
+    disabled,
+    className: classes,
+    style: inlineStyle,
+    onClick: handleClick,
+    ...props,
+  };
 
-    const icon = (
-      <svg
-        className="motile-select__icon"
-        width="20"
-        height="20"
-        viewBox="0 0 20 20"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M5 7.5L10 12.5L15 7.5"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    );
+  const icon = (
+    <svg
+      className="motile-select__icon"
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M5 7.5L10 12.5L15 7.5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
 
-    if (asChild) {
-      return <Slot {...triggerProps}>{children}</Slot>;
-    }
-
-    return (
-      <button {...triggerProps}>
-        {children}
-        {icon}
-      </button>
-    );
+  if (asChild) {
+    return <Slot {...triggerProps}>{children}</Slot>;
   }
-);
+
+  return (
+    <button {...triggerProps}>
+      {children}
+      {icon}
+    </button>
+  );
+});
 
 SelectTrigger.displayName = "SelectTrigger";
 
@@ -520,6 +521,7 @@ export const SelectContent = React.forwardRef<
     zIndex,
     isMobile,
     closeOnBackdrop,
+    color,
   } = useSelectContext();
 
   const [isMounted, setIsMounted] = useState(false);
@@ -601,6 +603,7 @@ export const SelectContent = React.forwardRef<
   const combinedStyles: React.CSSProperties = {
     zIndex,
     ...style,
+    ...(color && ({ "--motile-select-color": color } as React.CSSProperties)),
   };
 
   return (
@@ -666,6 +669,7 @@ export const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
       disabled: itemDisabled = false,
       children,
       className,
+      style,
       onClick,
       ...props
     },
@@ -677,6 +681,7 @@ export const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
       setOpen,
       registerItem,
       hideCheckIcon,
+      color,
     } = useSelectContext();
 
     // 하이브리드 선택 상태 로직:
@@ -730,6 +735,11 @@ export const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
       .filter(Boolean)
       .join(" ");
 
+    const combinedStyles: React.CSSProperties = {
+      ...style,
+      ...(color && ({ "--motile-select-color": color } as React.CSSProperties)),
+    };
+
     return (
       <div
         ref={ref}
@@ -737,6 +747,7 @@ export const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
         aria-selected={isSelected}
         aria-disabled={itemDisabled}
         className={classes}
+        style={combinedStyles}
         onClick={handleClick}
         {...props}
       >

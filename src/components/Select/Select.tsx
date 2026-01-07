@@ -184,12 +184,15 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
 
   const isMobile = useMediaQuery(mediaQueryString);
 
-  const handleOpenChange = (newOpen: boolean) => {
-    if (!isOpenControlled) {
-      setInternalOpen(newOpen);
-    }
-    onOpenChange?.(newOpen);
-  };
+  const handleOpenChange = useCallback(
+    (newOpen: boolean) => {
+      if (!isOpenControlled) {
+        setInternalOpen(newOpen);
+      }
+      onOpenChange?.(newOpen);
+    },
+    [isOpenControlled, onOpenChange]
+  );
 
   const handleValueChange = (newValue: SelectValue) => {
     if (!isControlled) {
@@ -250,14 +253,14 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, [open]);
+  }, [open, handleOpenChange]);
 
   // isMobile 변경 시 Select 닫기 (Dropdown↔Drawer 전환 방지)
   useEffect(() => {
     if (openRef.current) {
       handleOpenChange(false);
     }
-  }, [isMobile]);
+  }, [isMobile, handleOpenChange]);
 
   const contextValue: SelectContextValue = {
     open,

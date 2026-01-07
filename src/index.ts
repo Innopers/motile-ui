@@ -53,6 +53,14 @@ export type {
 } from "./components/Popover";
 export { Popover } from "./components/Popover";
 export type {
+  SelectContentProps,
+  SelectItemProps,
+  SelectRootProps,
+  SelectTriggerProps,
+  SelectValueProps,
+} from "./components/Select";
+export { Select } from "./components/Select";
+export type {
   SheetBodyProps,
   SheetCloseProps,
   SheetContentProps,

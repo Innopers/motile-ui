@@ -51,6 +51,10 @@
       "types": "./dist/components/Popover/Popover.d.ts",
       "import": "./dist/components/Popover/Popover.js"
     },
+    "./Select": {
+      "types": "./dist/components/Select/Select.d.ts",
+      "import": "./dist/components/Select/Select.js"
+    },
     "./Sheet": {
       "types": "./dist/components/Sheet/useSheetNavigation.d.ts",
       "import": "./dist/components/Sheet/useSheetNavigation.js"

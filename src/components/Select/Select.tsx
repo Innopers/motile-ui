@@ -22,6 +22,26 @@ import "./Select.css";
 export type SelectValue = string | number;
 
 /**
+ * 백드롭 인터랙션으로 닫기 옵션
+ * - boolean: ESC 키와 외부 클릭 모두 제어
+ * - object: 각각 독립적으로 제어
+ */
+export type CloseOnBackdropOptions =
+  | boolean
+  | {
+      /**
+       * ESC 키로 닫기 허용
+       * @default false (object 사용 시)
+       */
+      escapeKey?: boolean;
+      /**
+       * 외부 클릭으로 닫기 허용
+       * @default false (object 사용 시)
+       */
+      clickOutside?: boolean;
+    };
+
+/**
  * Select Context
  */
 interface SelectContextValue {
@@ -40,6 +60,7 @@ interface SelectContextValue {
   hideCheckIcon: boolean;
   isMobile: boolean;
   maxWidth?: string | number;
+  closeOnBackdrop: CloseOnBackdropOptions;
 }
 
 const SelectContext = createContext<SelectContextValue | null>(null);
@@ -130,6 +151,32 @@ export interface SelectRootProps {
   maxWidth?: string | number;
 
   /**
+   * 백드롭 인터랙션으로 닫기 제어
+   *
+   * - `true`: 외부 클릭과 ESC 키 모두 허용
+   * - `false`: 외부 클릭과 ESC 키 모두 비활성화
+   * - `{ escapeKey: true }`: ESC 키만 허용
+   * - `{ clickOutside: true }`: 외부 클릭만 허용
+   * - `{ escapeKey: true, clickOutside: true }`: 모두 허용 (명시적)
+   *
+   * @default true
+   *
+   * @example
+   * // 외부 클릭과 ESC 키 모두 허용
+   * <Select.Root closeOnBackdrop={true}>
+   *
+   * // ESC 키만 허용
+   * <Select.Root closeOnBackdrop={{ escapeKey: true }}>
+   *
+   * // 외부 클릭만 허용
+   * <Select.Root closeOnBackdrop={{ clickOutside: true }}>
+   *
+   * // 모두 비활성화
+   * <Select.Root closeOnBackdrop={false}>
+   */
+  closeOnBackdrop?: CloseOnBackdropOptions;
+
+  /**
    * 자식 컴포넌트
    */
   children: React.ReactNode;
@@ -148,6 +195,7 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
   zIndex = 40,
   hideCheckIcon = false,
   maxWidth = 768,
+  closeOnBackdrop = true,
   children,
 }) => {
   const [uncontrolledValue, setUncontrolledValue] = useState<
@@ -183,6 +231,17 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
     : "(max-width: 768px)";
 
   const isMobile = useMediaQuery(mediaQueryString);
+
+  // closeOnBackdrop 옵션 파싱
+  const enableClickOutside =
+    typeof closeOnBackdrop === "boolean"
+      ? closeOnBackdrop
+      : (closeOnBackdrop.clickOutside ?? false);
+
+  const enableEscapeKey =
+    typeof closeOnBackdrop === "boolean"
+      ? closeOnBackdrop
+      : (closeOnBackdrop.escapeKey ?? false);
 
   const handleOpenChange = useCallback(
     (newOpen: boolean) => {
@@ -227,7 +286,9 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
   useClickOutside({
     refs: [contentRef, triggerRef],
     handler: () => {
-      if (open) handleOpenChange(false);
+      if (open && enableClickOutside) {
+        handleOpenChange(false);
+      }
     },
     enabled: open && !isMobile,
   });
@@ -235,7 +296,7 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
   // ESC 키로 닫기 (모바일에서는 Drawer가 처리)
   useEscapeKey({
     handler: () => {
-      if (open) {
+      if (open && enableEscapeKey) {
         handleOpenChange(false);
         triggerRef.current?.focus();
       }
@@ -278,6 +339,7 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
     hideCheckIcon,
     isMobile,
     maxWidth,
+    closeOnBackdrop,
   };
 
   return (
@@ -450,8 +512,15 @@ export const SelectContent = React.forwardRef<
   HTMLDivElement,
   SelectContentProps
 >(({ children, className, style, ...props }, forwardedRef) => {
-  const { open, setOpen, contentRef, contentId, zIndex, isMobile } =
-    useSelectContext();
+  const {
+    open,
+    setOpen,
+    contentRef,
+    contentId,
+    zIndex,
+    isMobile,
+    closeOnBackdrop,
+  } = useSelectContext();
 
   const [isMounted, setIsMounted] = useState(false);
 
@@ -486,7 +555,7 @@ export const SelectContent = React.forwardRef<
       <Drawer.Root
         open={open}
         onOpenChange={setOpen}
-        closeOnBackdrop={true}
+        closeOnBackdrop={closeOnBackdrop}
         closeOnDrag={true}
         maxHeight="70dvh"
         zIndex={9999} // Drawer의 기본 z-index 사용 (Select의 zIndex는 desktop용)

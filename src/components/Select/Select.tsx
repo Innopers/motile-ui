@@ -362,6 +362,8 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
   );
 };
 
+SelectRoot.displayName = "Select.Root";
+
 /**
  * SelectTrigger Props
  */
@@ -467,7 +469,7 @@ export const SelectTrigger = React.forwardRef<
   );
 });
 
-SelectTrigger.displayName = "SelectTrigger";
+SelectTrigger.displayName = "Select.Trigger";
 
 /**
  * SelectValue Props
@@ -494,6 +496,8 @@ export const SelectValue: React.FC<SelectValueProps> = ({
     <span className="motile-select__value">{selectedLabel || placeholder}</span>
   );
 };
+
+SelectValue.displayName = "Select.Value";
 
 /**
  * SelectContent Props
@@ -621,7 +625,7 @@ export const SelectContent = React.forwardRef<
   );
 });
 
-SelectContent.displayName = "SelectContent";
+SelectContent.displayName = "Select.Content";
 
 /**
  * SelectItem Props
@@ -775,7 +779,7 @@ export const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
   }
 );
 
-SelectItem.displayName = "SelectItem";
+SelectItem.displayName = "Select.Item";
 
 /**
  * Select Namespace

@@ -28,9 +28,14 @@
 }
 
 .motile-select__trigger[aria-expanded="true"] {
-  border-color: var(
-    --motile-select-color,
-    var(--motile-ui-select, var(--motile-theme, #3b82f6))
+  border-color: color-mix(
+    in srgb,
+    var(
+        --motile-select-color,
+        var(--motile-ui-select, var(--motile-theme, #3b82f6))
+      )
+      60%,
+    transparent
   );
   background-color: rgba(229, 231, 235, 0.5);
   backdrop-filter: blur(8px);

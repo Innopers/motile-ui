@@ -115,7 +115,10 @@
   color: #374151;
 }
 
-.motile-tab__trigger--underlined.motile-tab__trigger--active {
+.motile-tab__trigger--underlined.motile-tab__trigger--active,
+.motile-tab__trigger--underlined.motile-tab__trigger--active:hover,
+.motile-tab__trigger--underlined.motile-tab__trigger--active:focus,
+.motile-tab__trigger--underlined.motile-tab__trigger--active:active {
   color: var(
     --motile-tab-color,
     var(--motile-ui-tab, var(--motile-theme, #3b82f6))
@@ -219,7 +222,10 @@
     color: #d1d5db;
   }
 
-  .motile-tab__trigger--underlined.motile-tab__trigger--active {
+  .motile-tab__trigger--underlined.motile-tab__trigger--active,
+  .motile-tab__trigger--underlined.motile-tab__trigger--active:hover,
+  .motile-tab__trigger--underlined.motile-tab__trigger--active:focus,
+  .motile-tab__trigger--underlined.motile-tab__trigger--active:active {
     color: var(
       --motile-tab-color,
       var(--motile-ui-tab, var(--motile-theme, #60a5fa))

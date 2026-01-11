@@ -222,13 +222,17 @@ const TabRoot = forwardRef<HTMLDivElement, TabRootProps>(
         const listWidth = list.clientWidth;
 
         if (isFirstRender.current) {
-          // 초기 로드: 즉시 가운데 정렬
+          // 초기 로드: 약간의 딜레이 후 부드럽게 가운데 정렬
           const targetScroll = triggerLeft - listWidth / 2 + triggerWidth / 2;
 
-          list.scrollTo({
-            left: Math.max(0, targetScroll), // 음수 방지
-            behavior: "instant", // 즉시 스크롤
-          });
+          // 애니메이션이 보이도록 약간의 딜레이
+          setTimeout(() => {
+            list.scrollTo({
+              left: Math.max(0, targetScroll), // 음수 방지
+              behavior: "smooth", // 부드러운 애니메이션
+            });
+          }, 100); // 100ms 딜레이
+
           isFirstRender.current = false;
         } else {
           // 탭 변경: 현재 보이는지 확인 후 최소 스크롤

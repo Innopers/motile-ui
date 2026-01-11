@@ -21,6 +21,30 @@
   display: flex;
   position: relative;
   border-bottom: 1px solid #e5e7eb;
+
+  /* 많은 탭을 위한 수평 스크롤 */
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch; /* iOS 모멘텀 스크롤 */
+  scroll-behavior: smooth; /* 부드러운 스크롤 애니메이션 */
+
+  /* 터치 및 드래그 최적화 */
+  touch-action: pan-x; /* 수평 터치 스크롤 허용 */
+  overscroll-behavior-x: contain; /* 스크롤 체이닝 방지 */
+  cursor: grab; /* 드래그 가능 표시 */
+
+  /* 모든 브라우저에서 스크롤바 숨김 */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.motile-tab__list:active {
+  cursor: grabbing; /* 드래그 중 커서 */
+}
+
+/* Chrome/Safari/Edge 스크롤바 숨김 */
+.motile-tab__list::-webkit-scrollbar {
+  display: none;
 }
 
 .motile-tab__list--horizontal {

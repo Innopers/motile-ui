@@ -271,8 +271,119 @@ export interface TabListProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const TabList = forwardRef<HTMLDivElement, TabListProps>(
-  ({ className, children, asChild = false, ...props }, ref) => {
+  ({ className, children, asChild = false, ...props }, forwardedRef) => {
     const { orientation, variant } = useTabContext();
+    const listRef = useRef<HTMLDivElement | null>(null);
+
+    // forwardRef와 내부 ref 통합
+    const setRefs = useCallback(
+      (node: HTMLDivElement | null) => {
+        listRef.current = node;
+        if (typeof forwardedRef === "function") {
+          forwardedRef(node);
+        } else if (forwardedRef) {
+          forwardedRef.current = node;
+        }
+      },
+      [forwardedRef]
+    );
+
+    // 마우스 드래그 스크롤 구현
+    useEffect(() => {
+      const element = listRef.current;
+      if (!element) return;
+
+      let isDown = false;
+      let hasMoved = false;
+      let startX = 0;
+      let scrollLeft = 0;
+      let rafId: number | null = null;
+      let lastScrollLeft = 0;
+
+      const handleMouseDown = (e: MouseEvent) => {
+        // 왼쪽 마우스 버튼만 처리
+        if (e.button !== 0) return;
+
+        isDown = true;
+        hasMoved = false;
+        startX = e.clientX; // clientX 사용으로 레이아웃 계산 제거
+        scrollLeft = element.scrollLeft;
+        element.style.scrollBehavior = "auto"; // 드래그 중 부드러운 스크롤 비활성화
+      };
+
+      const handleMouseMove = (e: MouseEvent) => {
+        if (!isDown) return;
+
+        const walk = e.clientX - startX; // clientX로 좌표 계산 최적화
+
+        // 5px 이상 이동 시 드래그로 인식
+        if (!hasMoved && Math.abs(walk) > 5) {
+          hasMoved = true;
+        }
+
+        if (hasMoved) {
+          e.preventDefault();
+          lastScrollLeft = scrollLeft - walk * 1.5; // 스크롤 속도 배율
+
+          // requestAnimationFrame으로 렌더링 최적화
+          if (!rafId) {
+            rafId = requestAnimationFrame(() => {
+              element.scrollLeft = lastScrollLeft;
+              rafId = null;
+            });
+          }
+        }
+      };
+
+      const handleMouseUp = () => {
+        // RAF 정리
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+
+        isDown = false;
+        element.style.scrollBehavior = "smooth"; // 부드러운 스크롤 재활성화
+
+        // 드래그 후 클릭 이벤트 방지
+        if (hasMoved) {
+          const preventClick = (e: MouseEvent) => {
+            e.preventDefault();
+            e.stopPropagation();
+            element.removeEventListener("click", preventClick, true);
+          };
+          element.addEventListener("click", preventClick, true);
+        }
+      };
+
+      const handleMouseLeave = () => {
+        // RAF 정리
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+
+        isDown = false;
+        hasMoved = false;
+        element.style.scrollBehavior = "smooth"; // 부드러운 스크롤 재활성화
+      };
+
+      element.addEventListener("mousedown", handleMouseDown);
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+      element.addEventListener("mouseleave", handleMouseLeave);
+
+      return () => {
+        // cleanup 시 RAF 정리
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+        }
+        element.removeEventListener("mousedown", handleMouseDown);
+        document.removeEventListener("mousemove", handleMouseMove);
+        document.removeEventListener("mouseup", handleMouseUp);
+        element.removeEventListener("mouseleave", handleMouseLeave);
+      };
+    }, []);
 
     const classes = [
       `${BASE}__list`,
@@ -293,14 +404,14 @@ const TabList = forwardRef<HTMLDivElement, TabListProps>(
 
     if (asChild) {
       return (
-        <Slot ref={ref} {...listProps} className={className}>
+        <Slot ref={setRefs} {...listProps} className={className}>
           {children}
         </Slot>
       );
     }
 
     return (
-      <div {...listProps} ref={ref} className={classes}>
+      <div {...listProps} ref={setRefs} className={classes}>
         {children}
       </div>
     );

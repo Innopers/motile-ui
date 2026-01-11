@@ -199,6 +199,66 @@ const TabRoot = forwardRef<HTMLDivElement, TabRootProps>(
       triggerRefsRef.current.delete(tabValue);
     }, []);
 
+    // 활성 탭 자동 스크롤 (초기 로드 및 탭 변경 시)
+    const isFirstRender = useRef(true);
+
+    useEffect(() => {
+      // value가 없거나 disabled 상태면 스크롤 불필요
+      if (!value || disabled) return;
+
+      const activeRef = triggerRefsRef.current.get(value);
+      if (!activeRef?.current) return; // ref가 아직 등록되지 않음
+
+      const trigger = activeRef.current;
+      const list = trigger.parentElement; // TabList
+
+      if (!list) return;
+
+      // 다음 프레임에 실행 (DOM 완전히 렌더링 후)
+      requestAnimationFrame(() => {
+        // Trigger와 List의 위치 및 크기 계산
+        const triggerLeft = trigger.offsetLeft;
+        const triggerWidth = trigger.offsetWidth;
+        const listWidth = list.clientWidth;
+
+        if (isFirstRender.current) {
+          // 초기 로드: 즉시 가운데 정렬
+          const targetScroll = triggerLeft - listWidth / 2 + triggerWidth / 2;
+
+          list.scrollTo({
+            left: Math.max(0, targetScroll), // 음수 방지
+            behavior: "instant", // 즉시 스크롤
+          });
+          isFirstRender.current = false;
+        } else {
+          // 탭 변경: 현재 보이는지 확인 후 최소 스크롤
+          const currentScroll = list.scrollLeft;
+          const triggerRight = triggerLeft + triggerWidth;
+          const listScrollRight = currentScroll + listWidth;
+
+          // 이미 완전히 보이면 스크롤 안 함
+          if (triggerLeft >= currentScroll && triggerRight <= listScrollRight) {
+            return;
+          }
+
+          // 왼쪽에 가려졌으면 왼쪽으로, 오른쪽에 가려졌으면 오른쪽으로
+          let targetScroll: number;
+          if (triggerLeft < currentScroll) {
+            // 왼쪽에 가려짐: 왼쪽 정렬
+            targetScroll = triggerLeft;
+          } else {
+            // 오른쪽에 가려짐: 오른쪽 정렬
+            targetScroll = triggerRight - listWidth;
+          }
+
+          list.scrollTo({
+            left: Math.max(0, targetScroll),
+            behavior: "smooth", // 부드러운 애니메이션
+          });
+        }
+      });
+    }, [value, disabled]);
+
     const contextValue: TabContextValue = {
       value,
       onValueChange: handleValueChange,

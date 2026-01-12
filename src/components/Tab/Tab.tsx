@@ -10,7 +10,6 @@ import React, {
   useState,
 } from "react";
 
-import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { Slot } from "@/utils/Slot";
 
 import "./Tab.css";
@@ -131,27 +130,6 @@ export interface TabRootProps extends Omit<
   color?: string;
 
   /**
-   * Tab의 breakpoint (모바일/데스크톱 전환점)
-   * @default 768
-   *
-   * @example
-   * // 768px 이하에서 vertical → horizontal 자동 전환
-   * <Tab orientation="vertical" maxWidth={768}>
-   *
-   * // 1024px 이하에서 전환
-   * <Tab orientation="vertical" maxWidth={1024}>
-   *
-   * // 반응형 비활성화 (항상 vertical 유지)
-   * <Tab orientation="vertical" maxWidth={0}>
-   *
-   * @remarks
-   * - viewport <= maxWidth이고 orientation="vertical"일 때만 horizontal로 전환
-   * - orientation="horizontal"이면 이 prop은 무시됨
-   * - 기본값: 768px breakpoint
-   */
-  maxWidth?: string | number;
-
-  /**
    * children을 wrapper 없이 직접 렌더링
    * @default false
    */
@@ -171,7 +149,6 @@ const TabRoot = forwardRef<HTMLDivElement, TabRootProps>(
       variant = "underlined",
       disabled = false,
       color,
-      maxWidth = 768,
       className,
       children,
       asChild = false,
@@ -183,30 +160,6 @@ const TabRoot = forwardRef<HTMLDivElement, TabRootProps>(
     const [uncontrolledValue, setUncontrolledValue] = useState<
       string | undefined
     >(defaultValue);
-
-    // 미디어 쿼리 문자열 생성 (메모이제이션으로 성능 최적화)
-    const mediaQueryString = useMemo(
-      () =>
-        maxWidth
-          ? `(max-width: ${typeof maxWidth === "number" ? `${maxWidth}px` : maxWidth})`
-          : "(max-width: 768px)",
-      [maxWidth]
-    );
-
-    const isMobile = useMediaQuery(mediaQueryString);
-    const [isMounted, setIsMounted] = useState(false);
-
-    // 마운트 후에만 반응형 적용 (SSR hydration 오류 방지)
-    useEffect(() => {
-      setIsMounted(true);
-    }, []);
-
-    // 실제 사용할 orientation 계산
-    // vertical이고 모바일일 때만 horizontal로 전환 (마운트 후에만)
-    const orient =
-      isMounted && isMobile && orientation === "vertical"
-        ? "horizontal"
-        : orientation;
 
     // Controlled vs Uncontrolled 모드 처리
     const isControlled = controlledValue !== undefined;
@@ -266,7 +219,7 @@ const TabRoot = forwardRef<HTMLDivElement, TabRootProps>(
 
       // 다음 프레임에 실행 (DOM 완전히 렌더링 후)
       requestAnimationFrame(() => {
-        const isHorizontal = orient === "horizontal";
+        const isHorizontal = orientation === "horizontal";
 
         // Trigger와 List의 위치 및 크기 계산
         const triggerStart = isHorizontal
@@ -319,14 +272,14 @@ const TabRoot = forwardRef<HTMLDivElement, TabRootProps>(
           list.scrollTo(scrollOptions);
         }
       });
-    }, [value, disabled, orient]);
+    }, [value, disabled, orientation]);
 
     // Context value 메모이제이션 (불필요한 리렌더링 방지)
     const contextValue: TabContextValue = useMemo(
       () => ({
         value,
         onValueChange: handleValueChange,
-        orientation: orient,
+        orientation,
         variant,
         activationMode,
         disabled,
@@ -340,7 +293,7 @@ const TabRoot = forwardRef<HTMLDivElement, TabRootProps>(
       [
         value,
         handleValueChange,
-        orient,
+        orientation,
         variant,
         activationMode,
         disabled,
@@ -352,7 +305,7 @@ const TabRoot = forwardRef<HTMLDivElement, TabRootProps>(
 
     const classes = [
       BASE,
-      `${BASE}--${orient}`,
+      `${BASE}--${orientation}`,
       disabled && `${BASE}--disabled`,
       className,
     ]
@@ -366,7 +319,7 @@ const TabRoot = forwardRef<HTMLDivElement, TabRootProps>(
 
     const rootProps = {
       ...props,
-      "data-orientation": orient,
+      "data-orientation": orientation,
       "data-disabled": disabled ? "" : undefined,
     };
 

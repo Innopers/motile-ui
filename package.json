@@ -71,6 +71,10 @@
       "types": "./dist/components/Switch/Switch.d.ts",
       "import": "./dist/components/Switch/Switch.js"
     },
+    "./Tab": {
+      "types": "./dist/components/Tab/Tab.d.ts",
+      "import": "./dist/components/Tab/Tab.js"
+    },
     "./Textarea": {
       "types": "./dist/components/Textarea/Textarea.d.ts",
       "import": "./dist/components/Textarea/Textarea.js"

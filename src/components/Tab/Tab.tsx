@@ -28,8 +28,9 @@ export type TabVariant = "underlined";
 /**
  * Tab 방향
  * - `horizontal`: 좌우 배치 (기본)
+ * - `vertical`: 상하 배치
  */
-export type TabOrientation = "horizontal";
+export type TabOrientation = "horizontal" | "vertical";
 
 /**
  * Tab 활성화 모드
@@ -199,7 +200,7 @@ const TabRoot = forwardRef<HTMLDivElement, TabRootProps>(
       triggerRefsRef.current.delete(tabValue);
     }, []);
 
-    // 활성 탭 자동 스크롤 (초기 로드 및 탭 변경 시)
+    // 활성 탭 자동 스크롤 (초기 로드 및 탭 변경 시, orientation 대응)
     const isFirstRender = useRef(true);
 
     useEffect(() => {
@@ -216,52 +217,60 @@ const TabRoot = forwardRef<HTMLDivElement, TabRootProps>(
 
       // 다음 프레임에 실행 (DOM 완전히 렌더링 후)
       requestAnimationFrame(() => {
+        const isHorizontal = orientation === "horizontal";
+
         // Trigger와 List의 위치 및 크기 계산
-        const triggerLeft = trigger.offsetLeft;
-        const triggerWidth = trigger.offsetWidth;
-        const listWidth = list.clientWidth;
+        const triggerStart = isHorizontal
+          ? trigger.offsetLeft
+          : trigger.offsetTop;
+        const triggerSize = isHorizontal
+          ? trigger.offsetWidth
+          : trigger.offsetHeight;
+        const listSize = isHorizontal ? list.clientWidth : list.clientHeight;
 
         if (isFirstRender.current) {
           // 초기 로드: 약간의 딜레이 후 부드럽게 가운데 정렬
-          const targetScroll = triggerLeft - listWidth / 2 + triggerWidth / 2;
+          const targetScroll = triggerStart - listSize / 2 + triggerSize / 2;
 
           // 애니메이션이 보이도록 약간의 딜레이
           setTimeout(() => {
-            list.scrollTo({
-              left: Math.max(0, targetScroll), // 음수 방지
-              behavior: "smooth", // 부드러운 애니메이션
-            });
+            const scrollOptions: ScrollToOptions = {
+              behavior: "smooth",
+              [isHorizontal ? "left" : "top"]: Math.max(0, targetScroll),
+            };
+            list.scrollTo(scrollOptions);
           }, 100); // 100ms 딜레이
 
           isFirstRender.current = false;
         } else {
           // 탭 변경: 현재 보이는지 확인 후 최소 스크롤
-          const currentScroll = list.scrollLeft;
-          const triggerRight = triggerLeft + triggerWidth;
-          const listScrollRight = currentScroll + listWidth;
+          const currentScroll = isHorizontal ? list.scrollLeft : list.scrollTop;
+          const triggerEnd = triggerStart + triggerSize;
+          const listScrollEnd = currentScroll + listSize;
 
           // 이미 완전히 보이면 스크롤 안 함
-          if (triggerLeft >= currentScroll && triggerRight <= listScrollRight) {
+          if (triggerStart >= currentScroll && triggerEnd <= listScrollEnd) {
             return;
           }
 
-          // 왼쪽에 가려졌으면 왼쪽으로, 오른쪽에 가려졌으면 오른쪽으로
+          // 시작 부분에 가려졌으면 시작으로, 끝 부분에 가려졌으면 끝으로
           let targetScroll: number;
-          if (triggerLeft < currentScroll) {
-            // 왼쪽에 가려짐: 왼쪽 정렬
-            targetScroll = triggerLeft;
+          if (triggerStart < currentScroll) {
+            // 시작 부분에 가려짐: 시작 정렬
+            targetScroll = triggerStart;
           } else {
-            // 오른쪽에 가려짐: 오른쪽 정렬
-            targetScroll = triggerRight - listWidth;
+            // 끝 부분에 가려짐: 끝 정렬
+            targetScroll = triggerEnd - listSize;
           }
 
-          list.scrollTo({
-            left: Math.max(0, targetScroll),
-            behavior: "smooth", // 부드러운 애니메이션
-          });
+          const scrollOptions: ScrollToOptions = {
+            behavior: "smooth",
+            [isHorizontal ? "left" : "top"]: Math.max(0, targetScroll),
+          };
+          list.scrollTo(scrollOptions);
         }
       });
-    }, [value, disabled]);
+    }, [value, disabled, orientation]);
 
     const contextValue: TabContextValue = {
       value,
@@ -352,17 +361,19 @@ const TabList = forwardRef<HTMLDivElement, TabListProps>(
       [forwardedRef]
     );
 
-    // 마우스 드래그 스크롤 구현
+    // 마우스 드래그 스크롤 구현 (orientation 대응)
     useEffect(() => {
       const element = listRef.current;
       if (!element) return;
 
+      const isHorizontal = orientation === "horizontal";
+
       let isDown = false;
       let hasMoved = false;
-      let startX = 0;
-      let scrollLeft = 0;
+      let startPos = 0;
+      let scrollPos = 0;
       let rafId: number | null = null;
-      let lastScrollLeft = 0;
+      let lastScrollPos = 0;
 
       const handleMouseDown = (e: MouseEvent) => {
         // 왼쪽 마우스 버튼만 처리
@@ -370,15 +381,16 @@ const TabList = forwardRef<HTMLDivElement, TabListProps>(
 
         isDown = true;
         hasMoved = false;
-        startX = e.clientX; // clientX 사용으로 레이아웃 계산 제거
-        scrollLeft = element.scrollLeft;
+        startPos = isHorizontal ? e.clientX : e.clientY;
+        scrollPos = isHorizontal ? element.scrollLeft : element.scrollTop;
         element.style.scrollBehavior = "auto"; // 드래그 중 부드러운 스크롤 비활성화
       };
 
       const handleMouseMove = (e: MouseEvent) => {
         if (!isDown) return;
 
-        const walk = e.clientX - startX; // clientX로 좌표 계산 최적화
+        const currentPos = isHorizontal ? e.clientX : e.clientY;
+        const walk = currentPos - startPos;
 
         // 5px 이상 이동 시 드래그로 인식
         if (!hasMoved && Math.abs(walk) > 5) {
@@ -387,12 +399,16 @@ const TabList = forwardRef<HTMLDivElement, TabListProps>(
 
         if (hasMoved) {
           e.preventDefault();
-          lastScrollLeft = scrollLeft - walk * 1.5; // 스크롤 속도 배율
+          lastScrollPos = scrollPos - walk * 1.5; // 스크롤 속도 배율
 
           // requestAnimationFrame으로 렌더링 최적화
           if (!rafId) {
             rafId = requestAnimationFrame(() => {
-              element.scrollLeft = lastScrollLeft;
+              if (isHorizontal) {
+                element.scrollLeft = lastScrollPos;
+              } else {
+                element.scrollTop = lastScrollPos;
+              }
               rafId = null;
             });
           }
@@ -447,7 +463,7 @@ const TabList = forwardRef<HTMLDivElement, TabListProps>(
         document.removeEventListener("mouseup", handleMouseUp);
         element.removeEventListener("mouseleave", handleMouseLeave);
       };
-    }, []);
+    }, [orientation]);
 
     const classes = [
       `${BASE}__list`,
@@ -550,17 +566,36 @@ const TabTrigger = forwardRef<HTMLButtonElement, TabTriggerProps>(
 
       const allValues = Array.from(triggerRefs.keys());
       const currentIndex = allValues.indexOf(tabValue);
+      const isHorizontal = orientation === "horizontal";
 
       let nextIndex: number | null = null;
 
       switch (e.key) {
         case "ArrowRight":
-          e.preventDefault();
-          nextIndex = (currentIndex + 1) % allValues.length;
+          if (isHorizontal) {
+            e.preventDefault();
+            nextIndex = (currentIndex + 1) % allValues.length;
+          }
           break;
         case "ArrowLeft":
-          e.preventDefault();
-          nextIndex = (currentIndex - 1 + allValues.length) % allValues.length;
+          if (isHorizontal) {
+            e.preventDefault();
+            nextIndex =
+              (currentIndex - 1 + allValues.length) % allValues.length;
+          }
+          break;
+        case "ArrowDown":
+          if (!isHorizontal) {
+            e.preventDefault();
+            nextIndex = (currentIndex + 1) % allValues.length;
+          }
+          break;
+        case "ArrowUp":
+          if (!isHorizontal) {
+            e.preventDefault();
+            nextIndex =
+              (currentIndex - 1 + allValues.length) % allValues.length;
+          }
           break;
         case "Enter":
         case " ":

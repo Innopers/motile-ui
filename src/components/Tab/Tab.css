@@ -4,8 +4,16 @@
 
 .motile-tab {
   display: flex;
-  flex-direction: column;
   gap: 0;
+}
+
+.motile-tab--horizontal {
+  flex-direction: column; /* List 위, Content 아래 */
+}
+
+.motile-tab--vertical {
+  flex-direction: row; /* List 왼쪽, Content 오른쪽 */
+  align-items: flex-start;
 }
 
 .motile-tab--disabled {
@@ -52,9 +60,25 @@
   gap: 0;
 }
 
+.motile-tab__list--vertical {
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+  touch-action: pan-y; /* 수직 터치 스크롤 허용 */
+  border-bottom: none;
+  border-right: 1px solid #e5e7eb;
+  min-width: 200px; /* 최소 너비 확보 */
+  max-height: 600px; /* 최대 높이 제한 */
+}
+
 /* Underlined variant */
 .motile-tab__list--underlined {
   border-bottom: 1px solid #e5e7eb;
+}
+
+.motile-tab__list--vertical.motile-tab__list--underlined {
+  border-bottom: none;
+  border-right: 1px solid #e5e7eb;
 }
 
 /* ===========================
@@ -92,9 +116,13 @@
 }
 
 .motile-tab__trigger:focus-visible {
-  outline: 2px solid
-    var(--motile-tab-color, var(--motile-ui-tab, var(--motile-theme, #3b82f6)));
-  outline-offset: 2px;
+  outline: none;
+  background-color: color-mix(
+    in srgb,
+    var(--motile-tab-color, var(--motile-ui-tab, var(--motile-theme, #3b82f6)))
+      5%,
+    transparent
+  );
 }
 
 .motile-tab__trigger--disabled {
@@ -129,6 +157,28 @@
   );
 }
 
+/* Vertical orientation */
+.motile-tab__trigger--underlined[data-orientation="vertical"] {
+  border-bottom: none;
+  border-right: 2px solid transparent;
+  padding-bottom: 12px; /* horizontal의 padding-bottom 제거하고 기본값 사용 */
+  padding-right: 18px;
+  width: 100%;
+  justify-content: flex-start; /* 왼쪽 정렬 */
+  align-items: flex-start; /* 상단 정렬 */
+}
+
+.motile-tab__trigger--underlined[data-orientation="vertical"].motile-tab__trigger--active,
+.motile-tab__trigger--underlined[data-orientation="vertical"].motile-tab__trigger--active:hover,
+.motile-tab__trigger--underlined[data-orientation="vertical"].motile-tab__trigger--active:focus,
+.motile-tab__trigger--underlined[data-orientation="vertical"].motile-tab__trigger--active:active {
+  border-right-color: var(
+    --motile-tab-color,
+    var(--motile-ui-tab, var(--motile-theme, #3b82f6))
+  );
+  border-bottom-color: transparent;
+}
+
 /* ===========================
    Tab Content
    =========================== */
@@ -137,6 +187,11 @@
   padding: 20px 0;
   outline: none;
   animation: fadeIn 0.2s ease;
+}
+
+/* Vertical orientation - Content 왼쪽 padding 추가 */
+.motile-tab--vertical .motile-tab__content {
+  padding: 0 0 0 20px; /* 왼쪽에만 padding */
 }
 
 .motile-tab__content[hidden] {
@@ -174,6 +229,7 @@
     transition:
       color 0.15s cubic-bezier(0.4, 0, 0.2, 1),
       border-bottom-color 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+      border-right-color 0.15s cubic-bezier(0.4, 0, 0.2, 1),
       background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1),
       opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   }
@@ -182,8 +238,20 @@
     padding-bottom: 8px;
   }
 
+  .motile-tab__trigger--underlined[data-orientation="vertical"] {
+    padding: 10px 14px 10px 16px; /* 상 우 하 좌 */
+  }
+
+  .motile-tab__list--vertical {
+    min-width: 160px; /* 모바일에서 너비 축소 */
+  }
+
   .motile-tab__content {
     padding: 16px 0;
+  }
+
+  .motile-tab--vertical .motile-tab__content {
+    padding: 0 0 0 16px; /* 모바일에서 왼쪽 padding 축소 */
   }
 }
 
@@ -214,6 +282,12 @@
     border-color: #374151;
   }
 
+  .motile-tab__list--vertical,
+  .motile-tab__list--vertical.motile-tab__list--underlined {
+    border-right-color: #374151;
+    border-bottom-color: transparent;
+  }
+
   .motile-tab__trigger {
     color: #9ca3af;
   }
@@ -222,11 +296,33 @@
     color: #d1d5db;
   }
 
+  .motile-tab__trigger:focus-visible {
+    background-color: color-mix(
+      in srgb,
+      var(
+          --motile-tab-color,
+          var(--motile-ui-tab, var(--motile-theme, #60a5fa))
+        )
+        8%,
+      transparent
+    );
+  }
+
   .motile-tab__trigger--underlined.motile-tab__trigger--active,
   .motile-tab__trigger--underlined.motile-tab__trigger--active:hover,
   .motile-tab__trigger--underlined.motile-tab__trigger--active:focus,
   .motile-tab__trigger--underlined.motile-tab__trigger--active:active {
     color: var(
+      --motile-tab-color,
+      var(--motile-ui-tab, var(--motile-theme, #60a5fa))
+    );
+  }
+
+  .motile-tab__trigger--underlined[data-orientation="vertical"].motile-tab__trigger--active,
+  .motile-tab__trigger--underlined[data-orientation="vertical"].motile-tab__trigger--active:hover,
+  .motile-tab__trigger--underlined[data-orientation="vertical"].motile-tab__trigger--active:focus,
+  .motile-tab__trigger--underlined[data-orientation="vertical"].motile-tab__trigger--active:active {
+    border-right-color: var(
       --motile-tab-color,
       var(--motile-ui-tab, var(--motile-theme, #60a5fa))
     );

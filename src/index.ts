@@ -85,6 +85,16 @@ export type {
 export { SpeedDial } from "./components/SpeedDial";
 export type { SwitchProps } from "./components/Switch";
 export { Switch } from "./components/Switch";
+export type {
+  TabActivationMode,
+  TabContentProps,
+  TabListProps,
+  TabOrientation,
+  TabRootProps,
+  TabTriggerProps,
+  TabVariant,
+} from "./components/Tab";
+export { Tab } from "./components/Tab";
 export type { AutoSizeConfig, TextareaProps } from "./components/Textarea";
 export { Textarea } from "./components/Textarea";
 export type {

@@ -4,7 +4,7 @@ import { Tab } from "./Tab";
 
 // Props that can be controlled via Storybook
 interface TabStoryArgs {
-  variant?: "underlined" | "pill";
+  variant?: "underline" | "pill";
   orientation?: "horizontal" | "vertical";
   activationMode?: "automatic" | "manual";
   disabled?: boolean;
@@ -28,11 +28,11 @@ const meta = {
   argTypes: {
     variant: {
       control: "select",
-      options: ["underlined", "pill"],
+      options: ["underline", "pill"],
       description: "Tab 스타일 variant",
       table: {
-        defaultValue: { summary: '"underlined"' },
-        type: { summary: '"underlined" | "pill"' },
+        defaultValue: { summary: '"underline"' },
+        type: { summary: '"underline" | "pill"' },
       },
     },
     orientation: {
@@ -87,7 +87,7 @@ type Story = StoryObj<TabStoryArgs>;
  */
 export const Default: Story = {
   args: {
-    variant: "underlined",
+    variant: "underline",
     orientation: "horizontal",
     activationMode: "automatic",
     disabled: false,

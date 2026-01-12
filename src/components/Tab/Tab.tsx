@@ -22,10 +22,10 @@ const BASE = "motile-tab";
 
 /**
  * Tab 스타일 variant
- * - `underlined`: 하단 언더라인 (기본)
+ * - `underline`: 하단 언더라인 (기본)
  * - `pill`: 둥근 배경
  */
-export type TabVariant = "underlined" | "pill";
+export type TabVariant = "underline" | "pill";
 
 /**
  * Tab 방향
@@ -113,7 +113,7 @@ export interface TabRootProps extends Omit<
 
   /**
    * Tab 스타일 variant
-   * @default 'underlined'
+   * @default 'underline'
    */
   variant?: TabVariant;
 
@@ -146,7 +146,7 @@ const TabRoot = forwardRef<HTMLDivElement, TabRootProps>(
       onValueChange,
       activationMode = "automatic",
       orientation = "horizontal",
-      variant = "underlined",
+      variant = "underline",
       disabled = false,
       color,
       className,

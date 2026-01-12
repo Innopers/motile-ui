@@ -27,7 +27,7 @@ describe("Tab", () => {
     });
 
     // 기본값 테스트
-    it("기본적으로 underlined variant와 horizontal orientation을 사용함", () => {
+    it("기본적으로 underline variant와 horizontal orientation을 사용함", () => {
       render(
         <Tab defaultValue="tab1">
           <Tab.List>
@@ -38,7 +38,7 @@ describe("Tab", () => {
       );
 
       const tablist = screen.getByRole("tablist");
-      expect(tablist).toHaveAttribute("data-variant", "underlined");
+      expect(tablist).toHaveAttribute("data-variant", "underline");
       expect(tablist).toHaveAttribute("data-orientation", "horizontal");
     });
 
@@ -215,10 +215,10 @@ describe("Tab", () => {
   });
 
   describe("Variant", () => {
-    // underlined variant
-    it("underlined variant가 정상 동작함", () => {
+    // underline variant
+    it("underline variant가 정상 동작함", () => {
       render(
-        <Tab defaultValue="tab1" variant="underlined">
+        <Tab defaultValue="tab1" variant="underline">
           <Tab.List>
             <Tab.Trigger value="tab1">Tab 1</Tab.Trigger>
             <Tab.Trigger value="tab2">Tab 2</Tab.Trigger>
@@ -229,8 +229,8 @@ describe("Tab", () => {
       );
 
       const tablist = screen.getByRole("tablist");
-      expect(tablist).toHaveAttribute("data-variant", "underlined");
-      expect(tablist).toHaveClass("motile-tab__list--underlined");
+      expect(tablist).toHaveAttribute("data-variant", "underline");
+      expect(tablist).toHaveClass("motile-tab__list--underline");
     });
 
     // pill variant

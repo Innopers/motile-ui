@@ -72,11 +72,11 @@
 }
 
 /* Underlined variant */
-.motile-tab__list--underlined {
+.motile-tab__list--underline {
   border-bottom: 1px solid #e5e7eb;
 }
 
-.motile-tab__list--vertical.motile-tab__list--underlined {
+.motile-tab__list--vertical.motile-tab__list--underline {
   border-bottom: none;
   border-right: 1px solid #e5e7eb;
 }
@@ -144,19 +144,19 @@
    Tab Trigger - Underlined Variant
    =========================== */
 
-.motile-tab__trigger--underlined {
+.motile-tab__trigger--underline {
   border-bottom: 2px solid transparent;
   padding-bottom: 10px;
 }
 
-.motile-tab__trigger--underlined:not(.motile-tab__trigger--disabled):hover {
+.motile-tab__trigger--underline:not(.motile-tab__trigger--disabled):hover {
   color: #374151;
 }
 
-.motile-tab__trigger--underlined.motile-tab__trigger--active,
-.motile-tab__trigger--underlined.motile-tab__trigger--active:hover,
-.motile-tab__trigger--underlined.motile-tab__trigger--active:focus,
-.motile-tab__trigger--underlined.motile-tab__trigger--active:active {
+.motile-tab__trigger--underline.motile-tab__trigger--active,
+.motile-tab__trigger--underline.motile-tab__trigger--active:hover,
+.motile-tab__trigger--underline.motile-tab__trigger--active:focus,
+.motile-tab__trigger--underline.motile-tab__trigger--active:active {
   color: var(
     --motile-tab-color,
     var(--motile-ui-tab, var(--motile-theme, #3b82f6))
@@ -168,7 +168,7 @@
 }
 
 /* Vertical orientation */
-.motile-tab__trigger--underlined[data-orientation="vertical"] {
+.motile-tab__trigger--underline[data-orientation="vertical"] {
   border-bottom: none;
   border-right: 2px solid transparent;
   padding-bottom: 12px; /* horizontal의 padding-bottom 제거하고 기본값 사용 */
@@ -178,10 +178,10 @@
   align-items: flex-start; /* 상단 정렬 */
 }
 
-.motile-tab__trigger--underlined[data-orientation="vertical"].motile-tab__trigger--active,
-.motile-tab__trigger--underlined[data-orientation="vertical"].motile-tab__trigger--active:hover,
-.motile-tab__trigger--underlined[data-orientation="vertical"].motile-tab__trigger--active:focus,
-.motile-tab__trigger--underlined[data-orientation="vertical"].motile-tab__trigger--active:active {
+.motile-tab__trigger--underline[data-orientation="vertical"].motile-tab__trigger--active,
+.motile-tab__trigger--underline[data-orientation="vertical"].motile-tab__trigger--active:hover,
+.motile-tab__trigger--underline[data-orientation="vertical"].motile-tab__trigger--active:focus,
+.motile-tab__trigger--underline[data-orientation="vertical"].motile-tab__trigger--active:active {
   border-right-color: var(
     --motile-tab-color,
     var(--motile-ui-tab, var(--motile-theme, #3b82f6))
@@ -281,11 +281,11 @@
       opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .motile-tab__trigger--underlined {
+  .motile-tab__trigger--underline {
     padding-bottom: 8px;
   }
 
-  .motile-tab__trigger--underlined[data-orientation="vertical"] {
+  .motile-tab__trigger--underline[data-orientation="vertical"] {
     padding: 10px 14px 10px 16px; /* 상 우 하 좌 */
   }
 
@@ -334,7 +334,7 @@
   }
 
   .motile-tab__list--vertical,
-  .motile-tab__list--vertical.motile-tab__list--underlined {
+  .motile-tab__list--vertical.motile-tab__list--underline {
     border-right-color: #374151;
     border-bottom-color: transparent;
   }
@@ -359,20 +359,20 @@
     );
   }
 
-  .motile-tab__trigger--underlined.motile-tab__trigger--active,
-  .motile-tab__trigger--underlined.motile-tab__trigger--active:hover,
-  .motile-tab__trigger--underlined.motile-tab__trigger--active:focus,
-  .motile-tab__trigger--underlined.motile-tab__trigger--active:active {
+  .motile-tab__trigger--underline.motile-tab__trigger--active,
+  .motile-tab__trigger--underline.motile-tab__trigger--active:hover,
+  .motile-tab__trigger--underline.motile-tab__trigger--active:focus,
+  .motile-tab__trigger--underline.motile-tab__trigger--active:active {
     color: var(
       --motile-tab-color,
       var(--motile-ui-tab, var(--motile-theme, #60a5fa))
     );
   }
 
-  .motile-tab__trigger--underlined[data-orientation="vertical"].motile-tab__trigger--active,
-  .motile-tab__trigger--underlined[data-orientation="vertical"].motile-tab__trigger--active:hover,
-  .motile-tab__trigger--underlined[data-orientation="vertical"].motile-tab__trigger--active:focus,
-  .motile-tab__trigger--underlined[data-orientation="vertical"].motile-tab__trigger--active:active {
+  .motile-tab__trigger--underline[data-orientation="vertical"].motile-tab__trigger--active,
+  .motile-tab__trigger--underline[data-orientation="vertical"].motile-tab__trigger--active:hover,
+  .motile-tab__trigger--underline[data-orientation="vertical"].motile-tab__trigger--active:focus,
+  .motile-tab__trigger--underline[data-orientation="vertical"].motile-tab__trigger--active:active {
     border-right-color: var(
       --motile-tab-color,
       var(--motile-ui-tab, var(--motile-theme, #60a5fa))

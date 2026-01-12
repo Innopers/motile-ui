@@ -329,7 +329,7 @@ const TabRoot = forwardRef<HTMLDivElement, TabRootProps>(
           <Slot
             ref={ref}
             {...rootProps}
-            className={className}
+            className={classes}
             style={inlineStyle}
           >
             {children}
@@ -631,16 +631,33 @@ const TabTrigger = forwardRef<HTMLButtonElement, TabTriggerProps>(
       }
 
       if (nextIndex !== null) {
-        const nextValue = allValues[nextIndex];
-        const nextRef = triggerRefs.get(nextValue);
+        const totalTabs = allValues.length;
+        let attempts = 0;
+        const maxAttempts = totalTabs;
 
-        if (nextRef?.current) {
-          nextRef.current.focus();
+        // disabled 탭 건너뛰기
+        while (attempts < maxAttempts) {
+          const nextValue = allValues[nextIndex];
+          const nextRef = triggerRefs.get(nextValue);
 
-          // 자동 활성화: 포커스 시 값 변경
-          if (activationMode === "automatic") {
-            onValueChange(nextValue);
+          // disabled 여부 확인
+          const isDisabled = nextRef?.current?.disabled;
+
+          if (!isDisabled && nextRef?.current) {
+            nextRef.current.focus();
+
+            // 자동 활성화: 포커스 시 값 변경
+            if (activationMode === "automatic") {
+              onValueChange(nextValue);
+            }
+            break;
           }
+
+          // 다음 탭으로 이동
+          const direction =
+            e.key === "ArrowLeft" || e.key === "ArrowUp" ? -1 : 1;
+          nextIndex = (nextIndex + direction + totalTabs) % totalTabs;
+          attempts++;
         }
       }
 
@@ -661,6 +678,7 @@ const TabTrigger = forwardRef<HTMLButtonElement, TabTriggerProps>(
       role: "tab" as const,
       "aria-selected": isActive,
       "aria-controls": panelIds.get(tabValue) || "",
+      "aria-disabled": disabled || undefined,
       "data-state": (isActive ? "active" : "inactive") as "active" | "inactive",
       tabIndex: isActive ? 0 : -1,
     };
@@ -699,7 +717,7 @@ const TabTrigger = forwardRef<HTMLButtonElement, TabTriggerProps>(
 
     if (asChild) {
       return (
-        <Slot {...triggerProps} className={className}>
+        <Slot {...triggerProps} className={classes}>
           {children}
         </Slot>
       );

@@ -81,6 +81,16 @@
   border-right: 1px solid #e5e7eb;
 }
 
+/* Pill variant */
+.motile-tab__list--pill {
+  gap: 8px;
+  border: none;
+}
+
+.motile-tab__list--vertical.motile-tab__list--pill {
+  border: none;
+}
+
 /* ===========================
    Tab Trigger (Button)
    =========================== */
@@ -180,6 +190,43 @@
 }
 
 /* ===========================
+   Tab Trigger - Pill Variant
+   =========================== */
+
+.motile-tab__trigger--pill {
+  border-radius: 9999px;
+  border: none;
+  background-color: transparent;
+  padding: 10px 20px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.motile-tab__trigger--pill:not(.motile-tab__trigger--disabled):hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #374151;
+}
+
+.motile-tab__trigger--pill.motile-tab__trigger--active,
+.motile-tab__trigger--pill.motile-tab__trigger--active:hover,
+.motile-tab__trigger--pill.motile-tab__trigger--active:focus,
+.motile-tab__trigger--pill.motile-tab__trigger--active:active {
+  background-color: var(
+    --motile-tab-color,
+    var(--motile-ui-tab, var(--motile-theme, #3b82f6))
+  );
+  color: white;
+  font-weight: 600;
+}
+
+/* Vertical orientation */
+.motile-tab__trigger--pill[data-orientation="vertical"] {
+  width: 100%;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+/* ===========================
    Tab Content
    =========================== */
 
@@ -240,6 +287,10 @@
 
   .motile-tab__trigger--underlined[data-orientation="vertical"] {
     padding: 10px 14px 10px 16px; /* 상 우 하 좌 */
+  }
+
+  .motile-tab__trigger--pill {
+    padding: 8px 16px; /* 모바일에서 더 작게 */
   }
 
   .motile-tab__list--vertical {
@@ -326,6 +377,27 @@
       --motile-tab-color,
       var(--motile-ui-tab, var(--motile-theme, #60a5fa))
     );
+  }
+
+  /* Pill variant - Dark mode */
+  .motile-tab__trigger--pill {
+    color: #9ca3af;
+  }
+
+  .motile-tab__trigger--pill:not(.motile-tab__trigger--disabled):hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #d1d5db;
+  }
+
+  .motile-tab__trigger--pill.motile-tab__trigger--active,
+  .motile-tab__trigger--pill.motile-tab__trigger--active:hover,
+  .motile-tab__trigger--pill.motile-tab__trigger--active:focus,
+  .motile-tab__trigger--pill.motile-tab__trigger--active:active {
+    background-color: var(
+      --motile-tab-color,
+      var(--motile-ui-tab, var(--motile-theme, #60a5fa))
+    );
+    color: white;
   }
 }
 

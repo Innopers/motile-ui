@@ -24,8 +24,9 @@ const BASE = "motile-tab";
 /**
  * Tab 스타일 variant
  * - `underlined`: 하단 언더라인 (기본)
+ * - `pill`: 둥근 배경
  */
-export type TabVariant = "underlined";
+export type TabVariant = "underlined" | "pill";
 
 /**
  * Tab 방향

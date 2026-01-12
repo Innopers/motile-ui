@@ -5,10 +5,12 @@ import React, {
   useContext,
   useEffect,
   useId,
+  useMemo,
   useRef,
   useState,
 } from "react";
 
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { Slot } from "@/utils/Slot";
 
 import "./Tab.css";
@@ -128,6 +130,27 @@ export interface TabRootProps extends Omit<
   color?: string;
 
   /**
+   * Tab의 breakpoint (모바일/데스크톱 전환점)
+   * @default 768
+   *
+   * @example
+   * // 768px 이하에서 vertical → horizontal 자동 전환
+   * <Tab orientation="vertical" maxWidth={768}>
+   *
+   * // 1024px 이하에서 전환
+   * <Tab orientation="vertical" maxWidth={1024}>
+   *
+   * // 반응형 비활성화 (항상 vertical 유지)
+   * <Tab orientation="vertical" maxWidth={0}>
+   *
+   * @remarks
+   * - viewport <= maxWidth이고 orientation="vertical"일 때만 horizontal로 전환
+   * - orientation="horizontal"이면 이 prop은 무시됨
+   * - 기본값: 768px breakpoint
+   */
+  maxWidth?: string | number;
+
+  /**
    * children을 wrapper 없이 직접 렌더링
    * @default false
    */
@@ -147,6 +170,7 @@ const TabRoot = forwardRef<HTMLDivElement, TabRootProps>(
       variant = "underlined",
       disabled = false,
       color,
+      maxWidth = 768,
       className,
       children,
       asChild = false,
@@ -158,6 +182,30 @@ const TabRoot = forwardRef<HTMLDivElement, TabRootProps>(
     const [uncontrolledValue, setUncontrolledValue] = useState<
       string | undefined
     >(defaultValue);
+
+    // 미디어 쿼리 문자열 생성 (메모이제이션으로 성능 최적화)
+    const mediaQueryString = useMemo(
+      () =>
+        maxWidth
+          ? `(max-width: ${typeof maxWidth === "number" ? `${maxWidth}px` : maxWidth})`
+          : "(max-width: 768px)",
+      [maxWidth]
+    );
+
+    const isMobile = useMediaQuery(mediaQueryString);
+    const [isMounted, setIsMounted] = useState(false);
+
+    // 마운트 후에만 반응형 적용 (SSR hydration 오류 방지)
+    useEffect(() => {
+      setIsMounted(true);
+    }, []);
+
+    // 실제 사용할 orientation 계산
+    // vertical이고 모바일일 때만 horizontal로 전환 (마운트 후에만)
+    const orient =
+      isMounted && isMobile && orientation === "vertical"
+        ? "horizontal"
+        : orientation;
 
     // Controlled vs Uncontrolled 모드 처리
     const isControlled = controlledValue !== undefined;
@@ -217,7 +265,7 @@ const TabRoot = forwardRef<HTMLDivElement, TabRootProps>(
 
       // 다음 프레임에 실행 (DOM 완전히 렌더링 후)
       requestAnimationFrame(() => {
-        const isHorizontal = orientation === "horizontal";
+        const isHorizontal = orient === "horizontal";
 
         // Trigger와 List의 위치 및 크기 계산
         const triggerStart = isHorizontal
@@ -270,26 +318,40 @@ const TabRoot = forwardRef<HTMLDivElement, TabRootProps>(
           list.scrollTo(scrollOptions);
         }
       });
-    }, [value, disabled, orientation]);
+    }, [value, disabled, orient]);
 
-    const contextValue: TabContextValue = {
-      value,
-      onValueChange: handleValueChange,
-      orientation,
-      variant,
-      activationMode,
-      disabled,
-      color,
-      tabIds: tabIdsRef.current,
-      panelIds: panelIdsRef.current,
-      triggerRefs: triggerRefsRef.current,
-      registerTab,
-      unregisterTab,
-    };
+    // Context value 메모이제이션 (불필요한 리렌더링 방지)
+    const contextValue: TabContextValue = useMemo(
+      () => ({
+        value,
+        onValueChange: handleValueChange,
+        orientation: orient,
+        variant,
+        activationMode,
+        disabled,
+        color,
+        tabIds: tabIdsRef.current,
+        panelIds: panelIdsRef.current,
+        triggerRefs: triggerRefsRef.current,
+        registerTab,
+        unregisterTab,
+      }),
+      [
+        value,
+        handleValueChange,
+        orient,
+        variant,
+        activationMode,
+        disabled,
+        color,
+        registerTab,
+        unregisterTab,
+      ]
+    );
 
     const classes = [
       BASE,
-      `${BASE}--${orientation}`,
+      `${BASE}--${orient}`,
       disabled && `${BASE}--disabled`,
       className,
     ]
@@ -303,7 +365,7 @@ const TabRoot = forwardRef<HTMLDivElement, TabRootProps>(
 
     const rootProps = {
       ...props,
-      "data-orientation": orientation,
+      "data-orientation": orient,
       "data-disabled": disabled ? "" : undefined,
     };
 
@@ -347,6 +409,12 @@ const TabList = forwardRef<HTMLDivElement, TabListProps>(
   ({ className, children, asChild = false, ...props }, forwardedRef) => {
     const { orientation, variant } = useTabContext();
     const listRef = useRef<HTMLDivElement | null>(null);
+    const orientationRef = useRef(orientation);
+
+    // orientation이 변경되면 ref 업데이트 (이벤트 리스너 재등록 없이)
+    useEffect(() => {
+      orientationRef.current = orientation;
+    }, [orientation]);
 
     // forwardRef와 내부 ref 통합
     const setRefs = useCallback(
@@ -366,8 +434,6 @@ const TabList = forwardRef<HTMLDivElement, TabListProps>(
       const element = listRef.current;
       if (!element) return;
 
-      const isHorizontal = orientation === "horizontal";
-
       let isDown = false;
       let hasMoved = false;
       let startPos = 0;
@@ -379,6 +445,7 @@ const TabList = forwardRef<HTMLDivElement, TabListProps>(
         // 왼쪽 마우스 버튼만 처리
         if (e.button !== 0) return;
 
+        const isHorizontal = orientationRef.current === "horizontal";
         isDown = true;
         hasMoved = false;
         startPos = isHorizontal ? e.clientX : e.clientY;
@@ -389,6 +456,7 @@ const TabList = forwardRef<HTMLDivElement, TabListProps>(
       const handleMouseMove = (e: MouseEvent) => {
         if (!isDown) return;
 
+        const isHorizontal = orientationRef.current === "horizontal";
         const currentPos = isHorizontal ? e.clientX : e.clientY;
         const walk = currentPos - startPos;
 
@@ -463,7 +531,7 @@ const TabList = forwardRef<HTMLDivElement, TabListProps>(
         document.removeEventListener("mouseup", handleMouseUp);
         element.removeEventListener("mouseleave", handleMouseLeave);
       };
-    }, [orientation]);
+    }, []); // orientation 제거: orientationRef로 최신 값 참조
 
     const classes = [
       `${BASE}__list`,

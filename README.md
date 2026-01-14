@@ -37,7 +37,7 @@
 
 ## ✨ 주요 기능
 
-- 🎨 **18개의 고품질 컴포넌트** - 웹뷰 애플리케이션을 위해 세심하게 제작
+- 🎨 **20개의 고품질 컴포넌트** - 웹뷰 애플리케이션을 위해 세심하게 제작
 - 💪 **TypeScript 우선** - 포괄적인 타입 정의 완벽 지원
 - 🎭 **커스터마이징 가능** - CSS 변수로 쉬운 테마 설정
 - 📱 **모바일 최적화** - 터치 친화적 인터랙션과 반응형 디자인
@@ -176,6 +176,7 @@ color props > --motile-ui-btn > --motile-theme > #3b82f6 (기본값)
 - **Textarea** - 여러 줄 텍스트 입력 필드
 - **Checkbox** - 체크박스 입력
 - **Switch** - 토글 스위치
+- **Select** - 드롭다운 선택 메뉴
 - **Badge** - 상태 표시 배지
 - **Toast** - 알림 메시지
 - **Skeleton** - 로딩 상태 플레이스홀더
@@ -185,6 +186,7 @@ color props > --motile-ui-btn > --motile-theme > #3b82f6 (기본값)
 - **Sheet** - 좌우에서 슬라이드되는 사이드 패널
 - **Popover** - 팝오버 메뉴
 - **Tooltip** - 툴팁
+- **Tab** - 콘텐츠 전환 탭
 - **Accordion** - 접을 수 있는 패널
 - **Dock** - 독 스타일 네비게이션 바
 - **NumberFlow** - 숫자 애니메이션 컴포넌트
@@ -219,7 +221,7 @@ MIT © [Innopers](https://github.com/Innopers)
 
 ## ✨ Features
 
-- 🎨 **18 High-Quality Components** - Carefully crafted for webview applications
+- 🎨 **20 High-Quality Components** - Carefully crafted for webview applications
 - 💪 **TypeScript First** - Full TypeScript support with comprehensive type definitions
 - 🎭 **Customizable** - Easy theming with CSS variables
 - 📱 **Mobile Optimized** - Touch-friendly interactions and responsive design
@@ -358,6 +360,7 @@ color props > --motile-ui-btn > --motile-theme > #3b82f6 (default)
 - **Textarea** - Multi-line text input field
 - **Checkbox** - Checkbox input
 - **Switch** - Toggle switch
+- **Select** - Dropdown selection menu
 - **Badge** - Status badge indicator
 - **Toast** - Notification message
 - **Skeleton** - Loading state placeholder
@@ -367,6 +370,7 @@ color props > --motile-ui-btn > --motile-theme > #3b82f6 (default)
 - **Sheet** - Side panel that slides from left or right
 - **Popover** - Popover menu
 - **Tooltip** - Tooltip
+- **Tab** - Content switching tabs
 - **Accordion** - Collapsible panel
 - **Dock** - Dock-style navigation bar
 - **NumberFlow** - Animated number transition component

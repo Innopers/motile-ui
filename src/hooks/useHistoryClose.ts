@@ -84,6 +84,13 @@ export interface UseHistoryCloseReturn {
   navigateAndClose: (navigationFn: () => void) => void;
 }
 
+/**
+ * 각 Sheet 인스턴스를 위한 고유 ID 생성
+ * history.state에서 우리의 dummy entry를 정확히 식별하기 위함
+ */
+const generateSheetId = () =>
+  `__motile_sheet_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+
 export function useHistoryClose({
   onClose,
   isOpen,
@@ -98,8 +105,8 @@ export function useHistoryClose({
   // 히스토리 기반 닫기 상태 (useState 사용으로 re-render 트리거)
   const [isClosingFromHistory, setIsClosingFromHistory] = useState(false);
 
-  // Sheet이 열릴 때의 히스토리 길이 저장 (navigation 감지용)
-  const initialHistoryLengthRef = useRef(0);
+  // 이 Sheet 인스턴스의 고유 ID (history.state 식별용)
+  const sheetIdRef = useRef<string | null>(null);
 
   // 대기 중인 네비게이션 콜백 저장
   const pendingNavigationRef = useRef<(() => void) | null>(null);
@@ -129,16 +136,16 @@ export function useHistoryClose({
     // pushState는 한 번만 실행 (React Strict Mode에서도 안전)
     // hasPushedRef로 중복 방지
     if (!hasPushedRef.current) {
-      // 현재 히스토리 길이 저장 (더미 항목 추가 전)
-      initialHistoryLengthRef.current = window.history.length;
+      // 고유 ID 생성
+      sheetIdRef.current = generateSheetId();
 
-      // 더미 히스토리 항목 추가
-      window.history.pushState({ modal: true }, "");
+      // 더미 히스토리 항목 추가 (고유 ID를 state에 저장)
+      // 이 ID로 나중에 우리의 dummy entry를 정확히 식별
+      window.history.pushState({ __motileSheetModal: sheetIdRef.current }, "");
       hasPushedRef.current = true;
     }
 
     // 리스너는 항상 등록 (React Strict Mode cleanup 후 재등록 필요)
-    // 핵심 수정: 조건문 밖에서 리스너 등록하여 Strict Mode에서도 정상 작동
     window.addEventListener("popstate", handlePopState);
 
     // cleanup: 컴포넌트 unmount 또는 isOpen 변경 시 리스너 제거
@@ -160,46 +167,52 @@ export function useHistoryClose({
     // cleanup에서 제거할 리스너 참조
     let navigationPopStateHandler: (() => void) | null = null;
 
-    // 히스토리 기반 닫기가 아닌 경우 (ESC, 외부 클릭, 닫기 버튼)
+    // 히스토리 기반 닫기가 아닌 경우 (ESC, 외부 클릭, 닫기 버튼, 직접 상태 변경)
     if (!isClosingFromHistory) {
-      // Sheet 내부에서 navigation이 발생했는지 확인
-      // 더미 항목 추가 후 예상되는 길이: initialHistoryLength + 1
-      const expectedLength = initialHistoryLengthRef.current + 1;
-      const hasNavigated = window.history.length !== expectedLength;
+      // 핵심 수정: history.length 대신 history.state로 우리의 dummy entry 확인
+      // 외부 코드(analytics, router 등)가 pushState를 호출해도 정확히 식별 가능
+      const currentState = window.history.state;
+      const isOnOurDummy =
+        currentState?.__motileSheetModal === sheetIdRef.current;
 
-      // navigation이 없었을 때만 더미 히스토리 제거
-      if (!hasNavigated) {
-        // 대기 중인 네비게이션이 있는 경우
-        if (pendingNavigationRef.current) {
-          // navigationFn을 로컬 변수에 저장 (참조 안정성)
-          const navigationFn = pendingNavigationRef.current;
-          pendingNavigationRef.current = null; // 먼저 초기화
+      if (isOnOurDummy) {
+        // 현재 우리의 dummy entry 위에 있음 → history.back()으로 원래 위치로 이동
+        const navigationFn = pendingNavigationRef.current;
+        pendingNavigationRef.current = null;
 
-          // popstate 이벤트 핸들러 정의
+        // 대기 중인 네비게이션이 있으면 back() 후 실행
+        if (navigationFn) {
           navigationPopStateHandler = () => {
             window.removeEventListener("popstate", navigationPopStateHandler!);
             navigationPopStateHandler = null;
-
-            // 핵심 수정: popstate 핸들러 밖에서 navigation 실행
-            // popstate 이벤트 처리 중 history 변경 시 브라우저 충돌 방지
             setTimeout(() => {
               navigationFn();
             }, 0);
           };
-
           window.addEventListener("popstate", navigationPopStateHandler);
-          window.history.back();
-        } else {
-          // 일반 닫기: 더미 히스토리만 제거
-          window.history.back();
         }
+
+        window.history.back();
       } else {
-        // navigation이 발생한 경우 pending navigation 초기화
-        pendingNavigationRef.current = null;
+        // 우리의 dummy entry 위에 있지 않음
+        // (외부 코드가 pushState를 호출했거나 사용자가 네비게이션함)
+        // 이 경우 history.back()을 호출하면 예상치 못한 곳으로 이동할 수 있음
+        // dummy entry는 history에 남지만, 사용자 경험에 큰 영향 없음
+        // (뒤로가기 한 번 더 누르면 됨)
+
+        // 대기 중인 네비게이션이 있으면 실행
+        if (pendingNavigationRef.current) {
+          const navigationFn = pendingNavigationRef.current;
+          pendingNavigationRef.current = null;
+          setTimeout(() => {
+            navigationFn();
+          }, 0);
+        }
       }
     }
 
     hasPushedRef.current = false;
+    sheetIdRef.current = null;
     setIsClosingFromHistory(false);
 
     // cleanup: 등록된 popstate 리스너 제거 (메모리 누수 방지)
@@ -214,10 +227,11 @@ export function useHistoryClose({
    * Sheet/Modal을 닫는 함수
    *
    * 동작 방식:
-   * - enabled=true이고 더미 히스토리가 추가된 상태: history.back() 호출
+   * - 현재 history.state가 우리의 dummy entry인 경우: history.back() 호출
    *   → popstate 이벤트 발생 → handlePopState에서 onClose 호출
    *   → 뒤로가기와 동일한 경로로 닫힘 (더미 히스토리 확실히 제거)
-   * - 그 외: 직접 onClose() 호출
+   * - 그 외 (외부 코드가 history 수정한 경우): 직접 onClose() 호출
+   *   → cleanup effect에서 상황에 맞게 처리
    */
   const close = useCallback(() => {
     // 히스토리 기능 비활성화 시 직접 닫기
@@ -226,13 +240,22 @@ export function useHistoryClose({
       return;
     }
 
-    // 더미 히스토리가 추가된 상태면 history.back()으로 닫기
-    // → popstate 이벤트 발생 → handlePopState에서 isClosingFromHistory=true, onClose() 호출
-    // → 뒤로가기와 동일한 경로로 처리되어 더미 히스토리 확실히 제거
+    // 더미 히스토리가 추가된 상태인지 확인
     if (hasPushedRef.current) {
-      window.history.back();
+      // 핵심: 현재 우리의 dummy entry 위에 있는지 확인
+      const currentState = window.history.state;
+      if (currentState?.__motileSheetModal === sheetIdRef.current) {
+        // 우리의 dummy entry 위에 있음 → history.back()으로 원래 위치로 이동
+        // back() 하면 popstate 이벤트 발생 → handlePopState에서 onClose 호출
+        window.history.back();
+      } else {
+        // 우리의 dummy entry 위에 있지 않음
+        // (외부 코드가 pushState를 호출한 경우)
+        // 직접 onClose() 호출하고 cleanup effect에서 처리
+        onCloseRef.current();
+      }
     } else {
-      // 아직 pushState 안 했거나 이미 처리된 경우
+      // pushState를 안 했거나 이미 처리된 경우
       onCloseRef.current();
     }
   }, [enabled]);
@@ -243,10 +266,10 @@ export function useHistoryClose({
    * 동작 순서:
    * 1. 네비게이션 콜백을 pendingNavigationRef에 저장
    * 2. onClose() 호출로 Sheet 닫기
-   * 3. useEffect에서 history.back()으로 더미 히스토리 제거
+   * 3. useEffect에서 history.back()으로 더미 히스토리 제거 (가능한 경우)
    * 4. popstate 이벤트 발생 후 저장된 네비게이션 콜백 실행
    *
-   * 최종 히스토리: [page1, page2] (깔끔하게 유지)
+   * 외부 코드가 history를 수정한 경우에도 네비게이션은 정상 실행됨
    */
   const navigateAndClose = useCallback((navigationFn: () => void) => {
     pendingNavigationRef.current = navigationFn;

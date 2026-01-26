@@ -117,16 +117,23 @@ Motile UI는 CSS 변수를 통해 전역 테마를 쉽게 커스터마이징할 
   /* 입력 필드 */
   --motile-ui-input: #8b5cf6; /* Input 포커스 색상 */
   --motile-ui-textarea: #ec4899; /* Textarea 포커스 색상 */
+  --motile-ui-select: #3b82f6; /* Select 포커스 색상 */
 
   /* 선택 컨트롤 */
   --motile-ui-checkbox: #f59e0b; /* Checkbox 체크 색상 */
   --motile-ui-switch: #14b8a6; /* Switch 활성화 색상 */
 
-  /* 기타 컴포넌트 */
-  --motile-ui-badge: #ef4444; /* Badge 배경 색상 */
+  /* 네비게이션 */
+  --motile-ui-tab: #3b82f6; /* Tab 활성화 색상 */
+  --motile-ui-dock: #3b82f6; /* Dock 하이라이트 색상 */
+
+  /* 오버레이 */
   --motile-ui-tooltip: #1f2937; /* Tooltip 배경 색상 */
   --motile-ui-popover: #3b82f6; /* Popover 강조 색상 */
-  --motile-ui-dock: #3b82f6; /* Dock 하이라이트 색상 */
+
+  /* 기타 컴포넌트 */
+  --motile-ui-badge: #ef4444; /* Badge 배경 색상 */
+  --motile-ui-speeddial: #3b82f6; /* SpeedDial 버튼 색상 */
 }
 ```
 
@@ -301,16 +308,23 @@ Set global colors for specific component types:
   /* Input Fields */
   --motile-ui-input: #8b5cf6; /* Input focus color */
   --motile-ui-textarea: #ec4899; /* Textarea focus color */
+  --motile-ui-select: #3b82f6; /* Select focus color */
 
   /* Selection Controls */
   --motile-ui-checkbox: #f59e0b; /* Checkbox checked color */
   --motile-ui-switch: #14b8a6; /* Switch active color */
 
-  /* Other Components */
-  --motile-ui-badge: #ef4444; /* Badge background color */
+  /* Navigation */
+  --motile-ui-tab: #3b82f6; /* Tab active color */
+  --motile-ui-dock: #3b82f6; /* Dock highlight color */
+
+  /* Overlays */
   --motile-ui-tooltip: #1f2937; /* Tooltip background color */
   --motile-ui-popover: #3b82f6; /* Popover highlight color */
-  --motile-ui-dock: #3b82f6; /* Dock highlight color */
+
+  /* Other Components */
+  --motile-ui-badge: #ef4444; /* Badge background color */
+  --motile-ui-speeddial: #3b82f6; /* SpeedDial button color */
 }
 ```
 

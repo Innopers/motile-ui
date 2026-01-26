@@ -39,6 +39,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
       `${baseClass}-container`,
       `${baseClass}-container--${variant}`,
       disabled && `${baseClass}-container--disabled`,
+      className,
     ]
       .filter(Boolean)
       .join(" ");

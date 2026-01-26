@@ -1,5 +1,5 @@
 /* Button Base */
-.motile-btn {
+:where(.motile-btn) {
   width: fit-content;
   border: none;
   border-radius: 12px;
@@ -183,7 +183,7 @@
   pointer-events: none;
 }
 
-.motile-btn--full-width {
+:where(.motile-btn--full-width) {
   width: 100%;
 }
 
@@ -237,7 +237,7 @@
 }
 
 /* Loading States */
-.motile-btn__wrapper {
+:where(.motile-btn__wrapper) {
   display: grid;
   grid-template-areas: "content";
   place-items: center;
@@ -245,21 +245,21 @@
   height: 100%;
 }
 
-.motile-btn__content {
+:where(.motile-btn__content) {
   grid-area: content;
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
-.motile-btn__loading {
+:where(.motile-btn__loading) {
   grid-area: content;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.motile-btn__dots {
+:where(.motile-btn__dots) {
   display: flex;
   gap: 8px;
   align-items: center;
@@ -282,21 +282,21 @@
   height: 5px;
 }
 
-.motile-btn__dot {
+:where(.motile-btn__dot) {
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.7);
   animation: motile-btn-loading-bounce 1.4s ease-in-out infinite both;
 }
 
-.motile-btn__dot:nth-child(1) {
+:where(.motile-btn__dot:nth-child(1)) {
   animation-delay: -0.32s;
 }
 
-.motile-btn__dot:nth-child(2) {
+:where(.motile-btn__dot:nth-child(2)) {
   animation-delay: -0.16s;
 }
 
-.motile-btn__dot:nth-child(3) {
+:where(.motile-btn__dot:nth-child(3)) {
   animation-delay: 0s;
 }
 

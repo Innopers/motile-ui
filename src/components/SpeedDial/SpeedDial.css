@@ -18,7 +18,10 @@
   padding: 0;
   border: none;
   border-radius: 50%;
-  background-color: var(--motile-speeddial-color, var(--motile-theme, #3b82f6));
+  background-color: var(
+    --motile-speeddial-color,
+    var(--motile-ui-speeddial, var(--motile-theme, #3b82f6))
+  );
   color: white;
   box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.15),

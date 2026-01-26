@@ -55,7 +55,7 @@
 :where(.motile-tooltip-bubble--filled) {
   --arrow-color: var(
     --motile-tooltip-color,
-    var(--motile-ui-tooltip, rgba(0, 0, 0, 0.9))
+    var(--motile-ui-tooltip, var(--motile-theme, rgba(0, 0, 0, 0.9)))
   );
   background: var(--arrow-color);
   color: #fff;
@@ -63,7 +63,10 @@
 
 /* Outlined Variant */
 :where(.motile-tooltip-bubble--outlined) {
-  --arrow-color: var(--motile-tooltip-color, var(--motile-ui-tooltip, #3b82f6));
+  --arrow-color: var(
+    --motile-tooltip-color,
+    var(--motile-ui-tooltip, var(--motile-theme, #3b82f6))
+  );
   background: white;
   color: var(--arrow-color);
   border: 1px solid var(--arrow-color);

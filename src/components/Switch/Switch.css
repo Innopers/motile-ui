@@ -1,12 +1,12 @@
 /* Switch Component Styles */
 
-.motile-switch-container {
+:where(.motile-switch-container) {
   display: inline-flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.motile-switch-wrapper {
+:where(.motile-switch-wrapper) {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -15,13 +15,13 @@
   user-select: none;
 }
 
-.motile-switch-container--disabled .motile-switch-wrapper {
+:where(.motile-switch-container--disabled .motile-switch-wrapper) {
   cursor: not-allowed;
   opacity: 0.6;
 }
 
 /* Hidden Input */
-.motile-switch {
+:where(.motile-switch) {
   position: absolute;
   opacity: 0;
   width: 0;
@@ -30,12 +30,12 @@
   pointer-events: none;
 }
 
-.motile-switch:focus {
+:where(.motile-switch:focus) {
   outline: none;
 }
 
 /* Switch Track (배경) */
-.motile-switch__track {
+:where(.motile-switch__track) {
   position: relative;
   width: 44px;
   height: 24px;
@@ -49,7 +49,7 @@
 }
 
 /* Switch Thumb (토글 버튼) */
-.motile-switch__thumb {
+:where(.motile-switch__thumb) {
   position: absolute;
   width: 18px;
   height: 18px;
@@ -61,23 +61,23 @@
 }
 
 /* Checked State */
-.motile-switch:checked + .motile-switch__track {
+:where(.motile-switch:checked + .motile-switch__track) {
   background-color: var(
     --motile-switch-color,
     var(--motile-ui-switch, var(--motile-theme, #3b82f6))
   );
 }
 
-.motile-switch:checked + .motile-switch__track .motile-switch__thumb {
+:where(.motile-switch:checked + .motile-switch__track .motile-switch__thumb) {
   transform: translateX(20px);
 }
 
 /* Hover State */
-.motile-switch:not(:checked) + .motile-switch__track:hover {
+:where(.motile-switch:not(:checked) + .motile-switch__track:hover) {
   background-color: #d1d5db;
 }
 
-.motile-switch:checked + .motile-switch__track:hover {
+:where(.motile-switch:checked + .motile-switch__track:hover) {
   background-color: color-mix(
     in srgb,
     var(
@@ -90,34 +90,38 @@
 }
 
 /* Disabled State */
-.motile-switch:disabled + .motile-switch__track {
+:where(.motile-switch:disabled + .motile-switch__track) {
   background-color: #f3f4f6;
   cursor: not-allowed;
 }
 
-.motile-switch:disabled:checked + .motile-switch__track {
+:where(.motile-switch:disabled:checked + .motile-switch__track) {
   background-color: #d1d5db;
 }
 
-.motile-switch:disabled + .motile-switch__track .motile-switch__thumb {
+:where(.motile-switch:disabled + .motile-switch__track .motile-switch__thumb) {
   box-shadow: none;
 }
 
 /* Elastic Variant */
-.motile-switch--elastic + .motile-switch__track .motile-switch__thumb {
+:where(.motile-switch--elastic + .motile-switch__track .motile-switch__thumb) {
   transition: none;
   will-change: transform;
 }
 
-.motile-switch--elastic:checked + .motile-switch__track .motile-switch__thumb {
+:where(
+  .motile-switch--elastic:checked + .motile-switch__track .motile-switch__thumb
+) {
   animation: switch-slide-on 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
   transform: translateX(20px);
   transform-origin: left center;
 }
 
-.motile-switch--elastic:not(:checked)
-  + .motile-switch__track
-  .motile-switch__thumb {
+:where(
+  .motile-switch--elastic:not(:checked)
+    + .motile-switch__track
+    .motile-switch__thumb
+) {
   animation: switch-slide-off 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
   transform: translateX(0);
   transform-origin: right center;
@@ -178,19 +182,23 @@
 }
 
 /* Bounce Variant */
-.motile-switch--bounce + .motile-switch__track .motile-switch__thumb {
+:where(.motile-switch--bounce + .motile-switch__track .motile-switch__thumb) {
   transition: none;
   will-change: transform;
 }
 
-.motile-switch--bounce:checked + .motile-switch__track .motile-switch__thumb {
+:where(
+  .motile-switch--bounce:checked + .motile-switch__track .motile-switch__thumb
+) {
   animation: switch-bounce-on 0.65s cubic-bezier(0.68, -0.55, 0.27, 1.55);
   transform: translateX(20px);
 }
 
-.motile-switch--bounce:not(:checked)
-  + .motile-switch__track
-  .motile-switch__thumb {
+:where(
+  .motile-switch--bounce:not(:checked)
+    + .motile-switch__track
+    .motile-switch__thumb
+) {
   animation: switch-bounce-off 0.65s cubic-bezier(0.68, -0.55, 0.27, 1.55);
   transform: translateX(0);
 }

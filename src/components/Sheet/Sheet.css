@@ -3,7 +3,7 @@
    ============================================================================ */
 
 /* Overlay (배경) */
-.motile-sheet__overlay {
+:where(.motile-sheet__overlay) {
   position: fixed;
   inset: 0;
   background-color: rgba(0, 0, 0, 0);
@@ -12,20 +12,20 @@
   display: flex;
 }
 
-.motile-sheet__overlay--left {
+:where(.motile-sheet__overlay--left) {
   justify-content: flex-start;
 }
 
-.motile-sheet__overlay--right {
+:where(.motile-sheet__overlay--right) {
   justify-content: flex-end;
 }
 
-.motile-sheet__overlay--visible {
+:where(.motile-sheet__overlay--visible) {
   background-color: rgba(0, 0, 0, 0.4);
 }
 
 /* Sheet Content (메인 컨테이너) */
-.motile-sheet__content {
+:where(.motile-sheet__content) {
   position: fixed;
   top: 0;
   bottom: 0;
@@ -45,37 +45,37 @@
 }
 
 /* Left position */
-.motile-sheet__content--left {
+:where(.motile-sheet__content--left) {
   left: 0;
   border-right: 1px solid #e5e7eb;
   transform: translateX(-100%);
 }
 
-.motile-sheet__content--left.motile-sheet__content--visible {
+:where(.motile-sheet__content--left.motile-sheet__content--visible) {
   transform: translateX(0);
 }
 
 /* Right position */
-.motile-sheet__content--right {
+:where(.motile-sheet__content--right) {
   right: 0;
   border-left: 1px solid #e5e7eb;
   transform: translateX(100%);
 }
 
-.motile-sheet__content--right.motile-sheet__content--visible {
+:where(.motile-sheet__content--right.motile-sheet__content--visible) {
   transform: translateX(0);
 }
 
 /* 모바일 반응형 */
 @media (max-width: 768px) {
-  .motile-sheet__content {
+  :where(.motile-sheet__content) {
     max-width: none;
     width: 100%;
   }
 }
 
 /* Header (닫기 버튼 영역) */
-.motile-sheet__header {
+:where(.motile-sheet__header) {
   height: 56px;
   display: flex;
   align-items: center;
@@ -90,19 +90,19 @@
 }
 
 /* Header 내부 버튼 기본 스타일  */
-.motile-sheet__header button {
+:where(.motile-sheet__header button) {
   color: inherit;
 }
 
 /* 데스크톱: 더 넉넉한 padding */
 @media (min-width: 769px) {
-  .motile-sheet__header {
+  :where(.motile-sheet__header) {
     height: 64px;
     padding: 0 24px;
   }
 }
 
-.motile-sheet__back-button {
+:where(.motile-sheet__back-button) {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -118,21 +118,21 @@
   font-weight: 600;
 }
 
-.motile-sheet__back-button:hover {
+:where(.motile-sheet__back-button:hover) {
   background-color: #f3f4f6;
 }
 
-.motile-sheet__back-button:active {
+:where(.motile-sheet__back-button:active) {
   transform: scale(0.98);
 }
 
-.motile-sheet__chevron {
+:where(.motile-sheet__chevron) {
   width: 24px;
   height: 24px;
   flex-shrink: 0;
 }
 
-.motile-sheet__title {
+:where(.motile-sheet__title) {
   flex: 1;
   min-width: 0;
   margin: 0;
@@ -146,13 +146,13 @@
 }
 
 @media (max-width: 768px) {
-  .motile-sheet__title {
+  :where(.motile-sheet__title) {
     font-size: 16px;
   }
 }
 
 /* Close Button */
-.motile-sheet__close {
+:where(.motile-sheet__close) {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -170,23 +170,23 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-.motile-sheet__close:hover {
+:where(.motile-sheet__close:hover) {
   background-color: #f3f4f6;
   color: #111827;
 }
 
-.motile-sheet__close:active {
+:where(.motile-sheet__close:active) {
   transform: scale(0.95);
   background-color: #e5e7eb;
 }
 
-.motile-sheet__close:focus-visible {
+:where(.motile-sheet__close:focus-visible) {
   outline: 2px solid #3b82f6;
   outline-offset: 2px;
 }
 
 /* Body (스크롤 가능 영역) */
-.motile-sheet__body {
+:where(.motile-sheet__body) {
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
@@ -201,102 +201,102 @@
 
 /* 데스크톱: 더 넉넉한 padding */
 @media (min-width: 769px) {
-  .motile-sheet__body {
+  :where(.motile-sheet__body) {
     padding: 20px 24px;
   }
 }
 
 /* Body 스크롤바 */
-.motile-sheet__body::-webkit-scrollbar {
+:where(.motile-sheet__body::-webkit-scrollbar) {
   width: 6px;
 }
 
-.motile-sheet__body::-webkit-scrollbar-track {
+:where(.motile-sheet__body::-webkit-scrollbar-track) {
   background: transparent;
 }
 
-.motile-sheet__body::-webkit-scrollbar-thumb {
+:where(.motile-sheet__body::-webkit-scrollbar-thumb) {
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 3px;
 }
 
-.motile-sheet__body::-webkit-scrollbar-thumb:hover {
+:where(.motile-sheet__body::-webkit-scrollbar-thumb:hover) {
   background-color: rgba(0, 0, 0, 0.3);
 }
 
 /* 다크 모드 */
 @media (prefers-color-scheme: dark) {
-  .motile-sheet__content {
+  :where(.motile-sheet__content) {
     background-color: #1f2937;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
   }
 
-  .motile-sheet__content--left {
+  :where(.motile-sheet__content--left) {
     border-right-color: #374151;
   }
 
-  .motile-sheet__content--right {
+  :where(.motile-sheet__content--right) {
     border-left-color: #374151;
   }
 
-  .motile-sheet__header {
+  :where(.motile-sheet__header) {
     background-color: #1f2937;
     border-bottom-color: #374151;
   }
 
-  .motile-sheet__back-button {
+  :where(.motile-sheet__back-button) {
     color: #f9fafb;
   }
 
-  .motile-sheet__back-button:hover {
+  :where(.motile-sheet__back-button:hover) {
     background-color: #374151;
   }
 
-  .motile-sheet__title {
+  :where(.motile-sheet__title) {
     color: #f9fafb;
   }
 
-  .motile-sheet__body {
+  :where(.motile-sheet__body) {
     background-color: #1f2937;
   }
 
-  .motile-sheet__body::-webkit-scrollbar-thumb {
+  :where(.motile-sheet__body::-webkit-scrollbar-thumb) {
     background-color: rgba(255, 255, 255, 0.2);
   }
 
-  .motile-sheet__body::-webkit-scrollbar-thumb:hover {
+  :where(.motile-sheet__body::-webkit-scrollbar-thumb:hover) {
     background-color: rgba(255, 255, 255, 0.3);
   }
 
-  .motile-sheet__close {
+  :where(.motile-sheet__close) {
     color: #9ca3af;
   }
 
-  .motile-sheet__close:hover {
+  :where(.motile-sheet__close:hover) {
     background-color: #374151;
     color: #f9fafb;
   }
 
-  .motile-sheet__close:active {
+  :where(.motile-sheet__close:active) {
     background-color: #4b5563;
   }
 }
 
 /* 애니메이션 비활성화 */
 @media (prefers-reduced-motion: reduce) {
-  .motile-sheet__content,
-  .motile-sheet__overlay {
+  :where(.motile-sheet__content),
+  :where(.motile-sheet__overlay) {
     transition: none;
   }
 }
 
 /* 터치 디바이스 */
 @media (hover: none) and (pointer: coarse) {
-  .motile-sheet__header {
+  :where(.motile-sheet__header) {
     height: 60px;
   }
 
-  .motile-sheet__chevron {
+  :where(.motile-sheet__chevron) {
     width: 26px;
     height: 26px;
   }

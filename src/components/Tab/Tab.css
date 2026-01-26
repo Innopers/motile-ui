@@ -2,21 +2,21 @@
    Tab Root
    =========================== */
 
-.motile-tab {
+:where(.motile-tab) {
   display: flex;
   gap: 0;
 }
 
-.motile-tab--horizontal {
+:where(.motile-tab--horizontal) {
   flex-direction: column; /* List 위, Content 아래 */
 }
 
-.motile-tab--vertical {
+:where(.motile-tab--vertical) {
   flex-direction: row; /* List 왼쪽, Content 오른쪽 */
   align-items: flex-start;
 }
 
-.motile-tab--disabled {
+:where(.motile-tab--disabled) {
   pointer-events: none;
   opacity: 0.5;
 }
@@ -25,7 +25,7 @@
    Tab List (Container for Triggers)
    =========================== */
 
-.motile-tab__list {
+:where(.motile-tab__list) {
   display: flex;
   position: relative;
   border-bottom: 1px solid #e5e7eb;
@@ -46,21 +46,21 @@
   -ms-overflow-style: none; /* IE/Edge */
 }
 
-.motile-tab__list:active {
+:where(.motile-tab__list:active) {
   cursor: grabbing; /* 드래그 중 커서 */
 }
 
 /* Chrome/Safari/Edge 스크롤바 숨김 */
-.motile-tab__list::-webkit-scrollbar {
+:where(.motile-tab__list)::-webkit-scrollbar {
   display: none;
 }
 
-.motile-tab__list--horizontal {
+:where(.motile-tab__list--horizontal) {
   flex-direction: row;
   gap: 0;
 }
 
-.motile-tab__list--vertical {
+:where(.motile-tab__list--vertical) {
   flex-direction: column;
   overflow-x: hidden;
   overflow-y: auto;
@@ -72,22 +72,22 @@
 }
 
 /* Underlined variant */
-.motile-tab__list--underline {
+:where(.motile-tab__list--underline) {
   border-bottom: 1px solid #e5e7eb;
 }
 
-.motile-tab__list--vertical.motile-tab__list--underline {
+:where(.motile-tab__list--vertical.motile-tab__list--underline) {
   border-bottom: none;
   border-right: 1px solid #e5e7eb;
 }
 
 /* Pill variant */
-.motile-tab__list--pill {
+:where(.motile-tab__list--pill) {
   gap: 8px;
   border: none;
 }
 
-.motile-tab__list--vertical.motile-tab__list--pill {
+:where(.motile-tab__list--vertical.motile-tab__list--pill) {
   border: none;
 }
 
@@ -95,7 +95,7 @@
    Tab Trigger (Button)
    =========================== */
 
-.motile-tab__trigger {
+:where(.motile-tab__trigger) {
   /* Reset */
   border: none;
   background: none;
@@ -125,7 +125,7 @@
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.motile-tab__trigger:focus-visible {
+:where(.motile-tab__trigger:focus-visible) {
   outline: none;
   background-color: color-mix(
     in srgb,
@@ -135,7 +135,7 @@
   );
 }
 
-.motile-tab__trigger--disabled {
+:where(.motile-tab__trigger--disabled) {
   cursor: not-allowed;
   opacity: 0.5;
 }
@@ -144,19 +144,21 @@
    Tab Trigger - Underlined Variant
    =========================== */
 
-.motile-tab__trigger--underline {
+:where(.motile-tab__trigger--underline) {
   border-bottom: 2px solid transparent;
   padding-bottom: 10px;
 }
 
-.motile-tab__trigger--underline:not(.motile-tab__trigger--disabled):hover {
+:where(
+  .motile-tab__trigger--underline:not(.motile-tab__trigger--disabled):hover
+) {
   color: #374151;
 }
 
-.motile-tab__trigger--underline.motile-tab__trigger--active,
-.motile-tab__trigger--underline.motile-tab__trigger--active:hover,
-.motile-tab__trigger--underline.motile-tab__trigger--active:focus,
-.motile-tab__trigger--underline.motile-tab__trigger--active:active {
+:where(.motile-tab__trigger--underline.motile-tab__trigger--active),
+:where(.motile-tab__trigger--underline.motile-tab__trigger--active:hover),
+:where(.motile-tab__trigger--underline.motile-tab__trigger--active:focus),
+:where(.motile-tab__trigger--underline.motile-tab__trigger--active:active) {
   color: var(
     --motile-tab-color,
     var(--motile-ui-tab, var(--motile-theme, #3b82f6))
@@ -168,7 +170,7 @@
 }
 
 /* Vertical orientation */
-.motile-tab__trigger--underline[data-orientation="vertical"] {
+:where(.motile-tab__trigger--underline[data-orientation="vertical"]) {
   border-bottom: none;
   border-right: 2px solid transparent;
   padding-bottom: 12px; /* horizontal의 padding-bottom 제거하고 기본값 사용 */
@@ -178,10 +180,18 @@
   align-items: flex-start; /* 상단 정렬 */
 }
 
-.motile-tab__trigger--underline[data-orientation="vertical"].motile-tab__trigger--active,
-.motile-tab__trigger--underline[data-orientation="vertical"].motile-tab__trigger--active:hover,
-.motile-tab__trigger--underline[data-orientation="vertical"].motile-tab__trigger--active:focus,
-.motile-tab__trigger--underline[data-orientation="vertical"].motile-tab__trigger--active:active {
+:where(
+  .motile-tab__trigger--underline[data-orientation="vertical"].motile-tab__trigger--active
+),
+:where(
+  .motile-tab__trigger--underline[data-orientation="vertical"].motile-tab__trigger--active:hover
+),
+:where(
+  .motile-tab__trigger--underline[data-orientation="vertical"].motile-tab__trigger--active:focus
+),
+:where(
+  .motile-tab__trigger--underline[data-orientation="vertical"].motile-tab__trigger--active:active
+) {
   border-right-color: var(
     --motile-tab-color,
     var(--motile-ui-tab, var(--motile-theme, #3b82f6))
@@ -193,7 +203,7 @@
    Tab Trigger - Pill Variant
    =========================== */
 
-.motile-tab__trigger--pill {
+:where(.motile-tab__trigger--pill) {
   border-radius: 9999px;
   border: none;
   background-color: transparent;
@@ -202,15 +212,15 @@
   font-weight: 500;
 }
 
-.motile-tab__trigger--pill:not(.motile-tab__trigger--disabled):hover {
+:where(.motile-tab__trigger--pill:not(.motile-tab__trigger--disabled):hover) {
   background-color: rgba(0, 0, 0, 0.05);
   color: #374151;
 }
 
-.motile-tab__trigger--pill.motile-tab__trigger--active,
-.motile-tab__trigger--pill.motile-tab__trigger--active:hover,
-.motile-tab__trigger--pill.motile-tab__trigger--active:focus,
-.motile-tab__trigger--pill.motile-tab__trigger--active:active {
+:where(.motile-tab__trigger--pill.motile-tab__trigger--active),
+:where(.motile-tab__trigger--pill.motile-tab__trigger--active:hover),
+:where(.motile-tab__trigger--pill.motile-tab__trigger--active:focus),
+:where(.motile-tab__trigger--pill.motile-tab__trigger--active:active) {
   background-color: var(
     --motile-tab-color,
     var(--motile-ui-tab, var(--motile-theme, #3b82f6))
@@ -220,7 +230,7 @@
 }
 
 /* Vertical orientation */
-.motile-tab__trigger--pill[data-orientation="vertical"] {
+:where(.motile-tab__trigger--pill[data-orientation="vertical"]) {
   width: 100%;
   justify-content: flex-start;
   align-items: flex-start;
@@ -230,22 +240,22 @@
    Tab Content
    =========================== */
 
-.motile-tab__content {
+:where(.motile-tab__content) {
   padding: 20px 0;
   outline: none;
   animation: fadeIn 0.2s ease;
 }
 
 /* Vertical orientation - Content 왼쪽 padding 추가 */
-.motile-tab--vertical .motile-tab__content {
+:where(.motile-tab--vertical .motile-tab__content) {
   padding: 0 0 0 20px; /* 왼쪽에만 padding */
 }
 
-.motile-tab__content[hidden] {
+:where(.motile-tab__content[hidden]) {
   display: none;
 }
 
-.motile-tab__content--active {
+:where(.motile-tab__content--active) {
   animation: fadeIn 0.2s ease;
 }
 
@@ -269,7 +279,7 @@
    =========================== */
 
 @media (max-width: 768px) {
-  .motile-tab__trigger {
+  :where(.motile-tab__trigger) {
     padding: 12px 24px;
     font-size: 15px;
     /* Faster transition for better mobile feedback */
@@ -281,27 +291,27 @@
       opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .motile-tab__trigger--underline {
+  :where(.motile-tab__trigger--underline) {
     padding-bottom: 8px;
   }
 
-  .motile-tab__trigger--underline[data-orientation="vertical"] {
+  :where(.motile-tab__trigger--underline[data-orientation="vertical"]) {
     padding: 10px 14px 10px 16px; /* 상 우 하 좌 */
   }
 
-  .motile-tab__trigger--pill {
+  :where(.motile-tab__trigger--pill) {
     padding: 8px 16px; /* 모바일에서 더 작게 */
   }
 
-  .motile-tab__list--vertical {
+  :where(.motile-tab__list--vertical) {
     min-width: 160px; /* 모바일에서 너비 축소 */
   }
 
-  .motile-tab__content {
+  :where(.motile-tab__content) {
     padding: 16px 0;
   }
 
-  .motile-tab--vertical .motile-tab__content {
+  :where(.motile-tab--vertical .motile-tab__content) {
     padding: 0 0 0 16px; /* 모바일에서 왼쪽 padding 축소 */
   }
 }
@@ -311,15 +321,15 @@
    =========================== */
 
 @media print {
-  .motile-tab__list {
+  :where(.motile-tab__list) {
     border: none;
   }
 
-  .motile-tab__trigger {
+  :where(.motile-tab__trigger) {
     display: none;
   }
 
-  .motile-tab__content[hidden] {
+  :where(.motile-tab__content[hidden]) {
     display: block;
   }
 }
@@ -329,25 +339,25 @@
    =========================== */
 
 @media (prefers-color-scheme: dark) {
-  .motile-tab__list {
+  :where(.motile-tab__list) {
     border-color: #374151;
   }
 
-  .motile-tab__list--vertical,
-  .motile-tab__list--vertical.motile-tab__list--underline {
+  :where(.motile-tab__list--vertical),
+  :where(.motile-tab__list--vertical.motile-tab__list--underline) {
     border-right-color: #374151;
     border-bottom-color: transparent;
   }
 
-  .motile-tab__trigger {
+  :where(.motile-tab__trigger) {
     color: #9ca3af;
   }
 
-  .motile-tab__trigger:not(.motile-tab__trigger--disabled):hover {
+  :where(.motile-tab__trigger:not(.motile-tab__trigger--disabled):hover) {
     color: #d1d5db;
   }
 
-  .motile-tab__trigger:focus-visible {
+  :where(.motile-tab__trigger:focus-visible) {
     background-color: color-mix(
       in srgb,
       var(
@@ -359,20 +369,28 @@
     );
   }
 
-  .motile-tab__trigger--underline.motile-tab__trigger--active,
-  .motile-tab__trigger--underline.motile-tab__trigger--active:hover,
-  .motile-tab__trigger--underline.motile-tab__trigger--active:focus,
-  .motile-tab__trigger--underline.motile-tab__trigger--active:active {
+  :where(.motile-tab__trigger--underline.motile-tab__trigger--active),
+  :where(.motile-tab__trigger--underline.motile-tab__trigger--active:hover),
+  :where(.motile-tab__trigger--underline.motile-tab__trigger--active:focus),
+  :where(.motile-tab__trigger--underline.motile-tab__trigger--active:active) {
     color: var(
       --motile-tab-color,
       var(--motile-ui-tab, var(--motile-theme, #60a5fa))
     );
   }
 
-  .motile-tab__trigger--underline[data-orientation="vertical"].motile-tab__trigger--active,
-  .motile-tab__trigger--underline[data-orientation="vertical"].motile-tab__trigger--active:hover,
-  .motile-tab__trigger--underline[data-orientation="vertical"].motile-tab__trigger--active:focus,
-  .motile-tab__trigger--underline[data-orientation="vertical"].motile-tab__trigger--active:active {
+  :where(
+    .motile-tab__trigger--underline[data-orientation="vertical"].motile-tab__trigger--active
+  ),
+  :where(
+    .motile-tab__trigger--underline[data-orientation="vertical"].motile-tab__trigger--active:hover
+  ),
+  :where(
+    .motile-tab__trigger--underline[data-orientation="vertical"].motile-tab__trigger--active:focus
+  ),
+  :where(
+    .motile-tab__trigger--underline[data-orientation="vertical"].motile-tab__trigger--active:active
+  ) {
     border-right-color: var(
       --motile-tab-color,
       var(--motile-ui-tab, var(--motile-theme, #60a5fa))
@@ -380,19 +398,19 @@
   }
 
   /* Pill variant - Dark mode */
-  .motile-tab__trigger--pill {
+  :where(.motile-tab__trigger--pill) {
     color: #9ca3af;
   }
 
-  .motile-tab__trigger--pill:not(.motile-tab__trigger--disabled):hover {
+  :where(.motile-tab__trigger--pill:not(.motile-tab__trigger--disabled):hover) {
     background-color: rgba(255, 255, 255, 0.1);
     color: #d1d5db;
   }
 
-  .motile-tab__trigger--pill.motile-tab__trigger--active,
-  .motile-tab__trigger--pill.motile-tab__trigger--active:hover,
-  .motile-tab__trigger--pill.motile-tab__trigger--active:focus,
-  .motile-tab__trigger--pill.motile-tab__trigger--active:active {
+  :where(.motile-tab__trigger--pill.motile-tab__trigger--active),
+  :where(.motile-tab__trigger--pill.motile-tab__trigger--active:hover),
+  :where(.motile-tab__trigger--pill.motile-tab__trigger--active:focus),
+  :where(.motile-tab__trigger--pill.motile-tab__trigger--active:active) {
     background-color: var(
       --motile-tab-color,
       var(--motile-ui-tab, var(--motile-theme, #60a5fa))
@@ -406,13 +424,13 @@
    =========================== */
 
 @media (prefers-reduced-motion: reduce) {
-  .motile-tab__trigger,
-  .motile-tab__content {
+  :where(.motile-tab__trigger),
+  :where(.motile-tab__content) {
     animation: none;
     transition: none;
   }
 
-  .motile-tab__content--active {
+  :where(.motile-tab__content--active) {
     animation: none;
   }
 }

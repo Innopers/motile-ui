@@ -1,5 +1,5 @@
 /* 트리거 래퍼: 라인박스 영향 최소화 + DOM 확정 */
-.motile-tooltip-trigger {
+:where(.motile-tooltip-trigger) {
   position: relative;
   display: inline-block; /* 버튼 크기를 그대로 따름 */
   line-height: normal;
@@ -7,7 +7,7 @@
 }
 
 /* 포털에 고정 렌더링되는 버블 */
-.motile-tooltip-bubble {
+:where(.motile-tooltip-bubble) {
   position: fixed;
   z-index: 2147483647;
   padding: 8px 12px;
@@ -24,35 +24,35 @@
 }
 
 /* 초기 애니메이션 상태 - placement별 다른 방향 */
-.motile-tooltip-bubble[data-placement="top"] {
+:where(.motile-tooltip-bubble[data-placement="top"]) {
   transform: translateY(8px) scale(0.96);
 }
 
-.motile-tooltip-bubble[data-placement="bottom"] {
+:where(.motile-tooltip-bubble[data-placement="bottom"]) {
   transform: translateY(-8px) scale(0.96);
 }
 
-.motile-tooltip-bubble[data-placement="left"] {
+:where(.motile-tooltip-bubble[data-placement="left"]) {
   transform: translateX(8px) scale(0.96);
 }
 
-.motile-tooltip-bubble[data-placement="right"] {
+:where(.motile-tooltip-bubble[data-placement="right"]) {
   transform: translateX(-8px) scale(0.96);
 }
 
 /* 열린 상태: 부드럽게 제자리로 */
-.motile-tooltip-bubble[data-open="true"] {
+:where(.motile-tooltip-bubble[data-open="true"]) {
   opacity: 1;
   transform: translate(0, 0) scale(1);
 }
 
 /* keepOpen 모드: 툴팁 내부 클릭 가능 */
-.motile-tooltip-bubble[data-keep-open] {
+:where(.motile-tooltip-bubble[data-keep-open]) {
   pointer-events: auto;
 }
 
 /* Filled Variant */
-.motile-tooltip-bubble--filled {
+:where(.motile-tooltip-bubble--filled) {
   --arrow-color: var(
     --motile-tooltip-color,
     var(--motile-ui-tooltip, rgba(0, 0, 0, 0.9))
@@ -62,7 +62,7 @@
 }
 
 /* Outlined Variant */
-.motile-tooltip-bubble--outlined {
+:where(.motile-tooltip-bubble--outlined) {
   --arrow-color: var(--motile-tooltip-color, var(--motile-ui-tooltip, #3b82f6));
   background: white;
   color: var(--arrow-color);
@@ -70,7 +70,7 @@
 }
 
 /* 크기 측정용 임시 스타일 */
-.motile-tooltip-bubble.measuring {
+:where(.motile-tooltip-bubble.measuring) {
   visibility: hidden !important;
   opacity: 1 !important;
   max-width: none !important;
@@ -80,35 +80,35 @@
 }
 
 /* SVG 화살표 스타일 */
-.motile-tooltip-arrow {
+:where(.motile-tooltip-arrow) {
   position: absolute;
   pointer-events: none;
   z-index: 1;
 }
 
 /* Top position arrows */
-.motile-tooltip-bubble[data-placement="top"] .motile-tooltip-arrow {
+:where(.motile-tooltip-bubble[data-placement="top"] .motile-tooltip-arrow) {
   bottom: -7.25px;
   left: var(--arrow-offset, 50%);
   transform: translateX(-50%) rotate(180deg);
 }
 
 /* Bottom position arrows */
-.motile-tooltip-bubble[data-placement="bottom"] .motile-tooltip-arrow {
+:where(.motile-tooltip-bubble[data-placement="bottom"] .motile-tooltip-arrow) {
   top: -7px;
   left: var(--arrow-offset, 50%);
   transform: translateX(-50%) rotate(0deg);
 }
 
 /* Left position arrows */
-.motile-tooltip-bubble[data-placement="left"] .motile-tooltip-arrow {
+:where(.motile-tooltip-bubble[data-placement="left"] .motile-tooltip-arrow) {
   right: -9.25px;
   top: var(--arrow-offset, 50%);
   transform: translateY(-50%) rotate(90deg);
 }
 
 /* Right position arrows */
-.motile-tooltip-bubble[data-placement="right"] .motile-tooltip-arrow {
+:where(.motile-tooltip-bubble[data-placement="right"] .motile-tooltip-arrow) {
   left: -9.25px;
   top: var(--arrow-offset, 50%);
   transform: translateY(-50%) rotate(-90deg);

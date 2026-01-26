@@ -1,12 +1,12 @@
 /* Skeleton Base */
-.motile-skeleton {
+:where(.motile-skeleton) {
   display: inline-block;
   position: relative;
   overflow: hidden;
   background-color: #e5e7eb;
 }
 
-.motile-skeleton::after {
+:where(.motile-skeleton)::after {
   content: "";
   position: absolute;
   top: 0;
@@ -35,7 +35,7 @@
 
 /* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
-  .motile-skeleton::after {
+  :where(.motile-skeleton)::after {
     animation: none;
     display: none;
   }
@@ -43,11 +43,11 @@
 
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
-  .motile-skeleton {
+  :where(.motile-skeleton) {
     background-color: #374151;
   }
 
-  .motile-skeleton::after {
+  :where(.motile-skeleton)::after {
     background: linear-gradient(
       90deg,
       rgba(255, 255, 255, 0) 0%,

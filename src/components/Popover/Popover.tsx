@@ -368,16 +368,7 @@ function PopoverContent({
       }
     >
       {showArrow && (
-        <FloatingArrow
-          className="motile-popover-arrow"
-          variant={variant}
-          color={
-            color ||
-            (variant === "filled"
-              ? "var(--motile-ui-popover, var(--motile-theme, #3b82f6))"
-              : "var(--motile-ui-popover, var(--motile-theme, #e5e7eb))")
-          }
-        />
+        <FloatingArrow className="motile-popover-arrow" variant={variant} />
       )}
       {children}
     </div>

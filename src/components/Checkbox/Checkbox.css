@@ -1,12 +1,12 @@
 /* Checkbox Component Styles */
 
-.motile-checkbox-container {
+:where(.motile-checkbox-container) {
   display: inline-flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.motile-checkbox-wrapper {
+:where(.motile-checkbox-wrapper) {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -15,13 +15,13 @@
   user-select: none;
 }
 
-.motile-checkbox-container--disabled .motile-checkbox-wrapper {
+:where(.motile-checkbox-container--disabled .motile-checkbox-wrapper) {
   cursor: not-allowed;
   opacity: 0.6;
 }
 
 /* Hidden Input */
-.motile-checkbox {
+:where(.motile-checkbox) {
   position: absolute;
   opacity: 0;
   width: 0;
@@ -30,12 +30,12 @@
   pointer-events: none;
 }
 
-.motile-checkbox:focus {
+:where(.motile-checkbox:focus) {
   outline: none;
 }
 
 /* Checkbox Mark (체크박스 박스) */
-.motile-checkbox__mark {
+:where(.motile-checkbox__mark) {
   position: relative;
   width: 20px;
   height: 20px;
@@ -53,57 +53,63 @@
 }
 
 /* Rounded Variant */
-.motile-checkbox--rounded + .motile-checkbox__mark {
+:where(.motile-checkbox--rounded + .motile-checkbox__mark) {
   border-radius: 50%;
 }
 
 /* Square Variant */
-.motile-checkbox--square + .motile-checkbox__mark {
+:where(.motile-checkbox--square + .motile-checkbox__mark) {
   border-radius: 0;
 }
 
 /* Size Variants */
 /* Large */
-.motile-checkbox--large + .motile-checkbox__mark {
+:where(.motile-checkbox--large + .motile-checkbox__mark) {
   width: 24px;
   height: 24px;
   min-width: 24px;
   min-height: 24px;
 }
 
-.motile-checkbox--large + .motile-checkbox__mark .motile-checkbox__check-icon {
+:where(
+  .motile-checkbox--large + .motile-checkbox__mark .motile-checkbox__check-icon
+) {
   width: 14px;
   height: 14px;
 }
 
 /* Medium (default) */
-.motile-checkbox--medium + .motile-checkbox__mark {
+:where(.motile-checkbox--medium + .motile-checkbox__mark) {
   width: 20px;
   height: 20px;
   min-width: 20px;
   min-height: 20px;
 }
 
-.motile-checkbox--medium + .motile-checkbox__mark .motile-checkbox__check-icon {
+:where(
+  .motile-checkbox--medium + .motile-checkbox__mark .motile-checkbox__check-icon
+) {
   width: 12px;
   height: 12px;
 }
 
 /* Small */
-.motile-checkbox--small + .motile-checkbox__mark {
+:where(.motile-checkbox--small + .motile-checkbox__mark) {
   width: 16px;
   height: 16px;
   min-width: 16px;
   min-height: 16px;
 }
 
-.motile-checkbox--small + .motile-checkbox__mark .motile-checkbox__check-icon {
+:where(
+  .motile-checkbox--small + .motile-checkbox__mark .motile-checkbox__check-icon
+) {
   width: 10px;
   height: 10px;
 }
 
 /* Check Icon */
-.motile-checkbox__check-icon {
+:where(.motile-checkbox__check-icon) {
   width: 12px;
   height: 12px;
   color: #ffffff;
@@ -113,32 +119,36 @@
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.motile-checkbox__check-icon path {
+:where(.motile-checkbox__check-icon path) {
   stroke-dasharray: 16;
   stroke-dashoffset: 16;
   transition: stroke-dashoffset 0.3s cubic-bezier(0.65, 0, 0.35, 1) 0.05s;
 }
 
 /* Filled Variant - Always show check icon */
-.motile-checkbox--filled + .motile-checkbox__mark {
+:where(.motile-checkbox--filled + .motile-checkbox__mark) {
   background-color: #e5e7eb;
   border-color: #e5e7eb;
 }
 
-.motile-checkbox--filled + .motile-checkbox__mark .motile-checkbox__check-icon {
+:where(
+  .motile-checkbox--filled + .motile-checkbox__mark .motile-checkbox__check-icon
+) {
   opacity: 1;
   transform: scale(1);
 }
 
-.motile-checkbox--filled
-  + .motile-checkbox__mark
-  .motile-checkbox__check-icon
-  path {
+:where(
+  .motile-checkbox--filled
+    + .motile-checkbox__mark
+    .motile-checkbox__check-icon
+    path
+) {
   stroke-dashoffset: 0;
 }
 
 /* Checked State */
-.motile-checkbox:checked + .motile-checkbox__mark {
+:where(.motile-checkbox:checked + .motile-checkbox__mark) {
   background-color: var(
     --motile-checkbox-color,
     var(--motile-ui-checkbox, var(--motile-theme, #3b82f6))
@@ -150,20 +160,24 @@
   animation: checkboxBounce 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-.motile-checkbox:checked + .motile-checkbox__mark .motile-checkbox__check-icon {
+:where(
+  .motile-checkbox:checked + .motile-checkbox__mark .motile-checkbox__check-icon
+) {
   opacity: 1;
   transform: scale(1);
 }
 
-.motile-checkbox:checked
-  + .motile-checkbox__mark
-  .motile-checkbox__check-icon
-  path {
+:where(
+  .motile-checkbox:checked
+    + .motile-checkbox__mark
+    .motile-checkbox__check-icon
+    path
+) {
   stroke-dashoffset: 0;
 }
 
 /* Filled Variant Checked State */
-.motile-checkbox--filled:checked + .motile-checkbox__mark {
+:where(.motile-checkbox--filled:checked + .motile-checkbox__mark) {
   background-color: var(
     --motile-checkbox-color,
     var(--motile-ui-checkbox, var(--motile-theme, #3b82f6))
@@ -188,18 +202,22 @@
 }
 
 /* Hover State - Only for non-filled variants */
-.motile-checkbox-container:not(.motile-checkbox-container--filled)
-  .motile-checkbox-wrapper:hover
-  .motile-checkbox__mark {
+:where(
+  .motile-checkbox-container:not(.motile-checkbox-container--filled)
+    .motile-checkbox-wrapper:hover
+    .motile-checkbox__mark
+) {
   border-color: var(
     --motile-checkbox-color,
     var(--motile-ui-checkbox, var(--motile-theme, #3b82f6))
   );
 }
 
-.motile-checkbox-container:not(.motile-checkbox-container--filled)
-  .motile-checkbox:checked
-  + .motile-checkbox__mark:hover {
+:where(
+  .motile-checkbox-container:not(.motile-checkbox-container--filled)
+    .motile-checkbox:checked
+    + .motile-checkbox__mark:hover
+) {
   background-color: color-mix(
     in srgb,
     var(
@@ -221,19 +239,19 @@
 }
 
 /* Disabled State */
-.motile-checkbox:disabled + .motile-checkbox__mark {
+:where(.motile-checkbox:disabled + .motile-checkbox__mark) {
   background-color: #f3f4f6;
   border-color: #d1d5db;
   cursor: not-allowed;
 }
 
-.motile-checkbox:disabled:checked + .motile-checkbox__mark {
+:where(.motile-checkbox:disabled:checked + .motile-checkbox__mark) {
   background-color: #d1d5db;
   border-color: #d1d5db;
 }
 
 /* Label */
-.motile-checkbox__label {
+:where(.motile-checkbox__label) {
   font-size: 14px;
   color: #374151;
   cursor: pointer;
@@ -242,19 +260,19 @@
 }
 
 /* Label Size Variants */
-.motile-checkbox-container--large .motile-checkbox__label {
+:where(.motile-checkbox-container--large .motile-checkbox__label) {
   font-size: 16px;
 }
 
-.motile-checkbox-container--medium .motile-checkbox__label {
+:where(.motile-checkbox-container--medium .motile-checkbox__label) {
   font-size: 14px;
 }
 
-.motile-checkbox-container--small .motile-checkbox__label {
+:where(.motile-checkbox-container--small .motile-checkbox__label) {
   font-size: 12px;
 }
 
-.motile-checkbox__label--disabled {
+:where(.motile-checkbox__label--disabled) {
   color: #9ca3af;
   cursor: not-allowed;
 }

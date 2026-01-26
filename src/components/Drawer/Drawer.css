@@ -3,7 +3,7 @@
    ============================================================================ */
 
 /* Overlay (배경) */
-.motile-drawer__overlay {
+:where(.motile-drawer__overlay) {
   position: fixed;
   inset: 0;
   background-color: rgba(0, 0, 0, 0);
@@ -12,12 +12,12 @@
   touch-action: pan-y;
 }
 
-.motile-drawer__overlay--visible {
+:where(.motile-drawer__overlay--visible) {
   background-color: rgba(0, 0, 0, 0.4);
 }
 
 /* Drawer Content (메인 컨테이너) */
-.motile-drawer__content {
+:where(.motile-drawer__content) {
   position: fixed;
   bottom: 0;
   left: 0;
@@ -39,13 +39,13 @@
   box-sizing: border-box;
 }
 
-.motile-drawer__content--visible {
+:where(.motile-drawer__content--visible) {
   transform: translateY(0);
 }
 
 /* 모바일 반응형 */
 @media (max-width: 768px) {
-  .motile-drawer__overlay {
+  :where(.motile-drawer__overlay) {
     top: 0;
     left: 0;
     right: 0;
@@ -54,7 +54,7 @@
     height: 100%;
   }
 
-  .motile-drawer__content {
+  :where(.motile-drawer__content) {
     left: 0;
     right: 0;
     margin: 0;
@@ -65,7 +65,7 @@
 }
 
 /* Header (드래그 핸들 영역) */
-.motile-drawer__header {
+:where(.motile-drawer__header) {
   height: 48px;
   display: flex;
   align-items: center;
@@ -76,12 +76,12 @@
   -webkit-user-select: none;
 }
 
-.motile-drawer__header:active {
+:where(.motile-drawer__header:active) {
   cursor: grabbing;
 }
 
 /* Handle (드래그 인디케이터) */
-.motile-drawer__handle {
+:where(.motile-drawer__handle) {
   width: 40px;
   height: 6px;
   background-color: #d1d5db;
@@ -89,16 +89,16 @@
   transition: background-color 0.2s ease;
 }
 
-.motile-drawer__header:hover .motile-drawer__handle {
+:where(.motile-drawer__header:hover .motile-drawer__handle) {
   background-color: #9ca3af;
 }
 
-.motile-drawer__header:active .motile-drawer__handle {
+:where(.motile-drawer__header:active .motile-drawer__handle) {
   background-color: #6b7280;
 }
 
 /* Title */
-.motile-drawer__title-wrapper {
+:where(.motile-drawer__title-wrapper) {
   padding: 0 24px 16px;
   flex-shrink: 0;
   border-bottom: 1px solid #e5e7eb;
@@ -106,7 +106,7 @@
   box-sizing: border-box;
 }
 
-.motile-drawer__title {
+:where(.motile-drawer__title) {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
@@ -115,13 +115,13 @@
 }
 
 @media (max-width: 768px) {
-  .motile-drawer__title {
+  :where(.motile-drawer__title) {
     font-size: 15px;
   }
 }
 
 /* Body (스크롤 가능 영역) */
-.motile-drawer__body {
+:where(.motile-drawer__body) {
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
@@ -134,74 +134,74 @@
 }
 
 /* Body 스크롤바 */
-.motile-drawer__body::-webkit-scrollbar {
+:where(.motile-drawer__body::-webkit-scrollbar) {
   width: 6px;
 }
 
-.motile-drawer__body::-webkit-scrollbar-track {
+:where(.motile-drawer__body::-webkit-scrollbar-track) {
   background: transparent;
 }
 
-.motile-drawer__body::-webkit-scrollbar-thumb {
+:where(.motile-drawer__body::-webkit-scrollbar-thumb) {
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 3px;
 }
 
-.motile-drawer__body::-webkit-scrollbar-thumb:hover {
+:where(.motile-drawer__body::-webkit-scrollbar-thumb:hover) {
   background-color: rgba(0, 0, 0, 0.3);
 }
 
 /* 다크 모드 */
 @media (prefers-color-scheme: dark) {
-  .motile-drawer__content {
+  :where(.motile-drawer__content) {
     background-color: #1f2937;
     box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.5);
   }
 
-  .motile-drawer__title {
+  :where(.motile-drawer__title) {
     color: #f9fafb;
   }
 
-  .motile-drawer__title-wrapper {
+  :where(.motile-drawer__title-wrapper) {
     border-bottom-color: #374151;
   }
 
-  .motile-drawer__handle {
+  :where(.motile-drawer__handle) {
     background-color: #4b5563;
   }
 
-  .motile-drawer__header:hover .motile-drawer__handle {
+  :where(.motile-drawer__header:hover .motile-drawer__handle) {
     background-color: #6b7280;
   }
 
-  .motile-drawer__header:active .motile-drawer__handle {
+  :where(.motile-drawer__header:active .motile-drawer__handle) {
     background-color: #9ca3af;
   }
 
-  .motile-drawer__body::-webkit-scrollbar-thumb {
+  :where(.motile-drawer__body::-webkit-scrollbar-thumb) {
     background-color: rgba(255, 255, 255, 0.2);
   }
 
-  .motile-drawer__body::-webkit-scrollbar-thumb:hover {
+  :where(.motile-drawer__body::-webkit-scrollbar-thumb:hover) {
     background-color: rgba(255, 255, 255, 0.3);
   }
 }
 
 /* 애니메이션 비활성화 */
 @media (prefers-reduced-motion: reduce) {
-  .motile-drawer__content,
-  .motile-drawer__overlay {
+  :where(.motile-drawer__content),
+  :where(.motile-drawer__overlay) {
     transition: none;
   }
 }
 
 /* 터치 디바이스 */
 @media (hover: none) and (pointer: coarse) {
-  .motile-drawer__header {
+  :where(.motile-drawer__header) {
     height: 56px;
   }
 
-  .motile-drawer__handle {
+  :where(.motile-drawer__handle) {
     width: 48px;
     height: 7px;
   }

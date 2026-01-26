@@ -1,4 +1,4 @@
-.motile-badge {
+:where(.motile-badge) {
   /* 기본 스타일 */
   display: inline-flex;
   align-items: center;
@@ -17,26 +17,26 @@
 }
 
 /* Size variants */
-.motile-badge--large {
+:where(.motile-badge--large) {
   padding: 6px 16px;
   font-size: 1rem; /* 16px */
   min-height: 32px;
 }
 
-.motile-badge--medium {
+:where(.motile-badge--medium) {
   padding: 5px 12px;
   font-size: 0.875rem; /* 14px */
   min-height: 26px;
 }
 
-.motile-badge--small {
+:where(.motile-badge--small) {
   padding: 4px 8px;
   font-size: 0.75rem; /* 12px */
   min-height: 24px;
 }
 
 /* Color variants */
-.motile-badge--primary {
+:where(.motile-badge--primary) {
   background-color: var(
     --motile-badge-color,
     var(--motile-ui-badge, var(--motile-theme, #3b82f6))
@@ -44,7 +44,7 @@
   color: #ffffff;
 }
 
-.motile-badge--secondary {
+:where(.motile-badge--secondary) {
   /* 배경: 우선순위 색상을 연하게 (10% 투명도) */
   background: color-mix(
     in srgb,
@@ -69,22 +69,22 @@
 }
 
 /* secondary는 border 1px 때문에 padding 조정 필요 */
-.motile-badge--secondary.motile-badge--large {
+:where(.motile-badge--secondary.motile-badge--large) {
   padding: 5px 15px;
   min-height: 30px;
 }
 
-.motile-badge--secondary.motile-badge--medium {
+:where(.motile-badge--secondary.motile-badge--medium) {
   padding: 4px 11px;
   min-height: 24px;
 }
 
-.motile-badge--secondary.motile-badge--small {
+:where(.motile-badge--secondary.motile-badge--small) {
   padding: 3px 7px;
   min-height: 22px;
 }
 
-.motile-badge--outlined {
+:where(.motile-badge--outlined) {
   /* 배경: 흰색 */
   background-color: #ffffff;
   /* 글자색: 우선순위 색상 그대로 */
@@ -101,22 +101,22 @@
 }
 
 /* outlined도 border 1px 때문에 padding 조정 필요 */
-.motile-badge--outlined.motile-badge--large {
+:where(.motile-badge--outlined.motile-badge--large) {
   padding: 5px 15px;
   min-height: 30px;
 }
 
-.motile-badge--outlined.motile-badge--medium {
+:where(.motile-badge--outlined.motile-badge--medium) {
   padding: 4px 11px;
   min-height: 24px;
 }
 
-.motile-badge--outlined.motile-badge--small {
+:where(.motile-badge--outlined.motile-badge--small) {
   padding: 3px 7px;
   min-height: 22px;
 }
 
-.motile-badge--dot {
+:where(.motile-badge--dot) {
   /* 배경: 투명 */
   background-color: transparent;
   /* padding: 최소화 */
@@ -128,7 +128,7 @@
 }
 
 /* dot 내부 구조 */
-.motile-badge__dot {
+:where(.motile-badge__dot) {
   display: inline-block;
   border-radius: 50%;
   /* dot 크기: 우선순위 색상 적용 */
@@ -138,27 +138,27 @@
   );
 }
 
-.motile-badge__text {
+:where(.motile-badge__text) {
   line-height: 1.2;
 }
 
 /* dot 크기 variants */
-.motile-badge--dot.motile-badge--large .motile-badge__dot {
+:where(.motile-badge--dot.motile-badge--large .motile-badge__dot) {
   width: 12px;
   height: 12px;
 }
 
-.motile-badge--dot.motile-badge--medium .motile-badge__dot {
+:where(.motile-badge--dot.motile-badge--medium .motile-badge__dot) {
   width: 10px;
   height: 10px;
 }
 
-.motile-badge--dot.motile-badge--small .motile-badge__dot {
+:where(.motile-badge--dot.motile-badge--small .motile-badge__dot) {
   width: 8px;
   height: 8px;
 }
 
-.motile-badge--shimmer {
+:where(.motile-badge--shimmer) {
   /* 배경: primary와 동일한 우선순위 색상 */
   background-color: var(
     --motile-badge-color,
@@ -171,7 +171,7 @@
 }
 
 /* shimmer 애니메이션 레이어 */
-.motile-badge--shimmer::before {
+:where(.motile-badge--shimmer)::before {
   content: "";
   position: absolute;
   top: 0;
@@ -201,7 +201,7 @@
 
 /* 애니메이션 비활성화 설정 준수 */
 @media (prefers-reduced-motion: reduce) {
-  .motile-badge--shimmer::before {
+  :where(.motile-badge--shimmer)::before {
     animation: none;
   }
 }
@@ -214,14 +214,14 @@
    * 가독성과 일관성이 최우선
    * 모바일에서는 터치 최적화만 추가
    */
-  .motile-badge:active {
+  :where(.motile-badge:active) {
     filter: brightness(0.92);
   }
 }
 
 /* iOS Safari specific fixes */
 @supports (-webkit-touch-callout: none) {
-  .motile-badge {
+  :where(.motile-badge) {
     -webkit-tap-highlight-color: transparent;
     -webkit-user-select: none;
     user-select: none;

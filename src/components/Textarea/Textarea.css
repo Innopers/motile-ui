@@ -1,9 +1,9 @@
-.motile-textarea-root {
+:where(.motile-textarea-root) {
   display: block;
   width: 100%;
 }
 
-.motile-textarea {
+:where(.motile-textarea) {
   width: 100%;
   border: 2px solid #e5e8eb;
   border-radius: 12px;
@@ -21,11 +21,13 @@
   resize: none;
 }
 
-.motile-textarea:hover:not(:disabled):not(:focus):not(.motile-textarea--error) {
+:where(
+  .motile-textarea:hover:not(:disabled):not(:focus):not(.motile-textarea--error)
+) {
   border-color: #c9cdd2;
 }
 
-.motile-textarea:focus {
+:where(.motile-textarea:focus) {
   border: 2px solid
     var(
       --motile-textarea-color,
@@ -33,7 +35,7 @@
     );
 }
 
-.motile-textarea:disabled {
+:where(.motile-textarea:disabled) {
   background: #f9fafb;
   color: #9ca3af;
   cursor: not-allowed;
@@ -41,17 +43,17 @@
   resize: none;
 }
 
-.motile-textarea.motile-textarea--error {
+:where(.motile-textarea.motile-textarea--error) {
   border: 2px solid #ef4444;
   background: #fef5f5;
 }
 
-.motile-textarea.motile-textarea--error:focus {
+:where(.motile-textarea.motile-textarea--error:focus) {
   border: 2px solid #ef4444;
   background: #fef5f5;
 }
 
-.motile-textarea--shake {
+:where(.motile-textarea--shake) {
   animation: motile-textarea-shake 0.5s ease-in-out;
 }
 
@@ -79,25 +81,25 @@
   }
 }
 
-.motile-textarea::placeholder {
+:where(.motile-textarea)::placeholder {
   color: #9ca3af;
   opacity: 1;
 }
 
-.motile-textarea-wrapper {
+:where(.motile-textarea-wrapper) {
   position: relative;
   width: 100%;
 }
 
-.motile-textarea--with-clear {
+:where(.motile-textarea--with-clear) {
   padding-right: 40px;
 }
 
-.motile-textarea--with-clear:focus {
+:where(.motile-textarea--with-clear:focus) {
   padding-right: 40px;
 }
 
-.motile-textarea__clear-button {
+:where(.motile-textarea__clear-button) {
   position: absolute;
   right: 12px;
   top: 12px;
@@ -117,24 +119,24 @@
     color 0.2s ease;
 }
 
-.motile-textarea__clear-button:hover {
+:where(.motile-textarea__clear-button:hover) {
   background: #f3f4f6;
   color: #6b7280;
 }
 
-.motile-textarea__clear-icon {
+:where(.motile-textarea__clear-icon) {
   width: 16px;
   height: 16px;
 }
 
 @media (max-width: 768px) {
-  .motile-textarea {
+  :where(.motile-textarea) {
     font-size: 16px;
     padding: 12px;
     min-height: 100px;
   }
 
-  .motile-textarea:focus {
+  :where(.motile-textarea:focus) {
     border: 2px solid
       var(
         --motile-textarea-color,
@@ -142,22 +144,22 @@
       );
   }
 
-  .motile-textarea--with-clear {
+  :where(.motile-textarea--with-clear) {
     padding-right: 36px;
   }
 
-  .motile-textarea--with-clear:focus {
+  :where(.motile-textarea--with-clear:focus) {
     padding-right: 36px;
   }
 }
 
 @supports (-webkit-touch-callout: none) {
-  .motile-textarea {
+  :where(.motile-textarea) {
     -webkit-tap-highlight-color: transparent;
   }
 }
 
-.motile-textarea__helper-text {
+:where(.motile-textarea__helper-text) {
   display: flex;
   align-items: flex-start;
   margin-top: 4px;
@@ -165,26 +167,26 @@
   gap: 8px;
 }
 
-.motile-textarea__helper-text--both {
+:where(.motile-textarea__helper-text--both) {
   justify-content: space-between;
 }
 
-.motile-textarea__helper-text--error-only {
+:where(.motile-textarea__helper-text--error-only) {
   justify-content: flex-start;
 }
 
-.motile-textarea__helper-text--counter-only {
+:where(.motile-textarea__helper-text--counter-only) {
   justify-content: flex-end;
 }
 
-.motile-textarea__error-message {
+:where(.motile-textarea__error-message) {
   font-size: 12px;
   color: #ef4444;
   line-height: 16px;
   flex: 1;
 }
 
-.motile-textarea__counter {
+:where(.motile-textarea__counter) {
   font-size: 12px;
   color: #9ca3af;
   line-height: 16px;
@@ -193,7 +195,7 @@
 }
 
 /* Floating Label */
-.motile-textarea__label {
+:where(.motile-textarea__label) {
   position: absolute;
   left: 16px;
   top: 16px;
@@ -207,19 +209,23 @@
 }
 
 /* Label이 있을 때 placeholder 숨기기 (focus 전) */
-.motile-textarea--with-label::placeholder {
+:where(.motile-textarea--with-label)::placeholder {
   opacity: 0;
 }
 
 /* Focus 시 placeholder 표시 */
-.motile-textarea--with-label:focus::placeholder {
+:where(.motile-textarea--with-label:focus)::placeholder {
   opacity: 1;
 }
 
 /* Label이 active일 때 (focus 또는 값 있을 때) */
-.motile-textarea-wrapper:has(.motile-textarea:focus) .motile-textarea__label,
-.motile-textarea-wrapper:has(.motile-textarea:not(:placeholder-shown))
-  .motile-textarea__label {
+:where(
+  .motile-textarea-wrapper:has(.motile-textarea:focus) .motile-textarea__label
+),
+:where(
+  .motile-textarea-wrapper:has(.motile-textarea:not(:placeholder-shown))
+    .motile-textarea__label
+) {
   top: 0;
   transform: translateY(-50%);
   font-size: 12px;
@@ -232,30 +238,38 @@
 }
 
 /* Error 상태의 label 색상 (focus 또는 값 있을 때) */
-.motile-textarea-wrapper:has(.motile-textarea:focus)
-  .motile-textarea__label--error,
-.motile-textarea-wrapper:has(.motile-textarea:not(:placeholder-shown))
-  .motile-textarea__label--error {
+:where(
+  .motile-textarea-wrapper:has(.motile-textarea:focus)
+    .motile-textarea__label--error
+),
+:where(
+  .motile-textarea-wrapper:has(.motile-textarea:not(:placeholder-shown))
+    .motile-textarea__label--error
+) {
   color: #ef4444;
 }
 
 /* Label이 있을 때 textarea padding 조정 (placeholder처럼 보이도록) */
-.motile-textarea.motile-textarea--with-label {
+:where(.motile-textarea.motile-textarea--with-label) {
   padding-top: 12px;
   padding-bottom: 12px;
 }
 
 @media (max-width: 768px) {
-  .motile-textarea__label {
+  :where(.motile-textarea__label) {
     font-size: 16px;
     left: 12px;
     top: 16px;
   }
 
   /* Mobile - Active 상태 (focus 또는 값 있을 때) */
-  .motile-textarea-wrapper:has(.motile-textarea:focus) .motile-textarea__label,
-  .motile-textarea-wrapper:has(.motile-textarea:not(:placeholder-shown))
-    .motile-textarea__label {
+  :where(
+    .motile-textarea-wrapper:has(.motile-textarea:focus) .motile-textarea__label
+  ),
+  :where(
+    .motile-textarea-wrapper:has(.motile-textarea:not(:placeholder-shown))
+      .motile-textarea__label
+  ) {
     font-size: 12px;
   }
 }
@@ -265,51 +279,51 @@
    ============================================================================ */
 
 /* Firefox (Modern) */
-.motile-textarea {
+:where(.motile-textarea) {
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 }
 
 /* WebKit (Chrome, Safari, Edge) */
-.motile-textarea::-webkit-scrollbar {
+:where(.motile-textarea)::-webkit-scrollbar {
   width: 6px;
 }
 
-.motile-textarea::-webkit-scrollbar-track {
+:where(.motile-textarea)::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.motile-textarea::-webkit-scrollbar-thumb {
+:where(.motile-textarea)::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 3px;
   transition: background-color 0.2s ease;
 }
 
-.motile-textarea::-webkit-scrollbar-thumb:hover {
+:where(.motile-textarea)::-webkit-scrollbar-thumb:hover {
   background-color: rgba(0, 0, 0, 0.3);
 }
 
-.motile-textarea::-webkit-scrollbar-thumb:active {
+:where(.motile-textarea)::-webkit-scrollbar-thumb:active {
   background-color: rgba(0, 0, 0, 0.4);
 }
 
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
   /* Firefox */
-  .motile-textarea {
+  :where(.motile-textarea) {
     scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
   }
 
   /* WebKit */
-  .motile-textarea::-webkit-scrollbar-thumb {
+  :where(.motile-textarea)::-webkit-scrollbar-thumb {
     background-color: rgba(255, 255, 255, 0.2);
   }
 
-  .motile-textarea::-webkit-scrollbar-thumb:hover {
+  :where(.motile-textarea)::-webkit-scrollbar-thumb:hover {
     background-color: rgba(255, 255, 255, 0.3);
   }
 
-  .motile-textarea::-webkit-scrollbar-thumb:active {
+  :where(.motile-textarea)::-webkit-scrollbar-thumb:active {
     background-color: rgba(255, 255, 255, 0.4);
   }
 }

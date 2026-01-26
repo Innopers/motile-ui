@@ -1,9 +1,9 @@
-.motile-input-root {
+:where(.motile-input-root) {
   display: block;
   width: 100%;
 }
 
-.motile-input {
+:where(.motile-input) {
   width: 100%;
   border: 1px solid #e5e8eb;
   border-radius: 12px;
@@ -19,15 +19,17 @@
   box-sizing: border-box;
 }
 
-.motile-input:hover:not(:disabled):not(:focus):not(.motile-input--error) {
+:where(
+  .motile-input:hover:not(:disabled):not(:focus):not(.motile-input--error)
+) {
   border-color: #c9cdd2;
 }
 
-.motile-input--outlined {
+:where(.motile-input--outlined) {
   border: 2px solid #e5e8eb;
 }
 
-.motile-input--outlined:focus {
+:where(.motile-input--outlined:focus) {
   border: 2px solid
     var(
       --motile-input-color,
@@ -35,14 +37,14 @@
     );
 }
 
-.motile-input--outlined:disabled {
+:where(.motile-input--outlined:disabled) {
   background: #f9fafb;
   color: #9ca3af;
   cursor: not-allowed;
   border-color: #e5e7eb;
 }
 
-.motile-input--underline:disabled {
+:where(.motile-input--underline:disabled) {
   background: transparent;
   color: #9ca3af;
   cursor: not-allowed;
@@ -50,21 +52,21 @@
   opacity: 0.5;
 }
 
-.motile-input--outlined.motile-input--error {
+:where(.motile-input--outlined.motile-input--error) {
   border: 2px solid #ef4444;
   background: #fef5f5;
 }
 
-.motile-input--underline.motile-input--error {
+:where(.motile-input--underline.motile-input--error) {
   border-bottom-color: #ef4444;
 }
 
-.motile-input--outlined.motile-input--error:focus {
+:where(.motile-input--outlined.motile-input--error:focus) {
   border: 2px solid #ef4444;
   background: #fef5f5;
 }
 
-.motile-input-wrapper--shake {
+:where(.motile-input-wrapper--shake) {
   animation: motile-input-shake 0.5s ease-in-out;
 }
 
@@ -92,17 +94,17 @@
   }
 }
 
-.motile-input::placeholder {
+:where(.motile-input)::placeholder {
   color: #9ca3af;
   opacity: 1;
 }
 
-.motile-input-wrapper {
+:where(.motile-input-wrapper) {
   position: relative;
   width: 100%;
 }
 
-.motile-input--underline {
+:where(.motile-input--underline) {
   border: none;
   border-bottom: 2px solid #e5e8eb;
   border-radius: 0;
@@ -113,13 +115,15 @@
   transition: border-color 0.2s ease;
 }
 
-.motile-input--underline:hover:not(:disabled):not(:focus):not(
-    .motile-input--error
-  ) {
+:where(
+  .motile-input--underline:hover:not(:disabled):not(:focus):not(
+      .motile-input--error
+    )
+) {
   border-bottom-color: #9ca3af;
 }
 
-.motile-input--underline:focus {
+:where(.motile-input--underline:focus) {
   border: none;
   border-bottom: 2px solid
     var(
@@ -131,50 +135,50 @@
   line-height: 1.5;
 }
 
-.motile-input--underline.motile-input--error {
+:where(.motile-input--underline.motile-input--error) {
   border-bottom-color: #ef4444;
 }
 
-.motile-input--underline.motile-input--error:focus {
+:where(.motile-input--underline.motile-input--error:focus) {
   border-bottom: 2px solid #ef4444;
   padding: 18px 4px 4px 4px;
   height: 48px;
   line-height: 1.5;
 }
 
-.motile-input--with-left-icon {
+:where(.motile-input--with-left-icon) {
   padding-left: 40px;
 }
 
-.motile-input--outlined.motile-input--with-left-icon:focus {
+:where(.motile-input--outlined.motile-input--with-left-icon:focus) {
   padding-left: 40px;
 }
 
-.motile-input--underline.motile-input--with-left-icon {
+:where(.motile-input--underline.motile-input--with-left-icon) {
   padding-left: 32px;
 }
 
-.motile-input--underline.motile-input--with-left-icon:focus {
+:where(.motile-input--underline.motile-input--with-left-icon:focus) {
   padding-left: 32px;
 }
 
-.motile-input--with-right-content {
+:where(.motile-input--with-right-content) {
   padding-right: 40px;
 }
 
-.motile-input--outlined.motile-input--with-right-content:focus {
+:where(.motile-input--outlined.motile-input--with-right-content:focus) {
   padding-right: 40px;
 }
 
-.motile-input--underline.motile-input--with-right-content {
+:where(.motile-input--underline.motile-input--with-right-content) {
   padding-right: 32px;
 }
 
-.motile-input--underline.motile-input--with-right-content:focus {
+:where(.motile-input--underline.motile-input--with-right-content:focus) {
   padding-right: 32px;
 }
 
-.motile-input__left-icon {
+:where(.motile-input__left-icon) {
   position: absolute;
   left: 12px;
   top: 50%;
@@ -188,17 +192,19 @@
   pointer-events: none;
 }
 
-.motile-input-wrapper:has(.motile-input--underline) .motile-input__left-icon {
+:where(
+  .motile-input-wrapper:has(.motile-input--underline) .motile-input__left-icon
+) {
   left: 4px;
   top: calc(50% + 7px);
 }
 
-.motile-input__left-icon svg {
+:where(.motile-input__left-icon svg) {
   width: 100%;
   height: 100%;
 }
 
-.motile-input__right-icon {
+:where(.motile-input__right-icon) {
   position: absolute;
   right: 12px;
   top: 50%;
@@ -212,17 +218,19 @@
   pointer-events: none;
 }
 
-.motile-input-wrapper:has(.motile-input--underline) .motile-input__right-icon {
+:where(
+  .motile-input-wrapper:has(.motile-input--underline) .motile-input__right-icon
+) {
   right: 4px;
   top: calc(50% + 7px);
 }
 
-.motile-input__right-icon svg {
+:where(.motile-input__right-icon svg) {
   width: 100%;
   height: 100%;
 }
 
-.motile-input__clear-button {
+:where(.motile-input__clear-button) {
   position: absolute;
   right: 12px;
   top: 50%;
@@ -243,34 +251,36 @@
     color 0.2s ease;
 }
 
-.motile-input-wrapper:has(.motile-input--underline)
-  .motile-input__clear-button {
+:where(
+  .motile-input-wrapper:has(.motile-input--underline)
+    .motile-input__clear-button
+) {
   right: 4px;
   top: calc(50% + 7px);
 }
 
-.motile-input__clear-button:hover {
+:where(.motile-input__clear-button:hover) {
   background: #f3f4f6;
   color: #6b7280;
 }
 
-.motile-input__clear-icon {
+:where(.motile-input__clear-icon) {
   width: 16px;
   height: 16px;
 }
 
 @media (max-width: 768px) {
-  .motile-input {
+  :where(.motile-input) {
     font-size: 16px;
     padding: 12px;
     min-height: 44px;
   }
 
-  .motile-input--outlined {
+  :where(.motile-input--outlined) {
     border: 2px solid #e5e8eb;
   }
 
-  .motile-input--outlined:focus {
+  :where(.motile-input--outlined:focus) {
     border: 2px solid
       var(
         --motile-input-color,
@@ -278,13 +288,13 @@
       );
   }
 
-  .motile-input--underline {
+  :where(.motile-input--underline) {
     padding: 18px 4px 4px 4px;
     height: 48px;
     line-height: 1.5;
   }
 
-  .motile-input--underline:focus {
+  :where(.motile-input--underline:focus) {
     border-bottom: 2px solid
       var(
         --motile-input-color,
@@ -295,82 +305,96 @@
     line-height: 1.5;
   }
 
-  .motile-input-wrapper:has(.motile-input--underline) .motile-input__left-icon {
+  :where(
+    .motile-input-wrapper:has(.motile-input--underline) .motile-input__left-icon
+  ) {
     top: calc(50% + 7px);
     transform: translateY(-50%);
   }
 
-  .motile-input-wrapper:has(.motile-input--underline)
-    .motile-input__right-icon {
+  :where(
+    .motile-input-wrapper:has(.motile-input--underline)
+      .motile-input__right-icon
+  ) {
     top: calc(50% + 7px);
     transform: translateY(-50%);
   }
 
-  .motile-input-wrapper:has(.motile-input--underline)
-    .motile-input__clear-button {
+  :where(
+    .motile-input-wrapper:has(.motile-input--underline)
+      .motile-input__clear-button
+  ) {
     top: calc(50% + 7px);
     transform: translateY(-50%);
   }
 
-  .motile-input--with-left-icon {
+  :where(.motile-input--with-left-icon) {
     padding-left: 40px;
   }
 
-  .motile-input--outlined.motile-input--with-left-icon:focus {
+  :where(.motile-input--outlined.motile-input--with-left-icon:focus) {
     padding-left: 40px;
   }
 
   /* Mobile: Label + Left Icon + Focus 상태 padding 유지 - default variant만 */
-  .motile-input--outlined.motile-input--with-label.motile-input--with-left-icon {
+  :where(
+    .motile-input--outlined.motile-input--with-label.motile-input--with-left-icon
+  ) {
     padding-left: 40px;
   }
 
-  .motile-input--outlined.motile-input--with-label.motile-input--with-left-icon:focus {
+  :where(
+    .motile-input--outlined.motile-input--with-label.motile-input--with-left-icon:focus
+  ) {
     padding-left: 40px;
   }
 
-  .motile-input--underline.motile-input--with-left-icon {
+  :where(.motile-input--underline.motile-input--with-left-icon) {
     padding-left: 32px;
   }
 
-  .motile-input--underline.motile-input--with-left-icon:focus {
+  :where(.motile-input--underline.motile-input--with-left-icon:focus) {
     padding-left: 32px;
   }
 
-  .motile-input-wrapper:has(.motile-input--underline)
-    .motile-input--with-label.motile-input--with-left-icon {
+  :where(
+    .motile-input-wrapper:has(.motile-input--underline)
+      .motile-input--with-label.motile-input--with-left-icon
+  ) {
     padding-left: 32px;
   }
 
-  .motile-input-wrapper:has(.motile-input--underline)
-    .motile-input--with-label.motile-input--with-left-icon:focus {
+  :where(
+    .motile-input-wrapper:has(.motile-input--underline)
+      .motile-input--with-label.motile-input--with-left-icon:focus
+  ) {
     padding-left: 32px;
   }
 
-  .motile-input--with-right-content {
+  :where(.motile-input--with-right-content) {
     padding-right: 36px;
   }
 
-  .motile-input--outlined.motile-input--with-right-content:focus {
+  :where(.motile-input--outlined.motile-input--with-right-content:focus) {
     padding-right: 36px;
   }
 
-  .motile-input--underline.motile-input--with-right-content {
+  :where(.motile-input--underline.motile-input--with-right-content) {
     padding-right: 32px;
   }
 
-  .motile-input--underline.motile-input--with-right-content:focus {
+  :where(.motile-input--underline.motile-input--with-right-content:focus) {
     padding-right: 32px;
   }
 }
 
 @supports (-webkit-touch-callout: none) {
-  .motile-input {
+  :where(.motile-input) {
     -webkit-tap-highlight-color: transparent;
   }
 }
 
-.motile-input__helper-text {
+:where(.motile-input__helper-text) {
   display: flex;
   align-items: flex-start;
   margin-top: 4px;
@@ -378,26 +402,26 @@
   gap: 8px;
 }
 
-.motile-input__helper-text--both {
+:where(.motile-input__helper-text--both) {
   justify-content: space-between;
 }
 
-.motile-input__helper-text--error-only {
+:where(.motile-input__helper-text--error-only) {
   justify-content: flex-start;
 }
 
-.motile-input__helper-text--counter-only {
+:where(.motile-input__helper-text--counter-only) {
   justify-content: flex-end;
 }
 
-.motile-input__error-message {
+:where(.motile-input__error-message) {
   font-size: 12px;
   color: #ef4444;
   line-height: 16px;
   flex: 1;
 }
 
-.motile-input__counter {
+:where(.motile-input__counter) {
   font-size: 12px;
   color: #9ca3af;
   line-height: 16px;
@@ -406,7 +430,7 @@
 }
 
 /* Floating Label */
-.motile-input__label {
+:where(.motile-input__label) {
   position: absolute;
   left: 16px;
   top: 50%;
@@ -421,24 +445,28 @@
 }
 
 /* Label이 있을 때 placeholder 숨기기 (focus 전) */
-.motile-input--with-label::placeholder {
+:where(.motile-input--with-label)::placeholder {
   opacity: 0;
 }
 
 /* Focus 시 placeholder 표시 */
-.motile-input--with-label:focus::placeholder {
+:where(.motile-input--with-label:focus)::placeholder {
   opacity: 1;
 }
 
 /* Default variant - label이 active일 때 (focus 또는 값 있을 때) - 위치와 크기 */
-.motile-input-wrapper:not(:has(.motile-input--underline)):has(
-    .motile-input:focus
-  )
-  .motile-input__label,
-.motile-input-wrapper:not(:has(.motile-input--underline)):has(
-    .motile-input:not(:placeholder-shown)
-  )
-  .motile-input__label {
+:where(
+  .motile-input-wrapper:not(:has(.motile-input--underline)):has(
+      .motile-input:focus
+    )
+    .motile-input__label
+),
+:where(
+  .motile-input-wrapper:not(:has(.motile-input--underline)):has(
+      .motile-input:not(:placeholder-shown)
+    )
+    .motile-input__label
+) {
   top: 0;
   transform: translateY(-50%);
   font-size: 12px;
@@ -447,14 +475,18 @@
 }
 
 /* Default variant - active 상태 색상 (error가 아닌 경우만) */
-.motile-input-wrapper:not(:has(.motile-input--underline)):has(
-    .motile-input:focus
-  )
-  .motile-input__label:not(.motile-input__label--error),
-.motile-input-wrapper:not(:has(.motile-input--underline)):has(
-    .motile-input:not(:placeholder-shown)
-  )
-  .motile-input__label:not(.motile-input__label--error) {
+:where(
+  .motile-input-wrapper:not(:has(.motile-input--underline)):has(
+      .motile-input:focus
+    )
+    .motile-input__label:not(.motile-input__label--error)
+),
+:where(
+  .motile-input-wrapper:not(:has(.motile-input--underline)):has(
+      .motile-input:not(:placeholder-shown)
+    )
+    .motile-input__label:not(.motile-input__label--error)
+) {
   color: var(
     --motile-input-color,
     var(--motile-ui-input, var(--motile-theme, #3182f6))
@@ -462,31 +494,41 @@
 }
 
 /* Underline variant - label 기본 위치 */
-.motile-input-wrapper:has(.motile-input--underline) .motile-input__label {
+:where(
+  .motile-input-wrapper:has(.motile-input--underline) .motile-input__label
+) {
   left: 4px;
   top: calc(50% + 7px);
   transform: translateY(-50%);
 }
 
 /* Underline variant - label이 active일 때 (focus 또는 값 있을 때) - 위치와 크기 */
-.motile-input-wrapper:has(.motile-input--underline):has(.motile-input:focus)
-  .motile-input__label,
-.motile-input-wrapper:has(.motile-input--underline):has(
-    .motile-input:not(:placeholder-shown)
-  )
-  .motile-input__label {
+:where(
+  .motile-input-wrapper:has(.motile-input--underline):has(.motile-input:focus)
+    .motile-input__label
+),
+:where(
+  .motile-input-wrapper:has(.motile-input--underline):has(
+      .motile-input:not(:placeholder-shown)
+    )
+    .motile-input__label
+) {
   top: 14px;
   transform: translateY(-100%);
   font-size: 12px;
 }
 
 /* Underline variant - active 상태 색상 (error가 아닌 경우만) */
-.motile-input-wrapper:has(.motile-input--underline):has(.motile-input:focus)
-  .motile-input__label:not(.motile-input__label--error),
-.motile-input-wrapper:has(.motile-input--underline):has(
-    .motile-input:not(:placeholder-shown)
-  )
-  .motile-input__label:not(.motile-input__label--error) {
+:where(
+  .motile-input-wrapper:has(.motile-input--underline):has(.motile-input:focus)
+    .motile-input__label:not(.motile-input__label--error)
+),
+:where(
+  .motile-input-wrapper:has(.motile-input--underline):has(
+      .motile-input:not(:placeholder-shown)
+    )
+    .motile-input__label:not(.motile-input__label--error)
+) {
   color: var(
     --motile-input-color,
     var(--motile-ui-input, var(--motile-theme, #3182f6))
@@ -494,173 +536,229 @@
 }
 
 /* Error 상태의 label 색상 - active 상태(위로 올라갔을 때)만 적용 */
-.motile-input-wrapper:has(.motile-input:focus) .motile-input__label--error,
-.motile-input-wrapper:has(.motile-input:not(:placeholder-shown))
-  .motile-input__label--error {
+:where(
+  .motile-input-wrapper:has(.motile-input:focus) .motile-input__label--error
+),
+:where(
+  .motile-input-wrapper:has(.motile-input:not(:placeholder-shown))
+    .motile-input__label--error
+) {
   color: #ef4444;
 }
 
 /* Label이 있을 때 input padding 조정 (placeholder처럼 보이도록) - default variant만 */
-.motile-input--outlined.motile-input--with-label {
+:where(.motile-input--outlined.motile-input--with-label) {
   padding-top: 12px;
   padding-bottom: 12px;
 }
 
 /* Label이 있을 때 left icon 조정 - default variant만 */
-.motile-input--outlined.motile-input--with-label.motile-input--with-left-icon {
+:where(
+  .motile-input--outlined.motile-input--with-label.motile-input--with-left-icon
+) {
   padding-left: 40px;
 }
 
 /* Label + Left Icon + Focus 상태: border 2px 되어도 padding 유지 - default variant만 */
-.motile-input--outlined.motile-input--with-label.motile-input--with-left-icon:focus {
+:where(
+  .motile-input--outlined.motile-input--with-label.motile-input--with-left-icon:focus
+) {
   padding-left: 40px;
 }
 
-.motile-input-wrapper:has(.motile-input--underline)
-  .motile-input--with-label.motile-input--with-left-icon {
+:where(
+  .motile-input-wrapper:has(.motile-input--underline)
+    .motile-input--with-label.motile-input--with-left-icon
+) {
   padding-left: 32px;
 }
 
-.motile-input-wrapper:has(.motile-input--underline)
-  .motile-input--with-label.motile-input--with-left-icon:focus {
+:where(
+  .motile-input-wrapper:has(.motile-input--underline)
+    .motile-input--with-label.motile-input--with-left-icon:focus
+) {
   padding-left: 32px;
 }
 
 /* Label + Left Icon이 있을 때 label 위치 조정 */
-.motile-input-wrapper:has(.motile-input--with-left-icon) .motile-input__label {
+:where(
+  .motile-input-wrapper:has(.motile-input--with-left-icon) .motile-input__label
+) {
   left: 44px;
 }
 
-.motile-input-wrapper:has(.motile-input--underline.motile-input--with-left-icon)
-  .motile-input__label {
+:where(
+  .motile-input-wrapper:has(
+      .motile-input--underline.motile-input--with-left-icon
+    )
+    .motile-input__label
+) {
   left: 32px;
   top: calc(50% + 7px);
   transform: translateY(-50%);
 }
 
 /* Active 상태 (focus 또는 값 있을 때) + left icon이 있을 때 label 위치 - default variant만 */
-.motile-input-wrapper:not(:has(.motile-input--underline)):has(
-    .motile-input--with-left-icon
-  ):has(.motile-input:focus)
-  .motile-input__label,
-.motile-input-wrapper:not(:has(.motile-input--underline)):has(
-    .motile-input--with-left-icon
-  ):has(.motile-input:not(:placeholder-shown))
-  .motile-input__label {
+:where(
+  .motile-input-wrapper:not(:has(.motile-input--underline)):has(
+      .motile-input--with-left-icon
+    ):has(.motile-input:focus)
+    .motile-input__label
+),
+:where(
+  .motile-input-wrapper:not(:has(.motile-input--underline)):has(
+      .motile-input--with-left-icon
+    ):has(.motile-input:not(:placeholder-shown))
+    .motile-input__label
+) {
   left: 40px;
 }
 
-.motile-input-wrapper:has(
-    .motile-input--underline.motile-input--with-left-icon
-  ):has(.motile-input:focus)
-  .motile-input__label,
-.motile-input-wrapper:has(
-    .motile-input--underline.motile-input--with-left-icon
-  ):has(.motile-input:not(:placeholder-shown))
-  .motile-input__label {
+:where(
+  .motile-input-wrapper:has(
+      .motile-input--underline.motile-input--with-left-icon
+    ):has(.motile-input:focus)
+    .motile-input__label
+),
+:where(
+  .motile-input-wrapper:has(
+      .motile-input--underline.motile-input--with-left-icon
+    ):has(.motile-input:not(:placeholder-shown))
+    .motile-input__label
+) {
   left: 4px;
   top: 14px;
   transform: translateY(-100%);
 }
 
 @media (max-width: 768px) {
-  .motile-input__label {
+  :where(.motile-input__label) {
     font-size: 16px;
     left: 12px;
   }
 
   /* Mobile - Active 상태 (focus 또는 값 있을 때) - 위치와 크기 */
-  .motile-input-wrapper:not(:has(.motile-input--underline)):has(
-      .motile-input:focus
-    )
-    .motile-input__label,
-  .motile-input-wrapper:not(:has(.motile-input--underline)):has(
-      .motile-input:not(:placeholder-shown)
-    )
-    .motile-input__label {
+  :where(
+    .motile-input-wrapper:not(:has(.motile-input--underline)):has(
+        .motile-input:focus
+      )
+      .motile-input__label
+  ),
+  :where(
+    .motile-input-wrapper:not(:has(.motile-input--underline)):has(
+        .motile-input:not(:placeholder-shown)
+      )
+      .motile-input__label
+  ) {
     font-size: 12px;
   }
 
   /* Mobile - Active 상태 색상 (error가 아닌 경우만) - Default variant */
-  .motile-input-wrapper:not(:has(.motile-input--underline)):has(
-      .motile-input:focus
-    )
-    .motile-input__label:not(.motile-input__label--error),
-  .motile-input-wrapper:not(:has(.motile-input--underline)):has(
-      .motile-input:not(:placeholder-shown)
-    )
-    .motile-input__label:not(.motile-input__label--error) {
+  :where(
+    .motile-input-wrapper:not(:has(.motile-input--underline)):has(
+        .motile-input:focus
+      )
+      .motile-input__label:not(.motile-input__label--error)
+  ),
+  :where(
+    .motile-input-wrapper:not(:has(.motile-input--underline)):has(
+        .motile-input:not(:placeholder-shown)
+      )
+      .motile-input__label:not(.motile-input__label--error)
+  ) {
     color: var(
       --motile-input-color,
       var(--motile-ui-input, var(--motile-theme, #3182f6))
     );
   }
 
-  .motile-input-wrapper:has(.motile-input--underline) .motile-input__label {
+  :where(
+    .motile-input-wrapper:has(.motile-input--underline) .motile-input__label
+  ) {
     left: 4px;
     top: calc(50% + 7px);
     transform: translateY(-50%);
   }
 
   /* Mobile - Underline Active 상태 위치와 크기 */
-  .motile-input-wrapper:has(.motile-input--underline):has(.motile-input:focus)
-    .motile-input__label,
-  .motile-input-wrapper:has(.motile-input--underline):has(
-      .motile-input:not(:placeholder-shown)
-    )
-    .motile-input__label {
+  :where(
+    .motile-input-wrapper:has(.motile-input--underline):has(.motile-input:focus)
+      .motile-input__label
+  ),
+  :where(
+    .motile-input-wrapper:has(.motile-input--underline):has(
+        .motile-input:not(:placeholder-shown)
+      )
+      .motile-input__label
+  ) {
     font-size: 12px;
     top: 14px;
     transform: translateY(-100%);
   }
 
   /* Mobile - Underline Active 상태 색상 (error가 아닌 경우만) */
-  .motile-input-wrapper:has(.motile-input--underline):has(.motile-input:focus)
-    .motile-input__label:not(.motile-input__label--error),
-  .motile-input-wrapper:has(.motile-input--underline):has(
-      .motile-input:not(:placeholder-shown)
-    )
-    .motile-input__label:not(.motile-input__label--error) {
+  :where(
+    .motile-input-wrapper:has(.motile-input--underline):has(.motile-input:focus)
+      .motile-input__label:not(.motile-input__label--error)
+  ),
+  :where(
+    .motile-input-wrapper:has(.motile-input--underline):has(
+        .motile-input:not(:placeholder-shown)
+      )
+      .motile-input__label:not(.motile-input__label--error)
+  ) {
     color: var(
       --motile-input-color,
       var(--motile-ui-input, var(--motile-theme, #3182f6))
     );
   }
 
-  .motile-input-wrapper:has(.motile-input--with-left-icon)
-    .motile-input__label {
+  :where(
+    .motile-input-wrapper:has(.motile-input--with-left-icon)
+      .motile-input__label
+  ) {
     left: 40px;
   }
 
-  .motile-input-wrapper:has(
-      .motile-input--underline.motile-input--with-left-icon
-    )
-    .motile-input__label {
+  :where(
+    .motile-input-wrapper:has(
+        .motile-input--underline.motile-input--with-left-icon
+      )
+      .motile-input__label
+  ) {
     left: 32px;
     top: calc(50% + 7px);
     transform: translateY(-50%);
   }
 
   /* Mobile - Active 상태 + left icon - default variant만 */
-  .motile-input-wrapper:not(:has(.motile-input--underline)):has(
-      .motile-input--with-left-icon
-    ):has(.motile-input:focus)
-    .motile-input__label,
-  .motile-input-wrapper:not(:has(.motile-input--underline)):has(
-      .motile-input--with-left-icon
-    ):has(.motile-input:not(:placeholder-shown))
-    .motile-input__label {
+  :where(
+    .motile-input-wrapper:not(:has(.motile-input--underline)):has(
+        .motile-input--with-left-icon
+      ):has(.motile-input:focus)
+      .motile-input__label
+  ),
+  :where(
+    .motile-input-wrapper:not(:has(.motile-input--underline)):has(
+        .motile-input--with-left-icon
+      ):has(.motile-input:not(:placeholder-shown))
+      .motile-input__label
+  ) {
     left: 36px;
   }
 
-  .motile-input-wrapper:has(
-      .motile-input--underline.motile-input--with-left-icon
-    ):has(.motile-input:focus)
-    .motile-input__label,
-  .motile-input-wrapper:has(
-      .motile-input--underline.motile-input--with-left-icon
-    ):has(.motile-input:not(:placeholder-shown))
-    .motile-input__label {
+  :where(
+    .motile-input-wrapper:has(
+        .motile-input--underline.motile-input--with-left-icon
+      ):has(.motile-input:focus)
+      .motile-input__label
+  ),
+  :where(
+    .motile-input-wrapper:has(
+        .motile-input--underline.motile-input--with-left-icon
+      ):has(.motile-input:not(:placeholder-shown))
+      .motile-input__label
+  ) {
     left: 4px;
     top: 14px;
     transform: translateY(-100%);

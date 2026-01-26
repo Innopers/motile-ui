@@ -3,7 +3,7 @@
  */
 
 /* Trigger (Button) */
-.motile-select__trigger {
+:where(.motile-select__trigger) {
   position: relative;
   box-sizing: border-box;
   width: 100%;
@@ -27,7 +27,7 @@
   transition: border-color 0.2s ease;
 }
 
-.motile-select__trigger[aria-expanded="true"] {
+:where(.motile-select__trigger[aria-expanded="true"]) {
   border-color: color-mix(
     in srgb,
     var(
@@ -43,8 +43,8 @@
   color: rgba(31, 41, 55, 0.5);
 }
 
-.motile-select__trigger:disabled,
-.motile-select__trigger[disabled] {
+:where(.motile-select__trigger:disabled),
+:where(.motile-select__trigger[disabled]) {
   background-color: #f9fafb;
   color: #9ca3af;
   border-color: #e5e7eb;
@@ -52,7 +52,7 @@
 }
 
 /* Trigger Icon */
-.motile-select__icon {
+:where(.motile-select__icon) {
   position: absolute;
   right: 12px;
   top: 50%;
@@ -62,12 +62,12 @@
   transition: transform 0.2s;
 }
 
-.motile-select__trigger[aria-expanded="true"] .motile-select__icon {
+:where(.motile-select__trigger[aria-expanded="true"] .motile-select__icon) {
   transform: translateY(-50%) rotate(180deg);
 }
 
 /* Value */
-.motile-select__value {
+:where(.motile-select__value) {
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -75,7 +75,7 @@
 }
 
 /* Content (Dropdown) */
-.motile-select__content {
+:where(.motile-select__content) {
   position: absolute;
   top: calc(100% + 4px); /* trigger 바로 아래 (4px gap) */
   left: 0;
@@ -106,7 +106,7 @@
     visibility 0s linear 0.45s;
 }
 
-.motile-select__content--open {
+:where(.motile-select__content--open) {
   /* 열렸을 때 */
   visibility: visible;
   opacity: 1;
@@ -120,25 +120,25 @@
 }
 
 /* Content Scrollbar */
-.motile-select__content::-webkit-scrollbar {
+:where(.motile-select__content)::-webkit-scrollbar {
   width: 8px;
 }
 
-.motile-select__content::-webkit-scrollbar-track {
+:where(.motile-select__content)::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.motile-select__content::-webkit-scrollbar-thumb {
+:where(.motile-select__content)::-webkit-scrollbar-thumb {
   background-color: #d1d5db;
   border-radius: 4px;
 }
 
-.motile-select__content::-webkit-scrollbar-thumb:hover {
+:where(.motile-select__content)::-webkit-scrollbar-thumb:hover {
   background-color: #9ca3af;
 }
 
 /* Item */
-.motile-select__item {
+:where(.motile-select__item) {
   position: relative;
   box-sizing: border-box;
 
@@ -160,15 +160,15 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-.motile-select__item:hover:not(.motile-select__item--disabled) {
+:where(.motile-select__item:hover:not(.motile-select__item--disabled)) {
   background-color: #f9fafb;
 }
 
-.motile-select__item--selected {
+:where(.motile-select__item--selected) {
   font-weight: 500;
 }
 
-.motile-select__item--selected:not(.motile-select__item--disabled) {
+:where(.motile-select__item--selected:not(.motile-select__item--disabled)) {
   /* 글자색은 유지하고 배경색만 변경 (5% 투명도) */
   background-color: color-mix(
     in srgb,
@@ -181,13 +181,13 @@
   );
 }
 
-.motile-select__item--disabled {
+:where(.motile-select__item--disabled) {
   color: #d1d5db;
   cursor: not-allowed;
 }
 
 /* Check Icon */
-.motile-select__check {
+:where(.motile-select__check) {
   position: absolute;
   right: 12px;
 
@@ -199,37 +199,37 @@
 
 /* 다크 모드 지원 (옵션) */
 @media (prefers-color-scheme: dark) {
-  .motile-select__trigger:disabled,
-  .motile-select__trigger[disabled] {
+  :where(.motile-select__trigger:disabled),
+  :where(.motile-select__trigger[disabled]) {
     background-color: #1f2937;
     color: #6b7280;
     border-color: #374151;
   }
 
-  .motile-select__content {
+  :where(.motile-select__content) {
     background-color: #1f2937;
     border-color: #374151;
   }
 
-  .motile-select__item {
+  :where(.motile-select__item) {
     color: #f9fafb;
   }
 
-  .motile-select__item:hover:not(.motile-select__item--disabled) {
+  :where(.motile-select__item:hover:not(.motile-select__item--disabled)) {
     background-color: #374151;
   }
 
-  .motile-select__item--selected:not(.motile-select__item--disabled) {
+  :where(.motile-select__item--selected:not(.motile-select__item--disabled)) {
     background-color: rgba(59, 130, 246, 0.15);
   }
 
-  .motile-select__item--disabled {
+  :where(.motile-select__item--disabled) {
     color: #4b5563;
   }
 }
 
 /* Mobile list wrapper (inside Drawer) */
-.motile-select__mobile-list {
+:where(.motile-select__mobile-list) {
   /* SelectItem들이 자체 padding/margin을 가지므로 여기서는 최소한만 */
   width: 100%;
   box-sizing: border-box;
@@ -244,11 +244,11 @@
 
 /* 애니메이션 감소 모드 */
 @media (prefers-reduced-motion: reduce) {
-  .motile-select__content {
+  :where(.motile-select__content) {
     transition: none;
   }
 
-  .motile-select__item {
+  :where(.motile-select__item) {
     transition: none;
   }
 }

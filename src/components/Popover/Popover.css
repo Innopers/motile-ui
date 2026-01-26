@@ -1,11 +1,11 @@
 /* 래퍼: trigger 크기에 맞춤, Content의 absolute positioning 기준 */
-.motile-popover-wrapper {
+:where(.motile-popover-wrapper) {
   position: relative;
   display: inline-block;
 }
 
 /* 컨텐츠 박스 */
-.motile-popover-content {
+:where(.motile-popover-content) {
   position: absolute;
   z-index: 10;
   border-radius: 12px;
@@ -23,28 +23,25 @@
 }
 
 /* Filled Variant - 배경색 적용, 텍스트 흰색 */
-.motile-popover-content--filled {
-  background: var(
+:where(.motile-popover-content--filled) {
+  --arrow-color: var(
     --motile-popover-color,
     var(--motile-ui-popover, var(--motile-theme, #3b82f6))
   );
+  background: var(--arrow-color);
   color: #fff;
-  border: 1px solid
-    var(
-      --motile-popover-color,
-      var(--motile-ui-popover, var(--motile-theme, #3b82f6))
-    );
+  border: 1px solid var(--arrow-color);
 }
 
 /* Outlined Variant - 배경 흰색, 테두리에 색상 */
-.motile-popover-content--outlined {
+:where(.motile-popover-content--outlined) {
+  --arrow-color: var(
+    --motile-popover-color,
+    var(--motile-ui-popover, var(--motile-theme, #e5e7eb))
+  );
   background: #fff;
   color: #111827;
-  border: 1px solid
-    var(
-      --motile-popover-color,
-      var(--motile-ui-popover, var(--motile-theme, #e5e7eb))
-    );
+  border: 1px solid var(--arrow-color);
 }
 
 /* ============================================================================
@@ -52,14 +49,14 @@
    ============================================================================ */
 
 /* top/start */
-.motile-popover-content[data-placement="top"][data-align="start"] {
+:where(.motile-popover-content[data-placement="top"][data-align="start"]) {
   bottom: calc(100% + 5.5px);
   left: 0;
   animation: popover-fade-in-top 0.2s ease-out;
 }
 
 /* top/center */
-.motile-popover-content[data-placement="top"][data-align="center"] {
+:where(.motile-popover-content[data-placement="top"][data-align="center"]) {
   bottom: calc(100% + 5.5px);
   left: 50%;
   transform: translateX(-50%);
@@ -67,7 +64,7 @@
 }
 
 /* top/end */
-.motile-popover-content[data-placement="top"][data-align="end"] {
+:where(.motile-popover-content[data-placement="top"][data-align="end"]) {
   bottom: calc(100% + 5.5px);
   right: 0;
   animation: popover-fade-in-top 0.2s ease-out;
@@ -78,14 +75,14 @@
    ============================================================================ */
 
 /* bottom/start */
-.motile-popover-content[data-placement="bottom"][data-align="start"] {
+:where(.motile-popover-content[data-placement="bottom"][data-align="start"]) {
   top: calc(100% + 5.5px);
   left: 0;
   animation: popover-fade-in-bottom 0.2s ease-out;
 }
 
 /* bottom/center */
-.motile-popover-content[data-placement="bottom"][data-align="center"] {
+:where(.motile-popover-content[data-placement="bottom"][data-align="center"]) {
   top: calc(100% + 5.5px);
   left: 50%;
   transform: translateX(-50%);
@@ -93,7 +90,7 @@
 }
 
 /* bottom/end */
-.motile-popover-content[data-placement="bottom"][data-align="end"] {
+:where(.motile-popover-content[data-placement="bottom"][data-align="end"]) {
   top: calc(100% + 5.5px);
   right: 0;
   animation: popover-fade-in-bottom 0.2s ease-out;
@@ -104,14 +101,14 @@
    ============================================================================ */
 
 /* left/start */
-.motile-popover-content[data-placement="left"][data-align="start"] {
+:where(.motile-popover-content[data-placement="left"][data-align="start"]) {
   right: calc(100% + 5.5px);
   top: 0;
   animation: popover-fade-in-left 0.2s ease-out;
 }
 
 /* left/center */
-.motile-popover-content[data-placement="left"][data-align="center"] {
+:where(.motile-popover-content[data-placement="left"][data-align="center"]) {
   right: calc(100% + 5.5px);
   top: 50%;
   transform: translateY(-50%);
@@ -119,7 +116,7 @@
 }
 
 /* left/end */
-.motile-popover-content[data-placement="left"][data-align="end"] {
+:where(.motile-popover-content[data-placement="left"][data-align="end"]) {
   right: calc(100% + 5.5px);
   bottom: 0;
   animation: popover-fade-in-left 0.2s ease-out;
@@ -130,14 +127,14 @@
    ============================================================================ */
 
 /* right/start */
-.motile-popover-content[data-placement="right"][data-align="start"] {
+:where(.motile-popover-content[data-placement="right"][data-align="start"]) {
   left: calc(100% + 5.5px);
   top: 0;
   animation: popover-fade-in-right 0.2s ease-out;
 }
 
 /* right/center */
-.motile-popover-content[data-placement="right"][data-align="center"] {
+:where(.motile-popover-content[data-placement="right"][data-align="center"]) {
   left: calc(100% + 5.5px);
   top: 50%;
   transform: translateY(-50%);
@@ -145,7 +142,7 @@
 }
 
 /* right/end */
-.motile-popover-content[data-placement="right"][data-align="end"] {
+:where(.motile-popover-content[data-placement="right"][data-align="end"]) {
   left: calc(100% + 5.5px);
   bottom: 0;
   animation: popover-fade-in-right 0.2s ease-out;
@@ -248,49 +245,73 @@
    ============================================================================ */
 
 /* top bounce */
-.motile-popover-content[data-placement="top"][data-align="start"][data-bounce="true"],
-.motile-popover-content[data-placement="top"][data-align="end"][data-bounce="true"] {
+:where(
+  .motile-popover-content[data-placement="top"][data-align="start"][data-bounce="true"]
+),
+:where(
+  .motile-popover-content[data-placement="top"][data-align="end"][data-bounce="true"]
+) {
   animation: popover-bounce-top 0.7s ease-out;
   animation-iteration-count: var(--bounce-count, 1);
 }
 
-.motile-popover-content[data-placement="top"][data-align="center"][data-bounce="true"] {
+:where(
+  .motile-popover-content[data-placement="top"][data-align="center"][data-bounce="true"]
+) {
   animation: popover-bounce-top-center 0.7s ease-out;
   animation-iteration-count: var(--bounce-count, 1);
 }
 
 /* bottom bounce */
-.motile-popover-content[data-placement="bottom"][data-align="start"][data-bounce="true"],
-.motile-popover-content[data-placement="bottom"][data-align="end"][data-bounce="true"] {
+:where(
+  .motile-popover-content[data-placement="bottom"][data-align="start"][data-bounce="true"]
+),
+:where(
+  .motile-popover-content[data-placement="bottom"][data-align="end"][data-bounce="true"]
+) {
   animation: popover-bounce-bottom 0.7s ease-out;
   animation-iteration-count: var(--bounce-count, 1);
 }
 
-.motile-popover-content[data-placement="bottom"][data-align="center"][data-bounce="true"] {
+:where(
+  .motile-popover-content[data-placement="bottom"][data-align="center"][data-bounce="true"]
+) {
   animation: popover-bounce-bottom-center 0.7s ease-out;
   animation-iteration-count: var(--bounce-count, 1);
 }
 
 /* left bounce */
-.motile-popover-content[data-placement="left"][data-align="start"][data-bounce="true"],
-.motile-popover-content[data-placement="left"][data-align="end"][data-bounce="true"] {
+:where(
+  .motile-popover-content[data-placement="left"][data-align="start"][data-bounce="true"]
+),
+:where(
+  .motile-popover-content[data-placement="left"][data-align="end"][data-bounce="true"]
+) {
   animation: popover-bounce-left 0.7s ease-out;
   animation-iteration-count: var(--bounce-count, 1);
 }
 
-.motile-popover-content[data-placement="left"][data-align="center"][data-bounce="true"] {
+:where(
+  .motile-popover-content[data-placement="left"][data-align="center"][data-bounce="true"]
+) {
   animation: popover-bounce-left-center 0.7s ease-out;
   animation-iteration-count: var(--bounce-count, 1);
 }
 
 /* right bounce */
-.motile-popover-content[data-placement="right"][data-align="start"][data-bounce="true"],
-.motile-popover-content[data-placement="right"][data-align="end"][data-bounce="true"] {
+:where(
+  .motile-popover-content[data-placement="right"][data-align="start"][data-bounce="true"]
+),
+:where(
+  .motile-popover-content[data-placement="right"][data-align="end"][data-bounce="true"]
+) {
   animation: popover-bounce-right 0.7s ease-out;
   animation-iteration-count: var(--bounce-count, 1);
 }
 
-.motile-popover-content[data-placement="right"][data-align="center"][data-bounce="true"] {
+:where(
+  .motile-popover-content[data-placement="right"][data-align="center"][data-bounce="true"]
+) {
   animation: popover-bounce-right-center 0.7s ease-out;
   animation-iteration-count: var(--bounce-count, 1);
 }
@@ -451,96 +472,120 @@
    SVG Arrow
    ============================================================================ */
 
-.motile-popover-arrow {
+:where(.motile-popover-arrow) {
   position: absolute;
   pointer-events: none;
   z-index: 1;
 }
 
 /* Top position arrows */
-.motile-popover-content[data-placement="top"] .motile-popover-arrow {
+:where(.motile-popover-content[data-placement="top"] .motile-popover-arrow) {
   bottom: -7.25px;
   transform: rotate(180deg);
 }
 
-.motile-popover-content[data-placement="top"][data-align="start"]
-  .motile-popover-arrow {
+:where(
+  .motile-popover-content[data-placement="top"][data-align="start"]
+    .motile-popover-arrow
+) {
   left: 20px;
 }
 
-.motile-popover-content[data-placement="top"][data-align="center"]
-  .motile-popover-arrow {
+:where(
+  .motile-popover-content[data-placement="top"][data-align="center"]
+    .motile-popover-arrow
+) {
   left: 50%;
   margin-left: -6px;
 }
 
-.motile-popover-content[data-placement="top"][data-align="end"]
-  .motile-popover-arrow {
+:where(
+  .motile-popover-content[data-placement="top"][data-align="end"]
+    .motile-popover-arrow
+) {
   right: 20px;
 }
 
 /* Bottom position arrows */
-.motile-popover-content[data-placement="bottom"] .motile-popover-arrow {
+:where(.motile-popover-content[data-placement="bottom"] .motile-popover-arrow) {
   top: -7.25px;
   transform: rotate(0deg);
 }
 
-.motile-popover-content[data-placement="bottom"][data-align="start"]
-  .motile-popover-arrow {
+:where(
+  .motile-popover-content[data-placement="bottom"][data-align="start"]
+    .motile-popover-arrow
+) {
   left: 20px;
 }
 
-.motile-popover-content[data-placement="bottom"][data-align="center"]
-  .motile-popover-arrow {
+:where(
+  .motile-popover-content[data-placement="bottom"][data-align="center"]
+    .motile-popover-arrow
+) {
   left: 50%;
   margin-left: -6px;
 }
 
-.motile-popover-content[data-placement="bottom"][data-align="end"]
-  .motile-popover-arrow {
+:where(
+  .motile-popover-content[data-placement="bottom"][data-align="end"]
+    .motile-popover-arrow
+) {
   right: 20px;
 }
 
 /* Left position arrows */
-.motile-popover-content[data-placement="left"] .motile-popover-arrow {
+:where(.motile-popover-content[data-placement="left"] .motile-popover-arrow) {
   right: -9.25px;
   transform: rotate(90deg);
 }
 
-.motile-popover-content[data-placement="left"][data-align="start"]
-  .motile-popover-arrow {
+:where(
+  .motile-popover-content[data-placement="left"][data-align="start"]
+    .motile-popover-arrow
+) {
   top: 12px;
 }
 
-.motile-popover-content[data-placement="left"][data-align="center"]
-  .motile-popover-arrow {
+:where(
+  .motile-popover-content[data-placement="left"][data-align="center"]
+    .motile-popover-arrow
+) {
   top: 50%;
   margin-top: -4px;
 }
 
-.motile-popover-content[data-placement="left"][data-align="end"]
-  .motile-popover-arrow {
+:where(
+  .motile-popover-content[data-placement="left"][data-align="end"]
+    .motile-popover-arrow
+) {
   bottom: 12px;
 }
 
 /* Right position arrows */
-.motile-popover-content[data-placement="right"] .motile-popover-arrow {
+:where(.motile-popover-content[data-placement="right"] .motile-popover-arrow) {
   left: -9.25px;
   transform: rotate(-90deg);
 }
 
-.motile-popover-content[data-placement="right"][data-align="start"]
-  .motile-popover-arrow {
+:where(
+  .motile-popover-content[data-placement="right"][data-align="start"]
+    .motile-popover-arrow
+) {
   top: 12px;
 }
 
-.motile-popover-content[data-placement="right"][data-align="center"]
-  .motile-popover-arrow {
+:where(
+  .motile-popover-content[data-placement="right"][data-align="center"]
+    .motile-popover-arrow
+) {
   top: 50%;
   margin-top: -4px;
 }
 
-.motile-popover-content[data-placement="right"][data-align="end"]
-  .motile-popover-arrow {
+:where(
+  .motile-popover-content[data-placement="right"][data-align="end"]
+    .motile-popover-arrow
+) {
   bottom: 12px;
 }

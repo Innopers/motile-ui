@@ -2,7 +2,7 @@
    Toast - Responsive Mobile & Desktop
    ============================================================================ */
 
-.motile-toast-container {
+:where(.motile-toast-container) {
   position: fixed;
   pointer-events: none;
   display: flex;
@@ -11,7 +11,7 @@
 }
 
 /* Mobile: Top Center */
-.motile-toast-container {
+:where(.motile-toast-container) {
   top: 0;
   left: 0;
   right: 0;
@@ -21,7 +21,7 @@
 
 /* Desktop: Top Right */
 @media (min-width: 768px) {
-  .motile-toast-container {
+  :where(.motile-toast-container) {
     top: 0;
     left: auto;
     right: 0;
@@ -35,7 +35,7 @@
    Toast Item
    ============================================================================ */
 
-.motile-toast {
+:where(.motile-toast) {
   pointer-events: auto;
   display: inline-flex;
   align-items: flex-start;
@@ -70,14 +70,14 @@
 
 /* Desktop: Slide In from Right */
 @media (min-width: 768px) {
-  .motile-toast {
+  :where(.motile-toast) {
     width: auto; /* Desktop: content-fit */
     max-width: 320px;
     animation: slideInRight 0.3s ease-out;
   }
 }
 
-.motile-toast--exiting {
+:where(.motile-toast--exiting) {
   animation: fadeOut 0.15s ease-out forwards;
 }
 
@@ -85,7 +85,7 @@
    Icon
    ============================================================================ */
 
-.motile-toast__icon {
+:where(.motile-toast__icon) {
   flex-shrink: 0;
   width: 18px;
   height: 18px;
@@ -97,19 +97,19 @@
   margin-top: 1px;
 }
 
-.motile-toast--success .motile-toast__icon {
+:where(.motile-toast--success .motile-toast__icon) {
   color: #4ade80;
 }
 
-.motile-toast--error .motile-toast__icon {
+:where(.motile-toast--error .motile-toast__icon) {
   color: #f87171;
 }
 
-.motile-toast--warning .motile-toast__icon {
+:where(.motile-toast--warning .motile-toast__icon) {
   color: #fbbf24;
 }
 
-.motile-toast--info .motile-toast__icon {
+:where(.motile-toast--info .motile-toast__icon) {
   color: #60a5fa;
 }
 
@@ -117,7 +117,7 @@
    Message
    ============================================================================ */
 
-.motile-toast__message {
+:where(.motile-toast__message) {
   flex: 1;
   min-width: 0;
   font-size: 14px;
@@ -169,31 +169,31 @@
    ============================================================================ */
 
 @media (prefers-color-scheme: dark) {
-  .motile-toast {
+  :where(.motile-toast) {
     background: rgba(255, 255, 255, 0.95);
   }
 
-  .motile-toast__message {
+  :where(.motile-toast__message) {
     color: #18181b;
   }
 
-  .motile-toast__icon {
+  :where(.motile-toast__icon) {
     color: #18181b;
   }
 
-  .motile-toast--success .motile-toast__icon {
+  :where(.motile-toast--success .motile-toast__icon) {
     color: #22c55e;
   }
 
-  .motile-toast--error .motile-toast__icon {
+  :where(.motile-toast--error .motile-toast__icon) {
     color: #ef4444;
   }
 
-  .motile-toast--warning .motile-toast__icon {
+  :where(.motile-toast--warning .motile-toast__icon) {
     color: #f59e0b;
   }
 
-  .motile-toast--info .motile-toast__icon {
+  :where(.motile-toast--info .motile-toast__icon) {
     color: #3b82f6;
   }
 }
@@ -203,12 +203,12 @@
    ============================================================================ */
 
 @media (prefers-reduced-motion: reduce) {
-  .motile-toast {
+  :where(.motile-toast) {
     animation: none !important;
   }
 }
 
-.motile-toast * {
+:where(.motile-toast *) {
   user-select: none;
   -webkit-user-select: none;
 }

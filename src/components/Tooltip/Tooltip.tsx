@@ -731,9 +731,10 @@ function TooltipTrigger({ children, asChild = false }: TooltipTriggerProps) {
 
 interface TooltipContentProps {
   children: React.ReactNode;
+  className?: string;
 }
 
-function TooltipContent({ children }: TooltipContentProps) {
+function TooltipContent({ children, className }: TooltipContentProps) {
   const {
     open,
     setOpen,
@@ -779,15 +780,6 @@ function TooltipContent({ children }: TooltipContentProps) {
     }
   }, [keepOpen, setOpen]);
 
-  // Arrow 색상 CSS 변수로 전달
-  const arrowColor =
-    ((style as Record<string, unknown>)["--motile-tooltip-color"] as
-      | string
-      | undefined) ||
-    (variant === "filled"
-      ? "var(--motile-ui-tooltip, rgba(0, 0, 0, 0.9))"
-      : "var(--motile-ui-tooltip, #3b82f6)");
-
   if (!mounted || !open) return null;
 
   return createPortal(
@@ -795,7 +787,7 @@ function TooltipContent({ children }: TooltipContentProps) {
       ref={contentRef}
       id={tooltipId}
       role="tooltip"
-      className={`motile-tooltip-bubble motile-tooltip-bubble--${variant}`}
+      className={`motile-tooltip-bubble motile-tooltip-bubble--${variant}${className ? ` ${className}` : ""}`}
       data-open={visible || undefined}
       data-placement={placement}
       data-align={align}
@@ -808,11 +800,7 @@ function TooltipContent({ children }: TooltipContentProps) {
     >
       {children}
       {showArrow && (
-        <FloatingArrow
-          className="motile-tooltip-arrow"
-          variant={variant}
-          color={arrowColor}
-        />
+        <FloatingArrow className="motile-tooltip-arrow" variant={variant} />
       )}
     </div>,
     document.body

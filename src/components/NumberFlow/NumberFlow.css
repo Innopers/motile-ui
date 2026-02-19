@@ -3,7 +3,7 @@
    ============================================================================ */
 
 /* 메인 컨테이너 */
-.motile-number-flow {
+:where(.motile-number-flow) {
   display: inline-flex;
   align-items: center;
   font-variant-numeric: tabular-nums;
@@ -11,7 +11,7 @@
 }
 
 /* 스크린 리더 전용 */
-.motile-number-flow__sr-only {
+:where(.motile-number-flow__sr-only) {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -24,13 +24,13 @@
 }
 
 /* 숫자 값 컨테이너 */
-.motile-number-flow__value {
+:where(.motile-number-flow__value) {
   display: inline-flex;
   align-items: center;
 }
 
 /* 개별 숫자 슬롯 */
-.motile-number-flow__digit {
+:where(.motile-number-flow__digit) {
   display: inline-block;
   height: 1em;
   overflow: hidden;
@@ -39,7 +39,7 @@
 }
 
 /* 숫자 열 (0-9가 3번 반복되어 세로로 나열) */
-.motile-number-flow__digit-column {
+:where(.motile-number-flow__digit-column) {
   display: flex;
   flex-direction: column;
   will-change: transform;
@@ -48,7 +48,7 @@
 }
 
 /* 개별 숫자 값 */
-.motile-number-flow__digit-value {
+:where(.motile-number-flow__digit-value) {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -57,14 +57,14 @@
 }
 
 /* 구분자 (천단위, 소수점 등) */
-.motile-number-flow__separator {
+:where(.motile-number-flow__separator) {
   display: inline-block;
   line-height: 1;
 }
 
 /* 접근성: 모션 감소 설정 존중 */
 @media (prefers-reduced-motion: reduce) {
-  .motile-number-flow__digit-column {
+  :where(.motile-number-flow__digit-column) {
     transition: none !important;
   }
 }

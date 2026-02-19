@@ -759,7 +759,13 @@ describe("Sheet", () => {
       );
 
       await waitFor(() => {
-        expect(pushStateSpy).toHaveBeenCalledWith({ modal: true }, "");
+        // 고유 ID가 포함된 state로 pushState 호출 확인
+        expect(pushStateSpy).toHaveBeenCalled();
+        const callArg = pushStateSpy.mock.calls[0][0] as {
+          __motileSheetModal?: string;
+        };
+        expect(callArg).toHaveProperty("__motileSheetModal");
+        expect(typeof callArg.__motileSheetModal).toBe("string");
       });
     });
 

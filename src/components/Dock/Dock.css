@@ -1,5 +1,5 @@
 /* Dock Container */
-.motile-dock {
+:where(.motile-dock) {
   display: inline-flex;
   align-items: center;
   gap: 12px;
@@ -20,27 +20,27 @@
 }
 
 /* Position: Top - 가로 배치 */
-.motile-dock[data-position="top"] {
+:where(.motile-dock[data-position="top"]) {
   flex-direction: row;
 }
 
 /* Position: Bottom (default) - 가로 배치 */
-.motile-dock[data-position="bottom"] {
+:where(.motile-dock[data-position="bottom"]) {
   flex-direction: row;
 }
 
 /* Position: Left - 세로 배치 */
-.motile-dock[data-position="left"] {
+:where(.motile-dock[data-position="left"]) {
   flex-direction: column;
 }
 
 /* Position: Right - 세로 배치 */
-.motile-dock[data-position="right"] {
+:where(.motile-dock[data-position="right"]) {
   flex-direction: column;
 }
 
 /* Dock Item */
-.motile-dock__item {
+:where(.motile-dock__item) {
   position: relative;
   display: flex;
   align-items: center;
@@ -62,51 +62,51 @@
 }
 
 /* Position별 transform-origin */
-.motile-dock[data-position="top"] .motile-dock__item {
+:where(.motile-dock[data-position="top"] .motile-dock__item) {
   transform-origin: center top;
 }
 
-.motile-dock[data-position="bottom"] .motile-dock__item {
+:where(.motile-dock[data-position="bottom"] .motile-dock__item) {
   transform-origin: center bottom;
 }
 
-.motile-dock[data-position="left"] .motile-dock__item {
+:where(.motile-dock[data-position="left"] .motile-dock__item) {
   transform-origin: left center;
 }
 
-.motile-dock[data-position="right"] .motile-dock__item {
+:where(.motile-dock[data-position="right"] .motile-dock__item) {
   transform-origin: right center;
 }
 
 /* Hover State */
-.motile-dock__item:hover {
+:where(.motile-dock__item:hover) {
   background: rgba(255, 255, 255, 0.4);
 }
 
-.motile-dock__item:active {
+:where(.motile-dock__item:active) {
   background: rgba(255, 255, 255, 0.6);
   filter: brightness(0.9);
 }
 
-.motile-dock__item:focus-visible {
+:where(.motile-dock__item:focus-visible) {
   outline: 2px solid rgba(100, 116, 139, 0.6);
   outline-offset: 2px;
 }
 
 /* Dock Item Icon Container */
-.motile-dock__item > * {
+:where(.motile-dock__item > *) {
   pointer-events: none;
 }
 
 /* Dock Separator */
-.motile-dock__separator {
+:where(.motile-dock__separator) {
   position: relative;
   flex-shrink: 0;
 }
 
 /* Horizontal Dock (top/bottom) - Vertical Separator */
-.motile-dock__separator[data-position="top"],
-.motile-dock__separator[data-position="bottom"] {
+:where(.motile-dock__separator[data-position="top"]),
+:where(.motile-dock__separator[data-position="bottom"]) {
   width: 1px;
   height: 40px;
   margin: 0 6px;
@@ -120,8 +120,8 @@
 }
 
 /* Vertical Dock (left/right) - Horizontal Separator */
-.motile-dock__separator[data-position="left"],
-.motile-dock__separator[data-position="right"] {
+:where(.motile-dock__separator[data-position="left"]),
+:where(.motile-dock__separator[data-position="right"]) {
   height: 1px;
   width: 40px;
   margin: 6px 0;
@@ -136,7 +136,7 @@
 
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
-  .motile-dock {
+  :where(.motile-dock) {
     background: rgba(30, 30, 30, 0.7);
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow:
@@ -145,22 +145,22 @@
       inset 0 0 0 1px rgba(255, 255, 255, 0.05);
   }
 
-  .motile-dock__item {
+  :where(.motile-dock__item) {
     color: #e5e7eb;
   }
 
-  .motile-dock__item:hover {
+  :where(.motile-dock__item:hover) {
     background: rgba(255, 255, 255, 0.1);
   }
 
-  .motile-dock__item:active {
+  :where(.motile-dock__item:active) {
     background: rgba(255, 255, 255, 0.2);
     filter: brightness(0.9);
   }
 
   /* Dark Mode Separator */
-  .motile-dock__separator[data-position="top"],
-  .motile-dock__separator[data-position="bottom"] {
+  :where(.motile-dock__separator[data-position="top"]),
+  :where(.motile-dock__separator[data-position="bottom"]) {
     background: linear-gradient(
       to bottom,
       rgba(255, 255, 255, 0) 0%,
@@ -170,8 +170,8 @@
     );
   }
 
-  .motile-dock__separator[data-position="left"],
-  .motile-dock__separator[data-position="right"] {
+  :where(.motile-dock__separator[data-position="left"]),
+  :where(.motile-dock__separator[data-position="right"]) {
     background: linear-gradient(
       to right,
       rgba(255, 255, 255, 0) 0%,
@@ -184,33 +184,33 @@
 
 /* High Contrast Mode */
 @media (prefers-contrast: high) {
-  .motile-dock {
+  :where(.motile-dock) {
     border: 2px solid currentColor;
     background: rgba(255, 255, 255, 0.95);
   }
 
-  .motile-dock__item {
+  :where(.motile-dock__item) {
     border: 1px solid currentColor;
   }
 }
 
 /* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
-  .motile-dock,
-  .motile-dock__item {
+  :where(.motile-dock),
+  :where(.motile-dock__item) {
     transition: none;
   }
 }
 
 /* Mobile Optimization */
 @media (max-width: 768px) {
-  .motile-dock {
+  :where(.motile-dock) {
     gap: 6px;
     padding: 6px 12px;
     border-radius: 40px;
   }
 
-  .motile-dock__item {
+  :where(.motile-dock__item) {
     width: 36px;
     height: 36px;
     min-width: 36px;
@@ -220,7 +220,7 @@
 
 /* Touch Device - Larger Touch Targets */
 @media (hover: none) and (pointer: coarse) {
-  .motile-dock__item {
+  :where(.motile-dock__item) {
     min-width: 44px;
     min-height: 44px;
     /* 터치 기기에서는 magnification 비활성화 */
@@ -229,7 +229,7 @@
 }
 
 /* Extra Styling for Better Visual Appeal */
-.motile-dock::before {
+:where(.motile-dock)::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -249,7 +249,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  .motile-dock::before {
+  :where(.motile-dock)::before {
     background: linear-gradient(
       135deg,
       rgba(255, 255, 255, 0.2),
@@ -259,7 +259,7 @@
 }
 
 /* Glow effect on hover for items */
-.motile-dock__item::before {
+:where(.motile-dock__item)::before {
   content: "";
   position: absolute;
   inset: -2px;
@@ -283,17 +283,17 @@
   z-index: -1;
 }
 
-.motile-dock__item:hover::before {
+:where(.motile-dock__item:hover)::before {
   opacity: 1;
 }
 
 /* Disable glow in high contrast mode */
 @media (prefers-contrast: high) {
-  .motile-dock__item::before {
+  :where(.motile-dock__item)::before {
     display: none;
   }
 
-  .motile-dock::before {
+  :where(.motile-dock)::before {
     display: none;
   }
 }

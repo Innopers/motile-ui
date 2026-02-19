@@ -3,7 +3,7 @@
    ============================================================================ */
 
 /* Root - 기본 레이아웃 */
-.motile-timepicker {
+:where(.motile-timepicker) {
   display: flex;
   position: relative;
   user-select: none;
@@ -16,7 +16,7 @@
 }
 
 /* Disabled state */
-.motile-timepicker--disabled {
+:where(.motile-timepicker--disabled) {
   pointer-events: none;
 }
 
@@ -24,7 +24,7 @@
    Column - 스크롤 컨테이너 (핵심 기능)
    ============================================================================ */
 
-.motile-timepicker__column {
+:where(.motile-timepicker__column) {
   flex: 1;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -46,14 +46,14 @@
 
 /* 터치 디바이스: mandatory - 정확한 스냅으로 빠른 반응 */
 @media (hover: none) and (pointer: coarse) {
-  .motile-timepicker__column {
+  :where(.motile-timepicker__column) {
     scroll-snap-type: y mandatory;
     cursor: default;
   }
 }
 
 /* 스크롤바 숨김 (webkit) */
-.motile-timepicker__column::-webkit-scrollbar {
+:where(.motile-timepicker__column)::-webkit-scrollbar {
   display: none;
 }
 
@@ -61,7 +61,7 @@
    Item - 개별 옵션
    ============================================================================ */
 
-.motile-timepicker__item {
+:where(.motile-timepicker__item) {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -77,7 +77,7 @@
 }
 
 /* 선택된 아이템 스타일 */
-.motile-timepicker__item--selected {
+:where(.motile-timepicker__item--selected) {
   color: inherit;
 }
 
@@ -85,7 +85,7 @@
    Spacer - 상하 여백 (첫/끝 아이템이 중앙에 오도록)
    ============================================================================ */
 
-.motile-timepicker__spacer {
+:where(.motile-timepicker__spacer) {
   flex-shrink: 0;
   pointer-events: none;
 }
@@ -94,7 +94,7 @@
    Highlight - 선택 영역 표시 (선택적)
    ============================================================================ */
 
-.motile-timepicker__highlight {
+:where(.motile-timepicker__highlight) {
   position: absolute;
   left: 0;
   right: 0;
@@ -107,7 +107,7 @@
 }
 
 /* Column이 Highlight 위에 표시되도록 */
-.motile-timepicker__column {
+:where(.motile-timepicker__column) {
   position: relative;
   z-index: 1;
 }
@@ -117,7 +117,7 @@
    ============================================================================ */
 
 @media (prefers-reduced-motion: reduce) {
-  .motile-timepicker__column {
+  :where(.motile-timepicker__column) {
     scroll-behavior: auto;
   }
 }

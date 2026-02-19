@@ -77,6 +77,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       `${baseClass}-container--${size}`,
       disabled && `${baseClass}-container--disabled`,
       filled && `${baseClass}-container--filled`,
+      className, // CSS 변수가 자식 요소로 상속되도록 container에도 적용
     ]
       .filter(Boolean)
       .join(" ");

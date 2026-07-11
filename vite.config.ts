@@ -12,7 +12,16 @@ export default defineConfig({
     dts({
       insertTypesEntry: true,
       include: ["src"],
-      exclude: ["**/*.stories.tsx", "**/*.stories.ts", "src/dev"],
+      // 테스트 파일/헬퍼의 .d.ts가 배포물에 실리지 않게 제외
+      // (vitest 등 devDependency 타입을 참조하는 선언이 소비자에게 노출되는 것 방지)
+      exclude: [
+        "**/*.stories.tsx",
+        "**/*.stories.ts",
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "src/dev",
+        "src/test",
+      ],
     }),
   ],
   resolve: {

@@ -275,13 +275,15 @@ export const ModalOverlay = React.forwardRef<HTMLDivElement, ModalOverlayProps>(
     });
 
     // ESC 키로 닫기
+    // enabled를 정직하게 계산 — 닫히지 않을 모달이 ESC 스택의 top을 점유하지 않게
     useEscapeKey({
       handler: () => {
         if (enableEscapeKey) {
           onOpenChange(false);
         }
       },
-      enabled: open,
+      enabled: open && enableEscapeKey,
+      stacked: true, // 중첩 오버레이에서 ESC는 최상단만 닫는다
     });
 
     const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {

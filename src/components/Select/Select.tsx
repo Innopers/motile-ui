@@ -306,6 +306,8 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
   });
 
   // ESC 키로 닫기 (모바일에서는 Drawer가 처리)
+  // enabled를 정직하게 계산 — 닫히지 않을(enableEscapeKey=false) 셀렉트가
+  // ESC 스택의 top을 점유해 아래 오버레이의 ESC를 삼키지 않게
   useEscapeKey({
     handler: () => {
       if (open && enableEscapeKey) {
@@ -313,7 +315,8 @@ export const SelectRoot: React.FC<SelectRootProps> = ({
         triggerRef.current?.focus();
       }
     },
-    enabled: open && !isMobile,
+    enabled: open && !isMobile && enableEscapeKey,
+    stacked: true, // 중첩 오버레이에서 ESC는 최상단만 닫는다
   });
 
   // resize 시 Select 닫기

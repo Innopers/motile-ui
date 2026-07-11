@@ -415,6 +415,7 @@ function SheetContent({ children, className = "", style }: SheetContentProps) {
   useEscapeKey({
     handler: close,
     enabled: open && normalizedOptions.escapeKey,
+    stacked: true, // 중첩 오버레이에서 ESC는 최상단만 닫는다
   });
 
   // isOpen prop 변경 감지

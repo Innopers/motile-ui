@@ -166,13 +166,15 @@ export const SpeedDialRoot: React.FC<SpeedDialRootProps> = ({
   });
 
   // ESC 키로 닫기
+  // enabled를 정직하게 계산 — 닫히지 않을 오버레이가 ESC 스택의 top을 점유하지 않게
   useEscapeKey({
     handler: () => {
       if (closeOnEscapeKey) {
         onOpenChange(false);
       }
     },
-    enabled: open,
+    enabled: open && closeOnEscapeKey,
+    stacked: true, // 중첩 오버레이에서 ESC는 최상단만 닫는다
   });
 
   const contextValue = React.useMemo(

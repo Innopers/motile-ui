@@ -323,7 +323,10 @@ function PopoverContent({
       },
       [autoClose, onDismiss, setOpen]
     ),
-    enabled: open,
+    // enabled를 정직하게 계산 — 닫히지 않을(autoClose=false) 팝오버가
+    // ESC 스택의 top을 점유해 아래 오버레이의 ESC를 삼키지 않게
+    enabled: open && autoClose,
+    stacked: true, // 중첩 오버레이에서 ESC는 최상단만 닫는다
   });
 
   // 외부 클릭으로 닫기

@@ -43,6 +43,8 @@
 - 📱 **모바일 최적화** - 터치 친화적 인터랙션과 반응형 디자인
 - ♿ **접근성** - WCAG 2.1 AA 준수 컴포넌트
 - 🎯 **트리쉐이킹 지원** - 필요한 것만 import
+- 🧅 **중첩 오버레이 안전** - Sheet 위 Sheet처럼 오버레이가 겹쳐도 뒤로가기·ESC·스크롤 잠금이 한 겹씩 정확히 동작
+- ⌨️ **스크롤 시 키보드 닫기** - 모바일에서 입력에 포커스한 채 스크롤하면 소프트 키보드를 자동으로 닫음 (useAutoBlur 훅 · autoBlur prop)
 - 📖 **풍부한 문서** - Storybook을 통한 라이브 예제 제공
 
 ---
@@ -234,6 +236,8 @@ MIT © [Innopers](https://github.com/Innopers)
 - 📱 **Mobile Optimized** - Touch-friendly interactions and responsive design
 - ♿ **Accessible** - WCAG 2.1 AA compliant components
 - 🎯 **Tree-shakeable** - Import only what you need
+- 🧅 **Nesting-Safe Overlays** - Back navigation, ESC, and scroll lock peel one layer at a time when overlays stack (e.g. Sheet over Sheet)
+- ⌨️ **Dismiss Keyboard on Scroll** - On mobile, scrolling with an input focused auto-dismisses the soft keyboard (useAutoBlur hook · autoBlur prop)
 - 📖 **Well Documented** - Comprehensive docs with live examples via Storybook
 
 ---

@@ -5,6 +5,92 @@ interface UseScrollLockOptions {
   allowedSelectors?: string[];
 }
 
+// ============================================================================
+// 전역 잠금 카운터 (모듈 스코프) — 중첩 안전화
+// ============================================================================
+//
+// 오버레이가 겹칠 때(Modal 위 Sheet, Sheet 위 Sheet 등) 인스턴스마다 원본
+// 스타일을 저장/복원하면 두 번째 인스턴스가 "이미 잠긴 값"을 원본으로 캡처해
+// 해제 순서에 따라 잠금이 조기 해제되거나 잠긴 채 남는다.
+// → 첫 잠금(0→1)에서만 원본을 캡처하고, 마지막 해제(1→0)에서만 복원한다.
+// 단일 인스턴스의 관측 동작은 기존과 동일하다.
+// (이벤트 리스너 차단은 기존처럼 인스턴스별로 유지 — 의미 변화 없음)
+
+interface SavedGlobalStyles {
+  bodyOverflow: string;
+  htmlOverflow: string;
+  bodyHeight: string;
+  bodyPaddingRight: string;
+  bodyTouchAction: string;
+  htmlTouchAction: string;
+  bodyOverscrollBehavior: string;
+  htmlOverscrollBehavior: string;
+}
+
+let scrollLockCount = 0;
+let savedGlobalStyles: SavedGlobalStyles | null = null;
+
+function acquireGlobalScrollLock() {
+  scrollLockCount += 1;
+  if (scrollLockCount > 1) return; // 이미 잠겨 있음 — 카운트만 증가
+
+  // 기존 스타일 저장 (첫 잠금에서만 — 진짜 원본)
+  savedGlobalStyles = {
+    bodyOverflow: document.body.style.overflow,
+    htmlOverflow: document.documentElement.style.overflow,
+    bodyHeight: document.body.style.height,
+    bodyPaddingRight: document.body.style.paddingRight,
+    bodyTouchAction: document.body.style.touchAction,
+    htmlTouchAction: document.documentElement.style.touchAction,
+    bodyOverscrollBehavior: document.body.style.overscrollBehavior,
+    htmlOverscrollBehavior: document.documentElement.style.overscrollBehavior,
+  };
+
+  // 스크롤바 너비 계산 (레이아웃 시프트 방지)
+  const scrollbarWidth =
+    window.innerWidth - document.documentElement.clientWidth;
+
+  // CSS 레벨 스크롤 차단
+  document.body.style.overflow = "hidden";
+  document.documentElement.style.overflow = "hidden";
+  document.body.style.height = "100%";
+
+  // iOS Safari 모멘텀 스크롤 및 터치 제스처 차단
+  document.body.style.touchAction = "none";
+  document.documentElement.style.touchAction = "none";
+
+  // 오버스크롤(바운스) 차단
+  document.body.style.overscrollBehavior = "none";
+  document.documentElement.style.overscrollBehavior = "none";
+
+  // 스크롤바가 사라진 공간만큼 오른쪽 패딩 추가 (레이아웃 시프트 방지)
+  if (scrollbarWidth > 0) {
+    document.body.style.paddingRight = `${scrollbarWidth}px`;
+  }
+}
+
+function releaseGlobalScrollLock() {
+  if (scrollLockCount === 0) return;
+  scrollLockCount -= 1;
+  if (scrollLockCount > 0) return; // 다른 인스턴스가 아직 잠금 중
+
+  // 마지막 해제 — 첫 잠금 때 캡처한 진짜 원본으로 복원
+  if (savedGlobalStyles) {
+    document.body.style.overflow = savedGlobalStyles.bodyOverflow;
+    document.documentElement.style.overflow = savedGlobalStyles.htmlOverflow;
+    document.body.style.height = savedGlobalStyles.bodyHeight;
+    document.body.style.paddingRight = savedGlobalStyles.bodyPaddingRight;
+    document.body.style.touchAction = savedGlobalStyles.bodyTouchAction;
+    document.documentElement.style.touchAction =
+      savedGlobalStyles.htmlTouchAction;
+    document.body.style.overscrollBehavior =
+      savedGlobalStyles.bodyOverscrollBehavior;
+    document.documentElement.style.overscrollBehavior =
+      savedGlobalStyles.htmlOverscrollBehavior;
+    savedGlobalStyles = null;
+  }
+}
+
 /**
  * 강력한 스크롤 락 훅
  *
@@ -23,39 +109,8 @@ export function useScrollLock({
   useEffect(() => {
     if (!enabled) return;
 
-    // 기존 스타일 저장
-    const originalBodyOverflow = document.body.style.overflow;
-    const originalHtmlOverflow = document.documentElement.style.overflow;
-    const originalBodyHeight = document.body.style.height;
-    const originalBodyPaddingRight = document.body.style.paddingRight;
-    const originalBodyTouchAction = document.body.style.touchAction;
-    const originalHtmlTouchAction = document.documentElement.style.touchAction;
-    const originalBodyOverscrollBehavior =
-      document.body.style.overscrollBehavior;
-    const originalHtmlOverscrollBehavior =
-      document.documentElement.style.overscrollBehavior;
-
-    // 스크롤바 너비 계산 (레이아웃 시프트 방지)
-    const scrollbarWidth =
-      window.innerWidth - document.documentElement.clientWidth;
-
-    // CSS 레벨 스크롤 차단
-    document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
-    document.body.style.height = "100%";
-
-    // iOS Safari 모멘텀 스크롤 및 터치 제스처 차단
-    document.body.style.touchAction = "none";
-    document.documentElement.style.touchAction = "none";
-
-    // 오버스크롤(바운스) 차단
-    document.body.style.overscrollBehavior = "none";
-    document.documentElement.style.overscrollBehavior = "none";
-
-    // 스크롤바가 사라진 공간만큼 오른쪽 패딩 추가 (레이아웃 시프트 방지)
-    if (scrollbarWidth > 0) {
-      document.body.style.paddingRight = `${scrollbarWidth}px`;
-    }
+    // 전역 잠금 획득 (첫 잠금에서만 원본 캡처 + 스타일 적용 — 중첩 안전)
+    acquireGlobalScrollLock();
 
     // 이벤트 레벨 스크롤 차단 (허용된 요소 제외)
     const preventScroll = (e: Event) => {
@@ -154,16 +209,8 @@ export function useScrollLock({
 
     // 정리 함수
     return () => {
-      // 스타일 복원
-      document.body.style.overflow = originalBodyOverflow;
-      document.documentElement.style.overflow = originalHtmlOverflow;
-      document.body.style.height = originalBodyHeight;
-      document.body.style.paddingRight = originalBodyPaddingRight;
-      document.body.style.touchAction = originalBodyTouchAction;
-      document.documentElement.style.touchAction = originalHtmlTouchAction;
-      document.body.style.overscrollBehavior = originalBodyOverscrollBehavior;
-      document.documentElement.style.overscrollBehavior =
-        originalHtmlOverscrollBehavior;
+      // 전역 잠금 해제 (마지막 해제에서만 원본 스타일 복원 — 중첩 안전)
+      releaseGlobalScrollLock();
 
       // 이벤트 리스너 제거
       document.removeEventListener("wheel", preventScroll);

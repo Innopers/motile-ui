@@ -235,6 +235,7 @@ export const DrawerRoot: React.FC<DrawerRootProps> = ({
   useEscapeKey({
     handler: handleClose,
     enabled: open && backdropOptions.escapeKey,
+    stacked: true, // 중첩 오버레이에서 ESC는 최상단만 닫는다
   });
 
   // Drag handlers

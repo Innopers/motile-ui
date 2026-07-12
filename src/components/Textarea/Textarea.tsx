@@ -7,6 +7,8 @@ import React, {
   useState,
 } from "react";
 
+import { useAutoBlur } from "@/hooks/useAutoBlur";
+
 import "./Textarea.css";
 
 export interface AutoSizeConfig {
@@ -74,6 +76,13 @@ export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextArea
    * @default false
    */
   autoSize?: boolean | AutoSizeConfig;
+
+  /**
+   * 모바일에서 이 입력에 포커스된 채 스크롤하면 포커스를 해제해 소프트 키보드를
+   * 닫습니다 (useAutoBlur 내장). 데스크톱(비터치)에는 영향이 없습니다.
+   * @default false
+   */
+  autoBlur?: boolean;
 }
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
@@ -93,6 +102,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       rows = 4,
       resize = "none",
       autoSize = false,
+      autoBlur = false,
       ...props
     },
     ref
@@ -100,6 +110,10 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     const internalRef = useRef<HTMLTextAreaElement>(null);
     const textareaRef =
       (ref as React.RefObject<HTMLTextAreaElement>) || internalRef;
+    const rootRef = useRef<HTMLDivElement>(null);
+
+    // 모바일: 이 입력에 포커스된 채 스크롤하면 키보드 닫기 (opt-in, 기본 off)
+    useAutoBlur({ containerRef: rootRef, enabled: autoBlur });
 
     const [sizeState, setSizeState] = useState<{
       height?: number;
@@ -258,7 +272,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         .join(" ") || undefined;
 
     return (
-      <div className={`${baseClass}-root`}>
+      <div className={`${baseClass}-root`} ref={rootRef}>
         <div className={wrapperClasses} style={wrapperStyle}>
           {label && <label className={labelClasses}>{label}</label>}
 

@@ -91,6 +91,114 @@ export interface UseHistoryCloseReturn {
 const generateSheetId = () =>
   `__motile_sheet_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
 
+// ============================================================================
+// 오버레이 레지스트리 (모듈 스코프) — 중첩 안전화
+// ============================================================================
+//
+// 여러 Sheet이 동시에 열릴 때(중첩) 각 인스턴스가 자기만의 popstate 리스너를
+// 가지면 pop 1회에 전부 닫혀버린다. 공유 리스너 1개 + 스택으로
+// "최상단만 닫기"를 보장한다. 단일 인스턴스의 관측 동작은 기존과 동일하다.
+//
+// - overlayStack: 열린 순서(아래→위). top = 마지막 요소
+// - orphanedDummies: top이 아닌 채로 닫혀 더미가 히스토리 중간에 묻힌 인스턴스의
+//   id. 이후 pop으로 그 더미에 착지하면 한 번 더 back()으로 건너뛴다.
+// - expectedPops: "정리/스킵용 back()"이 만들 popstate를 사용자 pop(닫기)으로
+//   오해하지 않기 위한 카운터
+//
+// 불변식: 리스너 attached ⇔ (overlayStack.length > 0 || expectedPops > 0)
+
+interface OverlayEntry {
+  id: string;
+  closeFromPop: () => void;
+}
+
+const overlayStack: OverlayEntry[] = [];
+const orphanedDummies = new Set<string>();
+let expectedPops = 0;
+let listenerAttached = false;
+
+function handleSharedPopState(_e: PopStateEvent) {
+  if (expectedPops > 0) {
+    // 정리/스킵용 back()의 pop — 닫기로 해석하지 않는다
+    expectedPops -= 1;
+  } else {
+    // 사용자 pop — 스택 최상단만 닫는다
+    overlayStack.pop()?.closeFromPop();
+  }
+
+  // 착지한 곳이 고아 더미면 한 번 더 back()으로 건너뛴다.
+  // (event.state가 아니라 window.history.state를 읽는다 — 수동 dispatch 호환)
+  const landedState = window.history.state as {
+    __motileSheetModal?: string;
+  } | null;
+  const landedId = landedState?.__motileSheetModal;
+  if (landedId && orphanedDummies.has(landedId)) {
+    orphanedDummies.delete(landedId); // back() 전에 삭제 → 루프 불가
+    expectedPops += 1;
+    window.history.back();
+  }
+
+  detachIfIdle();
+}
+
+function attachIfNeeded() {
+  if (listenerAttached) return;
+  // 새 오버레이 세션 시작 — 이전 세션 잔여물 정리
+  orphanedDummies.clear();
+  expectedPops = 0;
+  window.addEventListener("popstate", handleSharedPopState);
+  listenerAttached = true;
+}
+
+function detachIfIdle() {
+  if (!listenerAttached) return;
+  if (overlayStack.length > 0 || expectedPops > 0) return;
+  window.removeEventListener("popstate", handleSharedPopState);
+  listenerAttached = false;
+  orphanedDummies.clear();
+}
+
+const overlayRegistry = {
+  /** 열린 인스턴스 등록 (id 기준 멱등 — React Strict Mode 재실행 안전) */
+  add(id: string, closeFromPop: () => void) {
+    attachIfNeeded();
+    orphanedDummies.delete(id); // Strict Mode 재등록 시 고아 해제
+    const existing = overlayStack.find((entry) => entry.id === id);
+    if (existing) {
+      existing.closeFromPop = closeFromPop;
+    } else {
+      overlayStack.push({ id, closeFromPop });
+    }
+  },
+
+  /**
+   * 등록 해제 (멱등).
+   * 여기서 고아 등록은 하지 않는다 — cleanup만으로는 unmount와
+   * Strict Mode 재실행을 구분할 수 없기 때문. (고아 등록은 닫힘 effect의
+   * else-분기에서만 명시적으로 수행)
+   */
+  remove(id: string) {
+    const index = overlayStack.findIndex((entry) => entry.id === id);
+    if (index >= 0) {
+      overlayStack.splice(index, 1);
+    }
+    detachIfIdle();
+  },
+
+  /** top이 아닌 채로 닫힌 인스턴스의 더미를 이후 pop에서 스킵하도록 표시 */
+  orphan(id: string) {
+    // 리스너가 없으면(단일 인스턴스가 이미 정리된 경로) 오늘과 동일하게 무시
+    if (!listenerAttached) return;
+    orphanedDummies.add(id);
+  },
+
+  /** 곧 실행할 back()이 "정리용"임을 예고 — 그 pop은 닫기로 해석하지 않는다 */
+  willConsumePop() {
+    if (!listenerAttached) return;
+    expectedPops += 1;
+  },
+};
+
 export function useHistoryClose({
   onClose,
   isOpen,
@@ -126,13 +234,6 @@ export function useHistoryClose({
     // Sheet이 닫혀있으면 아무것도 안 함
     if (!isOpen) return;
 
-    // popstate 이벤트 핸들러 (뒤로가기/스와이프 감지)
-    const handlePopState = (_e: PopStateEvent) => {
-      // 히스토리 기반 닫기 플래그 설정 (컴포넌트 re-render 발생)
-      setIsClosingFromHistory(true);
-      onCloseRef.current();
-    };
-
     // pushState는 한 번만 실행 (React Strict Mode에서도 안전)
     // hasPushedRef로 중복 방지
     if (!hasPushedRef.current) {
@@ -145,12 +246,20 @@ export function useHistoryClose({
       hasPushedRef.current = true;
     }
 
-    // 리스너는 항상 등록 (React Strict Mode cleanup 후 재등록 필요)
-    window.addEventListener("popstate", handlePopState);
+    const id = sheetIdRef.current;
+    if (!id) return;
 
-    // cleanup: 컴포넌트 unmount 또는 isOpen 변경 시 리스너 제거
+    // 공유 popstate 리스너의 스택에 등록 (멱등 — Strict Mode 재실행 안전)
+    // pop 발생 시 스택 최상단 인스턴스만 닫힌다 (중첩 안전).
+    overlayRegistry.add(id, () => {
+      // 히스토리 기반 닫기 플래그 설정 (컴포넌트 re-render 발생)
+      setIsClosingFromHistory(true);
+      onCloseRef.current();
+    });
+
+    // cleanup: 컴포넌트 unmount 또는 isOpen 변경 시 등록 해제
     return () => {
-      window.removeEventListener("popstate", handlePopState);
+      overlayRegistry.remove(id);
     };
   }, [isOpen, enabled]);
 
@@ -192,6 +301,9 @@ export function useHistoryClose({
           window.addEventListener("popstate", navigationPopStateHandler);
         }
 
+        // 이 back()은 "더미 정리용" — 공유 리스너가 아래 시트를 닫는 것으로
+        // 오해하지 않도록 예고 (중첩 시 필수, 단일 시트에선 no-op)
+        overlayRegistry.willConsumePop();
         window.history.back();
       } else {
         // 우리의 dummy entry 위에 있지 않음
@@ -199,6 +311,12 @@ export function useHistoryClose({
         // 이 경우 history.back()을 호출하면 예상치 못한 곳으로 이동할 수 있음
         // dummy entry는 history에 남지만, 사용자 경험에 큰 영향 없음
         // (뒤로가기 한 번 더 누르면 됨)
+
+        // 중첩 상태에서 아래 시트가 먼저 닫힌 경우: 묻힌 더미를 고아로 표시해
+        // 이후 pop에서 자동으로 건너뛴다 (단일 시트 경로에선 no-op)
+        if (sheetIdRef.current) {
+          overlayRegistry.orphan(sheetIdRef.current);
+        }
 
         // 대기 중인 네비게이션이 있으면 실행
         if (pendingNavigationRef.current) {

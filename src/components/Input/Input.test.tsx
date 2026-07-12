@@ -257,4 +257,48 @@ describe("Input", () => {
       expect(id).toMatch(/motile-input-/);
     });
   });
+
+  describe("autoBlur", () => {
+    const fireTouchMove = () => window.dispatchEvent(new Event("touchmove"));
+
+    it("기본(off)에서는 touchmove에도 포커스가 유지됨", () => {
+      render(<Input />);
+      const input = screen.getByRole("textbox") as HTMLInputElement;
+      input.focus();
+      fireTouchMove();
+      expect(document.activeElement).toBe(input);
+    });
+
+    it("autoBlur이면 touchmove 시 포커스가 해제됨", () => {
+      render(<Input autoBlur />);
+      const input = screen.getByRole("textbox") as HTMLInputElement;
+      input.focus();
+      expect(document.activeElement).toBe(input);
+      fireTouchMove();
+      expect(document.activeElement).not.toBe(input);
+    });
+
+    it("autoBlur prop이 DOM 속성으로 새지 않음", () => {
+      render(<Input autoBlur />);
+      expect(screen.getByRole("textbox")).not.toHaveAttribute("autoblur");
+    });
+
+    it("autoBlur을 true→false로 바꾸면 리스너가 해제돼 포커스가 유지됨", () => {
+      const { rerender } = render(<Input autoBlur />);
+      const input = screen.getByRole("textbox") as HTMLInputElement;
+      rerender(<Input autoBlur={false} />);
+      input.focus();
+      fireTouchMove();
+      expect(document.activeElement).toBe(input);
+    });
+
+    it("forwarded ref와 함께 써도 touchmove 시 포커스가 해제됨", () => {
+      const ref = React.createRef<HTMLInputElement>();
+      render(<Input ref={ref} autoBlur />);
+      ref.current?.focus();
+      expect(document.activeElement).toBe(ref.current);
+      fireTouchMove();
+      expect(document.activeElement).not.toBe(ref.current);
+    });
+  });
 });

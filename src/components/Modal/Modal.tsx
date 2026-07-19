@@ -10,6 +10,7 @@ import { createPortal } from "react-dom";
 
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { useEscapeKey } from "@/hooks/useEscapeKey";
+import { useHistoryClose } from "@/hooks/useHistoryClose";
 import { useScrollLock } from "@/hooks/useScrollLock";
 import { Slot } from "@/utils/Slot";
 
@@ -51,6 +52,10 @@ export type CloseOnBackdropOptions =
 interface ModalContextValue {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  /** 히스토리 인식 닫기 — enableHistoryClose=true면 history.back(), 아니면 onOpenChange(false) */
+  close: () => void;
+  /** enableHistoryClose 활성 여부 (backdrop 이중경로 dedup용) */
+  enableHistoryClose: boolean;
   titleId: string;
   descriptionId: string;
 }
@@ -70,6 +75,20 @@ interface ModalRootProps {
    * Modal 내용
    */
   children: React.ReactNode;
+
+  /**
+   * 브라우저 히스토리(뒤로가기 / iOS 스와이프 제스처)로 Modal 닫기 활성화.
+   *
+   * 옵트인 기능이다. 활성 시 열릴 때 더미 히스토리 항목을 push하고,
+   * 브라우저 뒤로가기로 Modal이 닫힌다. 내부적으로 Sheet과 동일한 오버레이
+   * 히스토리 레지스트리를 공유하므로 Sheet/Modal 중첩에서도 안전하다.
+   *
+   * 주의: 열린 상태로 Modal.Root가 언마운트되거나 외부 라우팅(router.push 등)으로
+   * 닫히면 정리용 back()이 실행되지 않아 더미 항목이 남을 수 있다(뒤로가기 한 번은 no-op).
+   *
+   * @default false
+   */
+  enableHistoryClose?: boolean;
 }
 
 interface ModalOverlayProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -195,18 +214,29 @@ export const ModalRoot: React.FC<ModalRootProps> = ({
   open,
   onOpenChange,
   children,
+  enableHistoryClose = false,
 }) => {
   const titleId = useId();
   const descriptionId = useId();
+
+  // 히스토리 기반 뒤로가기 닫기 (옵트인). Sheet과 동일한 훅/레지스트리를 공유한다.
+  // Modal은 exit 애니메이션이 없으므로 isClosingFromHistory·navigateAndClose는 쓰지 않는다.
+  const { close } = useHistoryClose({
+    isOpen: open,
+    onClose: () => onOpenChange(false),
+    enabled: enableHistoryClose,
+  });
 
   const contextValue = React.useMemo(
     () => ({
       open,
       onOpenChange,
+      close,
+      enableHistoryClose,
       titleId,
       descriptionId,
     }),
-    [open, onOpenChange, titleId, descriptionId]
+    [open, onOpenChange, close, enableHistoryClose, titleId, descriptionId]
   );
 
   return (
@@ -237,7 +267,7 @@ export const ModalOverlay = React.forwardRef<HTMLDivElement, ModalOverlayProps>(
     },
     ref
   ) => {
-    const { open, onOpenChange } = useModalContext();
+    const { open, onOpenChange, close, enableHistoryClose } = useModalContext();
     const overlayRef = useRef<HTMLDivElement>(null);
     const [mounted, setMounted] = useState(false);
 
@@ -267,7 +297,9 @@ export const ModalOverlay = React.forwardRef<HTMLDivElement, ModalOverlayProps>(
     useClickOutside({
       refs: [overlayRef],
       handler: () => {
-        if (enableClickOutside) {
+        // enableHistoryClose 옵트인 시 mousedown 경로는 끈다.
+        // (click 경로 handleClick의 close() 하나만 남겨 backdrop 클릭당 history.back() 1회)
+        if (enableClickOutside && !enableHistoryClose) {
           onOpenChange(false);
         }
       },
@@ -279,7 +311,7 @@ export const ModalOverlay = React.forwardRef<HTMLDivElement, ModalOverlayProps>(
     useEscapeKey({
       handler: () => {
         if (enableEscapeKey) {
-          onOpenChange(false);
+          close();
         }
       },
       enabled: open && enableEscapeKey,
@@ -290,7 +322,7 @@ export const ModalOverlay = React.forwardRef<HTMLDivElement, ModalOverlayProps>(
       onClick?.(e);
       // Overlay 자체를 클릭한 경우 (자식 요소가 아닌)
       if (e.target === e.currentTarget && enableClickOutside) {
-        onOpenChange(false);
+        close();
       }
     };
 
@@ -414,11 +446,11 @@ ModalBody.displayName = "Modal.Body";
 
 export const ModalClose = React.forwardRef<HTMLButtonElement, ModalCloseProps>(
   ({ asChild, className, onClick, children, ...props }, ref) => {
-    const { onOpenChange } = useModalContext();
+    const { close } = useModalContext();
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       onClick?.(e);
-      onOpenChange(false);
+      close();
     };
 
     if (asChild) {

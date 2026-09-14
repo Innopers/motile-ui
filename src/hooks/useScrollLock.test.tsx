@@ -89,6 +89,16 @@ describe("useScrollLock", () => {
       expect(bodyStyle().paddingRight).toBe("");
     });
 
+    it("S9: scrollbar-gutter가 stable이면 paddingRight 보정을 생략한다", () => {
+      for (const gutter of ["stable", "stable both-edges"]) {
+        document.documentElement.style.setProperty("scrollbar-gutter", gutter);
+
+        const view = render(<LockHost />);
+        expect(bodyStyle().paddingRight).toBe("");
+        view.unmount();
+      }
+    });
+
     it("S5: 잠금 세션 사이에 앱이 바꾼 스타일은 다음 세션의 원본으로 캡처된다", () => {
       const first = render(<LockHost />);
       first.unmount();

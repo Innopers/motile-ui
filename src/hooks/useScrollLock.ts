@@ -46,9 +46,13 @@ function acquireGlobalScrollLock() {
     htmlOverscrollBehavior: document.documentElement.style.overscrollBehavior,
   };
 
-  // 스크롤바 너비 계산 (레이아웃 시프트 방지)
-  const scrollbarWidth =
-    window.innerWidth - document.documentElement.clientWidth;
+  // stable 거터는 잠금 중에도 반납되지 않음 — 보정하면 본문 폭만 순감
+  const scrollbarGutter = window
+    .getComputedStyle(document.documentElement)
+    .getPropertyValue("scrollbar-gutter");
+  const scrollbarWidth = scrollbarGutter.includes("stable")
+    ? 0
+    : window.innerWidth - document.documentElement.clientWidth;
 
   // hidden 만 두면 body 가 스크롤 컨테이너가 되어 소비자 sticky 붕괴
   // clip 만 두면 Safari 15 이하에서 잠금 소실 — 두 줄 순서가 폴백

@@ -55,8 +55,8 @@ describe("useScrollLock", () => {
 
       const view = render(<LockHost />);
 
-      expect(bodyStyle().overflow).toBe("hidden");
-      expect(htmlStyle().overflow).toBe("hidden");
+      expect(bodyStyle().overflow).toBe("clip");
+      expect(htmlStyle().overflow).toBe("clip");
       expect(bodyStyle().height).toBe("100%");
       expect(bodyStyle().touchAction).toBe("none");
       expect(htmlStyle().touchAction).toBe("none");
@@ -96,7 +96,7 @@ describe("useScrollLock", () => {
       bodyStyle().overflow = "scroll"; // 앱이 세션 사이에 변경
 
       const second = render(<LockHost />);
-      expect(bodyStyle().overflow).toBe("hidden");
+      expect(bodyStyle().overflow).toBe("clip");
       second.unmount();
       expect(bodyStyle().overflow).toBe("scroll");
     });
@@ -114,7 +114,7 @@ describe("useScrollLock", () => {
       const view = render(<ChurnHost tick={0} />);
       for (let i = 1; i <= 5; i += 1) {
         view.rerender(<ChurnHost tick={i} />);
-        expect(bodyStyle().overflow).toBe("hidden");
+        expect(bodyStyle().overflow).toBe("clip");
       }
       view.unmount();
       expect(bodyStyle().overflow).toBe("auto");
@@ -128,7 +128,7 @@ describe("useScrollLock", () => {
           <LockHost />
         </StrictMode>
       );
-      expect(bodyStyle().overflow).toBe("hidden");
+      expect(bodyStyle().overflow).toBe("clip");
 
       view.unmount();
       expect(bodyStyle().overflow).toBe("auto");
@@ -175,10 +175,10 @@ describe("useScrollLock", () => {
       bodyStyle().overflow = "auto";
 
       const view = render(<Pair a={true} b={true} />);
-      expect(bodyStyle().overflow).toBe("hidden");
+      expect(bodyStyle().overflow).toBe("clip");
 
       view.rerender(<Pair a={true} b={false} />); // 위(b) 해제
-      expect(bodyStyle().overflow).toBe("hidden");
+      expect(bodyStyle().overflow).toBe("clip");
 
       view.rerender(<Pair a={false} b={false} />); // 마지막(a) 해제
       expect(bodyStyle().overflow).toBe("auto");
@@ -188,14 +188,14 @@ describe("useScrollLock", () => {
       bodyStyle().overflow = "auto";
 
       const view = render(<Pair a={true} b={true} />);
-      expect(bodyStyle().overflow).toBe("hidden");
+      expect(bodyStyle().overflow).toBe("clip");
 
       view.rerender(<Pair a={false} b={true} />); // 아래(a) 먼저 해제
-      // 핵심: b가 아직 잠금 중 → hidden 유지 (현재 코드는 여기서 auto로 풀려버림)
-      expect(bodyStyle().overflow).toBe("hidden");
+      // 핵심: b가 아직 잠금 중 → clip 유지 (현재 코드는 여기서 auto로 풀려버림)
+      expect(bodyStyle().overflow).toBe("clip");
 
       view.rerender(<Pair a={false} b={false} />); // 마지막(b) 해제
-      // 핵심: "hidden"(오염된 캡처)이 아니라 진짜 원본 "auto"로 복원
+      // 핵심: "clip"(오염된 캡처)이 아니라 진짜 원본 "auto"로 복원
       expect(bodyStyle().overflow).toBe("auto");
     });
   });

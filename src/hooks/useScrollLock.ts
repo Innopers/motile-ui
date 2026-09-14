@@ -50,9 +50,12 @@ function acquireGlobalScrollLock() {
   const scrollbarWidth =
     window.innerWidth - document.documentElement.clientWidth;
 
-  // CSS 레벨 스크롤 차단
+  // hidden 만 두면 body 가 스크롤 컨테이너가 되어 소비자 sticky 붕괴
+  // clip 만 두면 Safari 15 이하에서 잠금 소실 — 두 줄 순서가 폴백
   document.body.style.overflow = "hidden";
+  document.body.style.overflow = "clip";
   document.documentElement.style.overflow = "hidden";
+  document.documentElement.style.overflow = "clip";
   document.body.style.height = "100%";
 
   // iOS Safari 모멘텀 스크롤 및 터치 제스처 차단

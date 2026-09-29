@@ -88,7 +88,7 @@ export const FloatingArrow = React.forwardRef<
               } L${width + 1} ${height - 1} L${width - 1} ${height - 1} L${
                 width / 2
               } 1 L1 ${height - 1} Z`}
-              fill="white"
+              fill="var(--motile-bg)"
             />
             {/* 보이는 가장자리에만 화살표 외곽선 */}
             <path

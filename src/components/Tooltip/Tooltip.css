@@ -67,7 +67,7 @@
     --motile-tooltip-color,
     var(--motile-ui-tooltip, var(--motile-theme, #3b82f6))
   );
-  background: white;
+  background: var(--motile-bg);
   color: var(--arrow-color);
   border: 1px solid var(--arrow-color);
 }

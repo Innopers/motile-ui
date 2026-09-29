@@ -193,7 +193,6 @@
   },
   "license": "MIT",
   "sideEffects": [
-    "**/*.css",
-    "**/styles/theme.js"
+    "**/*.css"
   ]
 }

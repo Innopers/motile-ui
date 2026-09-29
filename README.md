@@ -40,6 +40,7 @@
 - 🎨 **20개의 고품질 컴포넌트** - 웹뷰 애플리케이션을 위해 세심하게 제작
 - 💪 **TypeScript 우선** - 포괄적인 타입 정의 완벽 지원
 - 🎭 **커스터마이징 가능** - CSS 변수로 쉬운 테마 설정
+- 🌓 **다크 모드** - OS 설정 또는 `data-theme` 속성으로 라이트·다크 전환
 - 📱 **모바일 최적화** - 터치 친화적 인터랙션과 반응형 디자인
 - ♿ **접근성** - WCAG 2.1 AA 준수 컴포넌트
 - 🎯 **트리쉐이킹 지원** - 필요한 것만 import
@@ -176,6 +177,41 @@ color props > 컴포넌트 타입 전역 색상 > 전역 테마 색상 > 기본 
 color props > --motile-ui-btn > --motile-theme > #3b82f6 (기본값)
 ```
 
+### 다크 모드
+
+OS 설정을 자동으로 따릅니다. `<html>`의 `data-theme` 속성으로 직접 지정할 수도 있습니다:
+
+```html
+<html data-theme="dark">  <!-- 항상 다크 -->
+<html data-theme="light"> <!-- 항상 라이트 (OS가 다크여도) -->
+<html>                    <!-- OS 설정을 따름 -->
+```
+
+바탕·글자·테두리 같은 중성색은 팔레트 변수로 정해져 있어 덮어쓸 수 있습니다. 회색 번호는 바탕과의 대비 순서라 다크에서는 값이 뒤집힙니다 (`--motile-gray-900`은 라이트에서 거의 검정, 다크에서 거의 흰색).
+
+```css
+:root {
+  --motile-bg: #ffffff; /* 바탕 */
+  --motile-gray-200: #e5e7eb; /* 테두리 (--motile-gray-50 ~ 900) */
+  --motile-gray-900: #111827; /* 본문 글자 */
+  --motile-error-bg: #fef5f5; /* 에러 상태 입력 필드 바탕 */
+}
+
+/* :root 값은 다크에도 그대로 쓰이므로 다크 값을 따로 지정 */
+:root[data-theme="dark"] {
+  --motile-bg: #151618;
+}
+
+/* OS 설정을 따를 때만 필요 */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --motile-bg: #151618;
+  }
+}
+```
+
+`--motile-theme`과 컴포넌트별 색상은 라이트·다크 공통입니다. 다크에서 다른 색을 쓰려면 위처럼 다크 선택자 안에서 지정하세요.
+
 ---
 
 ## 🎨 컴포넌트
@@ -233,6 +269,7 @@ MIT © [Innopers](https://github.com/Innopers)
 - 🎨 **20 High-Quality Components** - Carefully crafted for webview applications
 - 💪 **TypeScript First** - Full TypeScript support with comprehensive type definitions
 - 🎭 **Customizable** - Easy theming with CSS variables
+- 🌓 **Dark Mode** - Switches between light and dark via the OS setting or the `data-theme` attribute
 - 📱 **Mobile Optimized** - Touch-friendly interactions and responsive design
 - ♿ **Accessible** - WCAG 2.1 AA compliant components
 - 🎯 **Tree-shakeable** - Import only what you need
@@ -368,6 +405,41 @@ Example:
 ```
 color props > --motile-ui-btn > --motile-theme > #3b82f6 (default)
 ```
+
+### Dark Mode
+
+Motile UI follows the OS setting automatically. You can also set it explicitly with the `data-theme` attribute on `<html>`:
+
+```html
+<html data-theme="dark">  <!-- Always dark -->
+<html data-theme="light"> <!-- Always light (even when the OS is dark) -->
+<html>                    <!-- Follows the OS setting -->
+```
+
+Neutral colors such as backgrounds, text, and borders come from palette variables you can override. Gray steps are ordered by contrast against the background, so their values flip in dark mode (`--motile-gray-900` is near-black in light and near-white in dark).
+
+```css
+:root {
+  --motile-bg: #ffffff; /* Background */
+  --motile-gray-200: #e5e7eb; /* Border (--motile-gray-50 ~ 900) */
+  --motile-gray-900: #111827; /* Body text */
+  --motile-error-bg: #fef5f5; /* Input background in the error state */
+}
+
+/* :root values also apply in dark mode, so set dark values separately */
+:root[data-theme="dark"] {
+  --motile-bg: #151618;
+}
+
+/* Only needed when following the OS setting */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --motile-bg: #151618;
+  }
+}
+```
+
+`--motile-theme` and the component colors are shared by light and dark. To use a different color in dark mode, set it inside the dark selectors as shown above.
 
 ---
 

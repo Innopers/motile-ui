@@ -187,6 +187,8 @@ OS 설정을 자동으로 따릅니다. `<html>`의 `data-theme` 속성으로 �
 <html>                    <!-- OS 설정을 따름 -->
 ```
 
+다크 모드를 지원하지 않는 앱은 `<html data-theme="light">`로 고정하세요. 고정하지 않으면 OS가 다크일 때 컴포넌트가 다크로 표시됩니다.
+
 바탕·글자·테두리 같은 중성색은 팔레트 변수로 정해져 있어 덮어쓸 수 있습니다. 회색 번호는 바탕과의 대비 순서라 다크에서는 값이 뒤집힙니다 (`--motile-gray-900`은 라이트에서 거의 검정, 다크에서 거의 흰색).
 
 ```css
@@ -415,6 +417,8 @@ Motile UI follows the OS setting automatically. You can also set it explicitly w
 <html data-theme="light"> <!-- Always light (even when the OS is dark) -->
 <html>                    <!-- Follows the OS setting -->
 ```
+
+If your app does not support dark mode, lock it with `<html data-theme="light">`. Otherwise, components render dark when the OS is dark.
 
 Neutral colors such as backgrounds, text, and borders come from palette variables you can override. Gray steps are ordered by contrast against the background, so their values flip in dark mode (`--motile-gray-900` is near-black in light and near-white in dark).
 

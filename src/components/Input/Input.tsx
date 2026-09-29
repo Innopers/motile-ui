@@ -4,6 +4,8 @@ import { useAutoBlur } from "@/hooks/useAutoBlur";
 
 import "./Input.css";
 
+import "@/styles/theme";
+
 /**
  * Input 스타일 variant
  * - `outlined`: 테두리 스타일 (기본값)

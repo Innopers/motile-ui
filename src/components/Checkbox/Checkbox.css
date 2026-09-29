@@ -41,9 +41,9 @@
   height: 20px;
   min-width: 20px;
   min-height: 20px;
-  border: 2px solid #d1d5db;
+  border: 2px solid var(--motile-gray-300);
   border-radius: 4px;
-  background-color: #ffffff;
+  background-color: var(--motile-bg);
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
@@ -127,8 +127,8 @@
 
 /* Filled Variant - Always show check icon */
 :where(.motile-checkbox--filled + .motile-checkbox__mark) {
-  background-color: #e5e7eb;
-  border-color: #e5e7eb;
+  background-color: var(--motile-gray-200);
+  border-color: var(--motile-gray-200);
 }
 
 :where(
@@ -240,20 +240,20 @@
 
 /* Disabled State */
 :where(.motile-checkbox:disabled + .motile-checkbox__mark) {
-  background-color: #f3f4f6;
-  border-color: #d1d5db;
+  background-color: var(--motile-gray-100);
+  border-color: var(--motile-gray-300);
   cursor: not-allowed;
 }
 
 :where(.motile-checkbox:disabled:checked + .motile-checkbox__mark) {
-  background-color: #d1d5db;
-  border-color: #d1d5db;
+  background-color: var(--motile-gray-300);
+  border-color: var(--motile-gray-300);
 }
 
 /* Label */
 :where(.motile-checkbox__label) {
   font-size: 14px;
-  color: #374151;
+  color: var(--motile-gray-700);
   cursor: pointer;
   margin: 0;
   padding: 0;
@@ -273,6 +273,6 @@
 }
 
 :where(.motile-checkbox__label--disabled) {
-  color: #9ca3af;
+  color: var(--motile-gray-400);
   cursor: not-allowed;
 }

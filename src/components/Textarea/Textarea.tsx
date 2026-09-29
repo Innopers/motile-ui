@@ -11,6 +11,8 @@ import { useAutoBlur } from "@/hooks/useAutoBlur";
 
 import "./Textarea.css";
 
+import "@/styles/theme";
+
 export interface AutoSizeConfig {
   minRows?: number;
   maxRows?: number;

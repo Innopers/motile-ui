@@ -13,6 +13,8 @@ import { Slot } from "@/utils/Slot";
 
 import "./Accordion.css";
 
+import "@/styles/theme";
+
 const BASE = "motile-accordion";
 
 // ===========================

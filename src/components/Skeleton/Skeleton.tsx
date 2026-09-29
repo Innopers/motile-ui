@@ -2,6 +2,8 @@ import React from "react";
 
 import "./Skeleton.css";
 
+import "@/styles/theme";
+
 export interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
    * Skeleton 너비

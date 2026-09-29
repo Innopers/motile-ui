@@ -55,7 +55,7 @@
 
 /* Secondary Variant */
 :where(.motile-btn--secondary) {
-  background: white;
+  background: var(--motile-bg);
   color: var(
     --motile-btn-color,
     var(--motile-ui-btn, var(--motile-theme, #3b82f6))
@@ -165,8 +165,8 @@
 }
 
 :where(.motile-btn--secondary.motile-btn--disabled) {
-  background: #e5e7eb;
-  color: #6b7280;
+  background: var(--motile-gray-200);
+  color: var(--motile-gray-500);
   border: none;
   cursor: not-allowed;
   transform: none;
@@ -175,8 +175,8 @@
 }
 
 :where(.motile-btn--ghost.motile-btn--disabled) {
-  background: #e5e7eb;
-  color: #6b7280;
+  background: var(--motile-gray-200);
+  color: var(--motile-gray-500);
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
@@ -306,11 +306,11 @@
 }
 
 :where(.motile-btn--secondary .motile-btn__dot) {
-  background-color: rgba(156, 163, 175, 0.7);
+  background-color: color-mix(in srgb, var(--motile-gray-400) 70%, transparent);
 }
 
 :where(.motile-btn--ghost .motile-btn__dot) {
-  background-color: rgba(156, 163, 175, 0.7);
+  background-color: color-mix(in srgb, var(--motile-gray-400) 70%, transparent);
 }
 
 /* Loading bounce animation */

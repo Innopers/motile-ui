@@ -90,7 +90,7 @@
 
 /* Modal Content */
 :where(.motile-modal__content) {
-  background-color: #ffffff;
+  background-color: var(--motile-bg);
   border-radius: 12px;
   box-shadow:
     0 20px 25px -5px rgba(0, 0, 0, 0.1),
@@ -127,14 +127,14 @@
   align-items: center;
   justify-content: space-between;
   padding: 16px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--motile-gray-200);
   flex-shrink: 0;
 }
 
 :where(.motile-modal__title) {
   font-size: 1rem;
   font-weight: 600;
-  color: #111827;
+  color: var(--motile-gray-900);
   margin: 0;
   line-height: 1.4;
 }
@@ -149,13 +149,13 @@
   padding: 8px;
   margin: -8px;
   border-radius: 8px;
-  color: #6b7280;
+  color: var(--motile-gray-500);
   transition: all 0.15s ease;
 }
 
 :where(.motile-modal__close:hover) {
-  background-color: #f3f4f6;
-  color: #111827;
+  background-color: var(--motile-gray-100);
+  color: var(--motile-gray-900);
 }
 
 :where(.motile-modal__close:active) {
@@ -174,7 +174,7 @@
   overflow-x: hidden;
   flex: 1;
   min-height: 0;
-  color: #374151;
+  color: var(--motile-gray-700);
   line-height: 1.6;
   /* 모바일 스크롤 최적화 */
   -webkit-overflow-scrolling: touch;
@@ -206,7 +206,7 @@
   justify-content: flex-end;
   gap: 12px;
   padding: 12px 16px;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--motile-gray-200);
   flex-shrink: 0;
 }
 
@@ -290,7 +290,7 @@
 /* 고대비 모드 */
 @media (prefers-contrast: high) {
   :where(.motile-modal__content) {
-    border: 2px solid #000000;
+    border: 2px solid var(--motile-gray-900);
   }
 
   :where(.motile-modal__header) {
@@ -331,7 +331,7 @@
 
   /* 터치 피드백 */
   :where(.motile-modal__close:active) {
-    background-color: #e5e7eb;
+    background-color: var(--motile-gray-200);
   }
 }
 
@@ -405,48 +405,3 @@
 }
 
 /* 다크모드 대응 준비 (나중에 추가 가능) */
-@media (prefers-color-scheme: dark) {
-  :where(.motile-modal__backdrop) {
-    background-color: rgba(0, 0, 0, 0.75);
-  }
-
-  :where(.motile-modal__content) {
-    background-color: #1f2937;
-    box-shadow:
-      0 20px 25px -5px rgba(0, 0, 0, 0.5),
-      0 10px 10px -5px rgba(0, 0, 0, 0.3);
-  }
-
-  :where(.motile-modal__header) {
-    border-bottom-color: #374151;
-  }
-
-  :where(.motile-modal__title) {
-    color: #f9fafb;
-  }
-
-  :where(.motile-modal__close) {
-    color: #9ca3af;
-  }
-
-  :where(.motile-modal__close:hover) {
-    background-color: #374151;
-    color: #f9fafb;
-  }
-
-  :where(.motile-modal__body) {
-    color: #e5e7eb;
-  }
-
-  :where(.motile-modal__footer) {
-    border-top-color: #374151;
-  }
-
-  :where(.motile-modal__body::-webkit-scrollbar-thumb) {
-    background-color: rgba(255, 255, 255, 0.2);
-  }
-
-  :where(.motile-modal__body::-webkit-scrollbar-thumb:hover) {
-    background-color: rgba(255, 255, 255, 0.3);
-  }
-}

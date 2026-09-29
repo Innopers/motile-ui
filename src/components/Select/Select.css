@@ -37,10 +37,10 @@
       60%,
     transparent
   );
-  background-color: rgba(229, 231, 235, 0.5);
+  background-color: color-mix(in srgb, var(--motile-gray-200) 50%, transparent);
   backdrop-filter: blur(8px);
   filter: blur(1.5px);
-  color: rgba(31, 41, 55, 0.5);
+  color: color-mix(in srgb, var(--motile-gray-800) 50%, transparent);
 }
 
 :where(.motile-select__trigger:disabled),
@@ -129,12 +129,12 @@
 }
 
 :where(.motile-select__content)::-webkit-scrollbar-thumb {
-  background-color: #d1d5db;
+  background-color: var(--motile-gray-300);
   border-radius: 4px;
 }
 
 :where(.motile-select__content)::-webkit-scrollbar-thumb:hover {
-  background-color: #9ca3af;
+  background-color: var(--motile-gray-400);
 }
 
 /* Item */

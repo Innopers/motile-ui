@@ -11,7 +11,7 @@
   font-size: 15px;
   font-weight: 400;
   color: var(--motile-gray-900);
-  background: white;
+  background: var(--motile-bg);
   outline: none;
   transition: none;
   min-height: 48px;
@@ -470,7 +470,7 @@
   top: 0;
   transform: translateY(-50%);
   font-size: 12px;
-  background: white;
+  background: var(--motile-bg);
   padding: 0 4px;
 }
 

@@ -46,7 +46,7 @@
   padding: 12px 16px;
 
   /* Style */
-  background: rgba(0, 0, 0, 0.85);
+  background: color-mix(in srgb, var(--motile-gray-900) 95%, transparent);
   border-radius: 8px;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -92,25 +92,25 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffffff;
+  color: var(--motile-bg);
   margin-right: 8px;
   margin-top: 1px;
 }
 
 :where(.motile-toast--success .motile-toast__icon) {
-  color: #4ade80;
+  color: color-mix(in srgb, #22c55e 80%, var(--motile-bg));
 }
 
 :where(.motile-toast--error .motile-toast__icon) {
-  color: #f87171;
+  color: color-mix(in srgb, #ef4444 80%, var(--motile-bg));
 }
 
 :where(.motile-toast--warning .motile-toast__icon) {
-  color: #fbbf24;
+  color: color-mix(in srgb, #f59e0b 80%, var(--motile-bg));
 }
 
 :where(.motile-toast--info .motile-toast__icon) {
-  color: #60a5fa;
+  color: color-mix(in srgb, #3b82f6 80%, var(--motile-bg));
 }
 
 /* ============================================================================
@@ -123,7 +123,7 @@
   font-size: 14px;
   font-weight: 500;
   line-height: 1.4;
-  color: #ffffff;
+  color: var(--motile-bg);
   word-wrap: break-word;
   word-break: break-word;
   overflow-wrap: break-word;
@@ -161,40 +161,6 @@
   to {
     opacity: 0;
     transform: scale(0.95);
-  }
-}
-
-/* ============================================================================
-   Dark Mode
-   ============================================================================ */
-
-@media (prefers-color-scheme: dark) {
-  :where(.motile-toast) {
-    background: rgba(255, 255, 255, 0.95);
-  }
-
-  :where(.motile-toast__message) {
-    color: #18181b;
-  }
-
-  :where(.motile-toast__icon) {
-    color: #18181b;
-  }
-
-  :where(.motile-toast--success .motile-toast__icon) {
-    color: #22c55e;
-  }
-
-  :where(.motile-toast--error .motile-toast__icon) {
-    color: #ef4444;
-  }
-
-  :where(.motile-toast--warning .motile-toast__icon) {
-    color: #f59e0b;
-  }
-
-  :where(.motile-toast--info .motile-toast__icon) {
-    color: #3b82f6;
   }
 }
 

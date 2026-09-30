@@ -1,4 +1,5 @@
 export type {
+  DockIndicator,
   DockItemProps,
   DockPosition,
   DockRootProps,

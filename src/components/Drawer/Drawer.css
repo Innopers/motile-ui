@@ -115,6 +115,15 @@
 }
 
 @media (max-width: 768px) {
+  :where(.motile-drawer__header) {
+    height: 56px;
+  }
+
+  :where(.motile-drawer__handle) {
+    width: 48px;
+    height: 7px;
+  }
+
   :where(.motile-drawer__title) {
     font-size: 15px;
   }
@@ -156,17 +165,5 @@
   :where(.motile-drawer__content),
   :where(.motile-drawer__overlay) {
     transition: none;
-  }
-}
-
-/* 터치 디바이스 */
-@media (hover: none) and (pointer: coarse) {
-  :where(.motile-drawer__header) {
-    height: 56px;
-  }
-
-  :where(.motile-drawer__handle) {
-    width: 48px;
-    height: 7px;
   }
 }

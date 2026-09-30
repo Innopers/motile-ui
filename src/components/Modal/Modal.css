@@ -329,6 +329,12 @@
     font-size: 1.125rem;
   }
 
+  :where(.motile-modal__close) {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 10px;
+  }
+
   /* 터치 피드백 */
   :where(.motile-modal__close:active) {
     background-color: var(--motile-gray-200);
@@ -355,15 +361,6 @@
 
   :where(.motile-modal__title) {
     font-size: 1rem;
-  }
-}
-
-/* 터치 디바이스 - 터치 타겟 최소 44px */
-@media (hover: none) and (pointer: coarse) {
-  :where(.motile-modal__close) {
-    min-width: 44px;
-    min-height: 44px;
-    padding: 10px;
   }
 }
 

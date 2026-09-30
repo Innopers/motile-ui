@@ -358,15 +358,6 @@
   }
 }
 
-/* 터치 디바이스 - 터치 타겟 최소 44px */
-@media (hover: none) and (pointer: coarse) {
-  :where(.motile-modal__close) {
-    min-width: 44px;
-    min-height: 44px;
-    padding: 10px;
-  }
-}
-
 /* iOS Safari specific fixes */
 @supports (-webkit-touch-callout: none) {
   :where(.motile-modal__close) {

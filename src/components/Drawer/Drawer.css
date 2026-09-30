@@ -158,15 +158,3 @@
     transition: none;
   }
 }
-
-/* 터치 디바이스 */
-@media (hover: none) and (pointer: coarse) {
-  :where(.motile-drawer__header) {
-    height: 56px;
-  }
-
-  :where(.motile-drawer__handle) {
-    width: 48px;
-    height: 7px;
-  }
-}

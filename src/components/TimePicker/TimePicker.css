@@ -73,7 +73,7 @@
   font-variant-numeric: tabular-nums;
 
   /* 비선택 아이템 스타일 */
-  color: #d1d5db;
+  color: var(--motile-gray-300);
 }
 
 /* 선택된 아이템 스타일 */
@@ -101,7 +101,7 @@
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: color-mix(in srgb, var(--motile-gray-900) 5%, transparent);
   border-radius: 8px;
   z-index: 0;
 }

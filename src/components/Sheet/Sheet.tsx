@@ -17,6 +17,8 @@ import { Slot } from "@/utils/Slot";
 
 import "./Sheet.css";
 
+import "@/styles/theme";
+
 /**
  * Sheet 위치
  * - `left`: 왼쪽에서 슬라이드

@@ -15,6 +15,8 @@ import { Slot } from "@/utils/Slot";
 
 import "./Tooltip.css";
 
+import "@/styles/theme";
+
 /**
  * 툴팁 스타일 variant
  * - `filled`: 채워진 배경 (기본값)

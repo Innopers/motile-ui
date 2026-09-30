@@ -14,6 +14,8 @@ import { Slot } from "@/utils/Slot";
 
 import "./Popover.css";
 
+import "@/styles/theme";
+
 /**
  * Popover 위치
  * - `top`: 위쪽

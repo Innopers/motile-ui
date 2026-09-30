@@ -2,6 +2,8 @@ import React, { forwardRef } from "react";
 
 import "./Checkbox.css";
 
+import "@/styles/theme";
+
 /**
  * 체크박스 스타일 variant
  * - `standard`: 기본 스타일

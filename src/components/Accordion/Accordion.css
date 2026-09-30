@@ -20,7 +20,7 @@
   outline: none;
   user-select: none;
   padding: 16px 20px;
-  color: #111827;
+  color: var(--motile-gray-900);
   background-color: transparent;
   font-size: 16px;
   font-weight: 400;
@@ -35,12 +35,12 @@
 /* Hover/Active */
 @media (hover: hover) and (pointer: fine) {
   :where(.motile-accordion__header:not(:disabled):hover) {
-    background-color: #f9fafb;
+    background-color: var(--motile-gray-50);
   }
 }
 @media (hover: none) and (pointer: coarse) {
   :where(.motile-accordion__header:not(:disabled):active) {
-    background-color: #f3f4f6;
+    background-color: var(--motile-gray-100);
   }
 }
 
@@ -51,7 +51,7 @@
   text-align: left;
   font-size: 16px;
   font-weight: 400;
-  color: #111827;
+  color: var(--motile-gray-900);
 }
 
 /* Chevron Icon */
@@ -60,7 +60,7 @@
   transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   width: 20px;
   height: 20px;
-  color: #9ca3af;
+  color: var(--motile-gray-400);
 }
 
 /* Expanded state */
@@ -85,7 +85,7 @@
     opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
     transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   padding: 14px 20px 20px 20px;
-  color: #374151;
+  color: var(--motile-gray-700);
   font-size: 14px;
 }
 
@@ -109,7 +109,7 @@
 
 /* ====== Outlined Variant ====== */
 :where(.motile-accordion--outlined) {
-  border: 1.5px solid #e5e7eb;
+  border: 1.5px solid var(--motile-gray-200);
   border-radius: 12px;
 }
 
@@ -121,7 +121,7 @@
 :where(
   .motile-accordion--outlined[data-state="open"] .motile-accordion__header
 ) {
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--motile-gray-200);
 }
 
 /* Responsive */

@@ -115,6 +115,15 @@
 }
 
 @media (max-width: 768px) {
+  :where(.motile-drawer__header) {
+    height: 56px;
+  }
+
+  :where(.motile-drawer__handle) {
+    width: 48px;
+    height: 7px;
+  }
+
   :where(.motile-drawer__title) {
     font-size: 15px;
   }

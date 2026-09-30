@@ -146,6 +146,15 @@
 }
 
 @media (max-width: 768px) {
+  :where(.motile-sheet__header) {
+    height: 60px;
+  }
+
+  :where(.motile-sheet__chevron) {
+    width: 26px;
+    height: 26px;
+  }
+
   :where(.motile-sheet__title) {
     font-size: 16px;
   }

@@ -329,6 +329,12 @@
     font-size: 1.125rem;
   }
 
+  :where(.motile-modal__close) {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 10px;
+  }
+
   /* 터치 피드백 */
   :where(.motile-modal__close:active) {
     background-color: var(--motile-gray-200);

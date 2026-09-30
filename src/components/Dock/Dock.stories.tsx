@@ -5,6 +5,7 @@ import { Dock } from "./Dock";
 // Props that can be controlled via Storybook
 interface DockStoryArgs {
   position?: "top" | "bottom" | "left" | "right";
+  indicator?: "dot" | "bar" | "background";
   zIndex?: number;
 }
 
@@ -22,6 +23,15 @@ const meta = {
       table: {
         defaultValue: { summary: '"bottom"' },
         type: { summary: '"top" | "bottom" | "left" | "right"' },
+      },
+    },
+    indicator: {
+      control: "select",
+      options: ["dot", "bar", "background"],
+      description: "현재 위치(Item active) 표시 방식",
+      table: {
+        defaultValue: { summary: '"dot"' },
+        type: { summary: '"dot" | "bar" | "background"' },
       },
     },
     zIndex: {
@@ -207,9 +217,10 @@ const MusicIcon = () => (
 export const Default: Story = {
   args: {
     position: "bottom",
+    indicator: "dot",
     zIndex: 1000,
   },
-  render: ({ position, zIndex }) => (
+  render: ({ position, indicator, zIndex }) => (
     <div
       style={{
         display: "flex",
@@ -220,8 +231,8 @@ export const Default: Story = {
         borderRadius: "12px",
       }}
     >
-      <Dock.Root position={position} zIndex={zIndex}>
-        <Dock.Item label="Home" onClick={() => alert("Home clicked")}>
+      <Dock.Root position={position} indicator={indicator} zIndex={zIndex}>
+        <Dock.Item label="Home" active onClick={() => alert("Home clicked")}>
           <HomeIcon />
         </Dock.Item>
         <Dock.Item label="Folder" onClick={() => alert("Folder clicked")}>

@@ -96,6 +96,84 @@
   outline-offset: 2px;
 }
 
+/* Active State: 현재 위치 점, Dock이 붙은 화면 가장자리 방향의 버튼 끝 */
+:where(.motile-dock__item--active)::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 5px;
+  height: 5px;
+  margin-left: -2.5px;
+  border-radius: 50%;
+  background-color: var(
+    --motile-dock-color,
+    var(--motile-ui-dock, var(--motile-theme, #3b82f6))
+  );
+  pointer-events: none;
+}
+
+:where(.motile-dock[data-position="top"] .motile-dock__item--active)::after {
+  top: 0;
+  bottom: auto;
+}
+
+:where(.motile-dock[data-position="left"] .motile-dock__item--active)::after {
+  top: 50%;
+  bottom: auto;
+  left: 0;
+  margin: -2.5px 0 0;
+}
+
+:where(.motile-dock[data-position="right"] .motile-dock__item--active)::after {
+  top: 50%;
+  bottom: auto;
+  left: auto;
+  right: 0;
+  margin: -2.5px 0 0;
+}
+
+/* Indicator: bar - 짧은 막대, 좌우 배치는 세로 막대 */
+:where(.motile-dock[data-indicator="bar"] .motile-dock__item--active)::after {
+  width: 14px;
+  height: 3px;
+  margin-left: -7px;
+  border-radius: 2px;
+}
+
+:where(
+  .motile-dock[data-indicator="bar"][data-position="left"]
+    .motile-dock__item--active
+)::after,
+:where(
+  .motile-dock[data-indicator="bar"][data-position="right"]
+    .motile-dock__item--active
+)::after {
+  width: 3px;
+  height: 14px;
+  margin: -7px 0 0;
+}
+
+/* Indicator: background - hover 글로우와 같은 원형 배경 틴트, 아이콘 뒤에 배치 */
+:where(
+  .motile-dock[data-indicator="background"] .motile-dock__item--active
+)::after {
+  inset: 2px;
+  width: auto;
+  height: auto;
+  margin: 0;
+  background-color: color-mix(
+    in srgb,
+    var(
+        --motile-dock-color,
+        var(--motile-ui-dock, var(--motile-theme, #3b82f6))
+      )
+      14%,
+    transparent
+  );
+  z-index: -1;
+}
+
 /* Dock Item Icon Container */
 :where(.motile-dock__item > *) {
   pointer-events: none;
@@ -163,13 +241,6 @@
     gap: 6px;
     padding: 6px 12px;
     border-radius: 40px;
-  }
-
-  :where(.motile-dock__item) {
-    width: 36px;
-    height: 36px;
-    min-width: 36px;
-    min-height: 36px;
   }
 }
 

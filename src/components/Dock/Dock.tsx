@@ -27,6 +27,14 @@ import "@/styles/theme";
 export type DockPosition = "top" | "bottom" | "left" | "right";
 
 /**
+ * 현재 위치(active) 표시 방식
+ * - `dot`: 점 (기본값)
+ * - `bar`: 짧은 막대
+ * - `background`: 배경 틴트
+ */
+export type DockIndicator = "dot" | "bar" | "background";
+
+/**
  * Dock Context 값
  */
 interface DockContextValue {
@@ -52,6 +60,13 @@ export interface DockRootProps extends React.HTMLAttributes<HTMLDivElement> {
    * @type {'top' | 'bottom' | 'left' | 'right'}
    */
   position?: DockPosition;
+
+  /**
+   * 현재 위치(Item active) 표시 방식
+   * @default "dot"
+   * @type {'dot' | 'bar' | 'background'}
+   */
+  indicator?: DockIndicator;
 
   /**
    * z-index 값
@@ -87,6 +102,12 @@ export interface DockItemProps extends React.ButtonHTMLAttributes<HTMLButtonElem
   asChild?: boolean;
 
   /**
+   * 현재 위치 표시 (점 + aria-current="true")
+   * aria-current를 직접 넘기면 그 값이 우선 (예: 페이지 이동이면 "page")
+   */
+  active?: boolean;
+
+  /**
    * Glow effect 개별 색상 (Root.color를 override)
    * 우선순위: Item.color > Root.color > --motile-ui-dock > --motile-theme > #3b82f6
    * @example '#3b82f6'
@@ -116,6 +137,7 @@ export const DockRoot = forwardRef<HTMLDivElement, DockRootProps>(
   (
     {
       position = "bottom",
+      indicator = "dot",
       zIndex = 1000,
       color,
       className,
@@ -168,6 +190,7 @@ export const DockRoot = forwardRef<HTMLDivElement, DockRootProps>(
           }}
           className={`motile-dock ${className || ""}`}
           data-position={position}
+          data-indicator={indicator}
           style={{ ...style, zIndex }}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
@@ -188,7 +211,17 @@ DockRoot.displayName = "Dock.Root";
 
 export const DockItem = forwardRef<HTMLButtonElement, DockItemProps>(
   (
-    { icon, label, asChild, color, className, children, style, ...props },
+    {
+      icon,
+      label,
+      asChild,
+      active,
+      color,
+      className,
+      children,
+      style,
+      ...props
+    },
     ref
   ) => {
     const {
@@ -273,6 +306,10 @@ export const DockItem = forwardRef<HTMLButtonElement, DockItemProps>(
         ({ "--motile-dock-color": finalColor } as React.CSSProperties)),
     };
 
+    const itemClassName = `motile-dock__item${
+      active ? " motile-dock__item--active" : ""
+    } ${className || ""}`;
+
     // asChild 패턴 처리
     if (asChild && React.isValidElement(children)) {
       const element = React.cloneElement(children as React.ReactElement, {
@@ -287,9 +324,10 @@ export const DockItem = forwardRef<HTMLButtonElement, DockItemProps>(
             itemRef as React.MutableRefObject<HTMLButtonElement | null>
           ).current = node as HTMLButtonElement;
         },
-        className: `motile-dock__item ${className || ""}`,
+        className: itemClassName,
         style: customStyle,
         "aria-label": label,
+        ...(active && { "aria-current": "true" }),
       });
 
       // label이 있으면 Tooltip으로 감싸기
@@ -320,9 +358,10 @@ export const DockItem = forwardRef<HTMLButtonElement, DockItemProps>(
           ).current = node;
         }}
         type="button"
-        className={`motile-dock__item ${className || ""}`}
+        className={itemClassName}
         style={customStyle}
         aria-label={label}
+        aria-current={active ? "true" : undefined}
         {...props}
       >
         {icon || children}

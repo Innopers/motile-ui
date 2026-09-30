@@ -11,6 +11,7 @@ export { Button } from "./components/Button";
 export type { CheckboxProps } from "./components/Checkbox";
 export { Checkbox } from "./components/Checkbox";
 export type {
+  DockIndicator,
   DockItemProps,
   DockPosition,
   DockRootProps,

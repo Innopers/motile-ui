@@ -242,14 +242,18 @@
     padding: 6px 12px;
     border-radius: 40px;
   }
-}
 
-/* Touch Device - Larger Touch Targets */
-@media (hover: none) and (pointer: coarse) {
   :where(.motile-dock__item) {
+    width: 44px;
+    height: 44px;
     min-width: 44px;
     min-height: 44px;
-    /* 터치 기기에서는 magnification 비활성화 */
+  }
+}
+
+/* Touch Device: magnification 비활성화 */
+@media (hover: none) and (pointer: coarse) {
+  :where(.motile-dock__item) {
     transform: scale(1) !important;
   }
 }

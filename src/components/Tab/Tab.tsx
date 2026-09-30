@@ -14,6 +14,8 @@ import { Slot } from "@/utils/Slot";
 
 import "./Tab.css";
 
+import "@/styles/theme";
+
 const BASE = "motile-tab";
 
 // ===========================

@@ -1,0 +1,53 @@
+/* ============================================================================
+   Theme Palette
+   ============================================================================ */
+
+/* Light (기본값): :where()로 명시도 0, 사용하는 쪽 :root에서 덮어쓰기 가능 */
+:where(:root) {
+  --motile-bg: #ffffff;
+  --motile-gray-50: #f9fafb;
+  --motile-gray-100: #f3f4f6;
+  --motile-gray-200: #e5e7eb;
+  --motile-gray-300: #d1d5db;
+  --motile-gray-400: #9ca3af;
+  --motile-gray-500: #6b7280;
+  --motile-gray-600: #4b5563;
+  --motile-gray-700: #374151;
+  --motile-gray-800: #1f2937;
+  --motile-gray-900: #111827;
+  --motile-error-bg: #fef5f5;
+}
+
+/* Dark (data-theme="dark"): 회색 번호는 바탕과의 대비 순서라 값이 뒤집힘 */
+:where(:root[data-theme="dark"]) {
+  --motile-bg: #1d1e22;
+  --motile-gray-50: #222326;
+  --motile-gray-100: #26282c;
+  --motile-gray-200: #303237;
+  --motile-gray-300: #41434a;
+  --motile-gray-400: #6e7178;
+  --motile-gray-500: #94969d;
+  --motile-gray-600: #a3a5ac;
+  --motile-gray-700: #b3b5bb;
+  --motile-gray-800: #d4d5d9;
+  --motile-gray-900: #e4e5e8;
+  --motile-error-bg: #321c20;
+}
+
+/* Dark (OS 다크 모드, data-theme="light"가 아닐 때) */
+@media (prefers-color-scheme: dark) {
+  :where(:root:not([data-theme="light"])) {
+    --motile-bg: #1d1e22;
+    --motile-gray-50: #222326;
+    --motile-gray-100: #26282c;
+    --motile-gray-200: #303237;
+    --motile-gray-300: #41434a;
+    --motile-gray-400: #6e7178;
+    --motile-gray-500: #94969d;
+    --motile-gray-600: #a3a5ac;
+    --motile-gray-700: #b3b5bb;
+    --motile-gray-800: #d4d5d9;
+    --motile-gray-900: #e4e5e8;
+    --motile-error-bg: #321c20;
+  }
+}

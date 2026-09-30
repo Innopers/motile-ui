@@ -4,6 +4,8 @@ import { Slot } from "@/utils/Slot";
 
 import "./Button.css";
 
+import "@/styles/theme";
+
 /**
  * 버튼 스타일 variant
  * - `primary`: 채워진 배경 (기본값)

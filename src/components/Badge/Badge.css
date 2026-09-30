@@ -85,8 +85,8 @@
 }
 
 :where(.motile-badge--outlined) {
-  /* 배경: 흰색 */
-  background-color: #ffffff;
+  /* 배경: 테마 바탕색 */
+  background-color: var(--motile-bg);
   /* 글자색: 우선순위 색상 그대로 */
   color: var(
     --motile-badge-color,

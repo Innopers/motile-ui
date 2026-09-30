@@ -16,6 +16,8 @@ import { Slot } from "@/utils/Slot";
 
 import "./Select.css";
 
+import "@/styles/theme";
+
 /**
  * Select Value Type
  */

@@ -2,6 +2,8 @@ import React, { forwardRef } from "react";
 
 import "./Switch.css";
 
+import "@/styles/theme";
+
 /**
  * 스위치 애니메이션 variant
  * - `smooth`: 부드러운 전환 (기본값)

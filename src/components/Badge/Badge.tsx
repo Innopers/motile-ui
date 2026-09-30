@@ -2,6 +2,8 @@ import React from "react";
 
 import "./Badge.css";
 
+import "@/styles/theme";
+
 /**
  * Badge 스타일 variant
  * - `primary`: 채워진 배경 (기본값)

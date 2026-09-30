@@ -33,14 +33,14 @@
   border: 1px solid var(--arrow-color);
 }
 
-/* Outlined Variant - 배경 흰색, 테두리에 색상 */
+/* Outlined Variant - 배경 테마 바탕색, 테두리에 색상 */
 :where(.motile-popover-content--outlined) {
   --arrow-color: var(
     --motile-popover-color,
-    var(--motile-ui-popover, var(--motile-theme, #e5e7eb))
+    var(--motile-ui-popover, var(--motile-theme, var(--motile-gray-200)))
   );
-  background: #fff;
-  color: #111827;
+  background: var(--motile-bg);
+  color: var(--motile-gray-900);
   border: 1px solid var(--arrow-color);
 }
 

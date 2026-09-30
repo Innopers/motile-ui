@@ -296,6 +296,116 @@ describe("Dock", () => {
     });
   });
 
+  describe("현재 위치 (active)", () => {
+    // active: 현재 위치 점 클래스와 aria-current="true" 적용
+    it("active면 active 클래스와 aria-current가 붙음", () => {
+      render(
+        <Dock.Root>
+          <Dock.Item active>Home</Dock.Item>
+        </Dock.Root>
+      );
+
+      const item = screen.getByRole("button");
+      expect(item).toHaveClass("motile-dock__item--active");
+      expect(item).toHaveAttribute("aria-current", "true");
+    });
+
+    // active 없음: 클래스와 aria-current 미적용
+    it("active가 아니면 active 클래스와 aria-current가 없음", () => {
+      render(
+        <Dock.Root>
+          <Dock.Item>Home</Dock.Item>
+        </Dock.Root>
+      );
+
+      const item = screen.getByRole("button");
+      expect(item).not.toHaveClass("motile-dock__item--active");
+      expect(item).not.toHaveAttribute("aria-current");
+    });
+
+    // aria-current 직접 지정: 페이지 이동 등 용도에 맞게 값 교체 가능
+    it("aria-current를 직접 넘기면 그 값이 우선함", () => {
+      render(
+        <Dock.Root>
+          <Dock.Item active aria-current="page">
+            Home
+          </Dock.Item>
+        </Dock.Root>
+      );
+
+      expect(screen.getByRole("button")).toHaveAttribute(
+        "aria-current",
+        "page"
+      );
+    });
+
+    // asChild + active: 자식 요소에 클래스와 aria-current 적용
+    it("asChild에서도 active 클래스와 aria-current가 붙음", () => {
+      render(
+        <Dock.Root>
+          <Dock.Item asChild active>
+            <a href="/home" data-testid="custom-link">
+              Home
+            </a>
+          </Dock.Item>
+        </Dock.Root>
+      );
+
+      const link = screen.getByTestId("custom-link");
+      expect(link).toHaveClass("motile-dock__item--active");
+      expect(link).toHaveAttribute("aria-current", "true");
+    });
+
+    // indicator 기본값: 점 방식
+    it("indicator 기본값은 dot임", () => {
+      render(
+        <Dock.Root data-testid="dock">
+          <Dock.Item active>Home</Dock.Item>
+        </Dock.Root>
+      );
+
+      expect(screen.getByTestId("dock")).toHaveAttribute(
+        "data-indicator",
+        "dot"
+      );
+    });
+
+    // indicator 지정: 표시 방식을 data 속성으로 전달
+    it.each(["bar", "background"] as const)(
+      "indicator=%s가 data-indicator로 적용됨",
+      (indicator) => {
+        render(
+          <Dock.Root indicator={indicator} data-testid="dock">
+            <Dock.Item active>Home</Dock.Item>
+          </Dock.Root>
+        );
+
+        expect(screen.getByTestId("dock")).toHaveAttribute(
+          "data-indicator",
+          indicator
+        );
+      }
+    );
+
+    // asChild + active 없음: 자식의 aria-current 유지
+    it("asChild에서 active가 아니면 자식의 aria-current를 지우지 않음", () => {
+      render(
+        <Dock.Root>
+          <Dock.Item asChild>
+            <a href="/home" aria-current="location" data-testid="custom-link">
+              Home
+            </a>
+          </Dock.Item>
+        </Dock.Root>
+      );
+
+      expect(screen.getByTestId("custom-link")).toHaveAttribute(
+        "aria-current",
+        "location"
+      );
+    });
+  });
+
   describe("Ref 전달", () => {
     // Root ref 전달: HTMLDivElement로 올바르게 전달됨
     it("Root 엘리먼트로 ref가 전달됨", () => {

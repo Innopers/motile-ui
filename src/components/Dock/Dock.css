@@ -4,16 +4,19 @@
   align-items: center;
   gap: 12px;
   padding: 8px 16px;
+  /* 유리 하이라이트 색: 라이트 흰색, 다크 밝은 회색 */
+  --dock-glass: color-mix(in srgb, var(--motile-bg) 70%, #fff);
+
   /* Glass morphism effect */
-  background: rgba(255, 255, 255, 0.25);
+  background: color-mix(in srgb, var(--motile-bg) 25%, transparent);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-radius: 50px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid color-mix(in srgb, var(--dock-glass) 30%, transparent);
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.1),
     0 2px 8px rgba(0, 0, 0, 0.05),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+    inset 0 0 0 1px color-mix(in srgb, var(--dock-glass) 20%, transparent);
   position: relative;
   user-select: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -52,7 +55,7 @@
   border: none;
   border-radius: 10px;
   background: transparent;
-  color: #374151;
+  color: var(--motile-gray-700);
   cursor: pointer;
   transition: background 0.2s ease;
   outline: none;
@@ -80,17 +83,95 @@
 
 /* Hover State */
 :where(.motile-dock__item:hover) {
-  background: rgba(255, 255, 255, 0.4);
+  background: color-mix(in srgb, var(--dock-glass) 40%, transparent);
 }
 
 :where(.motile-dock__item:active) {
-  background: rgba(255, 255, 255, 0.6);
+  background: color-mix(in srgb, var(--dock-glass) 60%, transparent);
   filter: brightness(0.9);
 }
 
 :where(.motile-dock__item:focus-visible) {
-  outline: 2px solid rgba(100, 116, 139, 0.6);
+  outline: 2px solid color-mix(in srgb, var(--motile-gray-500) 60%, transparent);
   outline-offset: 2px;
+}
+
+/* Active State: 현재 위치 점, Dock이 붙은 화면 가장자리 방향의 버튼 끝 */
+:where(.motile-dock__item--active)::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 5px;
+  height: 5px;
+  margin-left: -2.5px;
+  border-radius: 50%;
+  background-color: var(
+    --motile-dock-color,
+    var(--motile-ui-dock, var(--motile-theme, #3b82f6))
+  );
+  pointer-events: none;
+}
+
+:where(.motile-dock[data-position="top"] .motile-dock__item--active)::after {
+  top: 0;
+  bottom: auto;
+}
+
+:where(.motile-dock[data-position="left"] .motile-dock__item--active)::after {
+  top: 50%;
+  bottom: auto;
+  left: 0;
+  margin: -2.5px 0 0;
+}
+
+:where(.motile-dock[data-position="right"] .motile-dock__item--active)::after {
+  top: 50%;
+  bottom: auto;
+  left: auto;
+  right: 0;
+  margin: -2.5px 0 0;
+}
+
+/* Indicator: bar - 짧은 막대, 좌우 배치는 세로 막대 */
+:where(.motile-dock[data-indicator="bar"] .motile-dock__item--active)::after {
+  width: 14px;
+  height: 3px;
+  margin-left: -7px;
+  border-radius: 2px;
+}
+
+:where(
+  .motile-dock[data-indicator="bar"][data-position="left"]
+    .motile-dock__item--active
+)::after,
+:where(
+  .motile-dock[data-indicator="bar"][data-position="right"]
+    .motile-dock__item--active
+)::after {
+  width: 3px;
+  height: 14px;
+  margin: -7px 0 0;
+}
+
+/* Indicator: background - hover 글로우와 같은 원형 배경 틴트, 아이콘 뒤에 배치 */
+:where(
+  .motile-dock[data-indicator="background"] .motile-dock__item--active
+)::after {
+  inset: 2px;
+  width: auto;
+  height: auto;
+  margin: 0;
+  background-color: color-mix(
+    in srgb,
+    var(
+        --motile-dock-color,
+        var(--motile-ui-dock, var(--motile-theme, #3b82f6))
+      )
+      14%,
+    transparent
+  );
+  z-index: -1;
 }
 
 /* Dock Item Icon Container */
@@ -113,8 +194,8 @@
   background: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0.15) 20%,
-    rgba(0, 0, 0, 0.15) 80%,
+    color-mix(in srgb, var(--motile-gray-900) 15%, transparent) 20%,
+    color-mix(in srgb, var(--motile-gray-900) 15%, transparent) 80%,
     rgba(0, 0, 0, 0) 100%
   );
 }
@@ -128,65 +209,17 @@
   background: linear-gradient(
     to right,
     rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0.15) 20%,
-    rgba(0, 0, 0, 0.15) 80%,
+    color-mix(in srgb, var(--motile-gray-900) 15%, transparent) 20%,
+    color-mix(in srgb, var(--motile-gray-900) 15%, transparent) 80%,
     rgba(0, 0, 0, 0) 100%
   );
-}
-
-/* Dark Mode */
-@media (prefers-color-scheme: dark) {
-  :where(.motile-dock) {
-    background: rgba(30, 30, 30, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.4),
-      0 2px 8px rgba(0, 0, 0, 0.2),
-      inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-  }
-
-  :where(.motile-dock__item) {
-    color: #e5e7eb;
-  }
-
-  :where(.motile-dock__item:hover) {
-    background: rgba(255, 255, 255, 0.1);
-  }
-
-  :where(.motile-dock__item:active) {
-    background: rgba(255, 255, 255, 0.2);
-    filter: brightness(0.9);
-  }
-
-  /* Dark Mode Separator */
-  :where(.motile-dock__separator[data-position="top"]),
-  :where(.motile-dock__separator[data-position="bottom"]) {
-    background: linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0.15) 20%,
-      rgba(255, 255, 255, 0.15) 80%,
-      rgba(255, 255, 255, 0) 100%
-    );
-  }
-
-  :where(.motile-dock__separator[data-position="left"]),
-  :where(.motile-dock__separator[data-position="right"]) {
-    background: linear-gradient(
-      to right,
-      rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0.15) 20%,
-      rgba(255, 255, 255, 0.15) 80%,
-      rgba(255, 255, 255, 0) 100%
-    );
-  }
 }
 
 /* High Contrast Mode */
 @media (prefers-contrast: high) {
   :where(.motile-dock) {
     border: 2px solid currentColor;
-    background: rgba(255, 255, 255, 0.95);
+    background: color-mix(in srgb, var(--motile-bg) 95%, transparent);
   }
 
   :where(.motile-dock__item) {
@@ -211,19 +244,16 @@
   }
 
   :where(.motile-dock__item) {
-    width: 36px;
-    height: 36px;
-    min-width: 36px;
-    min-height: 36px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
   }
 }
 
-/* Touch Device - Larger Touch Targets */
+/* Touch Device: magnification 비활성화 */
 @media (hover: none) and (pointer: coarse) {
   :where(.motile-dock__item) {
-    min-width: 44px;
-    min-height: 44px;
-    /* 터치 기기에서는 magnification 비활성화 */
     transform: scale(1) !important;
   }
 }
@@ -237,8 +267,8 @@
   padding: 1px;
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.4),
-    rgba(255, 255, 255, 0.1)
+    color-mix(in srgb, var(--dock-glass) 40%, transparent),
+    color-mix(in srgb, var(--dock-glass) 10%, transparent)
   );
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
@@ -246,16 +276,6 @@
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  :where(.motile-dock)::before {
-    background: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.2),
-      rgba(255, 255, 255, 0.05)
-    );
-  }
 }
 
 /* Glow effect on hover for items */

@@ -20,7 +20,7 @@
 }
 
 /* Desktop: Top Right */
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   :where(.motile-toast-container) {
     top: 0;
     left: auto;
@@ -69,7 +69,7 @@
 }
 
 /* Desktop: Slide In from Right */
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   :where(.motile-toast) {
     width: auto; /* Desktop: content-fit */
     max-width: 320px;

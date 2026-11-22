@@ -51,22 +51,52 @@ function opensSoftKeyboard(el: Element | null): el is HTMLElement {
   return false;
 }
 
+const PICKER_TYPES = ["date", "datetime-local", "month", "time", "week"];
+
+/** 글자 키보드를 쓰는 칸 (피커 · readOnly · inputmode="none" 제외) */
+function typesText(el: HTMLElement): boolean {
+  if (el.getAttribute("inputmode") === "none") return false;
+  if (el instanceof HTMLInputElement) {
+    return !el.readOnly && !PICKER_TYPES.includes(el.type);
+  }
+  if (el instanceof HTMLTextAreaElement) return !el.readOnly;
+  return true;
+}
+
+const KEYBOARD_SLACK = 40;
+
+// clientHeight 기준: iOS 26 은 키보드가 뜨면 innerHeight 도 줄어듦
+// scale 곱함: 확대로 줄어든 높이는 키보드가 아님
+function isKeyboardOpen(): boolean {
+  const viewport = window.visualViewport;
+  return (
+    !!viewport &&
+    viewport.height * viewport.scale <
+      document.documentElement.clientHeight - KEYBOARD_SLACK
+  );
+}
+
 /**
  * useAutoBlur Hook
  *
- * 모바일에서 입력 요소(input/textarea/contenteditable)에 포커스된 상태로
- * **스크롤(touchmove)** 하면 해당 요소를 blur해 소프트 키보드를 닫습니다.
+ * 모바일에서 입력 요소(input/textarea/contenteditable)에 포커스된 채 아래 경우 blur해
+ * 소프트 키보드를 닫음.
+ * - 포커스된 칸 밖을 끌기 (칸 안 끌기 · 두 손가락 확대는 제외)
+ * - 키보드만 내려감 (안드로이드 뒤로 가기)
  *
  * iOS Safari 등은 입력에 포커스가 남아 있는 한 키보드를 계속 띄워두는데,
  * 이를 순수 CSS로 닫을 수 없어 스크롤 제스처를 감지해 blur하는 방식입니다.
- * touchmove만 감지하므로 데스크톱(비터치)에는 영향이 없습니다.
+ * 데스크톱(비터치)에는 영향이 없습니다.
+ *
+ * 한계: viewport `interactive-widget=resizes-content` · `overlays-content` 나
+ * Android WebView 에서는 키보드 내려감을 알 수 없음
  *
  * 참고: light DOM의 `document.activeElement`를 검사하므로, 입력이 shadow DOM
  * 내부에 있는 경우는 대상에서 제외될 수 있습니다(일반적인 React 앱에는 해당 없음).
  *
  * @example
  * ```tsx
- * // 문서 전체 — 어떤 입력이든 스크롤 시 키보드 닫기
+ * // 문서 전체 — 포커스된 칸 밖을 끌면 키보드 닫기
  * useAutoBlur();
  *
  * // 특정 컨테이너로 범위 제한 + 열림 상태에서만 동작
@@ -81,15 +111,58 @@ export function useAutoBlur({
   useEffect(() => {
     if (!enabled) return;
 
-    const handleTouchMove = () => {
+    const focusedField = () => {
       const active = document.activeElement;
-      if (!opensSoftKeyboard(active)) return;
-      if (containerRef && !containerRef.current?.contains(active)) return;
-      active.blur();
+      if (!opensSoftKeyboard(active)) return null;
+      if (containerRef && !containerRef.current?.contains(active)) return null;
+      return active;
+    };
+
+    // 두 손가락 손짓 중 (손가락 하나를 떼도 손짓 끝까지 유지)
+    let multiTouch = false;
+    // 이번 포커스 동안 키보드가 떠 있었음
+    let keyboardSeen = isKeyboardOpen();
+
+    const handleTouchStart = (e: TouchEvent) => {
+      multiTouch = e.touches.length > 1;
+    };
+
+    // touchmove target 은 손짓을 시작한 요소
+    const handleTouchMove = (e: TouchEvent) => {
+      const field = focusedField();
+      if (!field || multiTouch) return;
+      if (e.target instanceof Node && field.contains(e.target)) return;
+      field.blur();
+    };
+
+    const handleFocusIn = () => {
+      keyboardSeen = isKeyboardOpen();
+    };
+
+    const handleViewportResize = () => {
+      const field = focusedField();
+      if (!field || !typesText(field)) return;
+      if (isKeyboardOpen()) {
+        keyboardSeen = true;
+      } else if (keyboardSeen) {
+        keyboardSeen = false;
+        field.blur();
+      }
     };
 
     // passive: 스크롤을 막지 않고 blur만 수행 (스크롤 성능 영향 없음)
-    window.addEventListener("touchmove", handleTouchMove, { passive: true });
-    return () => window.removeEventListener("touchmove", handleTouchMove);
+    // capture: 스크롤 잠금(useScrollLock)이 전파를 막아도 받음
+    const touchOptions = { passive: true, capture: true };
+    const viewport = window.visualViewport;
+    window.addEventListener("touchstart", handleTouchStart, touchOptions);
+    window.addEventListener("touchmove", handleTouchMove, touchOptions);
+    document.addEventListener("focusin", handleFocusIn);
+    viewport?.addEventListener("resize", handleViewportResize);
+    return () => {
+      window.removeEventListener("touchstart", handleTouchStart, touchOptions);
+      window.removeEventListener("touchmove", handleTouchMove, touchOptions);
+      document.removeEventListener("focusin", handleFocusIn);
+      viewport?.removeEventListener("resize", handleViewportResize);
+    };
   }, [containerRef, enabled]);
 }

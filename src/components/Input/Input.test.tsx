@@ -300,5 +300,14 @@ describe("Input", () => {
       fireTouchMove();
       expect(document.activeElement).not.toBe(ref.current);
     });
+
+    it("input 안에서 시작한 끌기(글자 선택)는 포커스가 유지됨", () => {
+      render(<Input autoBlur />);
+      const input = screen.getByRole("textbox") as HTMLInputElement;
+      input.focus();
+      input.dispatchEvent(new TouchEvent("touchstart", { bubbles: true }));
+      input.dispatchEvent(new TouchEvent("touchmove", { bubbles: true }));
+      expect(document.activeElement).toBe(input);
+    });
   });
 });

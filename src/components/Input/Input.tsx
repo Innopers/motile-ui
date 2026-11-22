@@ -76,8 +76,8 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
   label?: string;
 
   /**
-   * 모바일에서 이 입력에 포커스된 채 스크롤하면 포커스를 해제해 소프트 키보드를
-   * 닫습니다 (useAutoBlur 내장). 데스크톱(비터치)에는 영향이 없습니다.
+   * 모바일에서 입력 밖을 끌거나 키보드만 내려가면 포커스를 해제해 키보드를 닫음
+   * (useAutoBlur 내장)
    * @default false
    */
   autoBlur?: boolean;
@@ -114,7 +114,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const inputRef = (ref as React.RefObject<HTMLInputElement>) || internalRef;
     const rootRef = useRef<HTMLDivElement>(null);
 
-    // 모바일: 이 입력에 포커스된 채 스크롤하면 키보드 닫기 (opt-in, 기본 off)
+    // 모바일 키보드 자동 닫기 (opt-in, 기본 off)
     useAutoBlur({ containerRef: rootRef, enabled: autoBlur });
 
     // isError가 명시되지 않으면 errorMessage로 판단

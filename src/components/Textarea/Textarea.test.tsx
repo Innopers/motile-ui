@@ -252,5 +252,14 @@ describe("Textarea", () => {
       fireTouchMove();
       expect(document.activeElement).not.toBe(ref.current);
     });
+
+    it("textarea 안에서 시작한 끌기(글 스크롤)는 포커스가 유지됨", () => {
+      render(<Textarea autoBlur />);
+      const ta = screen.getByRole("textbox") as HTMLTextAreaElement;
+      ta.focus();
+      ta.dispatchEvent(new TouchEvent("touchstart", { bubbles: true }));
+      ta.dispatchEvent(new TouchEvent("touchmove", { bubbles: true }));
+      expect(document.activeElement).toBe(ta);
+    });
   });
 });
